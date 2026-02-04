@@ -11,7 +11,7 @@ const { initializeModels } = require('./models');
 // Import routes
 const authRoutes = require('./routes/auth');
 const contentRoutes = require('./routes/content');
-// const adminRoutes = require('./routes/admin');
+const adminRoutes = require('./routes/admin');
 // const aiRoutes = require('./routes/ai');
 
 const app = express();
@@ -59,7 +59,7 @@ app.get('/health', (req, res) => {
 // API routes
 app.use('/api/auth', authRoutes);
 app.use('/api/content', contentRoutes);
-// app.use('/api/admin', adminRoutes);
+app.use('/api/admin', adminRoutes);
 // app.use('/api/ai', aiRoutes);
 
 // 404 handler
