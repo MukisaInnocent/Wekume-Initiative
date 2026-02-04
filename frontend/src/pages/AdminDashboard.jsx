@@ -318,6 +318,12 @@ return (
                 </div>
             )}
 
+            {activeTab === 'media' && (
+                <div>
+                    <MediaLibrary />
+                </div>
+            )}
+
             {activeTab === 'events' && (
                 <div>
                     <div className="flex justify-between items-center mb-6"><h2 className="text-2xl font-heading font-bold">Events Management</h2><button onClick={() => openModal('create_event')} className="bg-primary-600 text-white px-6 py-2 rounded-lg hover:bg-primary-700 transition-colors flex items-center gap-2"><Plus size={20} /> Create Event</button></div>
