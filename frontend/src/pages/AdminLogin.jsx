@@ -15,17 +15,33 @@ function AdminLogin() {
         setLoading(true);
 
         try {
+            console.log('Attempting login with:', formData.email);
+            console.log('API URL:', import.meta.env.VITE_API_URL || 'http://localhost:5000/api');
+
             const response = await authAPI.login(formData);
+            console.log('Login response:', response.data);
+
             const { token, user } = response.data;
 
             // Store auth data
             localStorage.setItem('token', token);
             localStorage.setItem('user', JSON.stringify(user));
 
+            console.log('Login successful, redirecting...');
             // Redirect to dashboard
             navigate('/admin/dashboard');
         } catch (err) {
-            setError(err.response?.data?.error || 'Login failed. Please try again.');
+            console.error('Login error:', err);
+            console.error('Error response:', err.response);
+
+            const errorMessage = err.response?.data?.error || err.message || 'Login failed. Please try again.';
+            setError(errorMessage);
+
+            // Show detailed error in console
+            if (err.response) {
+                console.log('Status:', err.response.status);
+                console.log('Data:', err.response.data);
+            }
         } finally {
             setLoading(false);
         }
