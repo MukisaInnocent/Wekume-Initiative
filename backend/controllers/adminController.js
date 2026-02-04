@@ -343,4 +343,49 @@ exports.getAnalytics = async (req, res) => {
     }
 };
 
+const cloudinary = require('../config/cloudinary');
+const streamifier = require('streamifier');
+
+// ... (previous code)
+
+exports.uploadMedia = async (req, res) => {
+    try {
+        if (!req.file) {
+            return res.status(400).json({ error: 'No file uploaded' });
+        }
+
+        // Upload to Cloudinary using stream
+        const streamUpload = (fileBuffer) => {
+            return new Promise((resolve, reject) => {
+                const stream = cloudinary.uploader.upload_stream(
+                    { folder: 'wekume_cms' },
+                    (error, result) => {
+                        if (result) {
+                            resolve(result);
+                        } else {
+                            reject(error);
+                        }
+                    }
+                );
+                streamifier.createReadStream(fileBuffer).pipe(stream);
+            });
+        };
+
+        const result = await streamUpload(req.file.buffer);
+
+        // Return the file info provided by Cloudinary
+        res.status(201).json({
+            message: 'File uploaded successfully',
+            file: {
+                url: result.secure_url,
+                public_id: result.public_id,
+                format: result.format
+            }
+        });
+    } catch (error) {
+        console.error('Upload media error:', error);
+        res.status(500).json({ error: 'Failed to upload file' });
+    }
+};
+
 module.exports = exports;

@@ -38,4 +38,8 @@ router.put('/volunteer-applications/:id', adminController.updateVolunteerStatus)
 // ===== ANALYTICS =====
 router.get('/analytics', adminController.getAnalytics);
 
+// ===== MEDIA =====
+const upload = require('../middleware/upload');
+router.post('/media/upload', upload.single('file'), adminController.uploadMedia);
+
 module.exports = router;
