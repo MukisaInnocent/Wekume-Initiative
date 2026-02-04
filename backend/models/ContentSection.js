@@ -11,7 +11,7 @@ module.exports = (sequelize) => {
             type: DataTypes.STRING(100),
             allowNull: false,
             unique: true,
-            comment: 'Unique identifier like "about_mission", "about_vision"'
+            unique: true,
         },
         section_title: {
             type: DataTypes.STRING(255),
