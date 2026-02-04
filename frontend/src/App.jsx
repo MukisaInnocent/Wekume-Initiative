@@ -5,6 +5,7 @@ import WekumeApp from './pages/WekumeApp';
 import Events from './pages/Events';
 import GetInvolved from './pages/GetInvolved';
 import Contact from './pages/Contact';
+import Donate from './pages/Donate';
 import AdminLogin from './pages/AdminLogin';
 import AdminDashboard from './pages/AdminDashboard';
 
@@ -18,7 +19,9 @@ function App() {
                 <Route path="/wekume-app" element={<WekumeApp />} />
                 <Route path="/events" element={<Events />} />
                 <Route path="/get-involved" element={<GetInvolved />} />
+                <Route path="/get-involved" element={<GetInvolved />} />
                 <Route path="/contact" element={<Contact />} />
+                <Route path="/donate" element={<Donate />} />
 
                 {/* Admin Routes */}
                 <Route path="/admin/login" element={<AdminLogin />} />

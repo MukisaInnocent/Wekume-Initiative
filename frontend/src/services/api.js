@@ -85,6 +85,12 @@ export const formAPI = {
     submitVolunteer: (data) => api.post('/content/forms/volunteer', data)
 };
 
+// ===== DONATION API =====
+
+export const donationAPI = {
+    create: (data) => api.post('/donations', data)
+};
+
 // ===== ADMIN API (Coming in next phase) =====
 
 export const adminAPI = {

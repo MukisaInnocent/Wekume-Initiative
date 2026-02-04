@@ -31,6 +31,7 @@ const AIAssistantLog = AIAssistantLogModel(sequelize);
 const PageAnalytics = PageAnalyticsModel(sequelize);
 const VolunteerApplication = VolunteerApplicationModel(sequelize);
 const SocialLink = SocialLinkModel(sequelize);
+const Donation = require('./Donation')(sequelize);
 
 // Define relationships
 User.hasMany(ContentSection, { foreignKey: 'last_updated_by', as: 'updatedSections' });
@@ -67,7 +68,9 @@ const db = {
     AIAssistantLog,
     PageAnalytics,
     VolunteerApplication,
-    SocialLink
+    VolunteerApplication,
+    SocialLink,
+    Donation
 };
 
 // Initialize models function

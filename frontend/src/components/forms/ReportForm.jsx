@@ -89,25 +89,56 @@ function ReportForm({ report, onSubmit, onCancel, loading }) {
             </div>
 
             <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">PDF File URL</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">PDF File</label>
                 <div className="flex gap-2">
                     <div className="relative flex-grow">
                         <FileText className="absolute left-3 top-2.5 text-gray-400" size={18} />
                         <input
-                            type="url"
+                            type="text"
                             name="file_url"
                             value={formData.file_url}
                             onChange={handleChange}
-                            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                            placeholder="https://..."
+                            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-gray-50"
+                            placeholder="File URL will appear here..."
+                            readOnly
                         />
                     </div>
-                    {/* Upload button placeholder */}
-                    <button type="button" className="px-3 py-2 bg-gray-100 rounded-lg text-gray-600 hover:bg-gray-200">
-                        <Upload size={20} />
-                    </button>
+                    <div className="relative">
+                        <input
+                            type="file"
+                            id="report_file"
+                            className="hidden"
+                            accept=".pdf,.doc,.docx"
+                            onChange={async (e) => {
+                                const file = e.target.files[0];
+                                if (!file) return;
+
+                                const uploadFormData = new FormData();
+                                uploadFormData.append('file', file);
+
+                                // Show loading state specifically for upload if needed, or just rely on quick upload
+                                const originalText = e.target.previousSibling?.innerText; // unavailable reference, ignore
+
+                                try {
+                                    // Could add a local uploading state here if desired
+                                    const { adminAPI } = await import('../../services/api');
+                                    const res = await adminAPI.uploadMedia(uploadFormData);
+                                    setFormData(prev => ({ ...prev, file_url: res.data.file.url }));
+                                } catch (error) {
+                                    console.error("Upload failed", error);
+                                    alert("File upload failed");
+                                }
+                            }}
+                        />
+                        <label
+                            htmlFor="report_file"
+                            className="px-4 py-2 bg-primary-100 text-primary-700 rounded-lg cursor-pointer hover:bg-primary-200 flex items-center gap-2"
+                        >
+                            <Upload size={20} /> Upload
+                        </label>
+                    </div>
                 </div>
-                <p className="text-xs text-gray-500 mt-1">Direct file link required for now (File Upload coming soon)</p>
+                <p className="text-xs text-gray-500 mt-1">Upload the report PDF document.</p>
             </div>
 
             <div className="flex justify-end gap-3 pt-4 border-t">

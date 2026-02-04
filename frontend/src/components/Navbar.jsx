@@ -29,11 +29,17 @@ function Navbar() {
                             <Link
                                 key={link.path}
                                 to={link.path}
-                                className="text-gray-700 hover:text-primary-600 transition-colors duration-200"
+                                className="text-gray-700 hover:text-primary-600 transition-colors duration-200 font-medium"
                             >
                                 {link.label}
                             </Link>
                         ))}
+                        <Link
+                            to="/donate"
+                            className="bg-accent-500 text-primary-900 px-6 py-2 rounded-full font-bold hover:bg-accent-400 transition-colors shadow-md hover:shadow-lg transform hover:-translate-y-0.5 duration-200"
+                        >
+                            Donate
+                        </Link>
                     </div>
 
                     {/* Mobile Menu Button */}
