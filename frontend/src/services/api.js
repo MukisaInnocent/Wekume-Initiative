@@ -110,6 +110,14 @@ export const adminAPI = {
     createPartner: (data) => api.post('/admin/partners', data),
     updatePartner: (id, data) => api.put(`/admin/partners/${id}`, data),
     deletePartner: (id) => api.delete(`/admin/partners/${id}`),
+
+    // Reports
+    updateReport: (id, data) => api.put(`/admin/reports/${id}`, data), // Assuming backend support
+    createReport: (data) => api.post(`/admin/reports`, data), // Assuming backend support
+    deleteReport: (id) => api.delete(`/admin/reports/${id}`), // Assuming backend support
+
+    // Content
+    // updateSection is already there
 };
 
 export default api;
