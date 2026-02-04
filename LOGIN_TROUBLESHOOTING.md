@@ -1,95 +1,35 @@
-# Admin Login Troubleshooting
+# Admin Login Troubleshooting - CORS & Connectivity
 
-## Quick Test
+If you see: **"Cannot connect to server. Please check your internet connection..."**
 
-**Default Credentials:**
-- Email: `admin@wekume.org`
-- Password: `WekumeAdmin2024!`
+This means the frontend cannot talk to the backend.
 
-## Common Issues & Solutions
+## ✅ Fix Applied (Refresh Required)
+I have updated the backend to **explicitly allow connections** from your frontend.
 
-### Issue 1: Network Error / Cannot Connect
-**Symptoms:** Error message like "Network Error" or "ERR_CONNECTION_REFUSED"
+### Try This First:
+1. **Refresh** the login page
+2. Try logging in again (Email: `admin@wekume.org`, Pwd: `WekumeAdmin2024!`)
 
-**Solution:**
-1. Make sure backend is running:
-   - Check terminal running `npm run dev` in backend folder
-   - Should see `Server running on port 5000`
+## If It Still Fails:
 
-2. Test backend health:
-   - Open http://localhost:5000/health in browser
-   - Should see `{"status":"OK",...}`
+### 1. Check Backend Terminal
+Look at the terminal running the backend (where you see `npm run dev`).
+- Do you see lines like: `[2024-...] POST /api/auth/login`?
+- If YES: Connection is working! The error is inside the login logic.
+- If NO: Request never reached backend.
 
-### Issue 2: Invalid Credentials
-**Symptoms:** Error message "Invalid credentials"
+### 2. Check for "CORS Blocked"
+- Do you see `CORS Blocked Origin:` in the backend terminal?
+- If so, tell me what URL it says was blocked.
 
-**Solution:**
-1. Verify admin user exists:
-```bash
-cd backend
-node setup.js
-```
+### 3. Verify Ports
+- Backend must be on: `http://localhost:5000` (check terminal)
+- Frontend must be on: `http://localhost:5173` (check browser URL)
 
-2. This will recreate the admin user if needed
+### 4. Direct Test
+Open this link in a new tab:
+[http://localhost:5000/health](http://localhost:5000/health)
 
-### Issue 3: CORS Error
-**Symptoms:** Console shows "CORS policy" error
-
-**Solution:**
-- Backend should already have CORS enabled for `http://localhost:5173`
-- Restart backend server
-
-### Issue 4: Token/Auth Error
-**Symptoms:** Login succeeds but dashboard fails
-
-**Solution:**
-1. Clear browser localStorage:
-   - Open DevTools (F12)
-   - Go to Application → Local Storage
-   - Delete all items
-   - Try login again
-
-## How to Debug
-
-### Step 1: Check Browser Console
-1. Open login page: http://localhost:5173/admin/login
-2. Press F12 to open DevTools
-3. Go to "Console" tab
-4. Try to login
-5. Look for error messages - they will show:
-   - API URL being called
-   - Exact error from backend
-   - Status code (401, 500, etc.)
-
-### Step 2: Check Backend Logs
-Look at the terminal running backend server. You should see:
-- `POST /api/auth/login` when you try to login
-- Any error messages
-
-### Step 3: Manual API Test
-Open a new terminal and run:
-```powershell
-# Windows PowerShell
-Invoke-WebRequest -Uri http://localhost:5000/health -Method GET
-
-# Should return: {"status":"OK","message":"..."}
-```
-
-### Step 4: Verify Password
-The password is case-sensitive and includes special characters:
-- Capital W: `W`
-- Capital A: `A`
-- Number: `2024`
-- Exclamation mark: `!`
-
-Full password: `WekumeAdmin2024!`
-
-## Still Not Working?
-
-**Tell me:**
-1. What error message do you see (exact text)?
-2. What does browser console show? (F12 → Console tab)
-3. Is backend server running? (check terminal)
-4. Can you access http://localhost:5000/health in browser?
-
-This will help me identify the exact problem!
+- If it works: Backend is fine.
+- If it fails: Backend is stopped. Run `npm run dev` in backend folder.

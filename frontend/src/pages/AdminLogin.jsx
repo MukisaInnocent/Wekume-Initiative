@@ -14,34 +14,58 @@ function AdminLogin() {
         setError('');
         setLoading(true);
 
+        // Simple validation
+        if (!formData.email || !formData.password) {
+            setError('Please enter both email and password');
+            setLoading(false);
+            return;
+        }
+
         try {
-            console.log('Attempting login with:', formData.email);
-            console.log('API URL:', import.meta.env.VITE_API_URL || 'http://localhost:5000/api');
+            console.log('Attempting login...');
 
             const response = await authAPI.login(formData);
-            console.log('Login response:', response.data);
+            console.log('Login successful');
 
             const { token, user } = response.data;
+
+            if (!token || !user) {
+                throw new Error('Invalid response from server');
+            }
 
             // Store auth data
             localStorage.setItem('token', token);
             localStorage.setItem('user', JSON.stringify(user));
 
-            console.log('Login successful, redirecting...');
-            // Redirect to dashboard
-            navigate('/admin/dashboard');
+            // Small delay to ensure storage is set
+            setTimeout(() => {
+                navigate('/admin/dashboard');
+            }, 100);
+
         } catch (err) {
             console.error('Login error:', err);
-            console.error('Error response:', err.response);
 
-            const errorMessage = err.response?.data?.error || err.message || 'Login failed. Please try again.';
-            setError(errorMessage);
+            // Handle different types of errors
+            let errorMessage = 'Login failed. Please try again.';
 
-            // Show detailed error in console
             if (err.response) {
-                console.log('Status:', err.response.status);
-                console.log('Data:', err.response.data);
+                // Server responded with an error
+                if (err.response.status === 401) {
+                    errorMessage = 'Invalid email or password';
+                } else if (err.response.status === 404) {
+                    errorMessage = 'Login service not found (404)';
+                } else if (err.response.data && err.response.data.error) {
+                    errorMessage = err.response.data.error;
+                }
+            } else if (err.request) {
+                // Request made but no response
+                errorMessage = 'Cannot connect to server. Please check your internet connection or if the backend is running.';
+            } else {
+                // Something else happened
+                errorMessage = err.message;
             }
+
+            setError(errorMessage);
         } finally {
             setLoading(false);
         }
