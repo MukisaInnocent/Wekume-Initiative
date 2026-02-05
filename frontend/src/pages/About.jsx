@@ -59,19 +59,19 @@ function About() {
 
                 {/* Mission & Vision */}
                 <div className="grid md:grid-cols-2 gap-12">
-                    <div className="bg-white p-8 rounded-2xl shadow-lg border-t-4 border-primary-500">
-                        <h2 className="text-3xl font-heading font-bold text-gray-900 mb-4">{mission.title || "Our Mission"}</h2>
+                    <div className="bg-white p-8 rounded-2xl shadow-lg border-t-4 border-primary-500 border-l border-r border-b border-primary-100">
+                        <h2 className="text-3xl font-heading font-bold text-primary-900 mb-4">{mission.title || "Our Mission"}</h2>
                         <div className="prose text-gray-700" dangerouslySetInnerHTML={{ __html: mission.text || mission.content_text }} />
                     </div>
-                    <div className="bg-white p-8 rounded-2xl shadow-lg border-t-4 border-secondary-500">
-                        <h2 className="text-3xl font-heading font-bold text-gray-900 mb-4">{vision.title || "Our Vision"}</h2>
+                    <div className="bg-white p-8 rounded-2xl shadow-lg border-t-4 border-secondary-500 border-l border-r border-b border-secondary-100">
+                        <h2 className="text-3xl font-heading font-bold text-primary-900 mb-4">{vision.title || "Our Vision"}</h2>
                         <div className="prose text-gray-700" dangerouslySetInnerHTML={{ __html: vision.text || vision.content_text }} />
                     </div>
                 </div>
 
                 {/* Story */}
-                <div className="bg-gray-50 rounded-3xl p-8 md:p-12">
-                    <h2 className="text-3xl font-heading font-bold text-gray-900 mb-6 text-center">{story.title || "Our Story"}</h2>
+                <div className="bg-primary-50 rounded-3xl p-8 md:p-12 border border-primary-100">
+                    <h2 className="text-3xl font-heading font-bold text-primary-900 mb-6 text-center">{story.title || "Our Story"}</h2>
                     <div className="prose max-w-4xl mx-auto text-gray-700 text-lg leading-relaxed space-y-4">
                         {/* If text is HTML, render it, else display directly */}
                         <div dangerouslySetInnerHTML={{ __html: story.text || story.content_text }} />

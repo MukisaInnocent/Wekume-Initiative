@@ -52,10 +52,14 @@ function Donate() {
                 <div className="absolute top-0 right-0 w-96 h-96 bg-white opacity-5 rounded-full blur-3xl translate-x-1/2 -translate-y-1/2"></div>
 
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+                    <div className="inline-flex items-center justify-center p-3 bg-white/10 backdrop-blur-sm rounded-full mb-6">
+                        <Heart className="text-secondary-400 mr-2" fill="currentColor" size={24} />
+                        <span className="font-semibold tracking-wide uppercase text-sm text-accent-200">Support Our Cause</span>
+                    </div>
                     <h1 className="text-4xl md:text-6xl font-heading font-bold mb-4">
                         Support Our Mission
                     </h1>
-                    <p className="text-xl text-blue-100 max-w-2xl mx-auto">
+                    <p className="text-xl text-primary-50 max-w-2xl mx-auto">
                         Your contribution directly impacts the lives of youth in Uganda through health education.
                     </p>
                 </div>
@@ -66,24 +70,24 @@ function Donate() {
 
                     {/* Donation Form */}
                     <div className="lg:col-span-3">
-                        <div className="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
-                            <div className="bg-gray-50 p-6 border-b border-gray-100 flex justify-between items-center">
-                                <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2">
-                                    <Heart className="text-accent-500 fill-current" size={24} />
+                        <div className="bg-white rounded-2xl shadow-xl border border-primary-100 overflow-hidden">
+                            <div className="bg-primary-50 p-6 border-b border-primary-100 flex justify-between items-center">
+                                <h2 className="text-xl font-bold text-primary-900 flex items-center gap-2">
+                                    <Heart className="text-secondary-500 fill-current" size={24} />
                                     Make a Donation
                                 </h2>
                             </div>
 
                             {status === 'success' ? (
                                 <div className="p-10 text-center">
-                                    <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                                        <Check className="text-green-600" size={40} />
+                                    <div className="w-20 h-20 bg-accent-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                                        <Check className="text-accent-600" size={40} />
                                     </div>
-                                    <h3 className="text-2xl font-bold text-gray-900 mb-2">Thank you for your pledge!</h3>
+                                    <h3 className="text-2xl font-bold text-primary-900 mb-2">Thank you for your pledge!</h3>
                                     <p className="text-gray-600 mb-6">We have verified your details. Please complete the transfer using the instructions below:</p>
 
-                                    <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-6 mb-8 text-left">
-                                        <h4 className="font-bold text-yellow-800 mb-2 uppercase text-xs tracking-wider">Payment Instructions</h4>
+                                    <div className="bg-secondary-50 border border-secondary-200 rounded-xl p-6 mb-8 text-left">
+                                        <h4 className="font-bold text-secondary-800 mb-2 uppercase text-xs tracking-wider">Payment Instructions</h4>
                                         <p className="text-lg font-medium text-gray-900">{instructions}</p>
                                     </div>
 
@@ -99,14 +103,14 @@ function Donate() {
 
                                     {/* Amount Selection */}
                                     <div>
-                                        <label className="block text-sm font-bold text-gray-700 mb-3 uppercase tracking-wide">Select Amount (UGX)</label>
+                                        <label className="block text-sm font-bold text-primary-700 mb-3 uppercase tracking-wide">Select Amount (UGX)</label>
                                         <div className="grid grid-cols-3 gap-3 mb-3">
                                             {['20000', '50000', '100000', '250000', '500000'].map((amt) => (
                                                 <button
                                                     key={amt}
                                                     type="button"
                                                     onClick={() => { setAmount(amt); setShowCustomAmount(false); }}
-                                                    className={`py-3 px-2 rounded-lg font-bold border transition-all ${amount === amt && !showCustomAmount ? 'bg-primary-600 text-white border-primary-600 shadow-md' : 'bg-white text-gray-600 border-gray-200 hover:border-primary-400'}`}
+                                                    className={`py-3 px-2 rounded-lg font-bold border transition-all ${amount === amt && !showCustomAmount ? 'bg-primary-600 text-white border-primary-600 shadow-md' : 'bg-white text-primary-600 border-primary-200 hover:border-primary-400'}`}
                                                 >
                                                     {parseInt(amt).toLocaleString()}
                                                 </button>
@@ -114,19 +118,19 @@ function Donate() {
                                             <button
                                                 type="button"
                                                 onClick={() => setShowCustomAmount(true)}
-                                                className={`py-3 px-2 rounded-lg font-bold border transition-all ${showCustomAmount ? 'bg-primary-600 text-white border-primary-600 shadow-md' : 'bg-white text-gray-600 border-gray-200 hover:border-primary-400'}`}
+                                                className={`py-3 px-2 rounded-lg font-bold border transition-all ${showCustomAmount ? 'bg-primary-600 text-white border-primary-600 shadow-md' : 'bg-white text-primary-600 border-primary-200 hover:border-primary-400'}`}
                                             >
                                                 Custom
                                             </button>
                                         </div>
                                         {showCustomAmount && (
                                             <div className="mt-2 relative">
-                                                <span className="absolute left-4 top-3 text-gray-500 font-semibold">UGX</span>
+                                                <span className="absolute left-4 top-3 text-primary-500 font-semibold">UGX</span>
                                                 <input
                                                     type="number"
                                                     value={amount}
                                                     onChange={(e) => setAmount(e.target.value)}
-                                                    className="w-full pl-16 pr-4 py-3 border-2 border-primary-100 rounded-lg focus:ring-4 focus:ring-primary-50 focus:border-primary-500 font-bold text-lg"
+                                                    className="w-full pl-16 pr-4 py-3 border-2 border-primary-100 rounded-lg focus:ring-4 focus:ring-primary-50 focus:border-primary-500 font-bold text-lg text-primary-900"
                                                     placeholder="Enter amount"
                                                 />
                                             </div>
@@ -135,7 +139,7 @@ function Donate() {
 
                                     {/* Payment Method */}
                                     <div>
-                                        <label className="block text-sm font-bold text-gray-700 mb-3 uppercase tracking-wide">Payment Method</label>
+                                        <label className="block text-sm font-bold text-primary-700 mb-3 uppercase tracking-wide">Payment Method</label>
                                         <div className="grid grid-cols-2 gap-4">
                                             <button
                                                 type="button"
@@ -220,25 +224,25 @@ function Donate() {
                     {/* Sidebar / Impact */}
                     <div className="lg:col-span-2 space-y-8">
                         <div className="bg-primary-50 rounded-2xl p-8 border border-primary-100">
-                            <h3 className="text-xl font-bold text-gray-900 mb-4">Why Donate?</h3>
+                            <h3 className="text-xl font-bold text-primary-900 mb-4">Why Donate?</h3>
                             <ul className="space-y-4">
                                 <li className="flex gap-3">
-                                    <Check className="text-green-500 shrink-0" size={20} />
-                                    <span className="text-gray-700">Support verified health education.</span>
+                                    <Check className="text-secondary-500 shrink-0" size={20} />
+                                    <span className="text-primary-700">Support verified health education.</span>
                                 </li>
                                 <li className="flex gap-3">
-                                    <Check className="text-green-500 shrink-0" size={20} />
-                                    <span className="text-gray-700">Expand our reach to more schools.</span>
+                                    <Check className="text-secondary-500 shrink-0" size={20} />
+                                    <span className="text-primary-700">Expand our reach to more schools.</span>
                                 </li>
                                 <li className="flex gap-3">
-                                    <Check className="text-green-500 shrink-0" size={20} />
-                                    <span className="text-gray-700">Develop the Wekume App further.</span>
+                                    <Check className="text-secondary-500 shrink-0" size={20} />
+                                    <span className="text-primary-700">Develop the Wekume App further.</span>
                                 </li>
                             </ul>
                         </div>
 
-                        <div className="bg-white rounded-2xl p-8 border border-gray-200 shadow-sm">
-                            <h3 className="text-xl font-bold text-gray-900 mb-4">Secure Donation</h3>
+                        <div className="bg-white rounded-2xl p-8 border border-primary-100 shadow-sm">
+                            <h3 className="text-xl font-bold text-primary-900 mb-4">Secure Donation</h3>
                             <p className="text-sm text-gray-500 mb-4">
                                 All transactions are secure and encrypted. We use standard banking and mobile money protocols to ensure your data is safe.
                             </p>

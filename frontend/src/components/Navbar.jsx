@@ -11,6 +11,7 @@ function Navbar() {
         { path: '/wekume-app', label: 'Wekume App' },
         { path: '/events', label: 'Events' },
         { path: '/get-involved', label: 'Get Involved' },
+        { path: '/reports', label: 'Reports' },
         { path: '/contact', label: 'Contact' }
     ];
 

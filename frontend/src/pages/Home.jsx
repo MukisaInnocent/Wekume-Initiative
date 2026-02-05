@@ -57,19 +57,19 @@ function Home() {
                     <h1 className="text-5xl md:text-7xl font-heading font-bold mb-6 animate-fade-in leading-tight">
                         {hero.title}
                     </h1>
-                    <p className="text-xl md:text-2xl mb-10 max-w-3xl mx-auto text-blue-50">
+                    <p className="text-xl md:text-2xl mb-10 max-w-3xl mx-auto text-primary-50">
                         {hero.subtitle}
                     </p>
                     <div className="flex gap-4 justify-center flex-wrap">
                         <Link
                             to="/wekume-app"
-                            className="bg-white text-primary-600 px-8 py-4 rounded-full font-bold hover:bg-gray-100 transition-transform hover:scale-105 flex items-center gap-2 shadow-lg"
+                            className="bg-accent-400 text-primary-900 px-8 py-4 rounded-full font-bold hover:bg-accent-300 transition-transform hover:scale-105 flex items-center gap-2 shadow-lg"
                         >
                             Download App <ArrowRight size={20} />
                         </Link>
                         <Link
                             to="/get-involved"
-                            className="border-2 border-white text-white px-8 py-4 rounded-full font-bold hover:bg-white hover:text-primary-600 transition-all hover:scale-105"
+                            className="bg-white/10 backdrop-blur-md border-2 border-white/20 text-white px-8 py-4 rounded-full font-bold hover:bg-white hover:text-primary-600 transition-all hover:scale-105"
                         >
                             Get Involved
                         </Link>
@@ -179,7 +179,7 @@ function Home() {
             )}
 
             {/* Call to Action */}
-            <section className="gradient-secondary text-white py-20">
+            <section className="bg-gradient-to-r from-secondary-600 to-secondary-800 text-white py-20">
                 <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
                     <h2 className="text-4xl font-heading font-bold mb-6">Ready to Make a Difference?</h2>
                     <p className="text-xl mb-10 text-white/90">
@@ -187,7 +187,7 @@ function Home() {
                     </p>
                     <Link
                         to="/contact"
-                        className="bg-white text-secondary-600 px-10 py-4 rounded-full font-bold hover:bg-gray-50 transition-colors inline-block shadow-lg"
+                        className="bg-accent-400 text-primary-900 px-10 py-4 rounded-full font-bold hover:bg-accent-300 transition-colors inline-block shadow-lg"
                     >
                         Contact Us Today
                     </Link>

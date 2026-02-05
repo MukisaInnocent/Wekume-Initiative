@@ -50,8 +50,8 @@ function MediaLibrary() {
                     <label
                         htmlFor="file-upload"
                         className={`flex items-center gap-2 px-4 py-2 rounded-lg cursor-pointer transition-colors ${uploading
-                                ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                                : 'bg-primary-600 text-white hover:bg-primary-700'
+                            ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                            : 'bg-primary-600 text-white hover:bg-primary-700'
                             }`}
                     >
                         <Upload size={20} />
@@ -100,7 +100,7 @@ function MediaLibrary() {
                 )}
             </div>
 
-            <div className="bg-blue-50 p-4 rounded-lg flex gap-3 text-sm text-blue-800">
+            <div className="bg-primary-50 p-4 rounded-lg flex gap-3 text-sm text-primary-800 border border-primary-100">
                 <div className="flex-shrink-0 mt-0.5"><Upload size={16} /></div>
                 <p>
                     <strong>Tip:</strong> Upload images here, then copy the URL to use in content sections, event banners, or partner logos.

@@ -53,13 +53,13 @@ function Contact() {
                     </div>
 
                     {/* Contact Form */}
-                    <div className="bg-white p-8 rounded-2xl shadow-xl border border-gray-100">
+                    <div className="bg-white p-8 rounded-2xl shadow-xl border border-primary-100">
                         {status === 'success' ? (
                             <div className="text-center py-12">
-                                <div className="inline-flex items-center justify-center w-16 h-16 bg-green-100 text-green-600 rounded-full mb-4">
+                                <div className="inline-flex items-center justify-center w-16 h-16 bg-accent-100 text-accent-600 rounded-full mb-4">
                                     <CheckCircle size={32} />
                                 </div>
-                                <h3 className="text-2xl font-bold text-gray-900 mb-2">Message Sent!</h3>
+                                <h3 className="text-2xl font-bold text-primary-900 mb-2">Message Sent!</h3>
                                 <p className="text-gray-600">Thank you for reaching out. We'll get back to you shortly.</p>
                                 <button onClick={() => setStatus('idle')} className="mt-6 text-primary-600 font-semibold hover:underline">Send another message</button>
                             </div>
@@ -69,7 +69,7 @@ function Contact() {
                                     <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
                                     <input
                                         type="text" required
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-shadow"
+                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-shadow"
                                         value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })}
                                     />
                                 </div>
@@ -77,7 +77,7 @@ function Contact() {
                                     <label className="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
                                     <input
                                         type="email" required
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-shadow"
+                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-shadow"
                                         value={formData.email} onChange={e => setFormData({ ...formData, email: e.target.value })}
                                     />
                                 </div>
@@ -85,7 +85,7 @@ function Contact() {
                                     <label className="block text-sm font-medium text-gray-700 mb-1">Subject</label>
                                     <input
                                         type="text" required
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-shadow"
+                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-shadow"
                                         value={formData.subject} onChange={e => setFormData({ ...formData, subject: e.target.value })}
                                     />
                                 </div>
@@ -93,12 +93,12 @@ function Contact() {
                                     <label className="block text-sm font-medium text-gray-700 mb-1">Message</label>
                                     <textarea
                                         required rows="4"
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-shadow resize-none"
+                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-shadow resize-none"
                                         value={formData.message} onChange={e => setFormData({ ...formData, message: e.target.value })}
                                     ></textarea>
                                 </div>
 
-                                {status === 'error' && <p className="text-red-600 text-sm">Something went wrong. Please try again.</p>}
+                                {status === 'error' && <p className="text-secondary-600 text-sm">Something went wrong. Please try again.</p>}
 
                                 <button
                                     type="submit"
