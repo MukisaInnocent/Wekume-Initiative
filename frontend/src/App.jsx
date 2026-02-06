@@ -9,6 +9,7 @@ import Contact from './pages/Contact';
 import Donate from './pages/Donate';
 import AdminLogin from './pages/AdminLogin';
 import AdminDashboard from './pages/AdminDashboard';
+import ChatWidget from './components/ChatWidget';
 
 function App() {
     return (
@@ -28,6 +29,7 @@ function App() {
                 <Route path="/admin/login" element={<AdminLogin />} />
                 <Route path="/admin/dashboard" element={<AdminDashboard />} />
             </Routes>
+            <ChatWidget />
         </div>
     );
 }

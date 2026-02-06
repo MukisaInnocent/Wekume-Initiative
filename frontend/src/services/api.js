@@ -126,4 +126,13 @@ export const adminAPI = {
     // updateSection is already there
 };
 
+// ===== AI ASSISTANT API =====
+
+export const aiAPI = {
+    chat: (data) => api.post('/ai/chat', data),
+    getConversations: () => api.get('/ai/conversations'),
+    getAnalytics: () => api.get('/ai/analytics')
+};
+
 export default api;
+
