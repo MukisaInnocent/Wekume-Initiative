@@ -90,7 +90,7 @@ function Events() {
                                         <p className="text-gray-600 text-sm line-clamp-3 mb-6">{event.description}</p>
 
                                         {event.registration_link && filter === 'upcoming' ? (
-                                            <a href={event.registration_link} className="w-full block text-center bg-primary-600 text-white py-2 rounded-lg font-semibold hover:bg-primary-700 transition-colors">
+                                            <a href={event.registration_link} className="w-full block text-center bg-secondary-500 text-white py-2 rounded-lg font-semibold hover:bg-secondary-600 transition-colors">
                                                 Register Now
                                             </a>
                                         ) : (

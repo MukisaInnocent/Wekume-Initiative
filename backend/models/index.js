@@ -68,7 +68,6 @@ const db = {
     AIAssistantLog,
     PageAnalytics,
     VolunteerApplication,
-    VolunteerApplication,
     SocialLink,
     Donation
 };

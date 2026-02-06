@@ -12,6 +12,7 @@ const { initializeModels } = require('./models');
 const authRoutes = require('./routes/auth');
 const contentRoutes = require('./routes/content');
 const adminRoutes = require('./routes/admin');
+const donationRoutes = require('./routes/donation');
 // const aiRoutes = require('./routes/ai');
 
 const app = express();
@@ -87,7 +88,7 @@ app.get('/health', (req, res) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/content', contentRoutes);
 app.use('/api/admin', adminRoutes);
-app.use('/api/donations', require('./routes/donation'));
+app.use('/api/donations', donationRoutes);
 // app.use('/api/ai', aiRoutes);
 
 // 404 handler

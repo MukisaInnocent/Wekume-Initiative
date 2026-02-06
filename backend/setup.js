@@ -1,5 +1,5 @@
-const { sequelize } = require('./config/database');
-const { User } = require('./models');
+const { sequelize, initializeModels } = require('./config/database');
+const models = require('./models');
 require('dotenv').config();
 
 /**
@@ -23,7 +23,7 @@ const setupDatabase = async () => {
 
         // Check if super admin exists
         const adminEmail = process.env.ADMIN_EMAIL || 'admin@wekume.org';
-        const existingAdmin = await User.findOne({ where: { email: adminEmail } });
+        const existingAdmin = await models.User.findOne({ where: { email: adminEmail } });
 
         if (existingAdmin) {
             console.log(`⚠️  Super admin already exists: ${adminEmail}`);
@@ -31,7 +31,7 @@ const setupDatabase = async () => {
             // Create super admin
             const adminPassword = process.env.ADMIN_PASSWORD || 'WekumeAdmin2024!';
 
-            const admin = await User.create({
+            const admin = await models.User.create({
                 fullname: 'Wekume Administrator',
                 email: adminEmail,
                 password_hash: adminPassword, // Will be hashed by the hook

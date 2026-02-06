@@ -42,11 +42,11 @@ function Contact() {
                                 <div><h3 className="font-semibold text-gray-900">Email Us</h3><p className="text-gray-600">info@wekume.org</p></div>
                             </div>
                             <div className="flex items-start gap-4">
-                                <div className="bg-primary-50 p-3 rounded-lg text-primary-600"><Phone size={24} /></div>
+                                <div className="bg-pink-50 p-3 rounded-lg text-pink-600"><Phone size={24} /></div>
                                 <div><h3 className="font-semibold text-gray-900">Call Us</h3><p className="text-gray-600">+256 000 000 000</p></div>
                             </div>
                             <div className="flex items-start gap-4">
-                                <div className="bg-primary-50 p-3 rounded-lg text-primary-600"><MapPin size={24} /></div>
+                                <div className="bg-secondary-50 p-3 rounded-lg text-secondary-600"><MapPin size={24} /></div>
                                 <div><h3 className="font-semibold text-gray-900">Visit Us</h3><p className="text-gray-600">Kampala, Uganda</p></div>
                             </div>
                         </div>
@@ -103,7 +103,7 @@ function Contact() {
                                 <button
                                     type="submit"
                                     disabled={status === 'submitting'}
-                                    className="w-full bg-primary-600 text-white py-3 rounded-lg font-bold hover:bg-primary-700 transition-colors flex items-center justify-center gap-2 disabled:opacity-70"
+                                    className="w-full bg-pink-500 text-white py-3 rounded-lg font-bold hover:bg-pink-600 transition-colors flex items-center justify-center gap-2 disabled:opacity-70"
                                 >
                                     {status === 'submitting' ? <Loader className="animate-spin" size={20} /> : <><Send size={20} /> Send Message</>}
                                 </button>

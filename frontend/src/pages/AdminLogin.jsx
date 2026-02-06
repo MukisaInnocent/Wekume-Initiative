@@ -120,7 +120,7 @@ function AdminLogin() {
                     <button
                         type="submit"
                         disabled={loading}
-                        className="w-full gradient-primary text-white py-3 rounded-lg font-semibold hover:opacity-90 transition-opacity disabled:opacity-50"
+                        className="w-full bg-secondary-500 text-white py-3 rounded-lg font-semibold hover:bg-secondary-600 transition-colors disabled:opacity-50"
                     >
                         {loading ? 'Logging in...' : 'Login'}
                     </button>
