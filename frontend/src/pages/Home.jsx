@@ -63,13 +63,13 @@ function Home() {
                     <div className="flex gap-4 justify-center flex-wrap">
                         <Link
                             to="/wekume-app"
-                            className="bg-secondary-500 text-white px-8 py-4 rounded-full font-bold hover:bg-secondary-600 transition-transform hover:scale-105 flex items-center gap-2 shadow-lg"
+                            className="bg-orange-400 text-white px-8 py-4 rounded-full font-bold hover:bg-orange-500 transition-transform hover:scale-105 flex items-center gap-2 shadow-lg"
                         >
                             Download App <ArrowRight size={20} />
                         </Link>
                         <Link
                             to="/get-involved"
-                            className="bg-pink-500 text-white px-8 py-4 rounded-full font-bold hover:bg-pink-600 transition-all hover:scale-105 shadow-lg"
+                            className="bg-primary-500 text-white px-8 py-4 rounded-full font-bold hover:bg-primary-600 transition-all hover:scale-105 shadow-lg"
                         >
                             Get Involved
                         </Link>
@@ -89,7 +89,7 @@ function Home() {
                         {/* Static Fallback or Dynamic Values */}
                         {values.length > 0 ? values.map((value, index) => (
                             <div key={value.id} className="text-center p-8 rounded-2xl bg-white shadow-xl hover:shadow-2xl transition-all hover:-translate-y-1">
-                                <div className={`inline-flex p-4 rounded-xl mb-6 ${index % 2 === 0 ? 'bg-primary-50 text-primary-600' : 'bg-secondary-50 text-secondary-600'}`}>
+                                <div className={`inline-flex p-4 rounded-xl mb-6 ${index % 2 === 0 ? 'bg-primary-50 text-primary-500' : 'bg-purple-50 text-purple-500'}`}>
                                     {index === 0 ? <Heart size={32} /> : index === 1 ? <Users size={32} /> : <Lightbulb size={32} />}
                                 </div>
                                 <h3 className="text-2xl font-heading font-bold mb-3 text-gray-900">{value.title}</h3>
@@ -104,7 +104,7 @@ function Home() {
                                     <p className="text-gray-600">Embracing continuous growth and adaptation in an ever-changing world.</p>
                                 </div>
                                 <div className="text-center p-8 rounded-2xl bg-white shadow-xl hover:shadow-2xl transition-all hover:-translate-y-1">
-                                    <div className="inline-flex p-4 rounded-xl mb-6 bg-secondary-50 text-secondary-600"><Users size={32} /></div>
+                                    <div className="inline-flex p-4 rounded-xl mb-6 bg-purple-50 text-purple-500"><Users size={32} /></div>
                                     <h3 className="text-2xl font-heading font-bold mb-3">Innovation</h3>
                                     <p className="text-gray-600">Using technology and creative solutions to solve real problems.</p>
                                 </div>
@@ -125,7 +125,7 @@ function Home() {
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                         <div className="flex justify-between items-end mb-12">
                             <div>
-                                <span className="text-secondary-600 font-semibold tracking-wider uppercase text-sm">Get Involved</span>
+                                <span className="text-orange-600 font-semibold tracking-wider uppercase text-sm">Get Involved</span>
                                 <h2 className="text-4xl font-heading font-bold text-gray-900 mt-2">Upcoming Events</h2>
                             </div>
                             <Link to="/events" className="hidden md:flex items-center gap-2 text-primary-600 font-semibold hover:text-primary-700">View All <ArrowRight size={20} /></Link>
@@ -179,12 +179,10 @@ function Home() {
             )}
 
             {/* Call to Action */}
-            <section className="gradient-purple-orange text-white py-20">
+            <section className="gradient-purple text-white py-20">
                 <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
                     <h2 className="text-4xl font-heading font-bold mb-6">Ready to Make a Difference?</h2>
-                    <p className="text-xl mb-10 text-white/90">
-                        Join us in empowering the next generation through education, health, and innovation.
-                    </p>
+                    <p className="text-xl mb-8 text-purple-50">Join us in creating lasting change in our communities.</p>
                     <Link
                         to="/contact"
                         className="bg-white text-primary-600 px-10 py-4 rounded-full font-bold hover:bg-pink-500 hover:text-white transition-colors inline-block shadow-lg"

@@ -37,20 +37,25 @@ h6 {
     border: 1px solid rgba(255, 255, 255, 0.2);
   }
 
+  /* Brand Gradient Utilities */
   .gradient-primary {
-    background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%);
+    background: linear-gradient(135deg, #ea638c 0%, #7d52a0 100%);
   }
 
-  .gradient-secondary {
-    background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+  .gradient-purple {
+    background: linear-gradient(135deg, #7d52a0 0%, #341525 100%);
+  }
+
+  .gradient-accent {
+    background: linear-gradient(135deg, #f89d61 0%, #9e00ff 100%);
   }
 
   .gradient-pink {
-    background: linear-gradient(135deg, #ec4899 0%, #db2777 100%);
+    background: linear-gradient(135deg, #f7b2d0 0%, #ea638c 100%);
   }
 
-  .gradient-purple-orange {
-    background: linear-gradient(135deg, #8b5cf6 0%, #f97316 100%);
+  .gradient-light {
+    background: linear-gradient(135deg, #f2f5d1 0%, #ffffff 100%);
   }
 
   @keyframes fadeIn {
@@ -97,10 +102,10 @@ h6 {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #8b5cf6;
+  background: #7d52a0;
   border-radius: 5px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #7c3aed;
+  background: #66418a;
 }
