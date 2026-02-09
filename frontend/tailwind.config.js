@@ -22,16 +22,16 @@ export default {
                 },
                 // Secondary Brand Color - Purple
                 purple: {
-                    50: '#f5f1f9',
-                    100: '#ebe3f3',
-                    200: '#d9cae8',
-                    300: '#bea6d6',
-                    400: '#9f7bbf',
-                    500: '#7d52a0', // DEEP PURPLE CONTRAST
-                    600: '#66418a',
-                    700: '#543570',
-                    800: '#472e5e',
-                    900: '#341525', // DARK PLUM
+                    50: '#f3e5ff',
+                    100: '#e6ccff',
+                    200: '#cc99ff',
+                    300: '#b366ff',
+                    400: '#9933ff',
+                    500: '#6900A8', // PRIMARY PURPLE BRAND COLOR
+                    600: '#530085',
+                    700: '#3d0062',
+                    800: '#2a0043',
+                    900: '#1a0029',
                 },
                 // Orange Accent
                 orange: {
@@ -61,7 +61,7 @@ export default {
                 },
                 // Special Accents
                 accent: {
-                    vivid: '#9e00ff', // Vivid purple highlight
+                    vivid: '#6900A8', // Vivid purple highlight
                     light: '#f2f5d1', // Light background highlight
                     DEFAULT: '#f89d61', // Orange for backward compatibility
                 },
@@ -77,9 +77,9 @@ export default {
                 heading: ['Outfit', 'Inter', 'sans-serif'],
             },
             backgroundImage: {
-                'gradient-primary': 'linear-gradient(135deg, #ea638c 0%, #7d52a0 100%)',
-                'gradient-purple': 'linear-gradient(135deg, #7d52a0 0%, #341525 100%)',
-                'gradient-accent': 'linear-gradient(135deg, #f89d61 0%, #9e00ff 100%)',
+                'gradient-primary': 'linear-gradient(135deg, #ea638c 0%, #6900A8 100%)',
+                'gradient-purple': 'linear-gradient(135deg, #6900A8 0%, #1a0029 100%)',
+                'gradient-accent': 'linear-gradient(135deg, #f89d61 0%, #6900A8 100%)',
             },
         },
     },
