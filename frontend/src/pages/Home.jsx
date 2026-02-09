@@ -52,27 +52,131 @@ function Home() {
             <Navbar />
 
             {/* Hero Section */}
-            <section className="gradient-primary text-white py-20 min-h-[80vh] flex items-center">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                    <h1 className="text-5xl md:text-7xl font-heading font-bold mb-6 animate-fade-in leading-tight">
-                        {hero.title}
+            <section className="relative text-white py-32 min-h-[90vh] flex items-center overflow-hidden">
+                {/* Animated Gradient Background */}
+                <div className="absolute inset-0 bg-gradient-to-br from-purple-600 via-primary-500 to-orange-500 animate-gradient-shift">
+                    {/* Overlay Pattern */}
+                    <div className="absolute inset-0 opacity-10">
+                        <div className="absolute inset-0" style={{
+                            backgroundImage: `radial-gradient(circle at 2px 2px, white 1px, transparent 0)`,
+                            backgroundSize: '48px 48px'
+                        }}></div>
+                    </div>
+
+                    {/* Floating Glassmorphic Shapes */}
+                    <div className="absolute top-20 left-10 w-72 h-72 bg-white/10 backdrop-blur-xl rounded-full blur-3xl animate-float"></div>
+                    <div className="absolute bottom-20 right-10 w-96 h-96 bg-purple-300/20 backdrop-blur-xl rounded-full blur-3xl animate-float-delayed"></div>
+                    <div className="absolute top-1/2 left-1/2 w-64 h-64 bg-orange-300/15 backdrop-blur-xl rounded-full blur-3xl animate-float-slow"></div>
+                </div>
+
+                {/* Content Layer */}
+                <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                    {/* Glassmorphic Badge */}
+                    <div className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white/10 backdrop-blur-md border border-white/20 mb-8 animate-fade-in shadow-2xl">
+                        <span className="relative flex h-3 w-3">
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
+                            <span className="relative inline-flex rounded-full h-3 w-3 bg-orange-500"></span>
+                        </span>
+                        <span className="text-sm font-semibold text-white/90">Empowering the Next Generation</span>
+                    </div>
+
+                    {/* Main Heading with Enhanced Typography */}
+                    <h1 className="text-5xl md:text-7xl lg:text-8xl font-heading font-bold mb-8 animate-fade-in leading-tight tracking-tight">
+                        <span className="bg-clip-text text-transparent bg-gradient-to-r from-white via-purple-100 to-orange-100 drop-shadow-2xl">
+                            {hero.title}
+                        </span>
                     </h1>
-                    <p className="text-xl md:text-2xl mb-10 max-w-3xl mx-auto text-primary-50">
-                        {hero.subtitle}
-                    </p>
-                    <div className="flex gap-4 justify-center flex-wrap">
+
+                    {/* Subtitle with Glass Effect */}
+                    <div className="max-w-3xl mx-auto mb-12 p-6 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10">
+                        <p className="text-xl md:text-2xl text-white/90 leading-relaxed">
+                            {hero.subtitle}
+                        </p>
+                    </div>
+
+                    {/* CTA Buttons with Enhanced Interactions */}
+                    <div className="flex gap-6 justify-center flex-wrap">
                         <Link
                             to="/wekume-app"
-                            className="bg-orange-400 text-white px-8 py-4 rounded-full font-bold hover:bg-orange-500 transition-transform hover:scale-105 flex items-center gap-2 shadow-lg"
+                            className="group relative bg-white text-purple-600 px-10 py-5 rounded-full font-bold hover:bg-orange-400 hover:text-white transition-all duration-300 hover:scale-110 hover:-translate-y-1 flex items-center gap-3 shadow-2xl overflow-hidden"
                         >
-                            Download App <ArrowRight size={20} />
+                            <span className="absolute inset-0 bg-gradient-to-r from-orange-400 to-purple-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+                            <span className="relative z-10">Download App</span>
+                            <ArrowRight size={20} className="relative z-10 group-hover:translate-x-1 transition-transform" />
                         </Link>
                         <Link
                             to="/get-involved"
-                            className="bg-primary-500 text-white px-8 py-4 rounded-full font-bold hover:bg-primary-600 transition-all hover:scale-105 shadow-lg"
+                            className="group px-10 py-5 rounded-full font-bold bg-purple-500/20 backdrop-blur-md border-2 border-white/30 text-white hover:bg-white hover:text-purple-600 transition-all duration-300 hover:scale-110 hover:-translate-y-1 shadow-2xl"
                         >
-                            Get Involved
+                            <span className="group-hover:tracking-wider transition-all duration-300">Get Involved</span>
                         </Link>
+                    </div>
+
+                    {/* Scroll Indicator */}
+                    <div className="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce">
+                        <div className="w-6 h-10 rounded-full border-2 border-white/30 flex items-start justify-center p-2">
+                            <div className="w-1 h-3 bg-white rounded-full animate-scroll"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* Our Story Section */}
+            <section className="py-24 relative overflow-hidden">
+                <div className="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 bg-purple-100 rounded-full blur-3xl opacity-50"></div>
+                <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-80 h-80 bg-orange-50 rounded-full blur-3xl opacity-50"></div>
+
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                    <div className="grid md:grid-cols-2 gap-16 items-center">
+                        <div className="order-2 md:order-1">
+                            <span className="text-purple-600 font-semibold tracking-wider uppercase text-sm mb-2 block">Our Origin</span>
+                            <h2 className="text-4xl md:text-5xl font-heading font-bold text-gray-900 mb-8 leading-tight">
+                                Wekume was born from a <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-orange-500">deeply personal place</span>.
+                            </h2>
+
+                            <div className="space-y-6 text-lg text-gray-600 leading-relaxed">
+                                <p>
+                                    Our founder, <strong className="text-gray-900">Joshua Walusimbi</strong>, lost his older sister while she was a university student. Like many young people, she entered adulthood without the tools or support to navigate her sexual and reproductive health. She contracted HIV, became pregnant, and passed away before she could reach her dreams.
+                                </p>
+                                <p>
+                                    Years later, when Joshua entered university, he saw the same patterns repeating. Friends were struggling with preventable complications—unintended pregnancies, STIs, mental health crises—all in silence. There was no safe, stigma-free space to ask questions or seek support.
+                                </p>
+                                <p>
+                                    That’s why he founded <span className="font-bold text-purple-600">Wekume</span>—a youth-led initiative empowering university students to take control of their health with confidence and dignity.
+                                </p>
+                            </div>
+
+                            <div className="mt-10 flex items-center gap-4">
+                                <div className="h-12 w-1 bg-gradient-to-b from-purple-500 to-orange-400 rounded-full"></div>
+                                <div>
+                                    <p className="text-2xl font-bold text-gray-900">"Wekume"</p>
+                                    <p className="text-gray-500">Means "Protect Yourself"</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="order-1 md:order-2 relative">
+                            <div className="relative z-10 bg-white p-8 rounded-3xl shadow-2xl border border-gray-100 transform rotate-2 hover:rotate-0 transition-transform duration-500">
+                                <div className="absolute -top-6 -left-6 bg-orange-500 text-white p-4 rounded-xl shadow-lg">
+                                    <Lightbulb size={32} />
+                                </div>
+                                <blockquote className="text-xl font-medium text-gray-700 italic mb-6 pt-4">
+                                    "Joshua knew things had to change. Through features like SafeChat, QuickTest, and our Circumcision appointment scheduler, Wekume offers students discreet, trusted access to professional help."
+                                </blockquote>
+                                <div className="flex items-center gap-4 border-t border-gray-100 pt-6">
+                                    <div className="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 font-bold text-xl">
+                                        JW
+                                    </div>
+                                    <div>
+                                        <div className="font-bold text-gray-900">Joshua Walusimbi</div>
+                                        <div className="text-sm text-purple-600">Founder, Wekume Initiative</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Decorative backing */}
+                            <div className="absolute inset-0 bg-gradient-to-br from-purple-600 to-orange-500 rounded-3xl transform -rotate-2 opacity-10 scale-105 z-0"></div>
+                        </div>
                     </div>
                 </div>
             </section>
