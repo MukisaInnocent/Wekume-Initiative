@@ -57,40 +57,131 @@ function About() {
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-20">
 
-                {/* Mission & Vision */}
-                <div className="grid md:grid-cols-2 gap-12">
-                    <div className="bg-white p-8 rounded-2xl shadow-lg border-t-4 border-primary-500 border-l border-r border-b border-primary-100">
-                        <h2 className="text-3xl font-heading font-bold text-primary-900 mb-4">{mission.title || "Our Mission"}</h2>
-                        <div className="prose text-gray-700" dangerouslySetInnerHTML={{ __html: mission.text || mission.content_text }} />
+                {/* Who We Are & Mission */}
+                <div className="grid md:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <span className="text-purple-600 font-semibold tracking-wider uppercase text-sm">Our Mission</span>
+                        <h2 className="text-4xl font-heading font-bold text-gray-900 mt-2 mb-6">Empowering Through Knowledge & Growth</h2>
+                        <div className="prose text-gray-700 text-lg leading-relaxed space-y-4">
+                            <p>
+                                At Wekume, our mission is to empower university students to take control of their reproductive health while nurturing personal and professional growth. We believe that every student should have access to reliable health resources, regardless of their background.
+                            </p>
+                            <p>
+                                Guided by values of inclusivity, accessibility, and empowerment, Wekume aims to create a positive, sustainable impact on students’ lives.
+                            </p>
+                        </div>
                     </div>
-                    <div className="bg-white p-8 rounded-2xl shadow-lg border-t-4 border-secondary-500 border-l border-r border-b border-secondary-100">
-                        <h2 className="text-3xl font-heading font-bold text-primary-900 mb-4">{vision.title || "Our Vision"}</h2>
-                        <div className="prose text-gray-700" dangerouslySetInnerHTML={{ __html: vision.text || vision.content_text }} />
+                    <div className="relative">
+                        <div className="absolute inset-0 bg-gradient-to-tr from-purple-200 to-orange-100 rounded-3xl transform rotate-3"></div>
+                        <img
+                            src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                            alt="Students collaborating"
+                            className="relative rounded-3xl shadow-xl w-full h-auto object-cover"
+                        />
                     </div>
                 </div>
 
-                {/* Story */}
-                <div className="bg-primary-50 rounded-3xl p-8 md:p-12 border border-primary-100">
-                    <h2 className="text-3xl font-heading font-bold text-primary-900 mb-6 text-center">{story.title || "Our Story"}</h2>
-                    <div className="prose max-w-4xl mx-auto text-gray-700 text-lg leading-relaxed space-y-4">
-                        {/* If text is HTML, render it, else display directly */}
-                        <div dangerouslySetInnerHTML={{ __html: story.text || story.content_text }} />
+                {/* Core Values */}
+                <div className="py-12">
+                    <div className="text-center mb-16">
+                        <span className="text-orange-600 font-semibold tracking-wider uppercase text-sm">Guiding Principles</span>
+                        <h2 className="text-4xl font-heading font-bold text-gray-900 mt-2">Our Core Values</h2>
                     </div>
-                </div>
 
-                {/* Values (Re-used) */}
-                <div>
-                    <h2 className="text-3xl font-heading font-bold text-center mb-10">Our Core Values</h2>
-                    <div className="grid md:grid-cols-3 gap-8">
-                        {values.map((value, index) => (
-                            <div key={value.id} className="text-center p-6 bg-white rounded-xl shadow-sm border border-gray-100">
-                                <div className={`inline-flex p-3 rounded-xl mb-4 ${index % 2 === 0 ? 'bg-primary-50 text-primary-600' : 'bg-secondary-50 text-secondary-600'}`}>
-                                    {index === 0 ? <Heart size={24} /> : index === 1 ? <Users size={24} /> : <Lightbulb size={24} />}
-                                </div>
-                                <h3 className="text-xl font-bold mb-2">{value.title}</h3>
-                                <p className="text-gray-600 text-sm">{value.description}</p>
+                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        {[
+                            {
+                                title: "Inclusivity",
+                                icon: <Users className="text-purple-600" size={32} />,
+                                desc: "We believe that everyone deserves access to quality healthcare, regardless of background. We celebrate diversity and support all students, including marginalized groups like refugees.",
+                                color: "bg-purple-50 border-purple-100"
+                            },
+                            {
+                                title: "Empowerment",
+                                icon: <Lightbulb className="text-orange-600" size={32} />,
+                                desc: "We empower students to take control of their reproductive health and personal growth, helping them build confidence in making informed health and career choices.",
+                                color: "bg-orange-50 border-orange-100"
+                            },
+                            {
+                                title: "Compassion",
+                                icon: <Heart className="text-pink-600" size={32} />,
+                                desc: "Our SafeChat and counseling services provide a compassionate, non-judgmental space. We prioritize listening, understanding, and supporting each individual’s unique needs.",
+                                color: "bg-pink-50 border-pink-100"
+                            },
+                            {
+                                title: "Innovation",
+                                icon: <div className="text-blue-600 font-bold text-xl">🚀</div>,
+                                desc: "We harness technology to ensure accessibility. Our user-friendly app and features like QuickTest make it easier for students to access information on their terms.",
+                                color: "bg-blue-50 border-blue-100"
+                            },
+                            {
+                                title: "Community",
+                                icon: <div className="text-green-600 font-bold text-xl">🤝</div>,
+                                desc: "We foster collaboration through exchange programs and partnerships, encouraging students to connect, learn, and grow together for impactful service.",
+                                color: "bg-green-50 border-green-100"
+                            }
+                        ].map((value, idx) => (
+                            <div key={idx} className={`p-8 rounded-2xl border ${value.color} hover:shadow-lg transition-all duration-300 hover:-translate-y-1`}>
+                                <div className="mb-6">{value.icon}</div>
+                                <h3 className="text-xl font-bold text-gray-900 mb-3">{value.title}</h3>
+                                <p className="text-gray-600 leading-relaxed">{value.desc}</p>
                             </div>
                         ))}
+                    </div>
+                </div>
+
+                {/* Why We Exist */}
+                <div className="bg-gray-900 text-white rounded-3xl p-8 md:p-16 overflow-hidden relative">
+                    <div className="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 bg-purple-900 rounded-full blur-3xl opacity-50"></div>
+                    <div className="relative z-10 max-w-3xl mx-auto text-center">
+                        <h2 className="text-3xl md:text-4xl font-heading font-bold mb-8">Why We Exist</h2>
+                        <p className="text-lg md:text-xl text-gray-300 leading-relaxed mb-8">
+                            Ugandan university students face unique challenges around reproductive health. Many lack access to safe resources, and stigma prevents open conversations. Minority groups, including refugees, are especially vulnerable.
+                        </p>
+                        <p className="text-lg md:text-xl text-gray-300 leading-relaxed">
+                            Wekume addresses these issues by offering an inclusive, digital platform that simplifies access to information, support, and resources tailored to students’ needs.
+                        </p>
+                    </div>
+                </div>
+
+                {/* Next Big Dreams */}
+                <div className="py-12">
+                    <div className="text-center mb-16">
+                        <span className="text-purple-600 font-semibold tracking-wider uppercase text-sm">Future Goals</span>
+                        <h2 className="text-4xl font-heading font-bold text-gray-900 mt-2">Our Next Big Dreams</h2>
+                    </div>
+
+                    <div className="grid md:grid-cols-3 gap-8 text-center">
+                        <div className="p-8 bg-white rounded-2xl shadow-lg border border-gray-100">
+                            <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-6 text-purple-600 text-2xl">💼</div>
+                            <h3 className="text-xl font-bold mb-4">Business Development</h3>
+                            <p className="text-gray-600">Incubator for student entrepreneurs providing mentorship, workshops, and fundraising resources.</p>
+                        </div>
+                        <div className="p-8 bg-white rounded-2xl shadow-lg border border-gray-100">
+                            <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-6 text-orange-600 text-2xl">🌍</div>
+                            <h3 className="text-xl font-bold mb-4">Exchange Programs</h3>
+                            <p className="text-gray-600">Facilitating varied perspectives through regional exchange programs and internship opportunities.</p>
+                        </div>
+                        <div className="p-8 bg-white rounded-2xl shadow-lg border border-gray-100">
+                            <div className="w-16 h-16 bg-pink-100 rounded-full flex items-center justify-center mx-auto mb-6 text-pink-600 text-2xl">🤲</div>
+                            <h3 className="text-xl font-bold mb-4">Total Inclusivity</h3>
+                            <p className="text-gray-600">Ensuring resources are accessible to marginalized groups, such as refugees, creating a safe space for everyone.</p>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Impact Statement */}
+                <div className="bg-gradient-to-r from-purple-600 to-indigo-700 rounded-3xl p-12 text-center text-white shadow-2xl">
+                    <div className="max-w-4xl mx-auto">
+                        <h2 className="text-3xl font-heading font-bold mb-8">Our Impact</h2>
+                        <blockquote className="text-xl md:text-2xl font-medium leading-relaxed italic opacity-90">
+                            “Wekume is already making a difference in the lives of students across Uganda. By connecting young people to essential resources and enabling them to make informed decisions, we aim to reduce rates of reproductive health issues, increase access to health supplies, and encourage entrepreneurship among students.”
+                        </blockquote>
+                        <div className="mt-8 flex justify-center gap-4">
+                            <button className="bg-white text-purple-600 px-8 py-3 rounded-full font-bold hover:bg-gray-100 transition-colors shadow-lg">
+                                Download App
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>

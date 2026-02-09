@@ -142,6 +142,9 @@ function Home() {
                                     Years later, when Joshua entered university, he saw the same patterns repeating. Friends were struggling with preventable complications—unintended pregnancies, STIs, mental health crises—all in silence. There was no safe, stigma-free space to ask questions or seek support.
                                 </p>
                                 <p>
+                                    Joshua had been fortunate. As a teenager, he was introduced to sexual health education through his church. That knowledge empowered him to make informed choices and avoid the hardships so many of his peers were facing. He knew things had to change.
+                                </p>
+                                <p>
                                     That’s why he founded <span className="font-bold text-purple-600">Wekume</span>—a youth-led initiative empowering university students to take control of their health with confidence and dignity.
                                 </p>
                             </div>
