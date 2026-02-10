@@ -53,11 +53,14 @@ function Navbar({ isTransparent = false }) {
                 <div className="flex justify-between items-center h-16">
                     {/* Logo */}
                     <Link to="/" className="flex items-center gap-3 group">
-                        <img
-                            src="/assets/wekume-logo.png"
-                            alt="Wekume Initiative"
-                            className="h-12 w-auto transition-transform duration-300 group-hover:scale-105"
-                        />
+                        <div className="bg-transparent rounded-full p-2 shadow-sm flex items-center justify-center">
+                            <img
+                                src="/assets/wekume-logo.png"
+                                alt="Wekume Initiative"
+                                className="h-12 w-12 object-contain transition-transform duration-300 group-hover:scale-110"
+                            />
+                        </div>
+                        <span className={`font-heading font-bold text-2xl tracking-tight ${logoColorClass}`}>Wekume Initiative</span>
                     </Link>
 
                     {/* Desktop Navigation */}

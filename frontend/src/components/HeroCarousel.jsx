@@ -9,7 +9,8 @@ const slides = [
         subtitle: "Learn. Unlearn. Relearn. Building a healthier, more informed future for young people.",
         ctaText: "Download App",
         ctaLink: "/wekume-app",
-        theme: "from-purple-600 via-primary-500 to-orange-500" // Purple/Pink/Orange
+        theme: "from-purple-600 via-primary-500 to-orange-500", // Purple/Pink/Orange
+        image: "/assets/IMG_0445.jpg"
     },
     {
         id: 'values',
@@ -17,7 +18,8 @@ const slides = [
         subtitle: "Guided by our core values to create safe, supportive spaces for everyone.",
         ctaText: "Run With Us",
         ctaLink: "/about",
-        theme: "from-blue-600 via-purple-500 to-pink-500" // Blue/Purple/Pink
+        theme: "from-blue-600 via-purple-500 to-pink-500", // Blue/Purple/Pink
+        image: "/assets/IMG_0447.jpg"
     },
     {
         id: 'purpose',
@@ -25,7 +27,17 @@ const slides = [
         subtitle: "Driven by a purpose to eliminate barriers to sexual and reproductive health.",
         ctaText: "Get Involved",
         ctaLink: "/get-involved",
-        theme: "from-orange-500 via-red-500 to-purple-600" // Orange/Red/Purple
+        theme: "from-orange-500 via-red-500 to-purple-600", // Orange/Red/Purple
+        image: "/assets/IMG_20250321_112053.jpg"
+    },
+    {
+        id: 'community',
+        title: "Stronger Together",
+        subtitle: "Join a community dedicated to mutual support and growth.",
+        ctaText: "Join Us",
+        ctaLink: "/contact",
+        theme: "from-green-500 via-teal-500 to-blue-500", // Green/Teal/Blue
+        image: "/assets/hero-whatsapp.jpeg"
     }
 ];
 
@@ -58,20 +70,23 @@ function HeroCarousel() {
                     key={slide.id}
                     className={`absolute inset-0 transition-opacity duration-1500 ease-in-out ${index === currentSlide ? 'opacity-100 z-0' : 'opacity-0 -z-10'}`}
                 >
-                    {/* Gradient Background */}
-                    <div className={`absolute inset-0 bg-gradient-to-br ${slide.theme} animate-gradient-shift`}></div>
-
-                    {/* Overlay Pattern */}
-                    <div className="absolute inset-0 opacity-10">
-                        <div className="absolute inset-0" style={{
-                            backgroundImage: `radial-gradient(circle at 2px 2px, white 1px, transparent 0)`,
-                            backgroundSize: '48px 48px'
-                        }}></div>
+                    {/* Background Image */}
+                    <div className="absolute inset-0">
+                        <img
+                            src={slide.image}
+                            alt={slide.title}
+                            className="w-full h-full object-cover transition-transform duration-[10000ms] ease-out scale-105"
+                            style={{
+                                transform: index === currentSlide ? 'scale(1.1)' : 'scale(1.0)'
+                            }}
+                        />
+                        {/* Dark Overlay for readability */}
+                        <div className="absolute inset-0 bg-black/40"></div>
                     </div>
 
-                    {/* Floating Shapes (Consistent across slides but re-rendered) */}
-                    <div className="absolute top-20 left-10 w-72 h-72 bg-white/10 backdrop-blur-xl rounded-full blur-3xl animate-float"></div>
-                    <div className="absolute bottom-20 right-10 w-96 h-96 bg-white/5 backdrop-blur-xl rounded-full blur-3xl animate-float-delayed"></div>
+
+
+
                 </div>
             ))}
 
