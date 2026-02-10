@@ -44,7 +44,7 @@ function Navbar({ isTransparent = false }) {
 
     return (
         <nav
-            className={`fixed w-full z-50 transition-all duration-300 ${scrolled || !isTransparent
+            className={`${isTransparent ? 'fixed' : 'sticky top-0'} w-full z-50 transition-all duration-300 ${scrolled || !isTransparent
                     ? 'bg-white/95 backdrop-blur-md shadow-sm py-3'
                     : 'bg-transparent py-6'
                 }`}
