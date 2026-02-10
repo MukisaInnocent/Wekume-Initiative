@@ -56,7 +56,7 @@ function HeroCarousel() {
             {slides.map((slide, index) => (
                 <div
                     key={slide.id}
-                    className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${index === currentSlide ? 'opacity-100 z-0' : 'opacity-0 -z-10'}`}
+                    className={`absolute inset-0 transition-opacity duration-1500 ease-in-out ${index === currentSlide ? 'opacity-100 z-0' : 'opacity-0 -z-10'}`}
                 >
                     {/* Gradient Background */}
                     <div className={`absolute inset-0 bg-gradient-to-br ${slide.theme} animate-gradient-shift`}></div>
@@ -83,9 +83,9 @@ function HeroCarousel() {
                     {slides.map((slide, index) => (
                         <div
                             key={slide.id}
-                            className={`transition-all duration-700 absolute inset-0 flex flex-col items-center justify-center ${index === currentSlide
+                            className={`transition-all duration-1000 ease-out delay-200 absolute inset-0 flex flex-col items-center justify-center ${index === currentSlide
                                     ? 'opacity-100 translate-y-0 scale-100 pointer-events-auto'
-                                    : 'opacity-0 translate-y-8 scale-95 pointer-events-none'
+                                    : 'opacity-0 translate-y-4 scale-95 pointer-events-none'
                                 }`}
                         >
                             {/* Badge */}
@@ -147,8 +147,8 @@ function HeroCarousel() {
                         key={index}
                         onClick={() => setCurrentSlide(index)}
                         className={`transition-all duration-300 rounded-full ${index === currentSlide
-                                ? 'w-12 h-3 bg-white'
-                                : 'w-3 h-3 bg-white/40 hover:bg-white/60'
+                            ? 'w-12 h-3 bg-white'
+                            : 'w-3 h-3 bg-white/40 hover:bg-white/60'
                             }`}
                         aria-label={`Go to slide ${index + 1}`}
                     />
