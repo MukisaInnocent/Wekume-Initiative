@@ -38,6 +38,7 @@ function Navbar({ isTransparent = false }) {
         { path: '/wekume-app', label: 'Wekume App' },
         { path: '/events', label: 'Events' },
         { path: '/get-involved', label: 'Get Involved' },
+        { path: '/testimonials', label: 'Testimonials' },
         { path: '/reports', label: 'Reports' },
         { path: '/contact', label: 'Contact' }
     ];

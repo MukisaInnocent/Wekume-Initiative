@@ -19,6 +19,7 @@ function Footer() {
                         <ul className="space-y-2">
                             <li><Link to="/about" className="text-gray-300 hover:text-primary-300 transition-colors">About Us</Link></li>
                             <li><Link to="/events" className="text-gray-300 hover:text-primary-300 transition-colors">Events</Link></li>
+                            <li><Link to="/testimonials" className="text-gray-300 hover:text-primary-300 transition-colors">Testimonials</Link></li>
                             <li><Link to="/get-involved" className="text-gray-300 hover:text-primary-300 transition-colors">Get Involved</Link></li>
                             <li><Link to="/contact" className="text-gray-300 hover:text-primary-300 transition-colors">Contact</Link></li>
                         </ul>

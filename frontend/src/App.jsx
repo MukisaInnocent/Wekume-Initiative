@@ -10,6 +10,7 @@ import Donate from './pages/Donate';
 import AdminLogin from './pages/AdminLogin';
 import AdminDashboard from './pages/AdminDashboard';
 import ChatWidget from './components/ChatWidget';
+import Testimonials from './pages/Testimonials';
 
 function App() {
     return (
@@ -23,6 +24,7 @@ function App() {
                 <Route path="/get-involved" element={<GetInvolved />} />
                 <Route path="/reports" element={<Reports />} />
                 <Route path="/contact" element={<Contact />} />
+                <Route path="/testimonials" element={<Testimonials />} />
                 <Route path="/donate" element={<Donate />} />
 
                 {/* Admin Routes */}
