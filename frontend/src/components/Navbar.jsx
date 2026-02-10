@@ -45,15 +45,19 @@ function Navbar({ isTransparent = false }) {
     return (
         <nav
             className={`${isTransparent ? 'fixed' : 'sticky top-0'} w-full z-50 transition-all duration-300 ${scrolled || !isTransparent
-                    ? 'bg-white/95 backdrop-blur-md shadow-sm py-3'
-                    : 'bg-transparent py-6'
+                ? 'bg-white/95 backdrop-blur-md shadow-sm py-3'
+                : 'bg-transparent py-6'
                 }`}
         >
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between items-center h-16">
                     {/* Logo */}
-                    <Link to="/" className={`text-2xl font-heading font-bold transition-colors ${logoColorClass}`}>
-                        Wekume Initiative
+                    <Link to="/" className="flex items-center gap-3 group">
+                        <img
+                            src="/assets/wekume-logo.png"
+                            alt="Wekume Initiative"
+                            className="h-12 w-auto transition-transform duration-300 group-hover:scale-105"
+                        />
                     </Link>
 
                     {/* Desktop Navigation */}
