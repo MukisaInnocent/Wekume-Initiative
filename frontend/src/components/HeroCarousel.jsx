@@ -79,17 +79,17 @@ function HeroCarousel() {
             <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center w-full">
 
                 {/* Content Transition Container */}
-                <div className="relative min-h-[400px] flex flex-col justify-center items-center">
+                <div className="relative min-h-[400px] flex flex-col items-center">
                     {slides.map((slide, index) => (
                         <div
                             key={slide.id}
                             className={`transition-all duration-1000 ease-out delay-200 absolute inset-0 flex flex-col items-center justify-center ${index === currentSlide
-                                    ? 'opacity-100 translate-y-0 scale-100 pointer-events-auto'
-                                    : 'opacity-0 translate-y-4 scale-95 pointer-events-none'
+                                ? 'opacity-100 translate-y-0 scale-100 pointer-events-auto'
+                                : 'opacity-0 translate-y-4 scale-95 pointer-events-none'
                                 }`}
                         >
                             {/* Badge */}
-                            <div className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white/10 backdrop-blur-md border border-white/20 mb-8 shadow-2xl">
+                            <div className="inline-flex items-center gap-4 px-6 py-3 rounded-full bg-white/10 backdrop-blur-md border border-white/20 mb-2 shadow-2xl">
                                 <span className={`text-sm font-semibold text-white/90 uppercase tracking-widest`}>
                                     {slide.id === 'mission' ? 'Our Mission' : slide.id === 'values' ? 'Our Values' : 'Our Purpose'}
                                 </span>

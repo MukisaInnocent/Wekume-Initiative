@@ -110,7 +110,7 @@ function Home() {
             </section>
 
             {/* Meet Lina - AI Safe Chat Section */}
-            <section className="py-24 bg-white relative overflow-hidden">
+            <section className="py-32 bg-white relative overflow-hidden">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                     <div className="bg-gradient-to-r from-blue-900 to-purple-900 rounded-3xl p-8 md:p-12 shadow-2xl text-white relative overflow-hidden">
                         {/* Background Elements */}
