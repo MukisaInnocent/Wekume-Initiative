@@ -238,6 +238,48 @@ exports.approveTestimonial = async (req, res) => {
     }
 };
 
+exports.createTestimonial = async (req, res) => {
+    try {
+        const { author_name, author_role, content, rating, photo_url, is_featured, is_approved } = req.body;
+
+        if (!author_name || !content) {
+            return res.status(400).json({ error: 'Author name and content are required' });
+        }
+
+        const testimonial = await Testimonial.create({
+            author_name,
+            author_role,
+            content,
+            rating: rating || 5,
+            photo_url,
+            is_featured: is_featured || false,
+            is_approved: is_approved !== undefined ? is_approved : true // Auto-approve if created by admin
+        });
+
+        res.status(201).json({ message: 'Testimonial created successfully', testimonial });
+    } catch (error) {
+        console.error('Create testimonial error:', error);
+        res.status(500).json({ error: 'Failed to create testimonial' });
+    }
+};
+
+exports.deleteTestimonial = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const testimonial = await Testimonial.findByPk(id);
+        if (!testimonial) {
+            return res.status(404).json({ error: 'Testimonial not found' });
+        }
+
+        await testimonial.destroy();
+        res.json({ message: 'Testimonial deleted successfully' });
+    } catch (error) {
+        console.error('Delete testimonial error:', error);
+        res.status(500).json({ error: 'Failed to delete testimonial' });
+    }
+};
+
 // ===== SUPPORT FORMS MANAGEMENT =====
 
 exports.getAllSupportForms = async (req, res) => {

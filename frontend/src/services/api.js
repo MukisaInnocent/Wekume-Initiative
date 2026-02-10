@@ -118,9 +118,14 @@ export const adminAPI = {
     deletePartner: (id) => api.delete(`/admin/partners/${id}`),
 
     // Reports
-    updateReport: (id, data) => api.put(`/admin/reports/${id}`, data), // Assuming backend support
-    createReport: (data) => api.post(`/admin/reports`, data), // Assuming backend support
-    deleteReport: (id) => api.delete(`/admin/reports/${id}`), // Assuming backend support
+    updateReport: (id, data) => api.put(`/admin/reports/${id}`, data),
+    createReport: (data) => api.post(`/admin/reports`, data),
+    deleteReport: (id) => api.delete(`/admin/reports/${id}`),
+
+    // Testimonials
+    createTestimonial: (data) => api.post('/admin/testimonials', data),
+    deleteTestimonial: (id) => api.delete(`/admin/testimonials/${id}`),
+    approveTestimonial: (id, data) => api.put(`/admin/testimonials/${id}`, data), // Ensure this exists if not already
 
     // Content
     // updateSection is already there

@@ -25,7 +25,9 @@ router.delete('/partners/:id', roleCheck('super_admin'), adminController.deleteP
 
 // ===== TESTIMONIALS =====
 router.get('/testimonials', adminController.getAllTestimonials);
+router.post('/testimonials', adminController.createTestimonial);
 router.put('/testimonials/:id', adminController.approveTestimonial);
+router.delete('/testimonials/:id', roleCheck('super_admin', 'editor'), adminController.deleteTestimonial);
 
 // ===== SUPPORT FORMS =====
 router.get('/support-forms', adminController.getAllSupportForms);
