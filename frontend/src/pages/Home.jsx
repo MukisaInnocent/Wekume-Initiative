@@ -2,11 +2,12 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import HeroCarousel from '../components/HeroCarousel';
 import { ArrowRight, Heart, Users, Lightbulb, Calendar, ArrowUpRight, MessageCircle, Shield, Clock } from 'lucide-react';
 import { contentAPI } from '../services/api';
 
 function Home() {
-    const [heroContent, setHeroContent] = useState(null);
+
     const [values, setValues] = useState([]);
     const [events, setEvents] = useState([]);
     const [partners, setPartners] = useState([]);
@@ -15,19 +16,13 @@ function Home() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const [sectionsRes, valuesRes, eventsRes, partnersRes] = await Promise.all([
-                    contentAPI.getSection('home_hero'),
+                const [valuesRes, eventsRes, partnersRes] = await Promise.all([
                     contentAPI.getValues(),
                     contentAPI.getEvents(),
                     contentAPI.getPartners()
                 ]);
 
-                // Parse hero content if it exists, otherwise use defaults
-                if (sectionsRes.data.content) {
-                    setHeroContent(typeof sectionsRes.data.content === 'string'
-                        ? JSON.parse(sectionsRes.data.content)
-                        : sectionsRes.data.content);
-                }
+
 
                 setValues(valuesRes.data.values || []);
                 setEvents(eventsRes.data.events?.slice(0, 3) || []); // Top 3 events
@@ -42,84 +37,14 @@ function Home() {
         fetchData();
     }, []);
 
-    const hero = heroContent || {
-        title: "Empowering Youth Through Education & Innovation",
-        subtitle: "Learn. Unlearn. Relearn. Building a healthier, more informed future for young people."
-    };
+
 
     return (
         <>
             <Navbar />
 
-            {/* Hero Section */}
-            <section className="relative text-white py-32 min-h-[90vh] flex items-center overflow-hidden">
-                {/* Animated Gradient Background */}
-                <div className="absolute inset-0 bg-gradient-to-br from-purple-600 via-primary-500 to-orange-500 animate-gradient-shift">
-                    {/* Overlay Pattern */}
-                    <div className="absolute inset-0 opacity-10">
-                        <div className="absolute inset-0" style={{
-                            backgroundImage: `radial-gradient(circle at 2px 2px, white 1px, transparent 0)`,
-                            backgroundSize: '48px 48px'
-                        }}></div>
-                    </div>
-
-                    {/* Floating Glassmorphic Shapes */}
-                    <div className="absolute top-20 left-10 w-72 h-72 bg-white/10 backdrop-blur-xl rounded-full blur-3xl animate-float"></div>
-                    <div className="absolute bottom-20 right-10 w-96 h-96 bg-purple-300/20 backdrop-blur-xl rounded-full blur-3xl animate-float-delayed"></div>
-                    <div className="absolute top-1/2 left-1/2 w-64 h-64 bg-orange-300/15 backdrop-blur-xl rounded-full blur-3xl animate-float-slow"></div>
-                </div>
-
-                {/* Content Layer */}
-                <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                    {/* Glassmorphic Badge */}
-                    <div className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white/10 backdrop-blur-md border border-white/20 mb-8 animate-fade-in shadow-2xl">
-                        <span className="relative flex h-3 w-3">
-                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
-                            <span className="relative inline-flex rounded-full h-3 w-3 bg-orange-500"></span>
-                        </span>
-                        <span className="text-sm font-semibold text-white/90">Empowering the Next Generation</span>
-                    </div>
-
-                    {/* Main Heading with Enhanced Typography */}
-                    <h1 className="text-5xl md:text-7xl lg:text-8xl font-heading font-bold mb-8 animate-fade-in leading-tight tracking-tight">
-                        <span className="bg-clip-text text-transparent bg-gradient-to-r from-white via-purple-100 to-orange-100 drop-shadow-2xl">
-                            {hero.title}
-                        </span>
-                    </h1>
-
-                    {/* Subtitle with Glass Effect */}
-                    <div className="max-w-3xl mx-auto mb-12 p-6 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10">
-                        <p className="text-xl md:text-2xl text-white/90 leading-relaxed">
-                            {hero.subtitle}
-                        </p>
-                    </div>
-
-                    {/* CTA Buttons with Enhanced Interactions */}
-                    <div className="flex gap-6 justify-center flex-wrap">
-                        <Link
-                            to="/wekume-app"
-                            className="group relative bg-white text-purple-600 px-10 py-5 rounded-full font-bold hover:bg-orange-400 hover:text-white transition-all duration-300 hover:scale-110 hover:-translate-y-1 flex items-center gap-3 shadow-2xl overflow-hidden"
-                        >
-                            <span className="absolute inset-0 bg-gradient-to-r from-orange-400 to-purple-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
-                            <span className="relative z-10">Download App</span>
-                            <ArrowRight size={20} className="relative z-10 group-hover:translate-x-1 transition-transform" />
-                        </Link>
-                        <Link
-                            to="/get-involved"
-                            className="group px-10 py-5 rounded-full font-bold bg-purple-500/20 backdrop-blur-md border-2 border-white/30 text-white hover:bg-white hover:text-purple-600 transition-all duration-300 hover:scale-110 hover:-translate-y-1 shadow-2xl"
-                        >
-                            <span className="group-hover:tracking-wider transition-all duration-300">Get Involved</span>
-                        </Link>
-                    </div>
-
-                    {/* Scroll Indicator */}
-                    <div className="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce">
-                        <div className="w-6 h-10 rounded-full border-2 border-white/30 flex items-start justify-center p-2">
-                            <div className="w-1 h-3 bg-white rounded-full animate-scroll"></div>
-                        </div>
-                    </div>
-                </div>
-            </section>
+            {/* Dynamic Hero Carousel */}
+            <HeroCarousel />
 
             {/* Our Story Section */}
             <section className="py-24 relative overflow-hidden">
