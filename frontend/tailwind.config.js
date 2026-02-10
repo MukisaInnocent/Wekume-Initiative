@@ -33,6 +33,19 @@ export default {
                     800: '#2a0043',
                     900: '#1a0029',
                 },
+                // Secondary Brand Color - Aliased to Purple for consistency
+                secondary: {
+                    50: '#f3e5ff',
+                    100: '#e6ccff',
+                    200: '#cc99ff',
+                    300: '#b366ff',
+                    400: '#9933ff',
+                    500: '#6900A8',
+                    600: '#530085',
+                    700: '#3d0062',
+                    800: '#2a0043',
+                    900: '#1a0029',
+                },
                 // Orange Accent
                 orange: {
                     50: '#fef5ee',
