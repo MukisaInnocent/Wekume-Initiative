@@ -41,7 +41,7 @@ function Home() {
 
     return (
         <>
-            <Navbar />
+            <Navbar isTransparent={true} />
 
             {/* Dynamic Hero Carousel */}
             <HeroCarousel />
