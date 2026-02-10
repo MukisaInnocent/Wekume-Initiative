@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
-import { ArrowRight, Heart, Users, Lightbulb, Calendar, ArrowUpRight } from 'lucide-react';
+import { ArrowRight, Heart, Users, Lightbulb, Calendar, ArrowUpRight, MessageCircle, Shield, Clock } from 'lucide-react';
 import { contentAPI } from '../services/api';
 
 function Home() {
@@ -182,6 +182,93 @@ function Home() {
                         </div>
                     </div>
                 </div>
+            </section>
+
+            {/* Meet Lina - AI Safe Chat Section */}
+            <section className="py-24 bg-white relative overflow-hidden">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                    <div className="bg-gradient-to-r from-blue-900 to-purple-900 rounded-3xl p-8 md:p-12 shadow-2xl text-white relative overflow-hidden">
+                        {/* Background Elements */}
+                        <div className="absolute top-0 right-0 w-96 h-96 bg-blue-500 rounded-full blur-3xl opacity-20 -mr-20 -mt-20"></div>
+                        <div className="absolute bottom-0 left-0 w-72 h-72 bg-purple-500 rounded-full blur-3xl opacity-20 -ml-10 -mb-10"></div>
+
+                        <div className="grid md:grid-cols-2 gap-12 items-center relative z-10">
+                            <div>
+                                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-500/20 border border-blue-400/30 text-blue-200 text-sm font-semibold mb-6">
+                                    <span className="w-2 h-2 rounded-full bg-blue-400 animate-pulse"></span>
+                                    AI-Powered Support
+                                </div>
+                                <h2 className="text-4xl font-heading font-bold mb-6">
+                                    Meet <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-300">Lina</span> – Your AI Safe Chat
+                                </h2>
+                                <p className="text-blue-100 text-lg mb-6 leading-relaxed">
+                                    Click on the “Lina AI Safe Chat” icon to get answers to your questions about sexual and reproductive health! It’s <span className="font-bold text-white">secure, private, and confidential</span>.
+                                </p>
+
+                                <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/10 mb-8">
+                                    <div className="flex items-start gap-4">
+                                        <div className="p-3 bg-blue-500/20 rounded-lg text-blue-300">
+                                            <Clock size={24} />
+                                        </div>
+                                        <div>
+                                            <h4 className="font-bold text-lg mb-1">Why the 30-40 Second Wait?</h4>
+                                            <p className="text-sm text-blue-200 leading-relaxed">
+                                                Lina accesses a vast knowledge base and performs careful analysis to ensure every response is accurate and culturally sensitive. This detailed process guarantees the best support for critical topics.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="flex flex-wrap gap-4">
+                                    <div className="flex items-center gap-2 px-4 py-2 bg-white/5 rounded-full text-sm border border-white/10">
+                                        <Shield size={16} className="text-green-400" />
+                                        <span>Private & Anonymous</span>
+                                    </div>
+                                    <div className="flex items-center gap-2 px-4 py-2 bg-white/5 rounded-full text-sm border border-white/10">
+                                        <MessageCircle size={16} className="text-blue-400" />
+                                        <span>24/7 Availability</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="relative hidden md:block">
+                                {/* Chat Interface Mockup */}
+                                <div className="bg-white text-gray-800 rounded-2xl shadow-xl overflow-hidden max-w-sm mx-auto transform rotate-3 hover:rotate-0 transition-transform duration-500">
+                                    <div className="bg-gradient-primary p-4 flex items-center justify-between text-white">
+                                        <div className="flex items-center gap-3">
+                                            <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
+                                                <MessageCircle size={20} />
+                                            </div>
+                                            <div>
+                                                <p className="font-bold text-sm">Lina</p>
+                                                <p className="text-xs opacity-80">AI Safe Chat</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="p-6 bg-gray-50 space-y-4">
+                                        <div className="flex justify-end">
+                                            <div className="bg-purple-600 text-white p-3 rounded-2xl rounded-tr-sm text-sm max-w-[85%] shadow-sm">
+                                                I'm worried about my privacy. Is this chat really safe?
+                                            </div>
+                                        </div>
+                                        <div className="flex justify-start">
+                                            <div className="bg-white text-gray-800 border border-gray-200 p-3 rounded-2xl rounded-tl-sm text-sm max-w-[85%] shadow-sm">
+                                                <p className="mb-2">Yes, absolutely. Everything you share with me is secure, private, and confidential.</p>
+                                                <div className="flex items-center gap-1 text-xs text-green-600 font-medium">
+                                                    <Shield size={12} /> Encrypted
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="flex justify-center py-2">
+                                            <span className="text-xs text-gray-400 bg-gray-200 px-3 py-1 rounded-full animate-pulse">Lina is thinking... (35s)</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </section>
 
             {/* Values Section */}

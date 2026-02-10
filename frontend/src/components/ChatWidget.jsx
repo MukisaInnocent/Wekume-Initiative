@@ -36,7 +36,7 @@ function ChatWidget() {
     const initializeWelcomeMessage = () => {
         const welcomeMessage = {
             role: 'assistant',
-            content: "Hi! 👋 I'm your Wekume Initiative assistant. I can help you with information about:\n\n• Sexual Reproductive Health (SRH)\n• Mental health support\n• Our programs and services\n• How to get involved\n\nHow can I assist you today?",
+            content: "Hi! 👋 I'm **Lina**, your AI Safe Chat assistant.\n\nI'm here to answer your questions about sexual and reproductive health. My meaningful responses take about **30-40 seconds** to generate because I carefully analyze your question to provide accurate, culturally sensitive, and safe advice.\n\nEverything you share is **secure, private, and confidential**.\n\nHow can I help you today?",
             timestamp: new Date()
         };
         setMessages([welcomeMessage]);
@@ -139,7 +139,7 @@ function ChatWidget() {
                         <MessageCircle size={24} />
                     </div>
                     <div>
-                        <h3 className="font-bold">Wekume Assistant</h3>
+                        <h3 className="font-bold">Lina - AI Safe Chat</h3>
                         <p className="text-xs opacity-90">Powered by AI</p>
                     </div>
                 </div>
@@ -179,12 +179,12 @@ function ChatWidget() {
                     >
                         <div className={`max-w-[85%] group relative`}>
                             <div className={`p-3 rounded-lg ${msg.role === 'user'
-                                    ? 'bg-primary-600 text-white rounded-br-none'
-                                    : msg.crisis
-                                        ? 'bg-red-50 border-2 border-red-300 text-gray-900 rounded-bl-none'
-                                        : msg.error
-                                            ? 'bg-yellow-50 border border-yellow-300 text-gray-900 rounded-bl-none'
-                                            : 'bg-white border border-gray-200 text-gray-900 rounded-bl-none shadow-sm'
+                                ? 'bg-primary-600 text-white rounded-br-none'
+                                : msg.crisis
+                                    ? 'bg-red-50 border-2 border-red-300 text-gray-900 rounded-bl-none'
+                                    : msg.error
+                                        ? 'bg-yellow-50 border border-yellow-300 text-gray-900 rounded-bl-none'
+                                        : 'bg-white border border-gray-200 text-gray-900 rounded-bl-none shadow-sm'
                                 }`}>
                                 <p className="text-sm whitespace-pre-wrap leading-relaxed">{msg.content}</p>
 
@@ -221,7 +221,7 @@ function ChatWidget() {
                                 <div className="w-2 h-2 bg-primary-400 rounded-full animate-bounce"></div>
                                 <div className="w-2 h-2 bg-primary-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
                                 <div className="w-2 h-2 bg-primary-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
-                                <span className="text-xs text-gray-500 ml-2">Thinking...</span>
+                                <span className="text-xs text-gray-500 ml-2">Lina is thinking... (approx. 30-40s)</span>
                             </div>
                         </div>
                     </div>
