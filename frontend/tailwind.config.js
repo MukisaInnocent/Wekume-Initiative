@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
+    darkMode: 'class',
     content: [
         "./index.html",
         "./src/**/*.{js,ts,jsx,tsx}",
@@ -78,8 +79,8 @@ export default {
                     light: '#f2f5d1', // Light background highlight
                     DEFAULT: '#f89d61', // Orange for backward compatibility
                 },
-                // Dark tones
-                dark: {
+                // Dark tones (renamed from 'dark' to avoid conflict with darkMode variant)
+                darkTone: {
                     DEFAULT: '#341525',
                     plum: '#341525', // Dark plum
                     black: '#010101', // Black emphasis

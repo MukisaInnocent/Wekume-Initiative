@@ -67,7 +67,7 @@ function Contact() {
             <Navbar />
 
             {/* Main Wrapper with Brand Themed Background */}
-            <div className="min-h-screen bg-gray-50 bg-noise relative overflow-hidden flex flex-col items-center">
+            <div className="min-h-screen bg-gray-50 dark:bg-gray-900 bg-noise relative overflow-hidden flex flex-col items-center">
 
                 {/* Brand Mesh Gradient Background */}
                 <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none">
@@ -121,7 +121,7 @@ function Contact() {
                             ref={cardRef}
                             onMouseMove={handleMouseMove}
                             onMouseLeave={handleMouseLeave}
-                            className={`w-full bg-white rounded-[2.5rem] shadow-2xl overflow-hidden grid lg:grid-cols-5 min-h-[700px] transform transition-all duration-300 ease-out border border-white/60 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10 delay-200'}`}
+                            className={`w-full bg-white dark:bg-gray-800 rounded-[2.5rem] shadow-2xl overflow-hidden grid lg:grid-cols-5 min-h-[700px] transform transition-all duration-300 ease-out border border-white/60 dark:border-gray-700 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10 delay-200'}`}
                             style={{
                                 transform: `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`,
                                 transformStyle: 'preserve-3d',
@@ -202,13 +202,13 @@ function Contact() {
                             </div>
 
                             {/* Right Panel: The Form */}
-                            <div className="lg:col-span-3 bg-white/80 backdrop-blur-xl p-8 md:p-16 flex flex-col justify-center relative">
+                            <div className="lg:col-span-3 bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl p-8 md:p-16 flex flex-col justify-center relative">
                                 {/* Mesh Gradient Bloom - Brand Colors */}
                                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-gradient-to-tr from-purple-50/40 via-transparent to-orange-50/40 blur-3xl pointer-events-none opacity-50"></div>
 
                                 <div className="max-w-lg w-full mx-auto relative z-10">
-                                    <h3 className="text-3xl font-heading font-bold text-gray-900 mb-2">Send a Message</h3>
-                                    <p className="text-gray-500 mb-10 text-sm">Fill out the form below and we'll get back to you.</p>
+                                    <h3 className="text-3xl font-heading font-bold text-gray-900 dark:text-white mb-2">Send a Message</h3>
+                                    <p className="text-gray-500 dark:text-gray-400 mb-10 text-sm">Fill out the form below and we'll get back to you.</p>
 
                                     {status === 'success' ? (
                                         <SuccessMessage onReset={() => setStatus('idle')} />
@@ -285,16 +285,16 @@ const FloatingInput = ({ id, label, value, onChange, onFocus, onBlur, type = "te
     <div className="relative group">
         <input
             type={type} required id={id}
-            className="peer w-full px-4 py-3.5 rounded-xl border-2 border-transparent bg-gray-50/50 focus:bg-white focus:border-purple-500/50 focus:ring-4 focus:ring-purple-500/10 outline-none transition-all duration-300 placeholder-transparent text-gray-900 font-medium box-border"
+            className="peer w-full px-4 py-3.5 rounded-xl border-2 border-transparent bg-gray-50/50 dark:bg-gray-800 focus:bg-white dark:focus:bg-gray-700 focus:border-purple-500/50 focus:ring-4 focus:ring-purple-500/10 outline-none transition-all duration-300 placeholder-transparent text-gray-900 dark:text-white font-medium box-border"
             placeholder={label}
             value={value} onChange={onChange} onFocus={onFocus} onBlur={onBlur}
         />
         <label
             htmlFor={id}
-            className="absolute left-4 top-3.5 text-gray-400 text-base transition-all duration-300 pointer-events-none z-10
-            peer-placeholder-shown:top-3.5 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-base
-            peer-focus:-top-2.5 peer-focus:text-xs peer-focus:text-purple-600 peer-focus:bg-white peer-focus:px-2 peer-focus:ml-2 rounded-full shadow-sm border border-gray-100
-            peer-[&:not(:placeholder-shown)]:-top-2.5 peer-[&:not(:placeholder-shown)]:text-xs peer-[&:not(:placeholder-shown)]:text-gray-500 peer-[&:not(:placeholder-shown)]:bg-white peer-[&:not(:placeholder-shown)]:px-2 peer-[&:not(:placeholder-shown)]:ml-2 peer-[&:not(:placeholder-shown)]:rounded-full peer-[&:not(:placeholder-shown)]:shadow-sm peer-[&:not(:placeholder-shown)]:border peer-[&:not(:placeholder-shown)]:border-gray-100"
+            className="absolute left-4 top-3.5 text-gray-400 dark:text-gray-500 text-base transition-all duration-300 pointer-events-none z-10
+            peer-placeholder-shown:top-3.5 peer-placeholder-shown:text-gray-400 dark:peer-placeholder-shown:text-gray-500 peer-placeholder-shown:text-base
+            peer-focus:-top-2.5 peer-focus:text-xs peer-focus:text-purple-600 peer-focus:bg-white dark:peer-focus:bg-gray-800 peer-focus:px-2 peer-focus:ml-2 rounded-full shadow-sm border border-gray-100 dark:border-gray-700
+            peer-[&:not(:placeholder-shown)]:-top-2.5 peer-[&:not(:placeholder-shown)]:text-xs peer-[&:not(:placeholder-shown)]:text-gray-500 dark:peer-[&:not(:placeholder-shown)]:text-gray-400 peer-[&:not(:placeholder-shown)]:bg-white dark:peer-[&:not(:placeholder-shown)]:bg-gray-800 peer-[&:not(:placeholder-shown)]:px-2 peer-[&:not(:placeholder-shown)]:ml-2 peer-[&:not(:placeholder-shown)]:rounded-full peer-[&:not(:placeholder-shown)]:shadow-sm peer-[&:not(:placeholder-shown)]:border peer-[&:not(:placeholder-shown)]:border-gray-100 dark:peer-[&:not(:placeholder-shown)]:border-gray-700"
         >
             {label}
         </label>
@@ -305,16 +305,16 @@ const FloatingTextArea = ({ id, label, value, onChange, onFocus, onBlur }) => (
     <div className="relative group">
         <textarea
             required rows="4" id={id}
-            className="peer w-full px-4 py-3.5 rounded-xl border-2 border-transparent bg-gray-50/50 focus:bg-white focus:border-purple-500/50 focus:ring-4 focus:ring-purple-500/10 outline-none transition-all duration-300 placeholder-transparent text-gray-900 font-medium resize-none box-border"
+            className="peer w-full px-4 py-3.5 rounded-xl border-2 border-transparent bg-gray-50/50 dark:bg-gray-800 focus:bg-white dark:focus:bg-gray-700 focus:border-purple-500/50 focus:ring-4 focus:ring-purple-500/10 outline-none transition-all duration-300 placeholder-transparent text-gray-900 dark:text-white font-medium resize-none box-border"
             placeholder={label}
             value={value} onChange={onChange} onFocus={onFocus} onBlur={onBlur}
         ></textarea>
         <label
             htmlFor={id}
-            className="absolute left-4 top-3.5 text-gray-400 text-base transition-all duration-300 pointer-events-none z-10
-            peer-placeholder-shown:top-3.5 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-base
-            peer-focus:-top-2.5 peer-focus:text-xs peer-focus:text-purple-600 peer-focus:bg-white peer-focus:px-2 peer-focus:ml-2 rounded-full shadow-sm border border-gray-100
-            peer-[&:not(:placeholder-shown)]:-top-2.5 peer-[&:not(:placeholder-shown)]:text-xs peer-[&:not(:placeholder-shown)]:text-gray-500 peer-[&:not(:placeholder-shown)]:bg-white peer-[&:not(:placeholder-shown)]:px-2 peer-[&:not(:placeholder-shown)]:ml-2 peer-[&:not(:placeholder-shown)]:rounded-full peer-[&:not(:placeholder-shown)]:shadow-sm peer-[&:not(:placeholder-shown)]:border peer-[&:not(:placeholder-shown)]:border-gray-100"
+            className="absolute left-4 top-3.5 text-gray-400 dark:text-gray-500 text-base transition-all duration-300 pointer-events-none z-10
+            peer-placeholder-shown:top-3.5 peer-placeholder-shown:text-gray-400 dark:peer-placeholder-shown:text-gray-500 peer-placeholder-shown:text-base
+            peer-focus:-top-2.5 peer-focus:text-xs peer-focus:text-purple-600 peer-focus:bg-white dark:peer-focus:bg-gray-800 peer-focus:px-2 peer-focus:ml-2 rounded-full shadow-sm border border-gray-100 dark:border-gray-700
+            peer-[&:not(:placeholder-shown)]:-top-2.5 peer-[&:not(:placeholder-shown)]:text-xs peer-[&:not(:placeholder-shown)]:text-gray-500 dark:peer-[&:not(:placeholder-shown)]:text-gray-400 peer-[&:not(:placeholder-shown)]:bg-white dark:peer-[&:not(:placeholder-shown)]:bg-gray-800 peer-[&:not(:placeholder-shown)]:px-2 peer-[&:not(:placeholder-shown)]:ml-2 peer-[&:not(:placeholder-shown)]:rounded-full peer-[&:not(:placeholder-shown)]:shadow-sm peer-[&:not(:placeholder-shown)]:border peer-[&:not(:placeholder-shown)]:border-gray-100 dark:peer-[&:not(:placeholder-shown)]:border-gray-700"
         >
             {label}
         </label>
@@ -335,12 +335,12 @@ const ContactItem = ({ icon, label, value, href, color, hoverBg }) => (
 );
 
 const SuccessMessage = ({ onReset }) => (
-    <div className="text-center py-12 px-8 bg-green-50/50 rounded-3xl border border-green-100/50 backdrop-blur-sm animate-fade-in shadow-inner">
+    <div className="text-center py-12 px-8 bg-green-50/50 dark:bg-green-900/20 rounded-3xl border border-green-100/50 dark:border-green-800 backdrop-blur-sm animate-fade-in shadow-inner">
         <div className="inline-flex items-center justify-center w-20 h-20 bg-green-100 text-green-600 rounded-full mb-6 shadow-sm animate-bounce">
             <CheckCircle size={40} />
         </div>
-        <h3 className="text-2xl font-bold text-gray-900 mb-3">Message Sent!</h3>
-        <p className="text-gray-600 mb-8 max-w-sm mx-auto leading-relaxed">
+        <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-3">Message Sent!</h3>
+        <p className="text-gray-600 dark:text-gray-300 mb-8 max-w-sm mx-auto leading-relaxed">
             Thank you for reaching out. Our team has received your message and will get back to you shortly.
         </p>
         <button

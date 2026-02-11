@@ -1,6 +1,7 @@
 import { Link, useLocation, NavLink } from 'react-router-dom';
 import { Menu, X, ChevronRight } from 'lucide-react';
 import { useState, useEffect } from 'react';
+import ThemeToggle from './ThemeToggle';
 
 function Navbar({ isTransparent = false }) {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -26,8 +27,8 @@ function Navbar({ isTransparent = false }) {
     // Otherwise use default dark text.
     const isLightMode = isTransparent && !scrolled;
 
-    const textColorClass = isLightMode ? 'text-white hover:text-gray-200' : 'text-gray-900 hover:text-primary-600';
-    const logoColorClass = isLightMode ? 'text-white' : 'text-primary-600';
+    const textColorClass = isLightMode ? 'text-white hover:text-gray-200' : 'text-gray-900 dark:text-white hover:text-primary-600 dark:hover:text-primary-400';
+    const logoColorClass = isLightMode ? 'text-white' : 'text-primary-600 dark:text-primary-400';
     const buttonClass = isLightMode
         ? 'bg-white text-primary-600 hover:bg-gray-100'
         : 'bg-primary-600 text-white hover:bg-primary-700 shadow-lg hover:shadow-primary-500/30';
@@ -46,7 +47,7 @@ function Navbar({ isTransparent = false }) {
     return (
         <nav
             className={`${isTransparent ? 'fixed' : 'sticky top-0'} w-full z-50 transition-all duration-300 ${scrolled || !isTransparent
-                ? 'bg-white/95 backdrop-blur-md shadow-sm py-3'
+                ? 'bg-white/95 dark:bg-gray-900/95 backdrop-blur-md shadow-sm py-3'
                 : 'bg-transparent py-6'
                 }`}
         >
@@ -71,13 +72,14 @@ function Navbar({ isTransparent = false }) {
                                 key={link.path}
                                 to={link.path}
                                 className={({ isActive }) =>
-                                    `relative font-medium text-sm tracking-wide transition-colors group ${textColorClass} ${isActive && !isLightMode ? 'text-primary-600' : ''}`
+                                    `relative font-medium text-sm tracking-wide transition-colors group ${textColorClass} ${isActive && !isLightMode ? 'text-primary-600 dark:text-primary-400' : ''}`
                                 }
                             >
                                 {link.label}
-                                <span className={`absolute -bottom-1 left-0 w-0 h-0.5 transition-all duration-300 group-hover:w-full ${isLightMode ? 'bg-white' : 'bg-primary-600'}`}></span>
+                                <span className={`absolute -bottom-1 left-0 w-0 h-0.5 transition-all duration-300 group-hover:w-full ${isLightMode ? 'bg-white' : 'bg-primary-600 dark:bg-primary-400'}`}></span>
                             </NavLink>
                         ))}
+                        <ThemeToggle />
                         <Link
                             to="/donate"
                             className={`px-6 py-2.5 rounded-full font-bold transition-all transform hover:-translate-y-0.5 hover:shadow-lg ${buttonClass}`}
@@ -87,22 +89,25 @@ function Navbar({ isTransparent = false }) {
                     </div>
 
                     {/* Mobile Menu Button */}
-                    <button
-                        className={`lg:hidden transition-colors ${isLightMode ? 'text-white' : 'text-gray-900'}`}
-                        onClick={() => setIsMenuOpen(!isMenuOpen)}
-                        aria-label="Toggle menu"
-                    >
-                        {isMenuOpen ? <X size={28} /> : <Menu size={28} />}
-                    </button>
+                    <div className="lg:hidden flex items-center gap-3">
+                        <ThemeToggle />
+                        <button
+                            className={`transition-colors ${isLightMode ? 'text-white' : 'text-gray-900 dark:text-white'}`}
+                            onClick={() => setIsMenuOpen(!isMenuOpen)}
+                            aria-label="Toggle menu"
+                        >
+                            {isMenuOpen ? <X size={28} /> : <Menu size={28} />}
+                        </button>
+                    </div>
                 </div>
 
                 {/* Mobile Navigation Panel */}
-                <div className={`fixed inset-0 z-40 bg-white transform transition-transform duration-300 lg:hidden ${isMenuOpen ? 'translate-x-0' : 'translate-x-full'
+                <div className={`fixed inset-0 z-40 bg-white dark:bg-gray-900 transform transition-transform duration-300 lg:hidden ${isMenuOpen ? 'translate-x-0' : 'translate-x-full'
                     }`} style={{ top: '0', height: '100vh' }}>
                     <div className="flex flex-col h-full p-6">
                         <div className="flex justify-between items-center mb-8">
-                            <span className="text-2xl font-heading font-bold text-primary-600">Menu</span>
-                            <button onClick={() => setIsMenuOpen(false)} className="text-gray-500 hover:text-gray-900">
+                            <span className="text-2xl font-heading font-bold text-primary-600 dark:text-primary-400">Menu</span>
+                            <button onClick={() => setIsMenuOpen(false)} className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">
                                 <X size={28} />
                             </button>
                         </div>
@@ -113,7 +118,7 @@ function Navbar({ isTransparent = false }) {
                                     key={link.path}
                                     to={link.path}
                                     className={({ isActive }) =>
-                                        `flex items-center justify-between text-xl font-medium py-3 border-b border-gray-100 ${isActive ? 'text-primary-600' : 'text-gray-900'
+                                        `flex items-center justify-between text-xl font-medium py-3 border-b border-gray-100 dark:border-gray-800 ${isActive ? 'text-primary-600 dark:text-primary-400' : 'text-gray-900 dark:text-white'
                                         }`
                                     }
                                     onClick={() => setIsMenuOpen(false)}
@@ -133,8 +138,8 @@ function Navbar({ isTransparent = false }) {
                             </div>
                         </div>
 
-                        <div className="mt-auto pt-8 border-t border-gray-100 text-center">
-                            <p className="text-gray-400 text-sm">© 2026 Wekume Initiative</p>
+                        <div className="mt-auto pt-8 border-t border-gray-100 dark:border-gray-800 text-center">
+                            <p className="text-gray-400 dark:text-gray-500 text-sm">© 2026 Wekume Initiative</p>
                         </div>
                     </div>
                 </div>

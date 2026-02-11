@@ -42,18 +42,18 @@ function Reports() {
                 </div>
             </div>
 
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 min-h-[60vh]">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 min-h-[60vh] bg-white dark:bg-gray-900">
 
                 {/* Search / Filter */}
                 <div className="flex justify-between items-center mb-10 flex-col md:flex-row gap-4">
-                    <p className="text-gray-600">
+                    <p className="text-gray-600 dark:text-gray-300">
                         Explore our annual reports, strategic plans, and performance documents.
                     </p>
                     <div className="relative w-full md:w-96">
                         <input
                             type="text"
                             placeholder="Search reports..."
-                            className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent shadow-sm"
+                            className="w-full pl-10 pr-4 py-3 border border-gray-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent shadow-sm"
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
                         />
@@ -69,7 +69,7 @@ function Reports() {
                 ) : filteredReports.length > 0 ? (
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                         {filteredReports.map(report => (
-                            <div key={report.id} className="group bg-white rounded-2xl border border-gray-100 shadow-lg hover:shadow-2xl transition-all overflow-hidden flex flex-col">
+                            <div key={report.id} className="group bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-lg hover:shadow-2xl transition-all overflow-hidden flex flex-col">
                                 {/* Preview / Icon Area */}
                                 <div className="h-48 bg-gradient-to-br from-primary-50 to-secondary-50 flex items-center justify-center p-8 group-hover:scale-105 transition-transform duration-500">
                                     {report.cover_image_url ? (
@@ -87,10 +87,10 @@ function Reports() {
                                         {/* Optional badges can go here */}
                                     </div>
 
-                                    <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-primary-600 transition-colors">
+                                    <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
                                         {report.title}
                                     </h3>
-                                    <p className="text-gray-500 text-sm mb-6 flex-1 line-clamp-3">
+                                    <p className="text-gray-500 dark:text-gray-400 text-sm mb-6 flex-1 line-clamp-3">
                                         {report.description || "Download the full PDF report to view details."}
                                     </p>
 
@@ -107,10 +107,10 @@ function Reports() {
                         ))}
                     </div>
                 ) : (
-                    <div className="text-center py-24 bg-gray-50 rounded-2xl border-2 border-dashed border-gray-200">
+                    <div className="text-center py-24 bg-gray-50 dark:bg-gray-800 rounded-2xl border-2 border-dashed border-gray-200 dark:border-gray-700">
                         <FileText className="mx-auto text-gray-300 mb-4" size={48} />
-                        <h3 className="text-xl font-bold text-gray-900">No reports found</h3>
-                        <p className="text-gray-500 mt-2">Try adjusting your search terms.</p>
+                        <h3 className="text-xl font-bold text-gray-900 dark:text-white">No reports found</h3>
+                        <p className="text-gray-500 dark:text-gray-400 mt-2">Try adjusting your search terms.</p>
                     </div>
                 )}
             </div>

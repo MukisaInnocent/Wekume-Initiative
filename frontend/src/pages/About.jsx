@@ -55,14 +55,14 @@ function About() {
                 </div>
             </div>
 
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-20">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-20 bg-white dark:bg-gray-900">
 
                 {/* Who We Are & Mission */}
                 <div className="grid md:grid-cols-2 gap-12 items-center">
                     <div>
-                        <span className="text-purple-600 font-semibold tracking-wider uppercase text-sm">Our Mission</span>
-                        <h2 className="text-4xl font-heading font-bold text-gray-900 mt-2 mb-6">Empowering Through Knowledge & Growth</h2>
-                        <div className="prose text-gray-700 text-lg leading-relaxed space-y-4">
+                        <span className="text-purple-600 dark:text-purple-400 font-semibold tracking-wider uppercase text-sm">Our Mission</span>
+                        <h2 className="text-4xl font-heading font-bold text-gray-900 dark:text-white mt-2 mb-6">Empowering Through Knowledge & Growth</h2>
+                        <div className="prose text-gray-700 dark:text-gray-300 text-lg leading-relaxed space-y-4">
                             <p>
                                 At Wekume, our mission is to empower university students to take control of their reproductive health while nurturing personal and professional growth. We believe that every student should have access to reliable health resources, regardless of their background.
                             </p>
@@ -72,7 +72,7 @@ function About() {
                         </div>
                     </div>
                     <div className="relative">
-                        <div className="absolute inset-0 bg-gradient-to-tr from-purple-200 to-orange-100 rounded-3xl transform rotate-3"></div>
+                        <div className="absolute inset-0 bg-gradient-to-tr from-purple-200 to-orange-100 dark:from-purple-900 dark:to-orange-900 rounded-3xl transform rotate-3"></div>
                         <img
                             src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
                             alt="Students collaborating"
@@ -84,8 +84,8 @@ function About() {
                 {/* Core Values */}
                 <div className="py-12">
                     <div className="text-center mb-16">
-                        <span className="text-orange-600 font-semibold tracking-wider uppercase text-sm">Guiding Principles</span>
-                        <h2 className="text-4xl font-heading font-bold text-gray-900 mt-2">Our Core Values</h2>
+                        <span className="text-orange-600 dark:text-orange-400 font-semibold tracking-wider uppercase text-sm">Guiding Principles</span>
+                        <h2 className="text-4xl font-heading font-bold text-gray-900 dark:text-white mt-2">Our Core Values</h2>
                     </div>
 
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -94,37 +94,37 @@ function About() {
                                 title: "Inclusivity",
                                 icon: <Users className="text-purple-600" size={32} />,
                                 desc: "We believe that everyone deserves access to quality healthcare, regardless of background. We celebrate diversity and support all students, including marginalized groups like refugees.",
-                                color: "bg-purple-50 border-purple-100"
+                                color: "bg-purple-50 dark:bg-purple-900/30 border-purple-100 dark:border-purple-800"
                             },
                             {
                                 title: "Empowerment",
                                 icon: <Lightbulb className="text-orange-600" size={32} />,
                                 desc: "We empower students to take control of their reproductive health and personal growth, helping them build confidence in making informed health and career choices.",
-                                color: "bg-orange-50 border-orange-100"
+                                color: "bg-orange-50 dark:bg-orange-900/30 border-orange-100 dark:border-orange-800"
                             },
                             {
                                 title: "Compassion",
                                 icon: <Heart className="text-pink-600" size={32} />,
                                 desc: "Our SafeChat and counseling services provide a compassionate, non-judgmental space. We prioritize listening, understanding, and supporting each individual’s unique needs.",
-                                color: "bg-pink-50 border-pink-100"
+                                color: "bg-pink-50 dark:bg-pink-900/30 border-pink-100 dark:border-pink-800"
                             },
                             {
                                 title: "Innovation",
                                 icon: <div className="text-blue-600 font-bold text-xl">🚀</div>,
                                 desc: "We harness technology to ensure accessibility. Our user-friendly app and features like QuickTest make it easier for students to access information on their terms.",
-                                color: "bg-blue-50 border-blue-100"
+                                color: "bg-blue-50 dark:bg-blue-900/30 border-blue-100 dark:border-blue-800"
                             },
                             {
                                 title: "Community",
                                 icon: <div className="text-green-600 font-bold text-xl">🤝</div>,
                                 desc: "We foster collaboration through exchange programs and partnerships, encouraging students to connect, learn, and grow together for impactful service.",
-                                color: "bg-green-50 border-green-100"
+                                color: "bg-green-50 dark:bg-green-900/30 border-green-100 dark:border-green-800"
                             }
                         ].map((value, idx) => (
                             <div key={idx} className={`p-8 rounded-2xl border ${value.color} hover:shadow-lg transition-all duration-300 hover:-translate-y-1`}>
                                 <div className="mb-6">{value.icon}</div>
-                                <h3 className="text-xl font-bold text-gray-900 mb-3">{value.title}</h3>
-                                <p className="text-gray-600 leading-relaxed">{value.desc}</p>
+                                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">{value.title}</h3>
+                                <p className="text-gray-600 dark:text-gray-300 leading-relaxed">{value.desc}</p>
                             </div>
                         ))}
                     </div>
@@ -147,25 +147,25 @@ function About() {
                 {/* Next Big Dreams */}
                 <div className="py-12">
                     <div className="text-center mb-16">
-                        <span className="text-purple-600 font-semibold tracking-wider uppercase text-sm">Future Goals</span>
-                        <h2 className="text-4xl font-heading font-bold text-gray-900 mt-2">Our Next Big Dreams</h2>
+                        <span className="text-purple-600 dark:text-purple-400 font-semibold tracking-wider uppercase text-sm">Future Goals</span>
+                        <h2 className="text-4xl font-heading font-bold text-gray-900 dark:text-white mt-2">Our Next Big Dreams</h2>
                     </div>
 
                     <div className="grid md:grid-cols-3 gap-8 text-center">
-                        <div className="p-8 bg-white rounded-2xl shadow-lg border border-gray-100">
-                            <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-6 text-purple-600 text-2xl">💼</div>
-                            <h3 className="text-xl font-bold mb-4">Business Development</h3>
-                            <p className="text-gray-600">Incubator for student entrepreneurs providing mentorship, workshops, and fundraising resources.</p>
+                        <div className="p-8 bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700">
+                            <div className="w-16 h-16 bg-purple-100 dark:bg-purple-900 rounded-full flex items-center justify-center mx-auto mb-6 text-purple-600 dark:text-purple-400 text-2xl">💼</div>
+                            <h3 className="text-xl font-bold mb-4 text-gray-900 dark:text-white">Business Development</h3>
+                            <p className="text-gray-600 dark:text-gray-300">Incubator for student entrepreneurs providing mentorship, workshops, and fundraising resources.</p>
                         </div>
-                        <div className="p-8 bg-white rounded-2xl shadow-lg border border-gray-100">
-                            <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-6 text-orange-600 text-2xl">🌍</div>
-                            <h3 className="text-xl font-bold mb-4">Exchange Programs</h3>
-                            <p className="text-gray-600">Facilitating varied perspectives through regional exchange programs and internship opportunities.</p>
+                        <div className="p-8 bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700">
+                            <div className="w-16 h-16 bg-orange-100 dark:bg-orange-900 rounded-full flex items-center justify-center mx-auto mb-6 text-orange-600 dark:text-orange-400 text-2xl">🌍</div>
+                            <h3 className="text-xl font-bold mb-4 text-gray-900 dark:text-white">Exchange Programs</h3>
+                            <p className="text-gray-600 dark:text-gray-300">Facilitating varied perspectives through regional exchange programs and internship opportunities.</p>
                         </div>
-                        <div className="p-8 bg-white rounded-2xl shadow-lg border border-gray-100">
-                            <div className="w-16 h-16 bg-pink-100 rounded-full flex items-center justify-center mx-auto mb-6 text-pink-600 text-2xl">🤲</div>
-                            <h3 className="text-xl font-bold mb-4">Total Inclusivity</h3>
-                            <p className="text-gray-600">Ensuring resources are accessible to marginalized groups, such as refugees, creating a safe space for everyone.</p>
+                        <div className="p-8 bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700">
+                            <div className="w-16 h-16 bg-pink-100 dark:bg-pink-900 rounded-full flex items-center justify-center mx-auto mb-6 text-pink-600 dark:text-pink-400 text-2xl">🤲</div>
+                            <h3 className="text-xl font-bold mb-4 text-gray-900 dark:text-white">Total Inclusivity</h3>
+                            <p className="text-gray-600 dark:text-gray-300">Ensuring resources are accessible to marginalized groups, such as refugees, creating a safe space for everyone.</p>
                         </div>
                     </div>
                 </div>

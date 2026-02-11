@@ -73,13 +73,13 @@ function AdminLogin() {
 
     return (
         <div className="min-h-screen flex items-center justify-center gradient-primary">
-            <div className="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-md">
+            <div className="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-2xl w-full max-w-md">
                 <div className="text-center mb-8">
                     <div className="inline-flex items-center justify-center w-16 h-16 bg-primary-100 rounded-full mb-4">
                         <LogIn className="text-primary-600" size={32} />
                     </div>
-                    <h1 className="text-3xl font-heading font-bold text-gray-900">Admin Login</h1>
-                    <p className="text-gray-600 mt-2">Wekume Initiative CMS</p>
+                    <h1 className="text-3xl font-heading font-bold text-gray-900 dark:text-white">Admin Login</h1>
+                    <p className="text-gray-600 dark:text-gray-400 mt-2">Wekume Initiative CMS</p>
                 </div>
 
                 {error && (
@@ -90,7 +90,7 @@ function AdminLogin() {
 
                 <form onSubmit={handleSubmit} className="space-y-6">
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                             Email
                         </label>
                         <input
@@ -98,13 +98,13 @@ function AdminLogin() {
                             required
                             value={formData.email}
                             onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                            className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                             placeholder="admin@wekume.org"
                         />
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                             Password
                         </label>
                         <input
@@ -112,7 +112,7 @@ function AdminLogin() {
                             required
                             value={formData.password}
                             onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                            className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                             placeholder="••••••••"
                         />
                     </div>

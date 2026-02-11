@@ -44,7 +44,7 @@ function GetInvolved() {
             </div>
 
             {/* How can you start section */}
-            <div className="py-24 bg-gray-50">
+            <div className="py-24 bg-gray-50 dark:bg-gray-900">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center mb-16">
                         <h2 className="text-4xl font-heading font-bold text-gray-900 mb-4">Here’s How You Can Start</h2>
@@ -53,12 +53,12 @@ function GetInvolved() {
 
                     <div className="grid md:grid-cols-3 gap-8">
                         {/* Card 1: Download App */}
-                        <div className="bg-white rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all hover:-translate-y-2 border border-purple-100 group">
-                            <div className="w-16 h-16 bg-purple-50 rounded-2xl flex items-center justify-center mb-6 text-purple-600 group-hover:bg-purple-600 group-hover:text-white transition-colors">
+                        <div className="bg-white dark:bg-gray-800 rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all hover:-translate-y-2 border border-purple-100 dark:border-purple-700 group">
+                            <div className="w-16 h-16 bg-purple-50 dark:bg-purple-900 rounded-2xl flex items-center justify-center mb-6 text-purple-600 dark:text-purple-400 group-hover:bg-purple-600 group-hover:text-white transition-colors">
                                 <Smartphone size={32} />
                             </div>
-                            <h3 className="text-2xl font-bold text-gray-900 mb-4">Download the FREE App</h3>
-                            <p className="text-gray-600 mb-6 leading-relaxed">
+                            <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Download the FREE App</h3>
+                            <p className="text-gray-600 dark:text-gray-300 mb-6 leading-relaxed">
                                 Get access to SafeChat, QuickTest, and Health Tips at your fingertips! Unlock a world of information, resources, and support.
                             </p>
                             <Link to="/wekume-app" className="inline-flex items-center text-purple-600 font-bold hover:text-purple-700">
@@ -67,12 +67,12 @@ function GetInvolved() {
                         </div>
 
                         {/* Card 2: Connect with Us */}
-                        <div className="bg-white rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all hover:-translate-y-2 border border-pink-100 group">
-                            <div className="w-16 h-16 bg-pink-50 rounded-2xl flex items-center justify-center mb-6 text-pink-600 group-hover:bg-pink-600 group-hover:text-white transition-colors">
+                        <div className="bg-white dark:bg-gray-800 rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all hover:-translate-y-2 border border-pink-100 dark:border-pink-700 group">
+                            <div className="w-16 h-16 bg-pink-50 dark:bg-pink-900 rounded-2xl flex items-center justify-center mb-6 text-pink-600 dark:text-pink-400 group-hover:bg-pink-600 group-hover:text-white transition-colors">
                                 <Globe size={32} />
                             </div>
-                            <h3 className="text-2xl font-bold text-gray-900 mb-4">Connect with Us!</h3>
-                            <p className="text-gray-600 mb-6 leading-relaxed">
+                            <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Connect with Us!</h3>
+                            <p className="text-gray-600 dark:text-gray-300 mb-6 leading-relaxed">
                                 Curious about our exchange programs, internships, or business incubator? Reach out! Wekume offers unique opportunities to broaden your horizons.
                             </p>
                             <Link to="/contact" className="inline-flex items-center text-pink-600 font-bold hover:text-pink-700">
@@ -81,12 +81,12 @@ function GetInvolved() {
                         </div>
 
                         {/* Card 3: Join Community */}
-                        <div className="bg-white rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all hover:-translate-y-2 border border-orange-100 group">
-                            <div className="w-16 h-16 bg-orange-50 rounded-2xl flex items-center justify-center mb-6 text-orange-600 group-hover:bg-orange-600 group-hover:text-white transition-colors">
+                        <div className="bg-white dark:bg-gray-800 rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all hover:-translate-y-2 border border-orange-100 dark:border-orange-700 group">
+                            <div className="w-16 h-16 bg-orange-50 dark:bg-orange-900 rounded-2xl flex items-center justify-center mb-6 text-orange-600 dark:text-orange-400 group-hover:bg-orange-600 group-hover:text-white transition-colors">
                                 <Users size={32} />
                             </div>
-                            <h3 className="text-2xl font-bold text-gray-900 mb-4">Join the Community</h3>
-                            <p className="text-gray-600 mb-6 leading-relaxed">
+                            <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Join the Community</h3>
+                            <p className="text-gray-600 dark:text-gray-300 mb-6 leading-relaxed">
                                 You’re not alone! Join a network of like-minded students dedicated to health, growth, and positive change. Membership is FREE.
                             </p>
                             <a href="#" className="inline-flex items-center text-orange-600 font-bold hover:text-orange-700">
@@ -98,7 +98,7 @@ function GetInvolved() {
             </div>
 
             {/* CTA Section */}
-            <div className="bg-white py-20 relative overflow-hidden">
+            <div className="bg-white dark:bg-gray-900 py-20 relative overflow-hidden">
                 <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                     <div className="bg-gradient-to-r from-purple-600 to-indigo-700 rounded-3xl p-10 md:p-16 text-center text-white shadow-2xl relative overflow-hidden">
                         {/* Background Pattern */}

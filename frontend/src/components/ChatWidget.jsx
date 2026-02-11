@@ -131,7 +131,7 @@ function ChatWidget() {
     }
 
     return (
-        <div className="fixed bottom-6 right-6 w-96 h-[600px] bg-white rounded-2xl shadow-2xl flex flex-col z-50 animate-fade-in">
+        <div className="fixed bottom-6 right-6 w-96 h-[600px] bg-white dark:bg-gray-800 rounded-2xl shadow-2xl flex flex-col z-50 animate-fade-in">
             {/* Header */}
             <div className="gradient-primary text-white p-4 rounded-t-2xl flex justify-between items-center">
                 <div className="flex items-center gap-2">
@@ -154,14 +154,14 @@ function ChatWidget() {
 
             {/* Quick Actions (only show if no messages yet or just welcome message) */}
             {messages.length <= 1 && (
-                <div className="p-3 bg-gray-50 border-b">
-                    <p className="text-xs text-gray-600 mb-2">Quick actions:</p>
+                <div className="p-3 bg-gray-50 dark:bg-gray-700 border-b dark:border-gray-600">
+                    <p className="text-xs text-gray-600 dark:text-gray-300 mb-2">Quick actions:</p>
                     <div className="grid grid-cols-2 gap-2">
                         {quickActions.map((action, idx) => (
                             <button
                                 key={idx}
                                 onClick={() => setInput(action.message)}
-                                className="text-xs bg-white border border-gray-200 rounded-lg p-2 hover:bg-primary-50 hover:border-primary-300 transition-colors text-left"
+                                className="text-xs bg-white dark:bg-gray-600 border border-gray-200 dark:border-gray-500 rounded-lg p-2 hover:bg-primary-50 dark:hover:bg-gray-500 hover:border-primary-300 transition-colors text-left dark:text-gray-200"
                             >
                                 {action.label}
                             </button>
@@ -171,7 +171,7 @@ function ChatWidget() {
             )}
 
             {/* Messages */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50">
+            <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50 dark:bg-gray-900">
                 {messages.map((msg, idx) => (
                     <div
                         key={idx}
@@ -181,10 +181,10 @@ function ChatWidget() {
                             <div className={`p-3 rounded-lg ${msg.role === 'user'
                                 ? 'bg-primary-600 text-white rounded-br-none'
                                 : msg.crisis
-                                    ? 'bg-red-50 border-2 border-red-300 text-gray-900 rounded-bl-none'
+                                    ? 'bg-red-50 dark:bg-red-900/30 border-2 border-red-300 dark:border-red-700 text-gray-900 dark:text-white rounded-bl-none'
                                     : msg.error
-                                        ? 'bg-yellow-50 border border-yellow-300 text-gray-900 rounded-bl-none'
-                                        : 'bg-white border border-gray-200 text-gray-900 rounded-bl-none shadow-sm'
+                                        ? 'bg-yellow-50 dark:bg-yellow-900/30 border border-yellow-300 dark:border-yellow-700 text-gray-900 dark:text-white rounded-bl-none'
+                                        : 'bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white rounded-bl-none shadow-sm'
                                 }`}>
                                 <p className="text-sm whitespace-pre-wrap leading-relaxed">{msg.content}</p>
 
@@ -216,12 +216,12 @@ function ChatWidget() {
 
                 {loading && (
                     <div className="flex justify-start">
-                        <div className="bg-white border border-gray-200 p-4 rounded-lg shadow-sm">
+                        <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 p-4 rounded-lg shadow-sm">
                             <div className="flex gap-2 items-center">
                                 <div className="w-2 h-2 bg-primary-400 rounded-full animate-bounce"></div>
                                 <div className="w-2 h-2 bg-primary-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
                                 <div className="w-2 h-2 bg-primary-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
-                                <span className="text-xs text-gray-500 ml-2">Lina is thinking... (approx. 30-40s)</span>
+                                <span className="text-xs text-gray-500 dark:text-gray-400 ml-2">Lina is thinking... (approx. 30-40s)</span>
                             </div>
                         </div>
                     </div>
@@ -231,7 +231,7 @@ function ChatWidget() {
             </div>
 
             {/* Input Area */}
-            <div className="p-4 border-t bg-white rounded-b-2xl">
+            <div className="p-4 border-t dark:border-gray-700 bg-white dark:bg-gray-800 rounded-b-2xl">
                 <div className="flex gap-2 mb-2">
                     <input
                         type="text"
@@ -239,7 +239,7 @@ function ChatWidget() {
                         onChange={(e) => setInput(e.target.value)}
                         onKeyPress={(e) => e.key === 'Enter' && !e.shiftKey && handleSend()}
                         placeholder="Type your message..."
-                        className="flex-1 px-4 py-3 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm"
+                        className="flex-1 px-4 py-3 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-full focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm"
                         disabled={loading}
                         maxLength={500}
                     />

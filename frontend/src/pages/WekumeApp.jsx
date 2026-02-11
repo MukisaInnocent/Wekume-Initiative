@@ -47,14 +47,14 @@ function WekumeApp() {
                 <div className="absolute bottom-0 right-0 w-96 h-96 bg-secondary-900 rounded-full blur-3xl opacity-50 translate-x-1/3 translate-y-1/3"></div>
             </div>
 
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-20 relative z-20 pb-20">
-                <div className="bg-white rounded-3xl shadow-2xl p-8 md:p-12">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-20 relative z-20 pb-20 bg-white dark:bg-gray-900">
+                <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-2xl p-8 md:p-12 border border-gray-100 dark:border-gray-700">
                     <div className="grid md:grid-cols-2 gap-12 items-center">
                         <div>
-                            <h2 className="text-3xl font-heading font-bold text-gray-900 mb-6">Why Download Wekume?</h2>
+                            <h2 className="text-3xl font-heading font-bold text-gray-900 dark:text-white mb-6">Why Download Wekume?</h2>
                             <ul className="space-y-4">
                                 {(content.features || []).map((feature, idx) => (
-                                    <li key={idx} className="flex items-center gap-3 text-lg text-gray-700">
+                                    <li key={idx} className="flex items-center gap-3 text-lg text-gray-700 dark:text-gray-300">
                                         <div className="bg-green-100 text-green-600 p-1 rounded-full"><Check size={16} /></div>
                                         {feature}
                                     </li>

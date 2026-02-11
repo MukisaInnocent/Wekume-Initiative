@@ -29,7 +29,7 @@ function Testimonials() {
     const displayTestimonials = testimonials;
 
     return (
-        <div className="min-h-screen bg-gray-50 flex flex-col">
+        <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col">
             <Navbar />
 
             {/* Hero Section */}
@@ -59,17 +59,17 @@ function Testimonials() {
                                 {displayTestimonials.map((testimonial) => (
                                     <div
                                         key={testimonial.id}
-                                        className="bg-white rounded-2xl p-8 shadow-lg border border-gray-100 hover:shadow-xl transition-shadow duration-300 flex flex-col h-full"
+                                        className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-lg border border-gray-100 dark:border-gray-700 hover:shadow-xl transition-shadow duration-300 flex flex-col h-full"
                                     >
                                         <div className="mb-6 text-purple-500">
                                             <Quote size={40} className="opacity-20 transform rotate-180" />
                                         </div>
 
-                                        <p className="text-gray-700 text-lg leading-relaxed mb-6 flex-grow italic">
+                                        <p className="text-gray-700 dark:text-gray-300 text-lg leading-relaxed mb-6 flex-grow italic">
                                             "{testimonial.content}"
                                         </p>
 
-                                        <div className="flex items-center gap-4 mt-auto pt-6 border-t border-gray-100">
+                                        <div className="flex items-center gap-4 mt-auto pt-6 border-t border-gray-100 dark:border-gray-700">
                                             <div className="h-12 w-12 rounded-full bg-gradient-to-br from-purple-100 to-pink-100 flex items-center justify-center text-purple-600 font-bold text-xl overflow-hidden">
                                                 {testimonial.photo_url ? (
                                                     <img src={testimonial.photo_url} alt={testimonial.author_name} className="h-full w-full object-cover" />
@@ -78,7 +78,7 @@ function Testimonials() {
                                                 )}
                                             </div>
                                             <div>
-                                                <h4 className="font-bold text-gray-900">{testimonial.author_name}</h4>
+                                                <h4 className="font-bold text-gray-900 dark:text-white">{testimonial.author_name}</h4>
                                                 <p className="text-sm text-purple-600">{testimonial.author_role || 'Community Member'}</p>
                                             </div>
                                             {testimonial.rating && (
@@ -94,7 +94,7 @@ function Testimonials() {
                             </div>
                         ) : (
                             <div className="text-center py-20">
-                                <p className="text-gray-500 text-lg">No testimonials available yet.</p>
+                                <p className="text-gray-500 dark:text-gray-400 text-lg">No testimonials available yet.</p>
                             </div>
                         )
                     )}

@@ -33,25 +33,25 @@ function Events() {
         <>
             <Navbar />
 
-            <div className="bg-gray-50 py-16 min-h-screen">
+            <div className="bg-gray-50 dark:bg-gray-900 py-16 min-h-screen">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center mb-12">
-                        <h1 className="text-4xl md:text-5xl font-heading font-bold mb-4">Events & Programs</h1>
-                        <p className="text-xl text-gray-600 max-w-2xl mx-auto">Join us in our upcoming activities and see what we've been up to.</p>
+                        <h1 className="text-4xl md:text-5xl font-heading font-bold mb-4 text-gray-900 dark:text-white">Events & Programs</h1>
+                        <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">Join us in our upcoming activities and see what we've been up to.</p>
                     </div>
 
                     {/* Filter Tabs */}
                     <div className="flex justify-center mb-10">
-                        <div className="bg-white p-1 rounded-lg shadow-sm inline-flex">
+                        <div className="bg-white dark:bg-gray-800 p-1 rounded-lg shadow-sm inline-flex">
                             <button
                                 onClick={() => setFilter('upcoming')}
-                                className={`px-6 py-2 rounded-md font-medium transition-colors ${filter === 'upcoming' ? 'bg-primary-600 text-white shadow-sm' : 'text-gray-600 hover:bg-gray-50'}`}
+                                className={`px-6 py-2 rounded-md font-medium transition-colors ${filter === 'upcoming' ? 'bg-primary-600 text-white shadow-sm' : 'text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'}`}
                             >
                                 Upcoming Events
                             </button>
                             <button
                                 onClick={() => setFilter('past')}
-                                className={`px-6 py-2 rounded-md font-medium transition-colors ${filter === 'past' ? 'bg-primary-600 text-white shadow-sm' : 'text-gray-600 hover:bg-gray-50'}`}
+                                className={`px-6 py-2 rounded-md font-medium transition-colors ${filter === 'past' ? 'bg-primary-600 text-white shadow-sm' : 'text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'}`}
                             >
                                 Past Events
                             </button>
@@ -60,11 +60,11 @@ function Events() {
 
                     {/* Events Grid */}
                     {loading ? (
-                        <div className="text-center py-20">Loading events...</div>
+                        <div className="text-center py-20 text-gray-600 dark:text-gray-300">Loading events...</div>
                     ) : filteredEvents.length > 0 ? (
                         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                             {filteredEvents.map(event => (
-                                <div key={event.id} className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all group max-w-sm mx-auto w-full">
+                                <div key={event.id} className="bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all group max-w-sm mx-auto w-full">
                                     <div className="h-48 bg-gray-200 relative overflow-hidden">
                                         {event.banner_image_url ? (
                                             <img src={event.banner_image_url} alt={event.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
@@ -73,21 +73,21 @@ function Events() {
                                                 <Calendar className="text-primary-300" size={48} />
                                             </div>
                                         )}
-                                        <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-bold text-gray-900 uppercase tracking-wide">
+                                        <div className="absolute top-4 right-4 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-bold text-gray-900 dark:text-white uppercase tracking-wide">
                                             {event.event_type}
                                         </div>
                                     </div>
                                     <div className="p-6">
-                                        <div className="flex items-center gap-2 text-sm text-primary-600 font-medium mb-2">
+                                        <div className="flex items-center gap-2 text-sm text-primary-600 dark:text-primary-400 font-medium mb-2">
                                             <Calendar size={16} />
                                             {new Date(event.event_date).toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
                                         </div>
-                                        <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-primary-600 transition-colors">{event.title}</h3>
-                                        <div className="flex items-center gap-2 text-sm text-gray-500 mb-4">
+                                        <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">{event.title}</h3>
+                                        <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 mb-4">
                                             <MapPin size={16} />
                                             {event.location}
                                         </div>
-                                        <p className="text-gray-600 text-sm line-clamp-3 mb-6">{event.description}</p>
+                                        <p className="text-gray-600 dark:text-gray-300 text-sm line-clamp-3 mb-6">{event.description}</p>
 
                                         {event.registration_link && filter === 'upcoming' ? (
                                             <a href={event.registration_link} className="w-full block text-center bg-secondary-500 text-white py-2 rounded-lg font-semibold hover:bg-secondary-600 transition-colors">
@@ -101,10 +101,10 @@ function Events() {
                             ))}
                         </div>
                     ) : (
-                        <div className="text-center py-20 bg-white rounded-2xl shadow-sm border border-gray-100">
+                        <div className="text-center py-20 bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700">
                             <Calendar className="mx-auto text-gray-300 mb-4" size={48} />
-                            <h3 className="text-xl font-bold text-gray-900">No {filter} events found</h3>
-                            <p className="text-gray-500 mt-2">Check back later for updates or browse our other events.</p>
+                            <h3 className="text-xl font-bold text-gray-900 dark:text-white">No {filter} events found</h3>
+                            <p className="text-gray-500 dark:text-gray-400 mt-2">Check back later for updates or browse our other events.</p>
                         </div>
                     )}
                 </div>
