@@ -71,7 +71,7 @@ function Reports() {
                         {filteredReports.map(report => (
                             <div key={report.id} className="group bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-lg hover:shadow-2xl transition-all overflow-hidden flex flex-col">
                                 {/* Preview / Icon Area */}
-                                <div className="h-48 bg-gradient-to-br from-primary-50 to-secondary-50 flex items-center justify-center p-8 group-hover:scale-105 transition-transform duration-500">
+                                <div className="h-48 bg-gradient-to-br from-primary-50 to-secondary-50 dark:from-gray-700 dark:to-gray-600 flex items-center justify-center p-8 group-hover:scale-105 transition-transform duration-500">
                                     {report.cover_image_url ? (
                                         <img src={report.cover_image_url} alt={report.title} className="h-full w-auto object-contain shadow-md rounded" />
                                     ) : (
@@ -81,7 +81,7 @@ function Reports() {
 
                                 <div className="p-8 flex-1 flex flex-col">
                                     <div className="flex justify-between items-start mb-4">
-                                        <span className="bg-primary-50 text-primary-700 px-3 py-1 rounded-full text-xs font-bold font-heading">
+                                        <span className="bg-primary-50 dark:bg-primary-900/40 text-primary-700 dark:text-primary-300 px-3 py-1 rounded-full text-xs font-bold font-heading">
                                             {report.year}
                                         </span>
                                         {/* Optional badges can go here */}

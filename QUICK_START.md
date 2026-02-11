@@ -8,10 +8,10 @@
 - **Health Check**: http://localhost:5000/health
 - **API Docs**: http://localhost:5000/api
 
-### Frontend App (Port 5173)
-- **Homepage**: http://localhost:5173
-- **Admin Login**: http://localhost:5173/admin/login
-- **Admin Dashboard**: http://localhost:5173/admin/dashboard
+### Frontend App (Port 5175)
+- **Homepage**: http://localhost:5175
+- **Admin Login**: http://localhost:5175/admin/login
+- **Admin Dashboard**: http://localhost:5175/admin/dashboard
 
 ---
 
@@ -47,7 +47,7 @@ You should see:
 
 Navigate to:
 ```
-http://localhost:5173
+http://localhost:5175
 ```
 
 You should see the Wekume Initiative homepage with:
@@ -57,7 +57,7 @@ You should see the Wekume Initiative homepage with:
 
 ### 3. Login to Admin Dashboard
 
-1. Go to: http://localhost:5173/admin/login
+1. Go to: http://localhost:5175/admin/login
 2. Enter credentials:
    - Email: `admin@wekume.org`
    - Password: `WekumeAdmin2024!`
@@ -137,7 +137,7 @@ npm run preview      # Preview production build
 
 ### Frontend won't start
 - Delete `node_modules` and reinstall: `npm install`
-- Check port 5173 isn't in use
+- Check port 5175 isn't in use
 - Clear Vite cache: `rm -rf node_modules/.vite`
 
 ### Can't login to admin
@@ -197,7 +197,7 @@ npm run preview      # Preview production build
 - [x] Backend dependencies installed
 - [x] Frontend dependencies installed
 - [x] Backend server running (port 5000)
-- [x] Frontend server running (port 5173)
+- [x] Frontend server running (port 5175)
 - [x] Admin user created
 - [x] Can access homepage
 - [x] Can login to admin dashboard

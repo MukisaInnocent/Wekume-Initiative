@@ -55,13 +55,13 @@ function WekumeApp() {
                             <ul className="space-y-4">
                                 {(content.features || []).map((feature, idx) => (
                                     <li key={idx} className="flex items-center gap-3 text-lg text-gray-700 dark:text-gray-300">
-                                        <div className="bg-green-100 text-green-600 p-1 rounded-full"><Check size={16} /></div>
+                                        <div className="bg-green-100 dark:bg-green-900/40 text-green-600 dark:text-green-400 p-1 rounded-full"><Check size={16} /></div>
                                         {feature}
                                     </li>
                                 ))}
                             </ul>
                         </div>
-                        <div className="bg-gray-100 rounded-2xl h-80 flex items-center justify-center text-gray-400">
+                        <div className="bg-gray-100 dark:bg-gray-700 rounded-2xl h-80 flex items-center justify-center text-gray-400 dark:text-gray-500">
                             {/* App Screenshot Placeholder */}
                             <Smartphone size={64} />
                             <span className="ml-2 font-medium">App Screenshot Preview</span>

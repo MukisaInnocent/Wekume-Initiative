@@ -47,7 +47,7 @@ function GetInvolved() {
             <div className="py-24 bg-gray-50 dark:bg-gray-900">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center mb-16">
-                        <h2 className="text-4xl font-heading font-bold text-gray-900 mb-4">Here’s How You Can Start</h2>
+                        <h2 className="text-4xl font-heading font-bold text-gray-900 dark:text-white mb-4">Here’s How You Can Start</h2>
                         <div className="w-24 h-1.5 bg-gradient-to-r from-purple-500 to-orange-500 mx-auto rounded-full"></div>
                     </div>
 

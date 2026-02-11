@@ -79,7 +79,7 @@ function Testimonials() {
                                             </div>
                                             <div>
                                                 <h4 className="font-bold text-gray-900 dark:text-white">{testimonial.author_name}</h4>
-                                                <p className="text-sm text-purple-600">{testimonial.author_role || 'Community Member'}</p>
+                                                <p className="text-sm text-purple-600 dark:text-purple-400">{testimonial.author_role || 'Community Member'}</p>
                                             </div>
                                             {testimonial.rating && (
                                                 <div className="ml-auto flex gap-0.5">

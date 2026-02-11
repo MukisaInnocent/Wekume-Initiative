@@ -25,7 +25,7 @@ Look at the terminal running the backend (where you see `npm run dev`).
 
 ### 3. Verify Ports
 - Backend must be on: `http://localhost:5000` (check terminal)
-- Frontend must be on: `http://localhost:5173` (check browser URL)
+- Frontend must be on: `http://localhost:5175` (check browser URL)
 
 ### 4. Direct Test
 Open this link in a new tab:

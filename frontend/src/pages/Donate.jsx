@@ -130,7 +130,7 @@ function Donate() {
                     <div className="lg:col-span-3">
                         <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl border border-primary-100 dark:border-gray-700 overflow-hidden">
                             <div className="bg-gradient-to-r from-primary-50 to-pink-50 dark:from-gray-800 dark:to-gray-800 p-6 border-b border-primary-100 dark:border-gray-700">
-                                <h2 className="text-2xl font-bold text-primary-900 flex items-center gap-2">
+                                <h2 className="text-2xl font-bold text-primary-900 dark:text-white flex items-center gap-2">
                                     <Heart className="text-pink-500 fill-current" size={28} />
                                     Complete Your Donation
                                 </h2>
@@ -181,17 +181,17 @@ function Donate() {
                                     </div>
 
                                     {/* Payment Instructions */}
-                                    <div className="bg-gradient-to-r from-secondary-50 to-orange-50 border-2 border-secondary-200 rounded-2xl p-6 mb-8 text-left">
-                                        <h4 className="font-bold text-secondary-800 mb-3 uppercase text-sm tracking-wider flex items-center gap-2">
+                                    <div className="bg-gradient-to-r from-secondary-50 to-orange-50 dark:from-gray-700 dark:to-gray-700 border-2 border-secondary-200 dark:border-gray-600 rounded-2xl p-6 mb-8 text-left">
+                                        <h4 className="font-bold text-secondary-800 dark:text-secondary-300 mb-3 uppercase text-sm tracking-wider flex items-center gap-2">
                                             <ArrowRight className="text-secondary-600" size={20} />
                                             Next Steps - Complete Payment
                                         </h4>
                                         <div className="bg-white dark:bg-gray-800 rounded-lg p-4 mb-4">
                                             <p className="text-base font-medium text-gray-900 dark:text-white leading-relaxed">{instructions}</p>
                                         </div>
-                                        <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 flex gap-3">
-                                            <AlertCircle className="text-yellow-600 shrink-0 mt-0.5" size={20} />
-                                            <div className="text-sm text-yellow-900">
+                                        <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4 flex gap-3">
+                                            <AlertCircle className="text-yellow-600 dark:text-yellow-400 shrink-0 mt-0.5" size={20} />
+                                            <div className="text-sm text-yellow-900 dark:text-yellow-200">
                                                 <p className="font-semibold mb-1">Important:</p>
                                                 <p>Please use the transaction reference <span className="font-bold">{transactionRef}</span> when making your payment. A confirmation SMS will be sent to <span className="font-bold">{details.phone_number}</span> once payment is received.</p>
                                             </div>
@@ -379,9 +379,9 @@ function Donate() {
                                     </div>
 
                                     {errors.submit && (
-                                        <div className="bg-red-50 border-2 border-red-200 rounded-lg p-4 flex gap-3">
-                                            <AlertCircle className="text-red-600 shrink-0" size={20} />
-                                            <p className="text-red-800 text-sm">{errors.submit}</p>
+                                        <div className="bg-red-50 dark:bg-red-900/20 border-2 border-red-200 dark:border-red-800 rounded-lg p-4 flex gap-3">
+                                            <AlertCircle className="text-red-600 dark:text-red-400 shrink-0" size={20} />
+                                            <p className="text-red-800 dark:text-red-200 text-sm">{errors.submit}</p>
                                         </div>
                                     )}
 
@@ -409,27 +409,27 @@ function Donate() {
 
                     {/* Sidebar / Impact */}
                     <div className="lg:col-span-2 space-y-6">
-                        <div className="bg-gradient-to-br from-primary-50 to-purple-50 rounded-2xl p-8 border-2 border-primary-200 shadow-lg">
-                            <h3 className="text-xl font-bold text-primary-900 mb-6 flex items-center gap-2">
+                        <div className="bg-gradient-to-br from-primary-50 to-purple-50 dark:from-gray-800 dark:to-gray-800 rounded-2xl p-8 border-2 border-primary-200 dark:border-gray-700 shadow-lg">
+                            <h3 className="text-xl font-bold text-primary-900 dark:text-white mb-6 flex items-center gap-2">
                                 <Heart className="text-pink-500" fill="currentColor" size={24} />
                                 Your Impact
                             </h3>
                             <ul className="space-y-4">
                                 <li className="flex gap-3">
                                     <Check className="text-secondary-500 shrink-0 mt-0.5" size={20} strokeWidth={3} />
-                                    <span className="text-primary-800 font-medium">Support verified sexual and reproductive health education</span>
+                                    <span className="text-primary-800 dark:text-gray-200 font-medium">Support verified sexual and reproductive health education</span>
                                 </li>
                                 <li className="flex gap-3">
                                     <Check className="text-secondary-500 shrink-0 mt-0.5" size={20} strokeWidth={3} />
-                                    <span className="text-primary-800 font-medium">Expand our reach to more schools across Uganda</span>
+                                    <span className="text-primary-800 dark:text-gray-200 font-medium">Expand our reach to more schools across Uganda</span>
                                 </li>
                                 <li className="flex gap-3">
                                     <Check className="text-secondary-500 shrink-0 mt-0.5" size={20} strokeWidth={3} />
-                                    <span className="text-primary-800 font-medium">Develop the Wekume App with new features</span>
+                                    <span className="text-primary-800 dark:text-gray-200 font-medium">Develop the Wekume App with new features</span>
                                 </li>
                                 <li className="flex gap-3">
                                     <Check className="text-secondary-500 shrink-0 mt-0.5" size={20} strokeWidth={3} />
-                                    <span className="text-primary-800 font-medium">Train more peer educators and mentors</span>
+                                    <span className="text-primary-800 dark:text-gray-200 font-medium">Train more peer educators and mentors</span>
                                 </li>
                             </ul>
                         </div>
@@ -439,15 +439,15 @@ function Donate() {
                             <p className="text-sm text-gray-600 dark:text-gray-300 mb-4 leading-relaxed">
                                 All transactions are secure and encrypted. We use standard banking and mobile money protocols. You'll receive detailed confirmation via email and SMS.
                             </p>
-                            <div className="flex items-center gap-3 text-sm text-gray-500">
+                            <div className="flex items-center gap-3 text-sm text-gray-500 dark:text-gray-400">
                                 <CheckCircle className="text-green-600" size={18} />
                                 <span>SSL Encrypted</span>
                             </div>
                         </div>
 
-                        <div className="bg-gradient-to-br from-yellow-50 to-orange-50 rounded-2xl p-6 border-2 border-yellow-200">
-                            <p className="text-sm text-gray-700 font-medium">
-                                <span className="text-secondary-600 font-bold">💡 Tip:</span> Monthly donations help us plan better programs and create sustainable impact.
+                        <div className="bg-gradient-to-br from-yellow-50 to-orange-50 dark:from-gray-800 dark:to-gray-800 rounded-2xl p-6 border-2 border-yellow-200 dark:border-gray-700">
+                            <p className="text-sm text-gray-700 dark:text-gray-300 font-medium">
+                                <span className="text-secondary-600 dark:text-secondary-400 font-bold">💡 Tip:</span> Monthly donations help us plan better programs and create sustainable impact.
                             </p>
                         </div>
                     </div>
