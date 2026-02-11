@@ -2,10 +2,9 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 
-// Eagerly import all background images
-// This ensures they are loaded immediately and HMR works better for added/removed files
-const backgroundImagesModules = import.meta.glob('../assets/background images/*.{png,jpg,jpeg,webp,svg}', { eager: true });
-const backgroundImages = Object.values(backgroundImagesModules).map(module => module.default);
+// Background images are now passed as props from parent
+// const backgroundImagesModules = import.meta.glob('../assets/background images/*.{png,jpg,jpeg,webp,svg}', { eager: true });
+// const backgroundImages = Object.values(backgroundImagesModules).map(module => module.default);
 
 const slides = [
     {
@@ -46,9 +45,9 @@ const slides = [
     }
 ];
 
-function HeroCarousel() {
+function HeroCarousel({ currentBackgroundIndex, backgroundImages, setCurrentBackgroundIndex }) {
     const [currentSlide, setCurrentSlide] = useState(0);
-    const [currentBackgroundIndex, setCurrentBackgroundIndex] = useState(0);
+    // const [currentBackgroundIndex, setCurrentBackgroundIndex] = useState(0); // Managed by parent
 
     // Auto-play for Content Slides
     useEffect(() => {
@@ -59,7 +58,8 @@ function HeroCarousel() {
         return () => clearInterval(timer);
     }, []);
 
-    // Auto-play for Background Images (if available)
+    // Auto-play for Background Images - Moved to Parent Home.jsx
+    /*
     useEffect(() => {
         if (backgroundImages.length === 0) return;
 
@@ -69,6 +69,7 @@ function HeroCarousel() {
 
         return () => clearInterval(timer);
     }, []);
+    */
 
     const nextSlide = () => {
         setCurrentSlide((prev) => (prev + 1) % slides.length);

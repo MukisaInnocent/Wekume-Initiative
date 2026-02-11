@@ -13,6 +13,22 @@ function Home() {
     const [partners, setPartners] = useState([]);
     const [testimonials, setTestimonials] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [currentBackgroundIndex, setCurrentBackgroundIndex] = useState(0);
+
+    // Eagerly import all background images (Moved from HeroCarousel)
+    const backgroundImagesModules = import.meta.glob('../assets/background images/*.{png,jpg,jpeg,webp,svg}', { eager: true });
+    const backgroundImages = Object.values(backgroundImagesModules).map(module => module.default);
+
+    // Auto-play for Background Images
+    useEffect(() => {
+        if (backgroundImages.length === 0) return;
+
+        const timer = setInterval(() => {
+            setCurrentBackgroundIndex((prev) => (prev + 1) % backgroundImages.length);
+        }, 5000); // Change background every 5 seconds
+
+        return () => clearInterval(timer);
+    }, [backgroundImages.length]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -42,10 +58,14 @@ function Home() {
 
     return (
         <>
-            <Navbar isTransparent={true} />
+            <Navbar isTransparent={true} backgroundImages={backgroundImages} currentBackgroundIndex={currentBackgroundIndex} />
 
             {/* Dynamic Hero Carousel */}
-            <HeroCarousel />
+            <HeroCarousel
+                currentBackgroundIndex={currentBackgroundIndex}
+                backgroundImages={backgroundImages}
+                setCurrentBackgroundIndex={setCurrentBackgroundIndex}
+            />
 
             {/* Our Story Section */}
             <section className="py-24 relative overflow-hidden bg-white dark:bg-gray-900">

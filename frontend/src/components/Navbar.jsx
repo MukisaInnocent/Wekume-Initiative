@@ -3,7 +3,7 @@ import { Menu, X, ChevronRight } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import ThemeToggle from './ThemeToggle';
 
-function Navbar({ isTransparent = false }) {
+function Navbar({ isTransparent = false, backgroundImages, currentBackgroundIndex }) {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
     const location = useLocation();
@@ -46,11 +46,33 @@ function Navbar({ isTransparent = false }) {
 
     return (
         <nav
-            className={`${isTransparent ? 'fixed' : 'sticky top-0'} w-full z-50 transition-all duration-300 ${scrolled || !isTransparent
+            className={`${isTransparent ? 'fixed top-0' : 'sticky top-0'} w-full z-50 transition-all duration-300 ${scrolled || !isTransparent
                 ? 'bg-white/95 dark:bg-gray-900/95 backdrop-blur-md shadow-sm py-3'
                 : 'bg-transparent py-6'
-                }`}
+                } relative overflow-hidden`}
         >
+            {/* Background Image Layer - Only show if transparent mode and scrolled NOT active (so it matches hero) */}
+            {isTransparent && !scrolled && backgroundImages && (
+                <div className="absolute inset-0 z-[-1]">
+                    {backgroundImages.map((img, index) => (
+                        <div
+                            key={index}
+                            className={`absolute inset-0 transition-opacity duration-1500 ease-in-out ${index === currentBackgroundIndex ? 'opacity-100' : 'opacity-0'}`}
+                        >
+                            <img
+                                src={img}
+                                alt={`Navbar Background ${index}`}
+                                className="w-full h-[100vh] object-cover object-top transition-transform duration-[10000ms] ease-out scale-105" // Added transition classes
+                                style={{
+                                    objectPosition: 'center top',
+                                    transform: index === currentBackgroundIndex ? 'scale(1.1)' : 'scale(1.0)' // Added scale transform
+                                }}
+                            />
+                        </div>
+                    ))}
+                    <div className="absolute inset-0 bg-black/40"></div> {/* Match Hero Overlay */}
+                </div>
+            )}
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between items-center h-16">
                     {/* Logo */}
