@@ -22,10 +22,9 @@ function Navbar({ isTransparent = false, backgroundImages, currentBackgroundInde
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
-    // Determine text color based on state
-    // If transparent mode AND not scrolled AND on home page (implied by isTransparent), use white text.
-    // Otherwise use default dark text.
-    const isLightMode = isTransparent && !scrolled;
+    // If transparent (Home), always use light mode styles (white text) and background image
+    // It will scroll away (absolute) so we don't need to switch to dark text/white bg
+    const isLightMode = isTransparent;
 
     const textColorClass = isLightMode ? 'text-white hover:text-gray-200' : 'text-gray-900 dark:text-white hover:text-primary-600 dark:hover:text-primary-400';
     const logoColorClass = isLightMode ? 'text-white' : 'text-primary-600 dark:text-primary-400';
@@ -46,13 +45,13 @@ function Navbar({ isTransparent = false, backgroundImages, currentBackgroundInde
 
     return (
         <nav
-            className={`${isTransparent ? 'fixed top-0' : 'sticky top-0'} w-full z-50 transition-all duration-300 ${scrolled || !isTransparent
-                ? 'bg-white/95 dark:bg-gray-900/95 backdrop-blur-md shadow-sm py-3'
-                : 'bg-transparent py-6'
-                } relative overflow-hidden`}
+            className={`${isTransparent ? 'fixed top-0 left-0' : 'sticky top-0'} w-full z-50 transition-all duration-300 ${!isTransparent && scrolled
+                ? 'bg-white/95 dark:bg-gray-900/95 backdrop-blur-md shadow-sm py-3 border-b border-gray-200 dark:border-gray-700'
+                : 'bg-transparent py-6 border-b border-white/20'
+                } overflow-hidden`}
         >
-            {/* Background Image Layer - Only show if transparent mode and scrolled NOT active (so it matches hero) */}
-            {isTransparent && !scrolled && backgroundImages && (
+            {/* Background Image Layer - Only show if transparent mode (Home) */}
+            {isTransparent && backgroundImages && (
                 <div className="absolute inset-0 z-[-1]">
                     {backgroundImages.map((img, index) => (
                         <div

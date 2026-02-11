@@ -84,7 +84,7 @@ function HeroCarousel({ currentBackgroundIndex, backgroundImages, setCurrentBack
     const activeIndex = backgroundImages.length > 0 ? currentBackgroundIndex : currentSlide;
 
     return (
-        <section className="relative text-white min-h-[90vh] flex items-center overflow-hidden">
+        <section className="relative text-white min-h-[90vh] flex items-center overflow-hidden pt-[88px]">
 
             {/* Background Slides */}
             {activeImages.map((imgSrc, index) => (
