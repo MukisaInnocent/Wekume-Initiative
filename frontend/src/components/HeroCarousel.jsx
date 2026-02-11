@@ -2,6 +2,11 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 
+// Eagerly import all background images
+// This ensures they are loaded immediately and HMR works better for added/removed files
+const backgroundImagesModules = import.meta.glob('../assets/background images/*.{png,jpg,jpeg,webp,svg}', { eager: true });
+const backgroundImages = Object.values(backgroundImagesModules).map(module => module.default);
+
 const slides = [
     {
         id: 'mission',
@@ -10,7 +15,7 @@ const slides = [
         ctaText: "Download App",
         ctaLink: "/wekume-app",
         theme: "from-purple-600 via-primary-500 to-orange-500", // Purple/Pink/Orange
-        image: "/assets/IMG_0445.jpg"
+        image: "/assets/IMG_0445.jpg" // Fallback
     },
     {
         id: 'values',
@@ -19,7 +24,7 @@ const slides = [
         ctaText: "Run With Us",
         ctaLink: "/about",
         theme: "from-blue-600 via-purple-500 to-pink-500", // Blue/Purple/Pink
-        image: "/assets/IMG_0447.jpg"
+        image: "/assets/IMG_0447.jpg" // Fallback
     },
     {
         id: 'purpose',
@@ -28,7 +33,7 @@ const slides = [
         ctaText: "Get Involved",
         ctaLink: "/get-involved",
         theme: "from-orange-500 via-red-500 to-purple-600", // Orange/Red/Purple
-        image: "/assets/IMG_20250321_112053.jpg"
+        image: "/assets/IMG_20250321_112053.jpg" // Fallback
     },
     {
         id: 'community',
@@ -37,18 +42,30 @@ const slides = [
         ctaText: "Join Us",
         ctaLink: "/contact",
         theme: "from-green-500 via-teal-500 to-blue-500", // Green/Teal/Blue
-        image: "/assets/hero-whatsapp.jpeg"
+        image: "/assets/hero-whatsapp.jpeg" // Fallback
     }
 ];
 
 function HeroCarousel() {
     const [currentSlide, setCurrentSlide] = useState(0);
+    const [currentBackgroundIndex, setCurrentBackgroundIndex] = useState(0);
 
-    // Auto-play
+    // Auto-play for Content Slides
     useEffect(() => {
         const timer = setInterval(() => {
             setCurrentSlide((prev) => (prev + 1) % slides.length);
-        }, 6000); // Change every 6 seconds
+        }, 6000); // Change content every 6 seconds
+
+        return () => clearInterval(timer);
+    }, []);
+
+    // Auto-play for Background Images (if available)
+    useEffect(() => {
+        if (backgroundImages.length === 0) return;
+
+        const timer = setInterval(() => {
+            setCurrentBackgroundIndex((prev) => (prev + 1) % backgroundImages.length);
+        }, 5000); // Change background every 5 seconds
 
         return () => clearInterval(timer);
     }, []);
@@ -61,32 +78,32 @@ function HeroCarousel() {
         setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
     };
 
+    // Determine which images to show (Dynamic vs Fallback)
+    const activeImages = backgroundImages.length > 0 ? backgroundImages : slides.map(s => s.image);
+    const activeIndex = backgroundImages.length > 0 ? currentBackgroundIndex : currentSlide;
+
     return (
         <section className="relative text-white min-h-[90vh] flex items-center overflow-hidden">
 
             {/* Background Slides */}
-            {slides.map((slide, index) => (
+            {activeImages.map((imgSrc, index) => (
                 <div
-                    key={slide.id}
-                    className={`absolute inset-0 transition-opacity duration-1500 ease-in-out ${index === currentSlide ? 'opacity-100 z-0' : 'opacity-0 -z-10'}`}
+                    key={index}
+                    className={`absolute inset-0 transition-opacity duration-1500 ease-in-out ${index === activeIndex ? 'opacity-100 z-0' : 'opacity-0 -z-10'}`}
                 >
                     {/* Background Image */}
                     <div className="absolute inset-0">
                         <img
-                            src={slide.image}
-                            alt={slide.title}
+                            src={imgSrc}
+                            alt={`Background ${index}`}
                             className="w-full h-full object-cover transition-transform duration-[10000ms] ease-out scale-105"
                             style={{
-                                transform: index === currentSlide ? 'scale(1.1)' : 'scale(1.0)'
+                                transform: index === activeIndex ? 'scale(1.1)' : 'scale(1.0)'
                             }}
                         />
                         {/* Dark Overlay for readability */}
                         <div className="absolute inset-0 bg-black/40"></div>
                     </div>
-
-
-
-
                 </div>
             ))}
 
@@ -155,7 +172,7 @@ function HeroCarousel() {
                 <ChevronRight size={32} className="group-hover:translate-x-1 transition-transform" />
             </button>
 
-            {/* Bottom Indicators */}
+            {/* Bottom Indicators - For Content Slides */}
             <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex gap-3 z-20">
                 {slides.map((_, index) => (
                     <button

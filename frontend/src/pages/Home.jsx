@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import HeroCarousel from '../components/HeroCarousel';
-import { ArrowRight, Heart, Users, Lightbulb, Calendar, ArrowUpRight, MessageCircle, Shield, Clock } from 'lucide-react';
+import { ArrowRight, Heart, Users, Lightbulb, Calendar, ArrowUpRight, MessageCircle, Shield, Clock, Quote } from 'lucide-react';
 import { contentAPI } from '../services/api';
 
 function Home() {
@@ -11,22 +11,23 @@ function Home() {
     const [values, setValues] = useState([]);
     const [events, setEvents] = useState([]);
     const [partners, setPartners] = useState([]);
+    const [testimonials, setTestimonials] = useState([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const [valuesRes, eventsRes, partnersRes] = await Promise.all([
+                const [valuesRes, eventsRes, partnersRes, testimonialsRes] = await Promise.all([
                     contentAPI.getValues(),
                     contentAPI.getEvents(),
-                    contentAPI.getPartners()
+                    contentAPI.getPartners(),
+                    contentAPI.getTestimonials()
                 ]);
-
-
 
                 setValues(valuesRes.data.values || []);
                 setEvents(eventsRes.data.events?.slice(0, 3) || []); // Top 3 events
                 setPartners(partnersRes.data.partners || []);
+                setTestimonials(testimonialsRes.data.testimonials || []);
             } catch (error) {
                 console.error("Error fetching home data:", error);
             } finally {
@@ -292,6 +293,51 @@ function Home() {
                                     <span key={partner.id} className="text-xl font-bold text-gray-400">{partner.name}</span>
                                 )
                             ))}
+                        </div>
+                    </div>
+                </section>
+            )}
+
+            {/* Testimonials Section */}
+            {testimonials.length > 0 && (
+                <section className="py-20 bg-purple-900 text-white overflow-hidden relative">
+                    <div className="absolute top-0 left-0 w-64 h-64 bg-pink-500 rounded-full blur-3xl opacity-20 -ml-20 -mt-20"></div>
+                    <div className="absolute bottom-0 right-0 w-80 h-80 bg-blue-500 rounded-full blur-3xl opacity-20 -mr-20 -mb-20"></div>
+
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                        <div className="text-center mb-12">
+                            <span className="text-pink-300 font-semibold tracking-wider uppercase text-sm">Community Voices</span>
+                            <h2 className="text-3xl md:text-4xl font-heading font-bold mt-2">Stories of Impact</h2>
+                        </div>
+
+                        <div className="grid md:grid-cols-3 gap-8">
+                            {testimonials.slice(0, 3).map((testimonial) => (
+                                <div key={testimonial.id} className="bg-white/10 backdrop-blur-sm border border-white/10 p-8 rounded-2xl relative">
+                                    <div className="text-pink-400 mb-6 absolute top-6 right-6 opacity-30">
+                                        <Quote size={40} className="transform rotate-180" />
+                                    </div>
+                                    <p className="text-purple-100 italic mb-6 leading-relaxed">"{testimonial.content}"</p>
+                                    <div className="flex items-center gap-4">
+                                        <div className="h-12 w-12 rounded-full bg-white/20 flex items-center justify-center font-bold text-lg">
+                                            {testimonial.photo_url ? (
+                                                <img src={testimonial.photo_url} alt={testimonial.author_name} className="h-full w-full object-cover rounded-full" />
+                                            ) : (
+                                                testimonial.author_name.charAt(0)
+                                            )}
+                                        </div>
+                                        <div>
+                                            <h4 className="font-bold text-white">{testimonial.author_name}</h4>
+                                            <p className="text-sm text-pink-300">{testimonial.author_role || 'Community Member'}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+
+                        <div className="mt-12 text-center">
+                            <Link to="/testimonials" className="inline-flex items-center gap-2 text-white border-b border-pink-400 pb-1 hover:text-pink-300 transition-colors font-medium">
+                                Read More Stories <ArrowRight size={16} />
+                            </Link>
                         </div>
                     </div>
                 </section>

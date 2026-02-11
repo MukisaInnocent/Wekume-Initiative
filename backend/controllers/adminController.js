@@ -280,6 +280,80 @@ exports.deleteTestimonial = async (req, res) => {
     }
 };
 
+// ===== REPORTS MANAGEMENT =====
+
+exports.getAllReports = async (req, res) => {
+    try {
+        const reports = await Report.findAll({
+            order: [['year', 'DESC'], ['created_at', 'DESC']]
+        });
+        res.json({ reports });
+    } catch (error) {
+        console.error('Get all reports error:', error);
+        res.status(500).json({ error: 'Failed to fetch reports' });
+    }
+};
+
+exports.createReport = async (req, res) => {
+    try {
+        const { title, description, year, file_url, category, is_published } = req.body;
+
+        if (!title || !year) {
+            return res.status(400).json({ error: 'Title and year are required' });
+        }
+
+        const report = await Report.create({
+            title,
+            description,
+            year,
+            file_url,
+            category: category || 'annual',
+            is_published: is_published !== undefined ? is_published : false,
+            downloads: 0
+        });
+
+        res.status(201).json({ message: 'Report created successfully', report });
+    } catch (error) {
+        console.error('Create report error:', error);
+        res.status(500).json({ error: 'Failed to create report' });
+    }
+};
+
+exports.updateReport = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const updateData = req.body;
+
+        const report = await Report.findByPk(id);
+        if (!report) {
+            return res.status(404).json({ error: 'Report not found' });
+        }
+
+        await report.update(updateData);
+        res.json({ message: 'Report updated successfully', report });
+    } catch (error) {
+        console.error('Update report error:', error);
+        res.status(500).json({ error: 'Failed to update report' });
+    }
+};
+
+exports.deleteReport = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const report = await Report.findByPk(id);
+        if (!report) {
+            return res.status(404).json({ error: 'Report not found' });
+        }
+
+        await report.destroy();
+        res.json({ message: 'Report deleted successfully' });
+    } catch (error) {
+        console.error('Delete report error:', error);
+        res.status(500).json({ error: 'Failed to delete report' });
+    }
+};
+
 // ===== SUPPORT FORMS MANAGEMENT =====
 
 exports.getAllSupportForms = async (req, res) => {

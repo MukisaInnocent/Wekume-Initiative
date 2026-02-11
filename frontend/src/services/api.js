@@ -123,12 +123,18 @@ export const adminAPI = {
     deleteReport: (id) => api.delete(`/admin/reports/${id}`),
 
     // Testimonials
+    getAllTestimonials: () => api.get('/admin/testimonials'),
     createTestimonial: (data) => api.post('/admin/testimonials', data),
+    approveTestimonial: (id, data) => api.put(`/admin/testimonials/${id}`, data),
     deleteTestimonial: (id) => api.delete(`/admin/testimonials/${id}`),
-    approveTestimonial: (id, data) => api.put(`/admin/testimonials/${id}`, data), // Ensure this exists if not already
 
-    // Content
-    // updateSection is already there
+    // Support Forms
+    getAllSupportForms: () => api.get('/admin/support-forms'),
+    updateSupportFormStatus: (id, data) => api.put(`/admin/support-forms/${id}`, data),
+
+    // Volunteer Applications
+    getAllVolunteerApplications: () => api.get('/admin/volunteer-applications'),
+    updateVolunteerStatus: (id, data) => api.put(`/admin/volunteer-applications/${id}`, data),
 };
 
 // ===== AI ASSISTANT API =====
