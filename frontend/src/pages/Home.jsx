@@ -4,7 +4,7 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import HeroCarousel from '../components/HeroCarousel';
 import { ArrowRight, Heart, Users, Lightbulb, Calendar, ArrowUpRight, MessageCircle, Shield, Clock, Quote } from 'lucide-react';
-import { contentAPI } from '../services/api';
+import { contentAPI, backgroundAPI } from '../services/api';
 
 function Home() {
 
@@ -14,10 +14,14 @@ function Home() {
     const [testimonials, setTestimonials] = useState([]);
     const [loading, setLoading] = useState(true);
     const [currentBackgroundIndex, setCurrentBackgroundIndex] = useState(0);
+    const [dynamicBackgrounds, setDynamicBackgrounds] = useState([]);
 
-    // Eagerly import all background images (Moved from HeroCarousel)
+    // Eager import as fallback
     const backgroundImagesModules = import.meta.glob('../assets/background images/*.{png,jpg,jpeg,webp,svg}', { eager: true });
-    const backgroundImages = Object.values(backgroundImagesModules).map(module => module.default);
+    const localBackgroundImages = Object.values(backgroundImagesModules).map(module => module.default);
+
+    // Use dynamic images if available, otherwise fallback
+    const backgroundImages = dynamicBackgrounds.length > 0 ? dynamicBackgrounds.map(bg => bg.image_url) : localBackgroundImages;
 
     // Auto-play for Background Images
     useEffect(() => {
@@ -33,17 +37,22 @@ function Home() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const [valuesRes, eventsRes, partnersRes, testimonialsRes] = await Promise.all([
+                const [valuesRes, eventsRes, partnersRes, testimonialsRes, backgroundsRes] = await Promise.all([
                     contentAPI.getValues(),
                     contentAPI.getEvents(),
                     contentAPI.getPartners(),
-                    contentAPI.getTestimonials()
+                    contentAPI.getTestimonials(),
+                    backgroundAPI.getActiveBackgrounds().catch(err => ({ data: { backgrounds: [] } })) // Soft fail for backgrounds
                 ]);
 
                 setValues(valuesRes.data.values || []);
                 setEvents(eventsRes.data.events?.slice(0, 3) || []); // Top 3 events
                 setPartners(partnersRes.data.partners || []);
                 setTestimonials(testimonialsRes.data.testimonials || []);
+
+                if (backgroundsRes.data.backgrounds && backgroundsRes.data.backgrounds.length > 0) {
+                    setDynamicBackgrounds(backgroundsRes.data.backgrounds);
+                }
             } catch (error) {
                 console.error("Error fetching home data:", error);
             } finally {

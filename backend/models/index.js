@@ -15,6 +15,7 @@ const AIAssistantLogModel = require('./AIAssistantLog');
 const PageAnalyticsModel = require('./PageAnalytics');
 const VolunteerApplicationModel = require('./VolunteerApplication');
 const SocialLinkModel = require('./SocialLink');
+const BackgroundImageModel = require('./BackgroundImage');
 
 // Initialize models
 const User = UserModel(sequelize);
@@ -31,6 +32,7 @@ const AIAssistantLog = AIAssistantLogModel(sequelize);
 const PageAnalytics = PageAnalyticsModel(sequelize);
 const VolunteerApplication = VolunteerApplicationModel(sequelize);
 const SocialLink = SocialLinkModel(sequelize);
+const BackgroundImage = BackgroundImageModel(sequelize);
 const Donation = require('./Donation')(sequelize);
 
 // Define relationships
@@ -45,6 +47,9 @@ Report.belongsTo(User, { foreignKey: 'uploaded_by', as: 'uploader' });
 
 User.hasMany(MediaLibrary, { foreignKey: 'uploaded_by', as: 'uploadedMedia' });
 MediaLibrary.belongsTo(User, { foreignKey: 'uploaded_by', as: 'uploader' });
+
+User.hasMany(BackgroundImage, { foreignKey: 'uploaded_by', as: 'uploadedBackgrounds' });
+BackgroundImage.belongsTo(User, { foreignKey: 'uploaded_by', as: 'uploader' });
 
 User.hasMany(SupportForm, { foreignKey: 'assigned_to', as: 'assignedForms' });
 SupportForm.belongsTo(User, { foreignKey: 'assigned_to', as: 'assignee' });
@@ -69,6 +74,7 @@ const db = {
     PageAnalytics,
     VolunteerApplication,
     SocialLink,
+    BackgroundImage,
     Donation
 };
 

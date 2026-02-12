@@ -99,11 +99,29 @@ export const donationAPI = {
     create: (data) => api.post('/donations', data)
 };
 
+// ===== BACKGROUND API =====
+
+export const backgroundAPI = {
+    // Background Images (Public)
+    getActiveBackgrounds: () => api.get('/backgrounds/active')
+};
+
 // ===== ADMIN API (Coming in next phase) =====
 
 export const adminAPI = {
-    // Content Management
-    updateSection: (key, data) => api.put(`/admin/sections/${key}`, data),
+    // Content Sections
+    updateContentSection: (key, data) => api.put(`/admin/sections/${key}`, data),
+
+    // Background Images (Admin)
+    getAllBackgrounds: () => api.get('/backgrounds'),
+    uploadBackground: (formData) => api.post('/backgrounds', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+    }),
+    updateBackground: (id, data) => api.put(`/backgrounds/${id}`, data),
+    deleteBackground: (id) => api.delete(`/backgrounds/${id}`),
+
+    // Events
+    getAllEvents: () => api.get('/admin/events'),
     createEvent: (data) => api.post('/admin/events', data),
     updateEvent: (id, data) => api.put(`/admin/events/${id}`, data),
     deleteEvent: (id) => api.delete(`/admin/events/${id}`),

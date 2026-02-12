@@ -14,6 +14,7 @@ const contentRoutes = require('./routes/content');
 const adminRoutes = require('./routes/admin');
 const donationRoutes = require('./routes/donation');
 const aiRoutes = require('./routes/ai');
+const backgroundRoutes = require('./routes/background');
 // const aiRoutes = require('./routes/ai');
 
 const app = express();
@@ -92,7 +93,7 @@ app.use('/api/content', contentRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/donations', donationRoutes);
 app.use('/api/ai', aiRoutes);
-// app.use('/api/ai', aiRoutes);
+app.use('/api/backgrounds', backgroundRoutes);
 
 // 404 handler
 app.use((req, res) => {

@@ -218,7 +218,8 @@ function AdminDashboard() {
                     <div className="flex space-x-2 overflow-x-auto py-3">
                         <button onClick={() => setActiveTab('overview')} className={`py-3 px-5 rounded-xl font-semibold text-sm whitespace-nowrap transition-all duration-300 ${activeTab === 'overview' ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg shadow-purple-500/30' : 'text-gray-600 hover:bg-purple-50 hover:text-purple-700'}`}><BarChart3 className="inline mr-2" size={18} />Overview</button>
                         <button onClick={() => setActiveTab('content')} className={`py-3 px-5 rounded-xl font-semibold text-sm whitespace-nowrap transition-all duration-300 ${activeTab === 'content' ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg shadow-purple-500/30' : 'text-gray-600 hover:bg-purple-50 hover:text-purple-700'}`}><Layout className="inline mr-2" size={18} />Content</button>
-                        <button onClick={() => setActiveTab('media')} className={`py-3 px-5 rounded-xl font-semibold text-sm whitespace-nowrap transition-all duration-300 ${activeTab === 'media' ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg shadow-purple-500/30' : 'text-gray-600 hover:bg-purple-50 hover:text-purple-700'}`}><Image className="inline mr-2" size={18} />Media</button>
+                        <button onClick={() => setActiveTab('backgrounds')} className={`py-3 px-5 rounded-xl font-semibold text-sm whitespace-nowrap transition-all duration-300 ${activeTab === 'backgrounds' ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg shadow-purple-500/30' : 'text-gray-600 hover:bg-purple-50 hover:text-purple-700'}`}><Image className="inline mr-2" size={18} />Backgrounds</button>
+                        <button onClick={() => setActiveTab('media')} className={`py-3 px-5 rounded-xl font-semibold text-sm whitespace-nowrap transition-all duration-300 ${activeTab === 'media' ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg shadow-purple-500/30' : 'text-gray-600 hover:bg-purple-50 hover:text-purple-700'}`}><FileText className="inline mr-2" size={18} />Media Library</button>
                         <button onClick={() => setActiveTab('events')} className={`py-3 px-5 rounded-xl font-semibold text-sm whitespace-nowrap transition-all duration-300 ${activeTab === 'events' ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg shadow-purple-500/30' : 'text-gray-600 hover:bg-purple-50 hover:text-purple-700'}`}><Calendar className="inline mr-2" size={18} />Events</button>
                         <button onClick={() => setActiveTab('partners')} className={`py-3 px-5 rounded-xl font-semibold text-sm whitespace-nowrap transition-all duration-300 ${activeTab === 'partners' ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg shadow-purple-500/30' : 'text-gray-600 hover:bg-purple-50 hover:text-purple-700'}`}><Briefcase className="inline mr-2" size={18} />Partners</button>
                         <button onClick={() => setActiveTab('testimonials')} className={`py-3 px-5 rounded-xl font-semibold text-sm whitespace-nowrap transition-all duration-300 ${activeTab === 'testimonials' ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg shadow-purple-500/30' : 'text-gray-600 hover:bg-purple-50 hover:text-purple-700'}`}><MessageSquare className="inline mr-2" size={18} />Testimonials</button>
@@ -288,6 +289,10 @@ function AdminDashboard() {
                             ))}
                         </div>
                     </div>
+                )}
+
+                {activeTab === 'backgrounds' && (
+                    <BackgroundManager />
                 )}
 
                 {activeTab === 'media' && (
