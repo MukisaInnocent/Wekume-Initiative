@@ -82,8 +82,8 @@ function Navbar({ isTransparent = false, backgroundImages, currentBackgroundInde
                             <img src={oldLogo} alt="Original Wekume" className="h-10 w-auto" />
                         </a>
 
-                        {/* Main App Logo */}
-                        <Link to="/" className="flex items-center gap-3 group">
+                        {/* Main App Logo - Note: User requested this logic not to link */}
+                        <div className="flex items-center gap-3 group cursor-default">
                             <div className="bg-transparent rounded-full p-2 shadow-sm flex items-center justify-center">
                                 <img
                                     src="/assets/wekume-logo.png"
@@ -92,7 +92,7 @@ function Navbar({ isTransparent = false, backgroundImages, currentBackgroundInde
                                 />
                             </div>
                             <span className={`font-heading font-bold text-2xl tracking-tight ${logoColorClass}`}>Wekume Initiative</span>
-                        </Link>
+                        </div>
                     </div>
 
                     {/* Desktop Navigation */}
