@@ -75,7 +75,7 @@ function Navbar({ isTransparent = false, backgroundImages, currentBackgroundInde
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between items-center h-16">
                     {/* Logo */}
-                    <Link to="/" className="flex items-center gap-3 group">
+                    <a href="https://wekume.org" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 group">
                         <div className="bg-transparent rounded-full p-2 shadow-sm flex items-center justify-center">
                             <img
                                 src="/assets/wekume-logo.png"
@@ -84,7 +84,7 @@ function Navbar({ isTransparent = false, backgroundImages, currentBackgroundInde
                             />
                         </div>
                         <span className={`font-heading font-bold text-2xl tracking-tight ${logoColorClass}`}>Wekume Initiative</span>
-                    </Link>
+                    </a>
 
                     {/* Desktop Navigation */}
                     <div className="hidden lg:flex space-x-8 items-center">

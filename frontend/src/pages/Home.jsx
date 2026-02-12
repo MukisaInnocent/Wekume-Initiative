@@ -305,7 +305,7 @@ function Home() {
                 <section className="py-12 border-t border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900">
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
                         <p className="text-gray-400 font-medium uppercase tracking-widest text-sm mb-8">Trusted by our partners</p>
-                        <div className="flex flex-wrap justify-center gap-12 items-center opacity-70 grayscale hover:grayscale-0 transition-all duration-500">
+                        <div className="flex flex-wrap justify-center gap-6 md:gap-12 items-center opacity-70 grayscale hover:grayscale-0 transition-all duration-500">
                             {partners.map(partner => (
                                 partner.logo_url ? (
                                     <img key={partner.id} src={partner.logo_url} alt={partner.name} className="h-12 w-auto object-contain" title={partner.name} />
