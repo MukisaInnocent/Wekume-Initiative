@@ -134,9 +134,6 @@ export const adminAPI = {
     // Analytics
     getAnalytics: () => api.get('/admin/analytics'),
 
-    // Events (Full Management)
-    getAllEvents: () => api.get('/admin/events'),
-
     // Partners
     getAllPartners: () => api.get('/admin/partners'),
     createPartner: (data) => api.post('/admin/partners', data),

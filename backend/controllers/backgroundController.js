@@ -1,9 +1,49 @@
 const { BackgroundImage } = require('../models');
-const cloudinary = require('../config/cloudinary');
-const streamifier = require('streamifier');
+// const cloudinary = require('../config/cloudinary'); // Removed Cloudinary
+// const streamifier = require('streamifier'); // Removed streamifier
+const fs = require('fs');
+const path = require('path');
 
 exports.getAllBackgrounds = async (req, res) => {
     try {
+        // --- SYNC LOGIC START ---
+        const uploadDir = path.join(__dirname, '../uploads/backgrounds');
+
+        // Ensure directory exists
+        if (fs.existsSync(uploadDir)) {
+            const files = fs.readdirSync(uploadDir);
+
+            // Get all existing public_ids from DB
+            const existingBackgrounds = await BackgroundImage.findAll({
+                attributes: ['public_id']
+            });
+            const existingPublicIds = new Set(existingBackgrounds.map(bg => bg.public_id));
+
+            // Find files that are not in DB
+            const newFiles = files.filter(file => {
+                // Filter for images only (basic check)
+                const isImage = /\.(jpg|jpeg|png|gif|webp)$/i.test(file);
+                return isImage && !existingPublicIds.has(file);
+            });
+
+            if (newFiles.length > 0) {
+                console.log(`Found ${newFiles.length} new background images on disk. Syncing...`);
+
+                const protocol = req.protocol;
+                const host = req.get('host');
+
+                const newRecords = newFiles.map(filename => ({
+                    image_url: `${protocol}://${host}/uploads/backgrounds/${filename}`,
+                    public_id: filename,
+                    is_active: false, // Default to inactive for auto-discovered files
+                    uploaded_by: req.user ? req.user.id : null // Use current admin if available, else null
+                }));
+
+                await BackgroundImage.bulkCreate(newRecords);
+            }
+        }
+        // --- SYNC LOGIC END ---
+
         // Fetch all backgrounds, active or not, ordered by display_order
         // Admins might want to see inactive ones too
         const backgrounds = await BackgroundImage.findAll({
@@ -35,29 +75,20 @@ exports.uploadBackground = async (req, res) => {
             return res.status(400).json({ error: 'No file uploaded' });
         }
 
-        // Upload to Cloudinary
-        const streamUpload = (fileBuffer) => {
-            return new Promise((resolve, reject) => {
-                const stream = cloudinary.uploader.upload_stream(
-                    { folder: 'wekume_backgrounds' },
-                    (error, result) => {
-                        if (result) {
-                            resolve(result);
-                        } else {
-                            reject(error);
-                        }
-                    }
-                );
-                streamifier.createReadStream(fileBuffer).pipe(stream);
-            });
-        };
+        // Local file path (accessible via static route)
+        // Ensure FRONTEND_URL or server base URL is used to construct full URL if needed,
+        // or just store relative path. For simplicity and portability, let's store the full URL
+        // assuming standard static serving setup.
 
-        const result = await streamUpload(req.file.buffer);
+        // Construct URL: http://localhost:5000/uploads/backgrounds/filename
+        const protocol = req.protocol;
+        const host = req.get('host');
+        const fileUrl = `${protocol}://${host}/uploads/backgrounds/${req.file.filename}`;
 
         // Save to DB
         const background = await BackgroundImage.create({
-            image_url: result.secure_url,
-            public_id: result.public_id,
+            image_url: fileUrl,
+            public_id: req.file.filename, // Store filename as public_id for local deletion
             is_active: true, // Default to active
             uploaded_by: req.user.id
         });
@@ -65,6 +96,12 @@ exports.uploadBackground = async (req, res) => {
         res.status(201).json({ message: 'Background uploaded successfully', background });
     } catch (error) {
         console.error('Upload background error:', error);
+        // Clean up uploaded file if DB save fails
+        if (req.file) {
+            fs.unlink(req.file.path, (err) => {
+                if (err) console.error('Failed to delete uploaded file after error:', err);
+            });
+        }
         res.status(500).json({ error: 'Failed to upload background image' });
     }
 };
@@ -78,8 +115,14 @@ exports.deleteBackground = async (req, res) => {
             return res.status(404).json({ error: 'Background image not found' });
         }
 
-        // Delete from Cloudinary
-        await cloudinary.uploader.destroy(background.public_id);
+        // Delete from Local Storage
+        const filePath = path.join(__dirname, '../uploads/backgrounds', background.public_id);
+
+        fs.unlink(filePath, (err) => {
+            if (err) {
+                console.warn(`Failed to delete local file: ${filePath}. It may have already been deleted. Error: ${err.message}`);
+            }
+        });
 
         // Delete from DB
         await background.destroy();

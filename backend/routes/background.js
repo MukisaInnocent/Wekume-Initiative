@@ -3,7 +3,7 @@ const router = express.Router();
 const backgroundController = require('../controllers/backgroundController');
 const authMiddleware = require('../middleware/auth');
 const roleCheck = require('../middleware/roleCheck');
-const upload = require('../middleware/upload');
+const uploadLocal = require('../middleware/uploadLocal');
 
 // Public route to get active backgrounds (for Home page)
 router.get('/active', backgroundController.getActiveBackgrounds);
@@ -15,7 +15,7 @@ router.use(authMiddleware);
 router.get('/', roleCheck('super_admin', 'editor'), backgroundController.getAllBackgrounds);
 
 // Upload new background
-router.post('/', roleCheck('super_admin', 'editor'), upload.single('image'), backgroundController.uploadBackground);
+router.post('/', roleCheck('super_admin', 'editor'), uploadLocal.single('image'), backgroundController.uploadBackground);
 
 // Update background (active status, order)
 router.put('/:id', roleCheck('super_admin', 'editor'), backgroundController.updateBackground);

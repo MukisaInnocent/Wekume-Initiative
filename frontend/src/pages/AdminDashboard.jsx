@@ -8,6 +8,7 @@ import PartnerForm from '../components/forms/PartnerForm';
 import ContentSectionForm from '../components/forms/ContentSectionForm';
 import ReportForm from '../components/forms/ReportForm';
 import MediaLibrary from '../components/MediaLibrary';
+import BackgroundManager from '../components/Admin/BackgroundManager';
 
 import TestimonialForm from '../components/forms/TestimonialForm';
 

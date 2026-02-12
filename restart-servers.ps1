@@ -29,6 +29,6 @@ Write-Host "`nOpen TWO separate terminals and run:" -ForegroundColor Yellow
 Write-Host "  Terminal 1: cd backend && npm run dev" -ForegroundColor White
 Write-Host "  Terminal 2: cd frontend && npm run dev" -ForegroundColor White
 Write-Host "`nBackend will run on: http://localhost:5000" -ForegroundColor Cyan
-Write-Host "Frontend will run on: http://localhost:5175" -ForegroundColor Cyan
+Write-Host "Frontend will run on: http://localhost:5173" -ForegroundColor Cyan
 Write-Host "`nPress any key to exit..."
 $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
