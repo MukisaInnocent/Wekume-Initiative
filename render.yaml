@@ -28,7 +28,7 @@ services:
         fromService:
           type: web
           name: wekume-backend
-          envVar: Render.serviceUrl
+          property: url
 
 databases:
   - name: wekume-db
