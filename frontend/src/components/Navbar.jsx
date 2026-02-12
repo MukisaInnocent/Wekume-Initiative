@@ -88,11 +88,6 @@ function Navbar({ isTransparent = false, backgroundImages, currentBackgroundInde
                             </div>
                             <span className={`font-heading font-bold text-2xl tracking-tight ${logoColorClass}`}>Wekume Initiative</span>
                         </div>
-
-                        {/* Legacy Logo */}
-                        <a href="https://wekume.org" className="transition-transform duration-300 hover:scale-105">
-                            <img src={oldLogo} alt="Original Wekume" className="h-10 w-auto" />
-                        </a>
                     </div>
 
                     {/* Desktop Navigation */}
@@ -116,6 +111,10 @@ function Navbar({ isTransparent = false, backgroundImages, currentBackgroundInde
                         >
                             Donate
                         </Link>
+                        {/* Legacy Logo */}
+                        <a href="https://wekume.org" className="transition-transform duration-300 hover:scale-105">
+                            <img src={oldLogo} alt="Original Wekume" className="h-10 w-auto" />
+                        </a>
                     </div>
 
                     {/* Mobile Menu Button */}
@@ -128,6 +127,10 @@ function Navbar({ isTransparent = false, backgroundImages, currentBackgroundInde
                         >
                             {isMenuOpen ? <X size={28} /> : <Menu size={28} />}
                         </button>
+                        {/* Legacy Logo */}
+                        <a href="https://wekume.org" className="transition-transform duration-300 hover:scale-105">
+                            <img src={oldLogo} alt="Original Wekume" className="h-8 w-auto" />
+                        </a>
                     </div>
                 </div>
 
