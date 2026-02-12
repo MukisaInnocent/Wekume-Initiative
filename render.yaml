@@ -32,7 +32,7 @@ services:
         fromService:
           type: web
           name: wekume-backend
-          property: url
+          envVar: RENDER_EXTERNAL_URL
 
 databases:
   - name: wekume-db
