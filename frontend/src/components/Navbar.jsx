@@ -77,11 +77,6 @@ function Navbar({ isTransparent = false, backgroundImages, currentBackgroundInde
                 <div className="flex justify-between items-center h-16">
                     {/* Logos Container */}
                     <div className="flex items-center gap-6">
-                        {/* Legacy Logo */}
-                        <a href="https://wekume.org" className="transition-transform duration-300 hover:scale-105">
-                            <img src={oldLogo} alt="Original Wekume" className="h-10 w-auto" />
-                        </a>
-
                         {/* Main App Logo - Note: User requested this logic not to link */}
                         <div className="flex items-center gap-3 group cursor-default">
                             <div className="bg-transparent rounded-full p-2 shadow-sm flex items-center justify-center">
@@ -93,6 +88,11 @@ function Navbar({ isTransparent = false, backgroundImages, currentBackgroundInde
                             </div>
                             <span className={`font-heading font-bold text-2xl tracking-tight ${logoColorClass}`}>Wekume Initiative</span>
                         </div>
+
+                        {/* Legacy Logo */}
+                        <a href="https://wekume.org" className="transition-transform duration-300 hover:scale-105">
+                            <img src={oldLogo} alt="Original Wekume" className="h-10 w-auto" />
+                        </a>
                     </div>
 
                     {/* Desktop Navigation */}
