@@ -2,6 +2,7 @@ import { Link, useLocation, NavLink } from 'react-router-dom';
 import { Menu, X, ChevronRight } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import ThemeToggle from './ThemeToggle';
+import oldLogo from '../assets/images/old-logo.png';
 
 function Navbar({ isTransparent = false, backgroundImages, currentBackgroundIndex }) {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -74,17 +75,25 @@ function Navbar({ isTransparent = false, backgroundImages, currentBackgroundInde
             )}
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between items-center h-16">
-                    {/* Logo */}
-                    <a href="https://wekume.org" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 group">
-                        <div className="bg-transparent rounded-full p-2 shadow-sm flex items-center justify-center">
-                            <img
-                                src="/assets/wekume-logo.png"
-                                alt="Wekume Initiative"
-                                className="h-12 w-12 object-contain transition-transform duration-300 group-hover:scale-110"
-                            />
-                        </div>
-                        <span className={`font-heading font-bold text-2xl tracking-tight ${logoColorClass}`}>Wekume Initiative</span>
-                    </a>
+                    {/* Logos Container */}
+                    <div className="flex items-center gap-6">
+                        {/* Legacy Logo */}
+                        <a href="https://wekume.org" className="transition-transform duration-300 hover:scale-105">
+                            <img src={oldLogo} alt="Original Wekume" className="h-10 w-auto" />
+                        </a>
+
+                        {/* Main App Logo */}
+                        <Link to="/" className="flex items-center gap-3 group">
+                            <div className="bg-transparent rounded-full p-2 shadow-sm flex items-center justify-center">
+                                <img
+                                    src="/assets/wekume-logo.png"
+                                    alt="Wekume Initiative"
+                                    className="h-12 w-12 object-contain transition-transform duration-300 group-hover:scale-110"
+                                />
+                            </div>
+                            <span className={`font-heading font-bold text-2xl tracking-tight ${logoColorClass}`}>Wekume Initiative</span>
+                        </Link>
+                    </div>
 
                     {/* Desktop Navigation */}
                     <div className="hidden lg:flex space-x-8 items-center">
