@@ -155,13 +155,20 @@ const BackgroundManager = () => {
                                 </button>
                             </div>
                         </div>
-                        <div className="p-3 bg-white dark:bg-gray-800 flex justify-between items-center">
-                            <span className={`text-sm font-medium ${bg.is_active ? 'text-green-600' : 'text-gray-500'}`}>
-                                {bg.is_active ? 'Active' : 'Inactive'}
-                            </span>
-                            <span className="text-xs text-gray-400">
-                                {new Date(bg.created_at).toLocaleDateString()}
-                            </span>
+                        <div className="p-3 bg-white dark:bg-gray-800">
+                            <div className="mb-2">
+                                <p className="text-sm font-medium text-gray-900 dark:text-gray-100 truncate" title={bg.public_id}>
+                                    {bg.public_id}
+                                </p>
+                            </div>
+                            <div className="flex justify-between items-center">
+                                <span className={`text-xs font-medium ${bg.is_active ? 'text-green-600' : 'text-gray-500'}`}>
+                                    {bg.is_active ? 'Active' : 'Inactive'}
+                                </span>
+                                <span className="text-xs text-gray-400">
+                                    {new Date(bg.created_at).toLocaleDateString()}
+                                </span>
+                            </div>
                         </div>
                     </div>
                 ))}

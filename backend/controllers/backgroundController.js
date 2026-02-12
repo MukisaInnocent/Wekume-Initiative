@@ -15,7 +15,7 @@ exports.getAllBackgrounds = async (req, res) => {
 
             // Get all existing public_ids from DB
             const existingBackgrounds = await BackgroundImage.findAll({
-                attributes: ['public_id']
+                attributes: ['id', 'public_id']
             });
             const existingPublicIds = new Set(existingBackgrounds.map(bg => bg.public_id));
 
@@ -33,7 +33,7 @@ exports.getAllBackgrounds = async (req, res) => {
                 const host = req.get('host');
 
                 const newRecords = newFiles.map(filename => ({
-                    image_url: `${protocol}://${host}/uploads/backgrounds/${filename}`,
+                    image_url: `${protocol}://${host}/uploads/backgrounds/${encodeURIComponent(filename)}`,
                     public_id: filename,
                     is_active: false, // Default to inactive for auto-discovered files
                     uploaded_by: req.user ? req.user.id : null // Use current admin if available, else null
@@ -41,6 +41,18 @@ exports.getAllBackgrounds = async (req, res) => {
 
                 await BackgroundImage.bulkCreate(newRecords);
             }
+
+            // --- CLEANUP ORPHANED RECORDS START ---
+            // Identify and remove DB records where the file no longer exists on disk
+            const filesSet = new Set(files);
+            const orphanedRecords = existingBackgrounds.filter(bg => !filesSet.has(bg.public_id));
+
+            if (orphanedRecords.length > 0) {
+                console.log(`Found ${orphanedRecords.length} orphaned background records. Cleaning up...`);
+                const orphanedIds = orphanedRecords.map(bg => bg.id);
+                await BackgroundImage.destroy({ where: { id: orphanedIds } });
+            }
+            // --- CLEANUP ORPHANED RECORDS END ---
         }
         // --- SYNC LOGIC END ---
 
@@ -83,7 +95,7 @@ exports.uploadBackground = async (req, res) => {
         // Construct URL: http://localhost:5000/uploads/backgrounds/filename
         const protocol = req.protocol;
         const host = req.get('host');
-        const fileUrl = `${protocol}://${host}/uploads/backgrounds/${req.file.filename}`;
+        const fileUrl = `${protocol}://${host}/uploads/backgrounds/${encodeURIComponent(req.file.filename)}`;
 
         // Save to DB
         const background = await BackgroundImage.create({

@@ -3,6 +3,7 @@ const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
 const rateLimit = require('express-rate-limit');
+const path = require('path');
 require('dotenv').config();
 
 const { sequelize, testConnection } = require('./config/database');
@@ -23,7 +24,10 @@ const PORT = process.env.PORT || 5000;
 // ===== MIDDLEWARE =====
 
 // Security headers
-app.use(helmet());
+// Security headers
+app.use(helmet({
+    crossOriginResourcePolicy: { policy: "cross-origin" }
+}));
 
 // CORS configuration
 const allowedOrigins = [
@@ -67,7 +71,7 @@ if (process.env.NODE_ENV === 'development') {
 // Body parsing
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use('/uploads', express.static('uploads'));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Rate limiting
 const limiter = rateLimit({
