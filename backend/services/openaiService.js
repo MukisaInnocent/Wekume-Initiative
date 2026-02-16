@@ -6,9 +6,13 @@ const OpenAI = require('openai');
  */
 class OpenAIService {
     constructor() {
-        this.client = new OpenAI({
-            apiKey: process.env.OPENAI_API_KEY
-        });
+        const apiKey = process.env.OPENAI_API_KEY;
+        if (apiKey) {
+            this.client = new OpenAI({ apiKey });
+        } else {
+            console.warn('OpenAI API Key missing. AI features will be disabled.');
+            this.client = null;
+        }
         this.model = process.env.OPENAI_MODEL || 'gpt-4-turbo-preview';
     }
 
@@ -20,6 +24,10 @@ class OpenAIService {
      */
     async chat(messages, context = '') {
         try {
+            if (!this.client) {
+                return "I'm sorry, I cannot answer questions right now because my AI brain (OpenAI API) is not configured.";
+            }
+
             const systemPrompt = this.buildSystemPrompt(context);
 
             const response = await this.client.chat.completions.create({
