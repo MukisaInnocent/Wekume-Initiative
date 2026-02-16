@@ -21,7 +21,10 @@ The Blueprint handles most variables automatically, but verify these in the Dash
 - `DATABASE_URL`: Automatically linked.
 
 ### Frontend Service
-- `VITE_API_BASE_URL`: Automatically linked to backend host. The code now handles appending `https://` and `/api`.
+- `VITE_API_BASE_URL`: **CRITICAL**: This must be the **PUBLIC URL** of your Backend Service.
+    - **Incorrect**: `http://wekume-backend:5050` or `wekume-backend` (Internal names don't work in the browser).
+    - **Correct**: `https://wekume-backend.onrender.com` (Copy this from the Backend Service dashboard).
+    - Checks: The code automatically appends `/api`, so just the root URL is fine (e.g. `https://your-app.onrender.com`).
 
 ## Troubleshooting
 - **CORS Errors**: If you see CORS errors in the browser console, ensure the `FRONTEND_URL` environment variable in the Backend Service matches the actual URL of your Frontend Service.
