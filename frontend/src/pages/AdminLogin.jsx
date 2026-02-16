@@ -7,11 +7,7 @@ function AdminLogin() {
     const navigate = useNavigate();
     const [formData, setFormData] = useState({ email: '', password: '' });
     const [error, setError] = useState('');
-    const [debugInfo, setDebugInfo] = useState('');
     const [loading, setLoading] = useState(false);
-
-    // Get API URL for debugging
-    const apiUrl = import.meta.env.VITE_API_BASE_URL || '/api';
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -69,16 +65,6 @@ function AdminLogin() {
                 errorMessage = err.message;
             }
 
-            // Set debug info
-            setDebugInfo(JSON.stringify({
-                message: err.message,
-                status: err.response?.status,
-                statusText: err.response?.statusText,
-                url: err.config?.url,
-                baseURL: err.config?.baseURL,
-                data: err.response?.data
-            }, null, 2));
-
             setError(errorMessage);
         } finally {
             setLoading(false);
@@ -101,12 +87,6 @@ function AdminLogin() {
                         {error}
                     </div>
                 )}
-
-                {/* Debug Info */}
-                <div className="mb-4 p-2 bg-gray-100 dark:bg-gray-700 rounded text-xs text-gray-500 overflow-auto max-h-32">
-                    <p><strong>API Config:</strong> {apiUrl}</p>
-                    {debugInfo && <pre className="mt-2 text-red-500">{debugInfo}</pre>}
-                </div>
 
                 <form onSubmit={handleSubmit} className="space-y-6">
                     <div>

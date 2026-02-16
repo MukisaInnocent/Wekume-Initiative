@@ -5,26 +5,29 @@ async function checkAdmin() {
     try {
         // Assume database is already connected from server.js
 
-        const users = await User.findAll({ where: { role: ['super_admin', 'admin'] } });
-        console.log('Admin Users found:', users.length);
+        const adminEmail = process.env.ADMIN_EMAIL || 'admin@wekume.org';
+        const adminPassword = process.env.ADMIN_PASSWORD || 'WekumeAdmin2024!';
 
-        if (users.length > 0) {
-            console.log('✅ Admin user exists.');
+        const adminUser = await User.findOne({ where: { email: adminEmail } });
+
+        if (adminUser) {
+            console.log(`✅ Admin user found: ${adminEmail}`);
+            // Force reset password to ensure it matches
+            adminUser.password_hash = adminPassword;
+            // Triggers beforeUpdate hook to hash it
+            await adminUser.save();
+            console.log('🔄 Admin password reset to ensure access.');
         } else {
             console.log('⚠️ No admin users found. Creating default admin...');
-
-            const adminEmail = process.env.ADMIN_EMAIL || 'admin@wekume.org';
-            const adminPassword = process.env.ADMIN_PASSWORD || 'WekumeAdmin2024!';
 
             await User.create({
                 fullname: 'System Admin',
                 email: adminEmail,
                 password_hash: adminPassword, // Will be hashed by hooks
-                role: 'super_admin', // Use super_admin as per setup.js
+                role: 'super_admin',
                 is_active: true
             });
             console.log(`✅ Created default admin: ${adminEmail}`);
-            console.log(`   Password: ${adminPassword}`);
         }
     } catch (error) {
         console.error('❌ Error checking admin:', error);
