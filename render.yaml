@@ -32,7 +32,7 @@ services:
         source: /*
         destination: /index.html
     envVars:
-      - key: VITE_API_BASE_URL
+      - key: https://wekume-backend.onrender.com
         fromService:
           type: web
           name: wekume-backend
