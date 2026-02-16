@@ -1,4 +1,4 @@
-﻿# Wekume Initiative CMS Platform
+��﻿# Wekume Initiative CMS Platform
 
 A modern, full-stack web platform for Wekume Initiative NGO featuring a dynamic admin CMS, AI-powered support assistant, and youth-friendly public website.
 
@@ -19,7 +19,7 @@ A modern, full-stack web platform for Wekume Initiative NGO featuring a dynamic 
 - **Authentication**: JWT + bcrypt
 - **Media Storage**: Cloudinary
 - **AI**: OpenAI GPT-4 / Anthropic Claude
-- **Deployment**: Render (backend) + Vercel (frontend)
+- **Deployment**: Render (backend+ Vercel (frontend)
 
 ## 📁 Project Structure
 
@@ -113,7 +113,7 @@ After running `backend/setup.js`:
 
 ## 📖 Documentation
 
-- [Backend README](backend/README.md) - API documentation and setup
+- [Backend README](backend/README.md- API documentation and setup
 - [Frontend README](frontend/README.md) - UI components and routing
 - [Database Schema](backend/models/) - Database structure
 - [Implementation Plan](.gemini/antigravity/brain/*/implementation_plan.md) - Development roadmap

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { adminAPI } from '../../services/api';
-import { Trash2, Upload, Loader, Check, X, Image as ImageIcon } from 'lucide-react';
+import { Trash2, Upload, Loader, Check, X, Image as ImageIcon, RefreshCcw } from 'lucide-react';
 
 const BackgroundManager = () => {
     const [backgrounds, setBackgrounds] = useState([]);
@@ -114,20 +114,33 @@ const BackgroundManager = () => {
                         {uploading ? <Loader className="animate-spin" size={20} /> : <Upload size={20} />}
                         {uploading ? 'Uploading...' : 'Upload New Image'}
                     </label>
+                    <button
+                        onClick={fetchBackgrounds}
+                        disabled={loading}
+                        className="btn-secondary flex items-center gap-2 ml-3"
+                        title="Force Sync with Server"
+                    >
+                        <RefreshCcw size={20} className={loading ? 'animate-spin' : ''} />
+                        Sync
+                    </button>
                 </div>
             </div>
 
-            {error && (
-                <div className="bg-red-50 text-red-600 p-4 rounded-lg flex items-center gap-2">
-                    <X size={20} /> {error}
-                </div>
-            )}
+            {
+                error && (
+                    <div className="bg-red-50 text-red-600 p-4 rounded-lg flex items-center gap-2">
+                        <X size={20} /> {error}
+                    </div>
+                )
+            }
 
-            {successMessage && (
-                <div className="bg-green-50 text-green-600 p-4 rounded-lg flex items-center gap-2">
-                    <Check size={20} /> {successMessage}
-                </div>
-            )}
+            {
+                successMessage && (
+                    <div className="bg-green-50 text-green-600 p-4 rounded-lg flex items-center gap-2">
+                        <Check size={20} /> {successMessage}
+                    </div>
+                )
+            }
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {backgrounds.map((bg) => (
@@ -181,7 +194,7 @@ const BackgroundManager = () => {
                     </div>
                 )}
             </div>
-        </div>
+        </div >
     );
 };
 

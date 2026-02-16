@@ -6,62 +6,67 @@ const path = require('path');
 
 exports.getAllBackgrounds = async (req, res) => {
     try {
-        // --- SYNC LOGIC START ---
         const uploadDir = path.join(__dirname, '../uploads/backgrounds');
 
-        // Ensure directory exists
-        if (fs.existsSync(uploadDir)) {
-            const files = fs.readdirSync(uploadDir);
+        // 1. Ensure directory exists
+        if (!fs.existsSync(uploadDir)) {
+            // If no folder, no images. Return empty list.
+            return res.json({ backgrounds: [] });
+        }
 
-            // Get all existing public_ids from DB
-            const existingBackgrounds = await BackgroundImage.findAll({
-                attributes: ['id', 'public_id']
-            });
-            const existingPublicIds = new Set(existingBackgrounds.map(bg => bg.public_id));
+        // 2. Read DIRECTORY - Source of Truth
+        const files = fs.readdirSync(uploadDir).filter(file => /\.(jpg|jpeg|png|gif|webp)$/i.test(file));
+        const protocol = req.protocol;
+        const host = req.get('host');
 
-            // Find files that are not in DB
-            const newFiles = files.filter(file => {
-                // Filter for images only (basic check)
-                const isImage = /\.(jpg|jpeg|png|gif|webp)$/i.test(file);
-                return isImage && !existingPublicIds.has(file);
-            });
+        // 3. Fetch existing DB metadata
+        const dbBackgrounds = await BackgroundImage.findAll();
+        const dbMap = new Map(dbBackgrounds.map(bg => [bg.public_id, bg]));
 
-            if (newFiles.length > 0) {
-                console.log(`Found ${newFiles.length} new background images on disk. Syncing...`);
+        const currentBackgrounds = [];
 
-                const protocol = req.protocol;
-                const host = req.get('host');
+        // 4. Build List from FILES
+        for (const filename of files) {
+            let bg = dbMap.get(filename);
 
-                const newRecords = newFiles.map(filename => ({
+            if (!bg) {
+                // File exists but no DB record -> Create it immediately
+                console.log(`Auto-creating record for found file: ${filename}`);
+                bg = await BackgroundImage.create({
                     image_url: `${protocol}://${host}/uploads/backgrounds/${encodeURIComponent(filename)}`,
                     public_id: filename,
-                    is_active: false, // Default to inactive for auto-discovered files
-                    uploaded_by: req.user ? req.user.id : null // Use current admin if available, else null
-                }));
-
-                await BackgroundImage.bulkCreate(newRecords);
+                    is_active: false,
+                    uploaded_by: req.user ? req.user.id : null
+                });
+            } else {
+                // Ensure URL is correct (in case of protocol change etc)
+                const expectedUrl = `${protocol}://${host}/uploads/backgrounds/${encodeURIComponent(filename)}`;
+                if (bg.image_url !== expectedUrl) {
+                    // bg.image_url = expectedUrl; // Optional update if needed
+                }
             }
-
-            // --- CLEANUP ORPHANED RECORDS START ---
-            // Identify and remove DB records where the file no longer exists on disk
-            const filesSet = new Set(files);
-            const orphanedRecords = existingBackgrounds.filter(bg => !filesSet.has(bg.public_id));
-
-            if (orphanedRecords.length > 0) {
-                console.log(`Found ${orphanedRecords.length} orphaned background records. Cleaning up...`);
-                const orphanedIds = orphanedRecords.map(bg => bg.id);
-                await BackgroundImage.destroy({ where: { id: orphanedIds } });
-            }
-            // --- CLEANUP ORPHANED RECORDS END ---
+            currentBackgrounds.push(bg);
         }
-        // --- SYNC LOGIC END ---
 
-        // Fetch all backgrounds, active or not, ordered by display_order
-        // Admins might want to see inactive ones too
-        const backgrounds = await BackgroundImage.findAll({
-            order: [['display_order', 'ASC'], ['created_at', 'DESC']]
+        // 5. Cleanup Ghosts (DB records with no file)
+        const fileSet = new Set(files);
+        const ghosts = dbBackgrounds.filter(bg => !fileSet.has(bg.public_id));
+
+        if (ghosts.length > 0) {
+            console.log(`Removing ${ghosts.length} ghost records.`);
+            const ghostIds = ghosts.map(bg => bg.id);
+            await BackgroundImage.destroy({ where: { id: ghostIds } });
+        }
+
+        // 6. Return the FILE-BASED list
+        // Sort by active first, then display order, then new
+        currentBackgrounds.sort((a, b) => {
+            // (Sorting logic can remain simple or same as DB)
+            return (a.display_order - b.display_order) || (new Date(b.created_at) - new Date(a.created_at));
         });
-        res.json({ backgrounds });
+
+        res.json({ backgrounds: currentBackgrounds });
+
     } catch (error) {
         console.error('Get all backgrounds error:', error);
         res.status(500).json({ error: 'Failed to fetch background images' });

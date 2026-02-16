@@ -1,5 +1,5 @@
 import { Link, useLocation, NavLink } from 'react-router-dom';
-import { Menu, X, ChevronRight } from 'lucide-react';
+import { Menu, X, ChevronRight, Lock } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import ThemeToggle from './ThemeToggle';
 import oldLogo from '../assets/images/old-logo.png';
@@ -104,6 +104,13 @@ function Navbar({ isTransparent = false, backgroundImages, currentBackgroundInde
                                 <span className={`absolute -bottom-1 left-0 w-0 h-0.5 transition-all duration-300 group-hover:w-full ${isLightMode ? 'bg-white' : 'bg-primary-600 dark:bg-primary-400'}`}></span>
                             </NavLink>
                         ))}
+                        <Link
+                            to="/admin/login"
+                            className={`p-2 rounded-full transition-colors hover:bg-black/5 dark:hover:bg-white/10 ${textColorClass}`}
+                            title="Admin Login"
+                        >
+                            <Lock size={20} />
+                        </Link>
                         <ThemeToggle />
                         <Link
                             to="/donate"
@@ -113,67 +120,76 @@ function Navbar({ isTransparent = false, backgroundImages, currentBackgroundInde
                         </Link>
                         {/* Legacy Logo */}
                         <a href="https://wekume.org" className="transition-transform duration-300 hover:scale-105">
-                            <img src={oldLogo} alt="Original Wekume" className="h-10 w-auto" />
-                        </a>
-                    </div>
-
-                    {/* Mobile Menu Button */}
-                    <div className="lg:hidden flex items-center gap-3">
-                        <ThemeToggle />
-                        <button
-                            className={`transition-colors ${isLightMode ? 'text-white' : 'text-gray-900 dark:text-white'}`}
-                            onClick={() => setIsMenuOpen(!isMenuOpen)}
-                            aria-label="Toggle menu"
-                        >
-                            {isMenuOpen ? <X size={28} /> : <Menu size={28} />}
-                        </button>
-                        {/* Legacy Logo */}
-                        <a href="https://wekume.org" className="transition-transform duration-300 hover:scale-105">
-                            <img src={oldLogo} alt="Original Wekume" className="h-8 w-auto" />
+                            <img src={oldLogo} alt="Original Wekume" className="h-14 w-auto" />
                         </a>
                     </div>
                 </div>
 
-                {/* Mobile Navigation Panel */}
-                <div className={`fixed inset-0 z-40 bg-white dark:bg-gray-900 transform transition-transform duration-300 lg:hidden ${isMenuOpen ? 'translate-x-0' : 'translate-x-full'
-                    }`} style={{ top: '0', height: '100vh' }}>
-                    <div className="flex flex-col h-full p-6">
-                        <div className="flex justify-between items-center mb-8">
-                            <span className="text-2xl font-heading font-bold text-primary-600 dark:text-primary-400">Menu</span>
-                            <button onClick={() => setIsMenuOpen(false)} className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">
-                                <X size={28} />
-                            </button>
-                        </div>
+                {/* Mobile Menu Button */}
+                <div className="lg:hidden flex items-center gap-3">
+                    <ThemeToggle />
+                    <button
+                        className={`transition-colors ${isLightMode ? 'text-white' : 'text-gray-900 dark:text-white'}`}
+                        onClick={() => setIsMenuOpen(!isMenuOpen)}
+                        aria-label="Toggle menu"
+                    >
+                        {isMenuOpen ? <X size={28} /> : <Menu size={28} />}
+                    </button>
+                    {/* Legacy Logo */}
+                    <a href="https://wekume.org" className="transition-transform duration-300 hover:scale-105">
+                        <img src={oldLogo} alt="Original Wekume" className="h-10 w-auto" />
+                    </a>
+                </div>
+            </div>
 
-                        <div className="flex flex-col space-y-4 flex-grow">
-                            {navLinks.map((link) => (
-                                <NavLink
-                                    key={link.path}
-                                    to={link.path}
-                                    className={({ isActive }) =>
-                                        `flex items-center justify-between text-xl font-medium py-3 border-b border-gray-100 dark:border-gray-800 ${isActive ? 'text-primary-600 dark:text-primary-400' : 'text-gray-900 dark:text-white'
-                                        }`
-                                    }
-                                    onClick={() => setIsMenuOpen(false)}
-                                >
-                                    {link.label}
-                                    <ChevronRight size={20} className="opacity-50" />
-                                </NavLink>
-                            ))}
-                            <div className="mt-8">
-                                <Link
-                                    to="/donate"
-                                    className="block w-full text-center bg-primary-600 text-white px-6 py-4 rounded-xl font-bold hover:bg-primary-700 transition-all text-lg shadow-lg"
-                                    onClick={() => setIsMenuOpen(false)}
-                                >
-                                    Donate Now
-                                </Link>
-                            </div>
-                        </div>
+            {/* Mobile Navigation Panel */}
+            <div className={`fixed inset-0 z-40 bg-white dark:bg-gray-900 transform transition-transform duration-300 lg:hidden ${isMenuOpen ? 'translate-x-0' : 'translate-x-full'
+                }`} style={{ top: '0', height: '100vh' }}>
+                <div className="flex flex-col h-full p-6">
+                    <div className="flex justify-between items-center mb-8">
+                        <span className="text-2xl font-heading font-bold text-primary-600 dark:text-primary-400">Menu</span>
+                        <button onClick={() => setIsMenuOpen(false)} className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">
+                            <X size={28} />
+                        </button>
+                    </div>
 
-                        <div className="mt-auto pt-8 border-t border-gray-100 dark:border-gray-800 text-center">
-                            <p className="text-gray-400 dark:text-gray-500 text-sm">© 2026 Wekume Initiative</p>
+                    <div className="flex flex-col space-y-4 flex-grow">
+                        {navLinks.map((link) => (
+                            <NavLink
+                                key={link.path}
+                                to={link.path}
+                                className={({ isActive }) =>
+                                    `flex items-center justify-between text-xl font-medium py-3 border-b border-gray-100 dark:border-gray-800 ${isActive ? 'text-primary-600 dark:text-primary-400' : 'text-gray-900 dark:text-white'
+                                    }`
+                                }
+                                onClick={() => setIsMenuOpen(false)}
+                            >
+                                {link.label}
+                                <ChevronRight size={20} className="opacity-50" />
+                            </NavLink>
+                        ))}
+                        <div className="mt-8">
+                            <Link
+                                to="/donate"
+                                className="block w-full text-center bg-primary-600 text-white px-6 py-4 rounded-xl font-bold hover:bg-primary-700 transition-all text-lg shadow-lg"
+                                onClick={() => setIsMenuOpen(false)}
+                            >
+                                Donate Now
+                            </Link>
+                            <Link
+                                to="/admin/login"
+                                className="block w-full text-center mt-4 text-gray-500 dark:text-gray-400 font-medium hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
+                                onClick={() => setIsMenuOpen(false)}
+                            >
+                                <div className="flex items-center justify-center gap-2">
+                                    <Lock size={16} /> Admin Login
+                                </div>
+                            </Link>
                         </div>
+                    </div>
+
+                    <div className="mt-auto pt-8 border-t border-gray-100 dark:border-gray-800 text-center">
+                        <p className="text-gray-400 dark:text-gray-500 text-sm">© 2026 Wekume Initiative</p>
                     </div>
                 </div>
             </div>
