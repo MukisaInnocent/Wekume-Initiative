@@ -10,7 +10,7 @@ import Contact from './pages/Contact';
 import Donate from './pages/Donate';
 import AdminLogin from './pages/AdminLogin';
 import AdminDashboard from './pages/AdminDashboard';
-import ChatWidget from './components/ChatWidget';
+import LinaAIChat from './components/LinaAIChat';
 import Testimonials from './pages/Testimonials';
 
 function App() {
@@ -33,7 +33,7 @@ function App() {
                     <Route path="/admin/login" element={<AdminLogin />} />
                     <Route path="/admin/dashboard" element={<AdminDashboard />} />
                 </Routes>
-                <ChatWidget />
+                <LinaAIChat />
             </div>
         </ThemeProvider>
     );

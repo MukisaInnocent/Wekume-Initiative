@@ -77,8 +77,8 @@ function Contact() {
                 </div>
 
                 {/* Dynamic Hero Header Section with Deep Purple Background */}
-                <header className="relative w-full py-24 px-4 text-center z-10 flex justify-center">
-                    <div className={`max-w-4xl w-full bg-primary-900 rounded-[3rem] p-10 md:p-16 border border-white/10 shadow-2xl shadow-purple-900/40 transition-all duration-1000 transform overflow-hidden relative group ${mounted ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-10 scale-95'}`}>
+                <header className="relative w-full py-12 sm:py-16 md:py-20 lg:py-24 px-4 text-center z-10 flex justify-center">
+                    <div className={`max-w-4xl w-full bg-primary-900 rounded-2xl sm:rounded-3xl md:rounded-[3rem] p-6 sm:p-8 md:p-12 lg:p-16 border border-white/10 shadow-2xl shadow-purple-900/40 transition-all duration-1000 transform overflow-hidden relative group ${mounted ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-10 scale-95'}`}>
 
                         {/* Animated Gradient Behind Purple */}
                         <div className="absolute inset-0 bg-gradient-to-br from-purple-900 via-primary-900 to-indigo-950 opacity-100 animate-gradient-shift"></div>
@@ -88,21 +88,21 @@ function Contact() {
                         <div className="absolute bottom-[-50%] right-[-20%] w-[150%] h-[150%] bg-gradient-to-tl from-orange-500/10 via-transparent to-transparent rounded-full blur-3xl pointer-events-none animate-float-delayed"></div>
 
                         <div className="relative z-10">
-                            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/10 backdrop-blur-md mb-8 shadow-sm hover:scale-105 transition-transform">
+                            <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 rounded-full bg-white/10 border border-white/10 backdrop-blur-md mb-4 sm:mb-6 md:mb-8 shadow-sm hover:scale-105 transition-transform">
                                 <span className="relative flex h-3 w-3">
                                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
                                     <span className="relative inline-flex rounded-full h-3 w-3 bg-orange-500"></span>
                                 </span>
-                                <span className="text-sm font-bold tracking-wide text-orange-200 uppercase">We are Online</span>
+                                <span className="text-xs sm:text-sm font-bold tracking-wide text-orange-200 uppercase">We are Online</span>
                             </div>
 
-                            <h1 className="text-6xl md:text-8xl font-heading font-extrabold mb-8 tracking-tight leading-none text-white drop-shadow-xl">
+                            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-heading font-extrabold mb-4 sm:mb-6 md:mb-8 tracking-tight leading-none text-white drop-shadow-xl">
                                 <span className="bg-clip-text text-transparent bg-gradient-to-r from-orange-300 via-yellow-200 to-white animate-pulse">
                                     Get in Touch
                                 </span>
                             </h1>
 
-                            <p className="text-xl text-purple-100 font-medium max-w-2xl mx-auto leading-relaxed opacity-90">
+                            <p className="text-sm sm:text-base md:text-lg lg:text-xl text-purple-100 font-medium max-w-2xl mx-auto leading-relaxed opacity-90">
                                 Have a question, feedback, or a partnership idea? We'd love to hear from you. Let's create something meaningful together.
                             </p>
                         </div>
@@ -110,7 +110,7 @@ function Contact() {
                 </header>
 
                 {/* Main Content Section - 3D Card */}
-                <main className="w-full pb-32 px-4 sm:px-6 lg:px-8 z-10 flex justify-center -mt-10">
+                <main className="w-full pb-16 sm:pb-24 md:pb-32 px-4 sm:px-6 lg:px-8 z-10 flex justify-center -mt-6 sm:mt-8 md:-mt-10">
 
                     {/* 3D Tilt Card Wrapper */}
                     <div
@@ -121,7 +121,7 @@ function Contact() {
                             ref={cardRef}
                             onMouseMove={handleMouseMove}
                             onMouseLeave={handleMouseLeave}
-                            className={`w-full bg-white dark:bg-gray-800 rounded-[2.5rem] shadow-2xl overflow-hidden grid lg:grid-cols-5 min-h-[700px] transform transition-all duration-300 ease-out border border-white/60 dark:border-gray-700 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10 delay-200'}`}
+                            className={`w-full bg-white dark:bg-gray-800 rounded-2xl sm:rounded-3xl md:rounded-[2.5rem] shadow-2xl overflow-hidden grid grid-cols-1 lg:grid-cols-5 min-h-[600px] sm:min-h-[650px] md:min-h-[700px] transform transition-all duration-300 ease-out border border-white/60 dark:border-gray-700 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10 delay-200'}`}
                             style={{
                                 transform: `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`,
                                 transformStyle: 'preserve-3d',
@@ -137,7 +137,7 @@ function Contact() {
                             ></div>
 
                             {/* Left Panel: Brand & Info */}
-                            <div className="lg:col-span-2 bg-primary-900 text-white p-10 md:p-12 flex flex-col justify-between relative overflow-hidden group">
+                            <div className="lg:col-span-2 bg-primary-900 text-white p-6 sm:p-8 md:p-10 lg:p-12 flex flex-col justify-between relative overflow-hidden group">
                                 {/* Brand Gradient Background - Purple base */}
                                 <div className="absolute inset-0 bg-gradient-to-br from-purple-900 via-primary-900 to-indigo-950 opacity-100 animate-gradient-shift"></div>
 
@@ -150,15 +150,15 @@ function Contact() {
 
                                 {/* Content Layer (elevated for 3D) */}
                                 <div className="relative z-10 transform translate-z-10 group-hover:translate-x-2 transition-transform duration-500">
-                                    <div className="mb-10">
-                                        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/10 backdrop-blur-md mb-6">
+                                    <div className="mb-8 sm:mb-10">
+                                        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/10 backdrop-blur-md mb-4 sm:mb-6">
                                             <Sparkles size={14} className="text-yellow-300" />
                                             <span className="text-xs font-semibold tracking-wide uppercase text-yellow-100">24/7 Support</span>
                                         </div>
-                                        <h2 className="text-4xl md:text-5xl font-heading font-bold mb-4 tracking-tighter leading-none text-white">
+                                        <h2 className="text-3xl sm:text-4xl md:text-5xl font-heading font-bold mb-3 sm:mb-4 tracking-tighter leading-none text-white">
                                             Contact Info
                                         </h2>
-                                        <p className="text-purple-100 text-lg opacity-90">Reach out via any channel.</p>
+                                        <p className="text-purple-100 text-base sm:text-lg opacity-90">Reach out via any channel.</p>
                                     </div>
 
                                     <div className="space-y-5">
@@ -202,13 +202,13 @@ function Contact() {
                             </div>
 
                             {/* Right Panel: The Form */}
-                            <div className="lg:col-span-3 bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl p-8 md:p-16 flex flex-col justify-center relative">
+                            <div className="lg:col-span-3 bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl p-6 sm:p-10 md:p-12 lg:p-16 flex flex-col justify-center relative">
                                 {/* Mesh Gradient Bloom - Brand Colors */}
                                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-gradient-to-tr from-purple-50/40 via-transparent to-orange-50/40 blur-3xl pointer-events-none opacity-50"></div>
 
                                 <div className="max-w-lg w-full mx-auto relative z-10">
-                                    <h3 className="text-3xl font-heading font-bold text-gray-900 dark:text-white mb-2">Send a Message</h3>
-                                    <p className="text-gray-500 dark:text-gray-400 mb-10 text-sm">Fill out the form below and we'll get back to you.</p>
+                                    <h3 className="text-2xl sm:text-3xl font-heading font-bold text-gray-900 dark:text-white mb-2">Send a Message</h3>
+                                    <p className="text-gray-500 dark:text-gray-400 mb-6 sm:mb-8 md:mb-10 text-xs sm:text-sm">Fill out the form below and we'll get back to you.</p>
 
                                     {status === 'success' ? (
                                         <SuccessMessage onReset={() => setStatus('idle')} />

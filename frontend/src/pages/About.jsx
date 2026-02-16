@@ -48,47 +48,47 @@ function About() {
             <Navbar />
 
             {/* Header */}
-            <div className="bg-primary-900 text-white py-20">
+            <div className="bg-primary-900 text-white py-12 sm:py-16 md:py-20">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                    <h1 className="text-4xl md:text-5xl font-heading font-bold mb-4">About Wekume Initiative</h1>
-                    <p className="text-xl opacity-90">Building a healthier, infromed future.</p>
+                    <h1 className="text-3xl sm:text-4xl md:text-5xl font-heading font-bold mb-3 sm:mb-4">About Wekume Initiative</h1>
+                    <p className="text-base sm:text-lg md:text-xl opacity-90">Building a healthier, informed future.</p>
                 </div>
             </div>
 
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-20 bg-white dark:bg-gray-900">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 md:py-16 space-y-12 sm:space-y-16 md:space-y-20 bg-white dark:bg-gray-900">
 
                 {/* Who We Are & Mission */}
-                <div className="grid md:grid-cols-2 gap-12 items-center">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-10 md:gap-12 items-center">
                     <div>
-                        <span className="text-purple-600 dark:text-purple-400 font-semibold tracking-wider uppercase text-sm">Our Mission</span>
-                        <h2 className="text-4xl font-heading font-bold text-gray-900 dark:text-white mt-2 mb-6">Empowering Through Knowledge & Growth</h2>
-                        <div className="prose text-gray-700 dark:text-gray-300 text-lg leading-relaxed space-y-4">
+                        <span className="text-purple-600 dark:text-purple-400 font-semibold tracking-wider uppercase text-xs sm:text-sm">Our Mission</span>
+                        <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold text-gray-900 dark:text-white mt-2 mb-4 sm:mb-6">Empowering Through Knowledge & Growth</h2>
+                        <div className="prose text-gray-700 dark:text-gray-300 text-sm sm:text-base md:text-lg leading-relaxed space-y-3 sm:space-y-4">
                             <p>
                                 At Wekume, our mission is to empower university students to take control of their reproductive health while nurturing personal and professional growth. We believe that every student should have access to reliable health resources, regardless of their background.
                             </p>
                             <p>
-                                Guided by values of inclusivity, accessibility, and empowerment, Wekume aims to create a positive, sustainable impact on students’ lives.
+                                Guided by values of inclusivity, accessibility, and empowerment, Wekume aims to create a positive, sustainable impact on students' lives.
                             </p>
                         </div>
                     </div>
                     <div className="relative">
-                        <div className="absolute inset-0 bg-gradient-to-tr from-purple-200 to-orange-100 dark:from-purple-900 dark:to-orange-900 rounded-3xl transform rotate-3"></div>
+                        <div className="absolute inset-0 bg-gradient-to-tr from-purple-200 to-orange-100 dark:from-purple-900 dark:to-orange-900 rounded-2xl sm:rounded-3xl transform rotate-3"></div>
                         <img
                             src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
                             alt="Students collaborating"
-                            className="relative rounded-3xl shadow-xl w-full h-auto object-cover"
+                            className="relative rounded-2xl sm:rounded-3xl shadow-xl w-full h-auto object-cover"
                         />
                     </div>
                 </div>
 
                 {/* Core Values */}
-                <div className="py-12">
-                    <div className="text-center mb-16">
-                        <span className="text-orange-600 dark:text-orange-400 font-semibold tracking-wider uppercase text-sm">Guiding Principles</span>
-                        <h2 className="text-4xl font-heading font-bold text-gray-900 dark:text-white mt-2">Our Core Values</h2>
+                <div className="py-8 sm:py-10 md:py-12">
+                    <div className="text-center mb-10 sm:mb-12 md:mb-16">
+                        <span className="text-orange-600 dark:text-orange-400 font-semibold tracking-wider uppercase text-xs sm:text-sm">Guiding Principles</span>
+                        <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold text-gray-900 dark:text-white mt-2">Our Core Values</h2>
                     </div>
 
-                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
                         {[
                             {
                                 title: "Inclusivity",

@@ -19,7 +19,7 @@ const backgroundRoutes = require('./routes/background');
 // const aiRoutes = require('./routes/ai');
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5050;
 
 // ===== MIDDLEWARE =====
 
@@ -32,7 +32,7 @@ app.use(helmet({
 // CORS configuration
 const allowedOrigins = [
     'http://localhost:5173',
-    'http://localhost:5175', // New frontend port
+    'http://localhost:5200', // New frontend port
     'http://localhost:4173', // Vite preview
     process.env.FRONTEND_URL
 ].filter(Boolean);

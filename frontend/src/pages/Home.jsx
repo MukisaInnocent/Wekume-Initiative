@@ -77,19 +77,19 @@ function Home() {
             />
 
             {/* Our Story Section */}
-            <section className="py-24 relative overflow-hidden bg-white dark:bg-gray-900">
-                <div className="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 bg-purple-100 dark:bg-purple-900/30 rounded-full blur-3xl opacity-50"></div>
+            <section className="py-12 sm:py-16 md:py-20 lg:py-24 relative overflow-hidden bg-white dark:bg-gray-900">
+                <div className="absolute top-0 right-0 -mr-20 -mt-20 w-64 h-64 sm:w-80 sm:h-80 md:w-96 md:h-96 bg-purple-100 dark:bg-purple-900/30 rounded-full blur-3xl opacity-50"></div>
                 <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-80 h-80 bg-orange-50 dark:bg-orange-900/30 rounded-full blur-3xl opacity-50"></div>
 
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-                    <div className="grid md:grid-cols-2 gap-16 items-center">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-12 md:gap-16 items-center">
                         <div className="order-2 md:order-1">
-                            <span className="text-purple-600 dark:text-purple-400 font-semibold tracking-wider uppercase text-sm mb-2 block">Our Origin</span>
-                            <h2 className="text-4xl md:text-5xl font-heading font-bold text-gray-900 dark:text-white mb-8 leading-tight">
+                            <span className="text-purple-600 dark:text-purple-400 font-semibold tracking-wider uppercase text-xs sm:text-sm mb-2 block">Our Origin</span>
+                            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-heading font-bold text-gray-900 dark:text-white mb-6 sm:mb-8 leading-tight">
                                 Wekume was born from a <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-orange-500">deeply personal place</span>.
                             </h2>
 
-                            <div className="space-y-6 text-lg text-gray-600 dark:text-gray-300 leading-relaxed">
+                            <div className="space-y-4 sm:space-y-6 text-sm sm:text-base md:text-lg text-gray-600 dark:text-gray-300 leading-relaxed">
                                 <p>
                                     Our founder, <strong className="text-gray-900 dark:text-white">Joshua Walusimbi</strong>, lost his older sister while she was a university student. Like many young people, she entered adulthood without the tools or support to navigate her sexual and reproductive health. She contracted HIV, became pregnant, and passed away before she could reach her dreams.
                                 </p>
@@ -140,24 +140,24 @@ function Home() {
             </section>
 
             {/* Meet Lina - AI Safe Chat Section */}
-            <section className="py-32 bg-white dark:bg-gray-900 relative overflow-hidden">
+            <section className="py-12 sm:py-16 md:py-24 lg:py-32 bg-white dark:bg-gray-900 relative overflow-hidden">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-                    <div className="bg-gradient-to-r from-blue-900 to-purple-900 rounded-3xl p-8 md:p-12 shadow-2xl text-white relative overflow-hidden">
+                    <div className="bg-gradient-to-r from-blue-900 to-purple-900 rounded-2xl sm:rounded-3xl p-6 sm:p-8 md:p-12 shadow-2xl text-white relative overflow-hidden">
                         {/* Background Elements */}
-                        <div className="absolute top-0 right-0 w-96 h-96 bg-blue-500 rounded-full blur-3xl opacity-20 -mr-20 -mt-20"></div>
-                        <div className="absolute bottom-0 left-0 w-72 h-72 bg-purple-500 rounded-full blur-3xl opacity-20 -ml-10 -mb-10"></div>
+                        <div className="absolute top-0 right-0 w-64 h-64 sm:w-80 sm:h-80 md:w-96 md:h-96 bg-blue-500 rounded-full blur-3xl opacity-20 -mr-20 -mt-20"></div>
+                        <div className="absolute bottom-0 left-0 w-48 h-48 sm:w-64 sm:h-64 md:w-72 md:h-72 bg-purple-500 rounded-full blur-3xl opacity-20 -ml-10 -mb-10"></div>
 
-                        <div className="grid md:grid-cols-2 gap-12 items-center relative z-10">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-10 md:gap-12 items-center relative z-10">
                             <div>
-                                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-500/20 border border-blue-400/30 text-blue-200 text-sm font-semibold mb-6">
+                                <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-blue-500/20 border border-blue-400/30 text-blue-200 text-xs sm:text-sm font-semibold mb-4 sm:mb-6">
                                     <span className="w-2 h-2 rounded-full bg-blue-400 animate-pulse"></span>
                                     AI-Powered Support
                                 </div>
-                                <h2 className="text-4xl font-heading font-bold mb-6">
+                                <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold mb-4 sm:mb-6">
                                     Meet <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-300">Lina</span> – Your AI Safe Chat
                                 </h2>
-                                <p className="text-blue-100 text-lg mb-6 leading-relaxed">
-                                    Click on the “Lina AI Safe Chat” icon to get answers to your questions about sexual and reproductive health! It’s <span className="font-bold text-white">secure, private, and confidential</span>.
+                                <p className="text-blue-100 text-sm sm:text-base md:text-lg mb-4 sm:mb-6 leading-relaxed">
+                                    Click on the <span className="font-bold">Lina AI icon</span> at the bottom right corner to get answers to your questions about sexual and reproductive health! It's <span className="font-bold text-white">secure, private, and confidential</span>.
                                 </p>
 
                                 <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/10 mb-8">
@@ -174,13 +174,13 @@ function Home() {
                                     </div>
                                 </div>
 
-                                <div className="flex flex-wrap gap-4">
-                                    <div className="flex items-center gap-2 px-4 py-2 bg-white/5 rounded-full text-sm border border-white/10">
-                                        <Shield size={16} className="text-green-400" />
+                                <div className="flex flex-wrap gap-3 sm:gap-4">
+                                    <div className="flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-white/5 rounded-full text-xs sm:text-sm border border-white/10">
+                                        <Shield size={14} className="text-green-400 sm:w-4 sm:h-4" />
                                         <span>Private & Anonymous</span>
                                     </div>
-                                    <div className="flex items-center gap-2 px-4 py-2 bg-white/5 rounded-full text-sm border border-white/10">
-                                        <MessageCircle size={16} className="text-blue-400" />
+                                    <div className="flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-white/5 rounded-full text-xs sm:text-sm border border-white/10">
+                                        <MessageCircle size={14} className="text-blue-400 sm:w-4 sm:h-4" />
                                         <span>24/7 Availability</span>
                                     </div>
                                 </div>

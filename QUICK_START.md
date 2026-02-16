@@ -2,16 +2,17 @@
 
 ## ✅ What's Running
 
-### Backend API (Port 5000)
+### Backend API (Port 5050)
 - **Database**: PostgreSQL `wekume_db` with 14 tables
 - **Admin User**: admin@wekume.org / WekumeAdmin2024!
-- **Health Check**: http://localhost:5000/health
-- **API Docs**: http://localhost:5000/api
+- **Health Check**: http://localhost:5050/health
+- **API Docs**: http://localhost:5050/api
 
-### Frontend App (Port 5173)
-- **Homepage**: http://localhost:5173
-- **Admin Login**: http://localhost:5173/admin/login
-- **Admin Dashboard**: http://localhost:5173/admin/dashboard
+### Frontend App (Port 5200)
+- **Homepage**: http://localhost:5200
+- **Admin Login**: http://localhost:5200/admin/login
+- **Admin Dashboard**: http://localhost:5200/admin/dashboard
+- **Lina AI Chat**: Accessible via bottom-right icon on all pages
 
 ---
 
@@ -31,7 +32,7 @@
 
 Open your browser and go to:
 ```
-http://localhost:5000/health
+http://localhost:5050/health
 ```
 
 You should see:
@@ -47,7 +48,7 @@ You should see:
 
 Navigate to:
 ```
-http://localhost:5173
+http://localhost:5200
 ```
 
 You should see the Wekume Initiative homepage with:
@@ -57,7 +58,7 @@ You should see the Wekume Initiative homepage with:
 
 ### 3. Login to Admin Dashboard
 
-1. Go to: http://localhost:5173/admin/login
+1. Go to: http://localhost:5200/admin/login
 2. Enter credentials:
    - Email: `admin@wekume.org`
    - Password: `WekumeAdmin2024!`
@@ -98,7 +99,7 @@ node create-database.js  # Create database only
 ### Frontend
 ```bash
 cd frontend
-npm run dev          # Start dev server
+npm run dev          # Start dev server (Port 5200)
 npm run build        # Production build
 npm run preview      # Preview production build
 ```
@@ -120,11 +121,12 @@ npm run preview      # Preview production build
 3. **Contact Form** - Working submission
 4. **Volunteer Form** - Application system
 
-### Phase 5: AI Assistant
-1. **OpenAI Integration** - Set up API
-2. **Chat Widget** - Floating assistant
-3. **Knowledge Base** - SRH, mental health content
-4. **Escalation Logic** - Route to human support
+### Phase 5: AI Assistant (Lina AI)
+1. ✅ **OpenAI Integration** - API configured
+2. ✅ **Chat Widget** - Floating Lina AI assistant with large icon
+3. ✅ **Knowledge Base** - SRH content integrated
+4. ✅ **Escalation Logic** - Crisis detection and routing
+5. ✅ **Responsive Design** - Works on all devices (mobile, tablet, desktop, TV)
 
 ---
 
@@ -141,7 +143,7 @@ npm run preview      # Preview production build
 - Clear Vite cache: `rm -rf node_modules/.vite`
 
 ### Can't login to admin
-- Check backend is running on port 5000
+- Check backend is running on port 5050
 - Verify admin user exists: Check `setup.js` output
 - Use exact credentials: `admin@wekume.org` / `WekumeAdmin2024!`
 
@@ -196,11 +198,12 @@ npm run preview      # Preview production build
 - [x] Database `wekume_db` created
 - [x] Backend dependencies installed
 - [x] Frontend dependencies installed
-- [x] Backend server running (port 5000)
-- [x] Frontend server running (port 5173)
+- [x] Backend server running (port 5050)
+- [x] Frontend server running (port 5200)
 - [x] Admin user created
 - [x] Can access homepage
 - [x] Can login to admin dashboard
+- [x] Lina AI chat working
 
 ---
 
@@ -224,12 +227,19 @@ npm run preview      # Preview production build
 - Content management forms needed
 - Media library needed
 
-**Phase 4: Public Website** 🚧 In Progress
-- All pages created (placeholders)
+**Phase 4: Public Website** ✅ Complete
+- All pages created with dynamic content
 - Navigation and footer done
-- Dynamic content loading needed
+- Fully responsive design (320px - 1920px+)
+- Lina AI integrated on all pages
 
-**Phase 5: AI Assistant** 📝 Planned
+**Phase 5: AI Assistant (Lina AI)** ✅ Complete
+- OpenAI integration functional
+- Floating chat widget with large icon
+- Crisis detection and escalation
+- Knowledge base configured
+- Responsive across all devices
+
 **Phase 6: Deployment** 📝 Planned
 
 ---
