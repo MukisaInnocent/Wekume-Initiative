@@ -33,25 +33,25 @@ function Events() {
         <>
             <Navbar />
 
-            <div className="bg-gray-50 dark:bg-gray-900 py-16 min-h-screen">
+            <div className="bg-gray-50 dark:bg-gray-900 py-12 sm:py-16 md:py-20 min-h-screen">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="text-center mb-12">
-                        <h1 className="text-4xl md:text-5xl font-heading font-bold mb-4 text-gray-900 dark:text-white">Events & Programs</h1>
-                        <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">Join us in our upcoming activities and see what we've been up to.</p>
+                    <div className="text-center mb-10 sm:mb-12 md:mb-16">
+                        <h1 className="text-3xl sm:text-4xl md:text-5xl font-heading font-bold mb-3 sm:mb-4 text-gray-900 dark:text-white">Events & Programs</h1>
+                        <p className="text-base sm:text-lg md:text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">Join us in our upcoming activities and see what we've been up to.</p>
                     </div>
 
                     {/* Filter Tabs */}
-                    <div className="flex justify-center mb-10">
-                        <div className="bg-white dark:bg-gray-800 p-1 rounded-lg shadow-sm inline-flex">
+                    <div className="flex justify-center mb-8 sm:mb-10 md:mb-12">
+                        <div className="bg-white dark:bg-gray-800 p-1 rounded-lg shadow-sm inline-flex flex-wrap sm:flex-nowrap justify-center w-full sm:w-auto">
                             <button
                                 onClick={() => setFilter('upcoming')}
-                                className={`px-6 py-2 rounded-md font-medium transition-colors ${filter === 'upcoming' ? 'bg-primary-600 text-white shadow-sm' : 'text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'}`}
+                                className={`flex-1 sm:flex-none px-4 sm:px-6 py-2 rounded-md font-medium text-sm sm:text-base transition-colors whitespace-nowrap ${filter === 'upcoming' ? 'bg-primary-600 text-white shadow-sm' : 'text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'}`}
                             >
                                 Upcoming Events
                             </button>
                             <button
                                 onClick={() => setFilter('past')}
-                                className={`px-6 py-2 rounded-md font-medium transition-colors ${filter === 'past' ? 'bg-primary-600 text-white shadow-sm' : 'text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'}`}
+                                className={`flex-1 sm:flex-none px-4 sm:px-6 py-2 rounded-md font-medium text-sm sm:text-base transition-colors whitespace-nowrap ${filter === 'past' ? 'bg-primary-600 text-white shadow-sm' : 'text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'}`}
                             >
                                 Past Events
                             </button>
@@ -62,7 +62,7 @@ function Events() {
                     {loading ? (
                         <div className="text-center py-20 text-gray-600 dark:text-gray-300">Loading events...</div>
                     ) : filteredEvents.length > 0 ? (
-                        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
                             {filteredEvents.map(event => (
                                 <div key={event.id} className="bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all group max-w-sm mx-auto w-full">
                                     <div className="h-48 bg-gray-200 relative overflow-hidden">

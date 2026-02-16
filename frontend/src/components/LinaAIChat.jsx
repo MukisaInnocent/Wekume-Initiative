@@ -96,15 +96,12 @@ function LinaAIChat() {
                 title="Chat with Lina AI"
             >
                 <div className="relative group">
-                    {/* Pulsing Ring Animation */}
-                    <div className="absolute inset-0 rounded-full bg-purple-500 opacity-75 animate-ping"></div>
-
-                    {/* Main Icon Container */}
-                    <div className="relative bg-gradient-to-br from-purple-600 to-blue-600 rounded-full p-3 shadow-2xl hover:shadow-purple-500/50 transition-shadow">
+                    {/* Main Icon Container - No Background, just Shadow */}
+                    <div className="relative p-1 drop-shadow-2xl filter hover:drop-shadow-[0_0_15px_rgba(168,85,247,0.6)] transition-all">
                         <img
                             src="/assets/lina-logo.png"
                             alt="Lina AI"
-                            className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 object-contain"
+                            className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 object-contain"
                         />
                     </div>
 
@@ -153,12 +150,12 @@ function LinaAIChat() {
                             >
                                 <div
                                     className={`max-w-[85%] rounded-2xl px-4 py-2.5 ${msg.role === 'user'
-                                            ? 'bg-purple-600 text-white rounded-tr-sm'
-                                            : msg.crisis
-                                                ? 'bg-red-100 dark:bg-red-900/30 text-red-900 dark:text-red-100 border border-red-300 dark:border-red-700 rounded-tl-sm'
-                                                : msg.error
-                                                    ? 'bg-orange-100 dark:bg-orange-900/30 text-orange-900 dark:text-orange-100 border border-orange-300 dark:border-orange-700 rounded-tl-sm'
-                                                    : 'bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 border border-gray-200 dark:border-gray-600 rounded-tl-sm shadow-sm'
+                                        ? 'bg-purple-600 text-white rounded-tr-sm'
+                                        : msg.crisis
+                                            ? 'bg-red-100 dark:bg-red-900/30 text-red-900 dark:text-red-100 border border-red-300 dark:border-red-700 rounded-tl-sm'
+                                            : msg.error
+                                                ? 'bg-orange-100 dark:bg-orange-900/30 text-orange-900 dark:text-orange-100 border border-orange-300 dark:border-orange-700 rounded-tl-sm'
+                                                : 'bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 border border-gray-200 dark:border-gray-600 rounded-tl-sm shadow-sm'
                                         }`}
                                 >
                                     <p className="text-sm leading-relaxed whitespace-pre-wrap break-words">

@@ -78,15 +78,15 @@ function Navbar({ isTransparent = false, backgroundImages, currentBackgroundInde
                     {/* Logos Container */}
                     <div className="flex items-center gap-6">
                         {/* Main App Logo - Note: User requested this logic not to link */}
-                        <div className="flex items-center gap-3 group cursor-default">
-                            <div className="bg-transparent rounded-full p-2 shadow-sm flex items-center justify-center">
+                        <div className="flex items-center gap-2 sm:gap-3 group cursor-default">
+                            <div className="bg-transparent rounded-full p-1 sm:p-2 shadow-sm flex items-center justify-center">
                                 <img
                                     src="/assets/wekume-logo.png"
                                     alt="Wekume Initiative"
-                                    className="h-12 w-12 object-contain transition-transform duration-300 group-hover:scale-110"
+                                    className="h-8 w-8 sm:h-12 sm:w-12 object-contain transition-transform duration-300 group-hover:scale-110"
                                 />
                             </div>
-                            <span className={`font-heading font-bold text-2xl tracking-tight ${logoColorClass}`}>Wekume Initiative</span>
+                            <span className={`font-heading font-bold text-lg sm:text-2xl tracking-tight ${logoColorClass}`}>Wekume Initiative</span>
                         </div>
                     </div>
 

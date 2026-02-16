@@ -33,21 +33,21 @@ function Testimonials() {
             <Navbar />
 
             {/* Hero Section */}
-            <section className="bg-purple-900 text-white py-20 relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-96 h-96 bg-pink-500 rounded-full blur-3xl opacity-20 -mr-20 -mt-20"></div>
-                <div className="absolute bottom-0 left-0 w-72 h-72 bg-blue-500 rounded-full blur-3xl opacity-20 -ml-10 -mb-10"></div>
+            <section className="bg-purple-900 text-white py-16 sm:py-20 md:py-24 relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-64 h-64 sm:w-96 sm:h-96 bg-pink-500 rounded-full blur-3xl opacity-20 -mr-20 -mt-20"></div>
+                <div className="absolute bottom-0 left-0 w-48 h-48 sm:w-72 sm:h-72 bg-blue-500 rounded-full blur-3xl opacity-20 -ml-10 -mb-10"></div>
 
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-                    <span className="text-pink-300 font-semibold tracking-wider uppercase text-sm mb-2 block">Community Stories</span>
-                    <h1 className="text-4xl md:text-5xl font-heading font-bold mb-6">Voices of Impact</h1>
-                    <p className="text-xl text-purple-100 max-w-2xl mx-auto">
+                    <span className="text-pink-300 font-semibold tracking-wider uppercase text-xs sm:text-sm mb-2 sm:mb-3 block">Community Stories</span>
+                    <h1 className="text-3xl sm:text-4xl md:text-5xl font-heading font-bold mb-4 sm:mb-6">Voices of Impact</h1>
+                    <p className="text-lg sm:text-xl text-purple-100 max-w-2xl mx-auto leading-relaxed">
                         Real stories from students, partners, and volunteers who are part of the Wekume journey.
                     </p>
                 </div>
             </section>
 
             {/* Testimonials Grid */}
-            <section className="py-20 flex-grow">
+            <section className="py-12 sm:py-16 md:py-20 flex-grow">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     {loading ? (
                         <div className="flex justify-center items-center h-64">
@@ -55,7 +55,7 @@ function Testimonials() {
                         </div>
                     ) : (
                         displayTestimonials.length > 0 ? (
-                            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
                                 {displayTestimonials.map((testimonial) => (
                                     <div
                                         key={testimonial.id}

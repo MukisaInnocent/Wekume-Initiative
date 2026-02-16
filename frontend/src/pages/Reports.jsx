@@ -35,25 +35,25 @@ function Reports() {
             <Navbar />
 
             {/* Header */}
-            <div className="bg-primary-900 text-white py-12 md:py-20 shadow-xl">
+            <div className="bg-primary-900 text-white py-12 sm:py-16 md:py-20 shadow-xl">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center uppercase tracking-widest">
-                    <h1 className="text-3xl md:text-5xl font-heading font-bold">Wekume Reports</h1>
-                    <div className="w-24 h-1 bg-accent-500 mx-auto mt-6"></div>
+                    <h1 className="text-3xl sm:text-4xl md:text-5xl font-heading font-bold">Wekume Reports</h1>
+                    <div className="w-16 sm:w-24 h-1 bg-accent-500 mx-auto mt-4 sm:mt-6"></div>
                 </div>
             </div>
 
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 min-h-[60vh] bg-white dark:bg-gray-900">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 min-h-[60vh] bg-white dark:bg-gray-900">
 
                 {/* Search / Filter */}
-                <div className="flex justify-between items-center mb-10 flex-col md:flex-row gap-4">
-                    <p className="text-gray-600 dark:text-gray-300">
+                <div className="flex flex-col md:flex-row justify-between items-center mb-8 sm:mb-10 gap-6 md:gap-8">
+                    <p className="text-base sm:text-lg text-gray-600 dark:text-gray-300 text-center md:text-left">
                         Explore our annual reports, strategic plans, and performance documents.
                     </p>
-                    <div className="relative w-full md:w-96">
+                    <div className="relative w-full md:w-96 shrink-0">
                         <input
                             type="text"
                             placeholder="Search reports..."
-                            className="w-full pl-10 pr-4 py-3 border border-gray-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent shadow-sm"
+                            className="w-full pl-10 pr-4 py-3 border border-gray-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent shadow-sm transition-shadow"
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
                         />
@@ -67,7 +67,7 @@ function Reports() {
                         <Loader className="animate-spin" /> Loading documents...
                     </div>
                 ) : filteredReports.length > 0 ? (
-                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
                         {filteredReports.map(report => (
                             <div key={report.id} className="group bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-lg hover:shadow-2xl transition-all overflow-hidden flex flex-col">
                                 {/* Preview / Icon Area */}
