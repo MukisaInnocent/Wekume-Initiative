@@ -90,25 +90,33 @@ function LinaAIChat() {
             {/* Floating Lina Icon Button */}
             <button
                 onClick={handleToggleChat}
-                className={`fixed bottom-6 right-6 z-50 transition-all duration-300 transform hover:scale-110 ${isOpen ? 'scale-0 opacity-0' : 'scale-100 opacity-100'
-                    }`}
+                className={`fixed bottom-6 right-6 z-50 transition-all duration-500 transform ${isOpen ? 'scale-0 opacity-0 rotate-180' : 'scale-100 opacity-100 rotate-0'}`}
                 aria-label="Open Lina AI Chat"
                 title="Chat with Lina AI"
             >
-                <div className="relative group">
-                    {/* Main Icon Container - No Background, just Shadow */}
-                    <div className="relative p-1 drop-shadow-2xl filter hover:drop-shadow-[0_0_15px_rgba(168,85,247,0.6)] transition-all">
+                <div className="relative group flex items-center justify-center">
+                    {/* Outer Rotating Ring */}
+                    <div className="absolute inset-0 rounded-full border-2 border-transparent border-t-purple-500 border-r-blue-400 border-b-purple-500 border-l-blue-400 animate-spin-slow opacity-70 group-hover:opacity-100 transition-opacity w-full h-full scale-110"></div>
+
+                    {/* Inner Reverse Rotating Ring */}
+                    <div className="absolute inset-0 rounded-full border border-transparent border-t-blue-300 border-b-purple-300 animate-reverse-spin opacity-50 group-hover:opacity-80 transition-opacity w-full h-full scale-90"></div>
+
+                    {/* Pulse Glow Effect */}
+                    <div className="absolute inset-0 bg-purple-500 rounded-full blur-xl opacity-20 group-hover:opacity-40 animate-pulse-slow transition-opacity"></div>
+
+                    {/* Main Icon Container */}
+                    <div className="relative z-10 p-2 transition-transform duration-300 group-hover:scale-105">
                         <img
                             src="/assets/lina-logo.png"
                             alt="Lina AI"
-                            className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 object-contain"
+                            className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 object-contain filter drop-shadow-lg"
                         />
                     </div>
 
                     {/* Tooltip */}
-                    <div className="absolute bottom-full right-0 mb-2 px-3 py-1.5 bg-gray-900 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
+                    <div className="absolute bottom-full right-0 mb-4 px-3 py-1.5 bg-gray-900/90 backdrop-blur-sm text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0 whitespace-nowrap pointer-events-none shadow-xl border border-white/10">
                         Chat with Lina AI
-                        <div className="absolute top-full right-4 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-900"></div>
+                        <div className="absolute top-full right-6 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-900/90"></div>
                     </div>
                 </div>
             </button>

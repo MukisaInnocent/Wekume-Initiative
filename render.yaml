@@ -15,6 +15,11 @@ services:
         fromDatabase:
           name: wekume-db
           property: connectionString
+      - key: FRONTEND_URL
+        fromService:
+          type: web
+          name: wekume-frontend
+          property: url
 
   # Frontend Service
   - type: web

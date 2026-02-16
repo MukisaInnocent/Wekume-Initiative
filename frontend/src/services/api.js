@@ -3,8 +3,17 @@ import axios from 'axios';
 // Create axios instance with base configuration
 const getBaseUrl = () => {
     let url = import.meta.env.VITE_API_BASE_URL || '/api';
-    if (url !== '/api' && !url.startsWith('http')) {
-        url = `https://${url}`;
+
+    // If it's a full URL or hostname from Render
+    if (url !== '/api') {
+        // Add protocol if missing (Render 'host' property doesn't include it)
+        if (!url.startsWith('http')) {
+            url = `https://${url}`;
+        }
+        // Add /api suffix if missing
+        if (!url.endsWith('/api')) {
+            url = `${url}/api`;
+        }
     }
     return url;
 };

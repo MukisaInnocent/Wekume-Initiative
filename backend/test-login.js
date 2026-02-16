@@ -4,11 +4,11 @@ const axios = require('axios');
 async function testLogin() {
     try {
         console.log('Testing backend health check...');
-        const healthResponse = await axios.get('http://localhost:5000/health');
+        const healthResponse = await axios.get('http://localhost:5050/health');
         console.log('✅ Backend is running:', healthResponse.data);
 
         console.log('\nTesting admin login...');
-        const loginResponse = await axios.post('http://localhost:5000/api/auth/login', {
+        const loginResponse = await axios.post('http://localhost:5050/api/auth/login', {
             email: 'admin@wekume.org',
             password: 'WekumeAdmin2024!'
         });
