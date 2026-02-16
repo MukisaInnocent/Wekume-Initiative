@@ -6,9 +6,6 @@ export default {
         "./src/**/*.{js,ts,jsx,tsx}",
     ],
     theme: {
-        screens: {
-            '3xl': '1920px',
-        },
         extend: {
             colors: {
                 // Primary Brand Color - Pink/Red

@@ -86,7 +86,7 @@ function Navbar({ isTransparent = false, backgroundImages, currentBackgroundInde
                                     className="h-12 w-12 object-contain transition-transform duration-300 group-hover:scale-110"
                                 />
                             </div>
-                            <span className={`font-heading font-bold text-lg sm:text-2xl tracking-tight ${logoColorClass}`}>Wekume Initiative</span>
+                            <span className={`font-heading font-bold text-2xl tracking-tight ${logoColorClass}`}>Wekume Initiative</span>
                         </div>
                     </div>
 

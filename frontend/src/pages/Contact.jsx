@@ -155,7 +155,7 @@ function Contact() {
                                             <Sparkles size={14} className="text-yellow-300" />
                                             <span className="text-xs font-semibold tracking-wide uppercase text-yellow-100">24/7 Support</span>
                                         </div>
-                                        <h2 className="text-4xl sm:text-6xl md:text-8xl font-heading font-bold leading-tight text-white">
+                                        <h2 className="text-4xl md:text-5xl font-heading font-bold mb-4 tracking-tighter leading-none text-white">
                                             Contact Info
                                         </h2>
                                         <p className="text-purple-100 text-lg opacity-90">Reach out via any channel.</p>

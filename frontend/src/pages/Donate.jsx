@@ -114,7 +114,9 @@ function Donate() {
                         <Heart className="text-pink-300 mr-2 animate-pulse" fill="currentColor" size={24} />
                         <span className="font-semibold tracking-wide uppercase text-sm">Support Our Cause</span>
                     </div>
-                    <h1 className="text-3xl sm:text-4xl md:text-6xl font-heading font-bold mb-6">Make a Difference Today</h1>
+                    <h1 className="text-4xl md:text-6xl font-heading font-bold mb-4 animate-fade-in">
+                        Make an Impact Today
+                    </h1>
                     <p className="text-xl text-white/90 max-w-2xl mx-auto animate-fade-in">
                         Your contribution directly empowers youth in Uganda through quality health education and innovative programs.
                     </p>

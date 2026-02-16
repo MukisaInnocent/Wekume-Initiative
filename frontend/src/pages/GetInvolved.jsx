@@ -21,7 +21,7 @@ function GetInvolved() {
                         <span className="inline-block py-1 px-3 rounded-full bg-orange-500/20 text-orange-300 text-sm font-semibold mb-6 border border-orange-500/30">
                             Join the Movement
                         </span>
-                        <h1 className="text-3xl sm:text-5xl md:text-7xl font-heading font-bold mb-8 leading-tight">
+                        <h1 className="text-5xl md:text-7xl font-heading font-bold mb-8 leading-tight">
                             Ready to Take Charge of Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-pink-500">Health and Future?</span>
                         </h1>
                         <p className="text-xl md:text-2xl text-gray-200 leading-relaxed max-w-2xl mb-10">
@@ -110,7 +110,7 @@ function GetInvolved() {
                             <div className="inline-flex p-3 bg-white/10 rounded-full mb-6 backdrop-blur-sm">
                                 <MessageCircle size={32} />
                             </div>
-                            <h2 className="text-3xl sm:text-4xl md:text-5xl font-heading font-bold mb-6">We Want To Hear From You!</h2>
+                            <h2 className="text-4xl md:text-5xl font-heading font-bold mb-6">We Want To Hear From You!</h2>
                             <p className="text-xl text-purple-100 mb-10 max-w-2xl mx-auto">
                                 Have ideas, questions, or want to partner with us? Let's build a better future for students together.
                             </p>

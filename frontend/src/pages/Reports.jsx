@@ -37,7 +37,7 @@ function Reports() {
             {/* Header */}
             <div className="bg-primary-900 text-white py-12 md:py-20 shadow-xl">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center uppercase tracking-widest">
-                    <h1 className="text-2xl sm:text-3xl md:text-5xl font-heading font-bold">Wekume Reports</h1>
+                    <h1 className="text-3xl md:text-5xl font-heading font-bold">Wekume Reports</h1>
                     <div className="w-24 h-1 bg-accent-500 mx-auto mt-6"></div>
                 </div>
             </div>
