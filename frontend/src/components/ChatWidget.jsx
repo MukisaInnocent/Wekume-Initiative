@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { MessageCircle, X, Send, Copy, Check } from 'lucide-react';
+import { X, Send, Copy, Check } from 'lucide-react';
 import { aiAPI } from '../services/api';
 
 function ChatWidget() {
@@ -122,24 +122,32 @@ function ChatWidget() {
         return (
             <button
                 onClick={() => setIsOpen(true)}
-                className="fixed bottom-6 right-6 bg-primary-600 text-white p-4 rounded-full shadow-lg hover:bg-primary-700 transition-all hover:scale-110 z-50 animate-pulse"
+                className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 bg-primary-600 text-white p-3 sm:p-4 rounded-full shadow-lg hover:bg-primary-700 transition-all hover:scale-110 z-50 animate-pulse"
                 aria-label="Open chat assistant"
             >
-                <MessageCircle size={28} />
+                <img
+                    src="/assets/lina-logo.png"
+                    alt="Lina AI"
+                    className="h-8 w-8 sm:h-10 sm:w-10 rounded-full object-cover"
+                />
             </button>
         );
     }
 
     return (
-        <div className="fixed bottom-6 right-6 w-96 h-[600px] bg-white dark:bg-gray-800 rounded-2xl shadow-2xl flex flex-col z-50 animate-fade-in">
+        <div className="fixed bottom-3 right-3 sm:bottom-6 sm:right-6 w-[calc(100vw-1.5rem)] sm:w-96 h-[calc(100vh-5rem)] sm:h-[600px] max-h-[600px] bg-white dark:bg-gray-800 rounded-2xl shadow-2xl flex flex-col z-50 animate-fade-in">
             {/* Header */}
-            <div className="gradient-primary text-white p-4 rounded-t-2xl flex justify-between items-center">
+            <div className="gradient-primary text-white p-3 sm:p-4 rounded-t-2xl flex justify-between items-center shrink-0">
                 <div className="flex items-center gap-2">
-                    <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
-                        <MessageCircle size={24} />
+                    <div className="w-10 h-10 rounded-full overflow-hidden flex items-center justify-center bg-white/20">
+                        <img
+                            src="/assets/lina-logo.png"
+                            alt="Lina AI"
+                            className="w-full h-full object-cover"
+                        />
                     </div>
                     <div>
-                        <h3 className="font-bold">Lina - AI Safe Chat</h3>
+                        <h3 className="font-bold text-sm sm:text-base">Lina - AI Safe Chat</h3>
                         <p className="text-xs opacity-90">Powered by AI</p>
                     </div>
                 </div>
@@ -154,7 +162,7 @@ function ChatWidget() {
 
             {/* Quick Actions (only show if no messages yet or just welcome message) */}
             {messages.length <= 1 && (
-                <div className="p-3 bg-gray-50 dark:bg-gray-700 border-b dark:border-gray-600">
+                <div className="p-3 bg-gray-50 dark:bg-gray-700 border-b dark:border-gray-600 shrink-0">
                     <p className="text-xs text-gray-600 dark:text-gray-300 mb-2">Quick actions:</p>
                     <div className="grid grid-cols-2 gap-2">
                         {quickActions.map((action, idx) => (
@@ -171,7 +179,7 @@ function ChatWidget() {
             )}
 
             {/* Messages */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50 dark:bg-gray-900">
+            <div className="flex-1 overflow-y-auto p-3 sm:p-4 space-y-4 bg-gray-50 dark:bg-gray-900 min-h-0">
                 {messages.map((msg, idx) => (
                     <div
                         key={idx}
@@ -204,7 +212,7 @@ function ChatWidget() {
                             {msg.role === 'assistant' && !msg.error && (
                                 <button
                                     onClick={() => copyToClipboard(msg.content)}
-                                    className="absolute -right-8 top-0 p-1 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-gray-200 rounded"
+                                    className="absolute -right-8 top-0 p-1 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-gray-200 rounded hidden sm:block"
                                     title="Copy message"
                                 >
                                     {copied ? <Check size={14} className="text-green-600" /> : <Copy size={14} className="text-gray-600" />}
@@ -231,7 +239,7 @@ function ChatWidget() {
             </div>
 
             {/* Input Area */}
-            <div className="p-4 border-t dark:border-gray-700 bg-white dark:bg-gray-800 rounded-b-2xl">
+            <div className="p-3 sm:p-4 border-t dark:border-gray-700 bg-white dark:bg-gray-800 rounded-b-2xl shrink-0">
                 <div className="flex gap-2 mb-2">
                     <input
                         type="text"
@@ -239,17 +247,17 @@ function ChatWidget() {
                         onChange={(e) => setInput(e.target.value)}
                         onKeyPress={(e) => e.key === 'Enter' && !e.shiftKey && handleSend()}
                         placeholder="Type your message..."
-                        className="flex-1 px-4 py-3 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-full focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm"
+                        className="flex-1 px-3 sm:px-4 py-2.5 sm:py-3 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-full focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm"
                         disabled={loading}
                         maxLength={500}
                     />
                     <button
                         onClick={handleSend}
                         disabled={loading || !input.trim()}
-                        className="bg-primary-600 text-white p-3 rounded-full hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-md hover:shadow-lg"
+                        className="bg-primary-600 text-white p-2.5 sm:p-3 rounded-full hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-md hover:shadow-lg"
                         aria-label="Send message"
                     >
-                        <Send size={20} />
+                        <Send size={18} />
                     </button>
                 </div>
 

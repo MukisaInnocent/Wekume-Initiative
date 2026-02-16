@@ -50,8 +50,8 @@ function About() {
             {/* Header */}
             <div className="bg-primary-900 text-white py-20">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                    <h1 className="text-4xl md:text-5xl font-heading font-bold mb-4">About Wekume Initiative</h1>
-                    <p className="text-xl opacity-90">Building a healthier, infromed future.</p>
+                    <h1 className="text-3xl sm:text-4xl md:text-5xl font-heading font-bold mb-4">About Wekume Initiative</h1>
+                    <p className="text-lg sm:text-xl opacity-90">Building a healthier, informed future.</p>
                 </div>
             </div>
 

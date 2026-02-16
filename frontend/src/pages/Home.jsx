@@ -191,8 +191,8 @@ function Home() {
                                 <div className="bg-white text-gray-800 rounded-2xl shadow-xl overflow-hidden max-w-sm mx-auto transform rotate-3 hover:rotate-0 transition-transform duration-500">
                                     <div className="bg-gradient-primary p-4 flex items-center justify-between text-white">
                                         <div className="flex items-center gap-3">
-                                            <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
-                                                <MessageCircle size={20} />
+                                            <div className="w-10 h-10 rounded-full overflow-hidden flex items-center justify-center bg-white/20">
+                                                <img src="/assets/lina-logo.png" alt="Lina AI" className="w-full h-full object-cover" />
                                             </div>
                                             <div>
                                                 <p className="font-bold text-sm">Lina</p>

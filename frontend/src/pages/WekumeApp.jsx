@@ -34,7 +34,7 @@ function WekumeApp() {
             <div className="bg-primary-900 text-white pt-20 pb-40 overflow-hidden relative">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
                     <div className="inline-flex p-4 bg-white/10 rounded-full mb-6 backdrop-blur-sm"><Smartphone size={32} /></div>
-                    <h1 className="text-4xl md:text-6xl font-heading font-bold mb-6">{content.title}</h1>
+                    <h1 className="text-3xl sm:text-4xl md:text-6xl font-heading font-bold mb-6">{content.title}</h1>
                     <p className="text-xl md:text-2xl text-blue-100 max-w-3xl mx-auto mb-10">{content.subtitle}</p>
                     <div className="flex justify-center gap-4">
                         <button className="bg-white text-primary-900 px-8 py-3 rounded-lg font-bold flex items-center gap-2 hover:bg-gray-100 transition-colors">

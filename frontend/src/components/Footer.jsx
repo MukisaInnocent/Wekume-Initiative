@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 function Footer() {
     return (
         <footer className="bg-purple-900 dark:bg-black text-white mt-20">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-                <div className="grid md:grid-cols-3 gap-8">
+            <div className="max-w-7xl 3xl:max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-12">
+                <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-8">
                     {/* About Section */}
                     <div>
                         <h3 className="text-xl font-heading font-bold mb-4 text-pink-300 dark:text-pink-400">Wekume Initiative</h3>
@@ -22,7 +22,7 @@ function Footer() {
                             <li><Link to="/testimonials" className="text-gray-300 dark:text-gray-400 hover:text-primary-300 dark:hover:text-primary-400 transition-colors">Testimonials</Link></li>
                             <li><Link to="/get-involved" className="text-gray-300 dark:text-gray-400 hover:text-primary-300 dark:hover:text-primary-400 transition-colors">Get Involved</Link></li>
                             <li><Link to="/contact" className="text-gray-300 dark:text-gray-400 hover:text-primary-300 dark:hover:text-primary-400 transition-colors">Contact</Link></li>
-                            <li><Link to="/admin" className="text-gray-300 dark:text-gray-400 hover:text-primary-300 dark:hover:text-primary-400 transition-colors">Admin Dashboard</Link></li>
+                            <li><Link to="/admin/login" className="text-gray-300 dark:text-gray-400 hover:text-primary-300 dark:hover:text-primary-400 transition-colors">Admin Dashboard</Link></li>
                         </ul>
                     </div>
 

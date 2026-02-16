@@ -112,7 +112,7 @@ function HeroCarousel({ currentBackgroundIndex, backgroundImages, setCurrentBack
             <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center w-full">
 
                 {/* Content Transition Container */}
-                <div className="relative min-h-[400px] flex flex-col items-center">
+                <div className="relative min-h-[350px] md:min-h-[400px] 3xl:min-h-[500px] flex flex-col items-center">
                     {slides.map((slide, index) => (
                         <div
                             key={slide.id}
@@ -122,20 +122,20 @@ function HeroCarousel({ currentBackgroundIndex, backgroundImages, setCurrentBack
                                 }`}
                         >
                             {/* Badge */}
-                            <div className="inline-flex items-center gap-4 px-6 py-3 rounded-full bg-white/10 backdrop-blur-md border border-white/20 mb-2 shadow-2xl">
-                                <span className={`text-sm font-semibold text-white/90 uppercase tracking-widest`}>
+                            <div className="inline-flex items-center gap-2 sm:gap-4 px-4 sm:px-6 py-2 sm:py-3 rounded-full bg-white/10 backdrop-blur-md border border-white/20 mb-2 shadow-2xl">
+                                <span className={`text-xs sm:text-sm font-semibold text-white/90 uppercase tracking-widest`}>
                                     {slide.id === 'mission' ? 'Our Mission' : slide.id === 'values' ? 'Our Values' : 'Our Purpose'}
                                 </span>
                             </div>
 
                             {/* Heading */}
-                            <h1 className="text-5xl md:text-7xl lg:text-8xl font-heading font-bold mb-8 leading-tight tracking-tight drop-shadow-lg">
+                            <h1 className="text-3xl sm:text-5xl md:text-7xl lg:text-8xl 3xl:text-9xl font-heading font-bold mb-6 sm:mb-8 leading-tight tracking-tight drop-shadow-lg">
                                 {slide.title}
                             </h1>
 
                             {/* Subtitle */}
-                            <div className="max-w-3xl mx-auto mb-12 p-6 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10">
-                                <p className="text-xl md:text-2xl text-white/90 leading-relaxed">
+                            <div className="max-w-3xl mx-auto mb-8 sm:mb-12 p-4 sm:p-6 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10">
+                                <p className="text-base sm:text-xl md:text-2xl 3xl:text-3xl text-white/90 leading-relaxed">
                                     {slide.subtitle}
                                 </p>
                             </div>
@@ -143,7 +143,7 @@ function HeroCarousel({ currentBackgroundIndex, backgroundImages, setCurrentBack
                             {/* CTA */}
                             <Link
                                 to={slide.ctaLink}
-                                className="group relative bg-white text-gray-900 px-10 py-5 rounded-full font-bold hover:bg-opacity-90 transition-all duration-300 hover:scale-105 flex items-center gap-3 shadow-2xl"
+                                className="group relative bg-white text-gray-900 px-6 sm:px-10 py-3 sm:py-5 rounded-full font-bold hover:bg-opacity-90 transition-all duration-300 hover:scale-105 flex items-center gap-2 sm:gap-3 shadow-2xl text-sm sm:text-base"
                             >
                                 <span>{slide.ctaText}</span>
                                 <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
