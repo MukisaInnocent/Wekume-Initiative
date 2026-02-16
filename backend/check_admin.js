@@ -3,30 +3,32 @@ const { User } = require('./models');
 
 async function checkAdmin() {
     try {
-        await sequelize.authenticate();
-        console.log('Database connected.');
+        // Assume database is already connected from server.js
 
-        const users = await User.findAll({ where: { role: 'admin' } }); // Assuming 'role' and 'admin' value based on authController log
+        const users = await User.findAll({ where: { role: ['super_admin', 'admin'] } });
         console.log('Admin Users found:', users.length);
 
         if (users.length > 0) {
-            users.forEach(u => console.log(`- ${u.email} (Active: ${u.is_active})`));
+            console.log('✅ Admin user exists.');
         } else {
-            console.log('No admin users found. Creating one...');
+            console.log('⚠️ No admin users found. Creating default admin...');
+
+            const adminEmail = process.env.ADMIN_EMAIL || 'admin@wekume.org';
+            const adminPassword = process.env.ADMIN_PASSWORD || 'WekumeAdmin2024!';
+
             await User.create({
                 fullname: 'System Admin',
-                email: 'admin@wekume.org',
-                password_hash: 'admin123', // Will be hashed by hooks
-                role: 'admin',
+                email: adminEmail,
+                password_hash: adminPassword, // Will be hashed by hooks
+                role: 'super_admin', // Use super_admin as per setup.js
                 is_active: true
             });
-            console.log('Created default admin: admin@wekume.org / admin123');
+            console.log(`✅ Created default admin: ${adminEmail}`);
+            console.log(`   Password: ${adminPassword}`);
         }
     } catch (error) {
-        console.error('Error:', error);
-    } finally {
-        await sequelize.close();
+        console.error('❌ Error checking admin:', error);
     }
 }
 
-checkAdmin();
+module.exports = checkAdmin;

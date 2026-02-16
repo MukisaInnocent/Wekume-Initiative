@@ -127,6 +127,10 @@ const startServer = async () => {
         await sequelize.sync({ alter: process.env.NODE_ENV === 'development' });
         console.log('✅ Database synchronized');
 
+        // Check/Create Admin User
+        const checkAdmin = require('./check_admin');
+        await checkAdmin();
+
         // Start server
         app.listen(PORT, () => {
             console.log(`🚀 Server running on port ${PORT}`);
