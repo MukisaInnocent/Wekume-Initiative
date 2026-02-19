@@ -77,7 +77,7 @@ function Navbar({ isTransparent = false, backgroundImages, currentBackgroundInde
                 <div className="flex justify-between items-center h-16">
                     {/* Logos Container */}
                     <div className="flex items-center gap-6">
-                        {/* Main App Logo - Note: User requested this logic not to link */}
+                        {/* Main App Logo */}
                         <div className="flex items-center gap-2 sm:gap-3 group cursor-default">
                             <div className="bg-transparent rounded-full p-1 sm:p-2 shadow-sm flex items-center justify-center">
                                 <img
@@ -123,22 +123,22 @@ function Navbar({ isTransparent = false, backgroundImages, currentBackgroundInde
                             <img src={oldLogo} alt="Original Wekume" className="h-14 w-auto" />
                         </a>
                     </div>
-                </div>
 
-                {/* Mobile Menu Button */}
-                <div className="lg:hidden flex items-center gap-3">
-                    <ThemeToggle />
-                    <button
-                        className={`transition-colors ${isLightMode ? 'text-white' : 'text-gray-900 dark:text-white'}`}
-                        onClick={() => setIsMenuOpen(!isMenuOpen)}
-                        aria-label="Toggle menu"
-                    >
-                        {isMenuOpen ? <X size={28} /> : <Menu size={28} />}
-                    </button>
-                    {/* Legacy Logo */}
-                    <a href="https://wekume.org" className="transition-transform duration-300 hover:scale-105">
-                        <img src={oldLogo} alt="Original Wekume" className="h-10 w-auto" />
-                    </a>
+                    {/* Mobile Menu Button — inside the same flex row as the brand */}
+                    <div className="lg:hidden flex items-center gap-3">
+                        <ThemeToggle />
+                        <button
+                            className={`transition-colors ${isLightMode ? 'text-white' : 'text-gray-900 dark:text-white'}`}
+                            onClick={() => setIsMenuOpen(!isMenuOpen)}
+                            aria-label="Toggle menu"
+                        >
+                            {isMenuOpen ? <X size={28} /> : <Menu size={28} />}
+                        </button>
+                        {/* Legacy Logo */}
+                        <a href="https://wekume.org" className="transition-transform duration-300 hover:scale-105">
+                            <img src={oldLogo} alt="Original Wekume" className="h-10 w-auto" />
+                        </a>
+                    </div>
                 </div>
             </div>
 

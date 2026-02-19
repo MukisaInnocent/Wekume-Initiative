@@ -20,7 +20,7 @@ const getBaseUrl = () => {
 
 const api = axios.create({
     baseURL: getBaseUrl(),
-    timeout: 10000,
+    timeout: 60000, // 60s — Lina AI responses can take 30-40 seconds
     headers: {
         'Content-Type': 'application/json'
     }

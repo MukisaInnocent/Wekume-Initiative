@@ -16,14 +16,12 @@ const adminRoutes = require('./routes/admin');
 const donationRoutes = require('./routes/donation');
 const aiRoutes = require('./routes/ai');
 const backgroundRoutes = require('./routes/background');
-// const aiRoutes = require('./routes/ai');
 
 const app = express();
 const PORT = process.env.PORT || 5050;
 
 // ===== MIDDLEWARE =====
 
-// Security headers
 // Security headers
 app.use(helmet({
     crossOriginResourcePolicy: { policy: "cross-origin" }
@@ -58,10 +56,12 @@ app.use(cors({
 }));
 
 // Debug Middleware to log requests (Dev only)
-app.use((req, res, next) => {
-    console.log(`[${new Date().toISOString()}] ${req.method} ${req.url} - Origin: ${req.headers.origin}`);
-    next();
-});
+if (process.env.NODE_ENV !== 'production') {
+    app.use((req, res, next) => {
+        console.log(`[${new Date().toISOString()}] ${req.method} ${req.url} - Origin: ${req.headers.origin}`);
+        next();
+    });
+}
 
 // Request logging
 if (process.env.NODE_ENV === 'development') {

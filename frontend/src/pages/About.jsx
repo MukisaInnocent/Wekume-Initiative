@@ -178,9 +178,12 @@ function About() {
                             “Wekume is already making a difference in the lives of students across Uganda. By connecting young people to essential resources and enabling them to make informed decisions, we aim to reduce rates of reproductive health issues, increase access to health supplies, and encourage entrepreneurship among students.”
                         </blockquote>
                         <div className="mt-8 flex justify-center gap-4">
-                            <button className="bg-white text-purple-600 px-8 py-3 rounded-full font-bold hover:bg-gray-100 transition-colors shadow-lg">
+                            <Link
+                                to="/wekume-app"
+                                className="inline-block bg-white text-purple-600 px-8 py-3 rounded-full font-bold hover:bg-gray-100 transition-colors shadow-lg"
+                            >
                                 Download App
-                            </button>
+                            </Link>
                         </div>
                     </div>
                 </div>

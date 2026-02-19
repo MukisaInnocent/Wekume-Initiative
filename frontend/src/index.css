@@ -3,6 +3,10 @@
 @tailwind utilities;
 
 /* Global Styles */
+html {
+  scroll-behavior: smooth;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -13,6 +17,17 @@ body {
   font-family: 'Inter', system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Branded text selection color */
+::selection {
+  background: rgba(105, 0, 168, 0.2);
+  color: #1a0029;
+}
+
+.dark ::selection {
+  background: rgba(105, 0, 168, 0.4);
+  color: #ffffff;
 }
 
 /* Smooth global theme transitions */

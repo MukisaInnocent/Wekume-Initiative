@@ -215,7 +215,7 @@ function Home() {
                                             </div>
                                         </div>
                                         <div className="flex justify-center py-2">
-                                            <span className="text-xs text-gray-400 bg-gray-200 px-3 py-1 rounded-full animate-pulse">Lina is thinking... (35s)</span>
+                                            <span className="text-xs text-gray-400 bg-gray-200 px-3 py-1 rounded-full animate-pulse">Lina is thinking…</span>
                                         </div>
                                     </div>
                                 </div>

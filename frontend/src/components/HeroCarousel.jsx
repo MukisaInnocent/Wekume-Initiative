@@ -3,8 +3,6 @@ import { Link } from 'react-router-dom';
 import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 
 // Background images are now passed as props from parent
-// const backgroundImagesModules = import.meta.glob('../assets/background images/*.{png,jpg,jpeg,webp,svg}', { eager: true });
-// const backgroundImages = Object.values(backgroundImagesModules).map(module => module.default);
 
 const slides = [
     {
@@ -47,7 +45,6 @@ const slides = [
 
 function HeroCarousel({ currentBackgroundIndex, backgroundImages, setCurrentBackgroundIndex }) {
     const [currentSlide, setCurrentSlide] = useState(0);
-    // const [currentBackgroundIndex, setCurrentBackgroundIndex] = useState(0); // Managed by parent
 
     // Auto-play for Content Slides
     useEffect(() => {
@@ -57,19 +54,6 @@ function HeroCarousel({ currentBackgroundIndex, backgroundImages, setCurrentBack
 
         return () => clearInterval(timer);
     }, []);
-
-    // Auto-play for Background Images - Moved to Parent Home.jsx
-    /*
-    useEffect(() => {
-        if (backgroundImages.length === 0) return;
-
-        const timer = setInterval(() => {
-            setCurrentBackgroundIndex((prev) => (prev + 1) % backgroundImages.length);
-        }, 5000); // Change background every 5 seconds
-
-        return () => clearInterval(timer);
-    }, []);
-    */
 
     const nextSlide = () => {
         setCurrentSlide((prev) => (prev + 1) % slides.length);

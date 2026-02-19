@@ -210,9 +210,19 @@ function LinaAIChat() {
                                 <Send size={20} />
                             </button>
                         </form>
-                        <p className="text-xs text-gray-500 dark:text-gray-400 mt-2 text-center">
-                            Private & confidential • May take 30-40 seconds to respond
-                        </p>
+                        <div className="flex items-center justify-between mt-2">
+                            <p className="text-xs text-gray-500 dark:text-gray-400">
+                                Private &amp; confidential • May take 30-40 seconds
+                            </p>
+                            <span className={`text-xs font-medium tabular-nums ${inputMessage.length > 450
+                                    ? inputMessage.length > 480
+                                        ? 'text-red-500'
+                                        : 'text-orange-500'
+                                    : 'text-gray-400 dark:text-gray-500'
+                                }`}>
+                                {inputMessage.length}/500
+                            </span>
+                        </div>
                     </div>
                 </div>
             </div>
