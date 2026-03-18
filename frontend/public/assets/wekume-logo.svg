@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" width="600" height="600">
+  <!-- Define colors as CSS variables for easy customization -->
+  <defs>
+    <style>
+      :root {
+        --logo-primary: #EB6F92;
+        --logo-secondary: #E85A7F;
+        --logo-text: #EB6F92;
+      }
+    </style>
+  </defs>
+  
+  <!-- Large W with keyhole -->
+  <g id="w-symbol">
+    <!-- Left diagonal of W -->
+    <path d="M 130 50 L 200 320 L 240 150 L 250 50 Z" 
+          fill="var(--logo-primary, #EB6F92)"/>
+    
+    <!-- Right diagonal of W -->
+    <path d="M 470 50 L 400 320 L 360 150 L 350 50 Z" 
+          fill="var(--logo-primary, #EB6F92)"/>
+    
+    <!-- Middle section with keyhole -->
+    <path d="M 250 50 L 260 120 L 280 200 L 300 120 L 310 50 L 350 50 L 340 120 L 320 200 L 300 280 L 280 200 L 260 120 L 250 50 Z" 
+          fill="var(--logo-secondary, #E85A7F)"/>
+    
+    <!-- Keyhole circle -->
+    <circle cx="300" cy="190" r="30" fill="white"/>
+    
+    <!-- Keyhole slot -->
+    <rect x="288" y="210" width="24" height="50" fill="white" rx="2"/>
+  </g>
+  
+  <!-- WEKUME text -->
+  <g id="wekume-text" transform="translate(30, 400)">
+    <!-- W -->
+    <g id="letter-w">
+      <path d="M 0 0 L 25 120 L 40 35 L 55 120 L 80 0 L 105 0 L 70 150 L 40 150 L 25 80 L 10 150 L -20 150 L -55 0 Z" 
+            fill="var(--logo-text, #EB6F92)"/>
+      <!-- W keyhole -->
+      <circle cx="25" cy="60" r="12" fill="white"/>
+      <rect x="20" y="66" width="10" height="20" fill="white" rx="1"/>
+    </g>
+    
+    <!-- E -->
+    <g id="letter-e" transform="translate(140, 0)">
+      <rect x="0" y="0" width="80" height="35" fill="var(--logo-text, #EB6F92)"/>
+      <rect x="0" y="57" width="65" height="35" fill="var(--logo-text, #EB6F92)"/>
+      <rect x="0" y="115" width="80" height="35" fill="var(--logo-text, #EB6F92)"/>
+      <rect x="0" y="0" width="35" height="150" fill="var(--logo-text, #EB6F92)"/>
+    </g>
+    
+    <!-- K -->
+    <g id="letter-k" transform="translate(255, 0)">
+      <rect x="0" y="0" width="35" height="150" fill="var(--logo-text, #EB6F92)"/>
+      <path d="M 35 75 L 90 0 L 135 0 L 70 80 L 140 150 L 90 150 Z" 
+            fill="var(--logo-text, #EB6F92)"/>
+    </g>
+    
+    <!-- U -->
+    <g id="letter-u" transform="translate(360, 0)">
+      <rect x="0" y="0" width="35" height="120" fill="var(--logo-text, #EB6F92)"/>
+      <rect x="65" y="0" width="35" height="120" fill="var(--logo-text, #EB6F92)"/>
+      <rect x="0" y="115" width="100" height="35" fill="var(--logo-text, #EB6F92)" rx="10"/>
+    </g>
+    
+    <!-- M -->
+    <g id="letter-m" transform="translate(490, 0)">
+      <rect x="0" y="0" width="35" height="150" fill="var(--logo-text, #EB6F92)"/>
+      <path d="M 35 0 L 60 80 L 85 0 L 110 0 L 110 30 L 85 110 L 60 30 L 35 30 Z" 
+            fill="var(--logo-text, #EB6F92)"/>
+      <rect x="110" y="0" width="35" height="150" fill="var(--logo-text, #EB6F92)"/>
+    </g>
+    
+    <!-- E (second) -->
+    <g id="letter-e2" transform="translate(660, 0)">
+      <rect x="0" y="0" width="80" height="35" fill="var(--logo-text, #EB6F92)"/>
+      <rect x="0" y="57" width="65" height="35" fill="var(--logo-text, #EB6F92)"/>
+      <rect x="0" y="115" width="80" height="35" fill="var(--logo-text, #EB6F92)"/>
+      <rect x="0" y="0" width="35" height="150" fill="var(--logo-text, #EB6F92)"/>
+    </g>
+  </g>
+</svg>

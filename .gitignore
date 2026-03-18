@@ -1,0 +1,36 @@
+# Dependencies
+node_modules/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Build output
+frontend/dist/
+dist/
+
+# SQLite database
+*.sqlite
+
+# Node.js installer files
+node.zip
+node_installer.msi
+
+# IDE
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+
+# Uploads (user-generated content)
+backend/uploads/backgrounds/*.jpg
+backend/uploads/backgrounds/*.png
+backend/uploads/backgrounds/*.jpeg
+!backend/uploads/backgrounds/README.md

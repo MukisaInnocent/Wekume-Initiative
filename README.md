@@ -1,0 +1,169 @@
+��﻿# Wekume Initiative CMS Platform
+
+A modern, full-stack web platform for Wekume Initiative NGO featuring a dynamic admin CMS, AI-powered support assistant, and youth-friendly public website.
+
+## 🎯 Features
+
+- **Admin CMS** - Full content management for non-technical staff
+- **AI Assistant** - 24/7 support for SRH, mental health, and program questions
+- **Dynamic Content** - All website content editable through admin dashboard
+- **Role-Based Access** - Super Admin and Editor permissions
+- **Media Library** - Centralized image and document management
+- **Analytics** - Page visits, form submissions, and AI usage tracking
+- **Mobile-First** - Fully responsive design
+
+## 🏗️ Tech Stack
+
+- **Backend**: Node.js + Express + PostgreSQL + Sequelize ORM
+- **Frontend**: React + Vite + TailwindCSS
+- **Authentication**: JWT + bcrypt
+- **Media Storage**: Cloudinary
+- **AI**: OpenAI GPT-4 / Anthropic Claude
+- **Deployment**: Render (backend+ Vercel (frontend)
+
+## 📁 Project Structure
+
+```
+Wekume-Initiative/
+├── backend/           # Express API server
+│   ├── config/       # Database and service configs
+│   ├── controllers/  # Request handlers
+│   ├── middleware/   # Auth and role checking
+│   ├── models/       # Sequelize database models
+│   ├── routes/       # API route definitions
+│   └── server.js     # Application entry point
+├── frontend/         # React web application
+│   ├── src/
+│   │   ├── components/  # Reusable UI components
+│   │   ├── pages/       # Page components
+│   │   └── services/    # API integration
+│   └── public/          # Static assets
+└── README.md
+```
+
+## 🚀 Quick Start
+
+### Prerequisites
+- Node.js >= 16.x
+- PostgreSQL >= 13.x
+- npm or yarn
+
+### Backend Setup
+
+1. Navigate to backend directory:
+```bash
+cd backend
+```
+
+2. Install dependencies:
+```bash
+npm install
+```
+
+3. Configure environment:
+```bash
+cp .env.example .env
+# Edit .env with your credentials
+```
+
+4.Create PostgreSQL database:
+```sql
+CREATE DATABASE wekume_db;
+```
+
+5. Run database setup:
+```bash
+node setup.js
+```
+
+6. Start server:
+```bash
+npm run dev
+```
+
+Backend runs on `http://localhost:5000`
+
+### Frontend Setup
+
+1. Navigate to frontend directory:
+```bash
+cd frontend
+```
+
+2. Install dependencies:
+```bash
+npm install
+```
+
+3. Start development server:
+```bash
+npm run dev
+```
+
+Frontend runs on `http://localhost:5173`
+
+## 🔑 Default Admin Credentials
+
+After running `backend/setup.js`:
+
+- **Email**: admin@wekume.org
+- **Password**: WekumeAdmin2024!
+
+⚠️ **Change these credentials immediately after first login!**
+
+## 📖 Documentation
+
+- [Backend README](backend/README.md- API documentation and setup
+- [Frontend README](frontend/README.md) - UI components and routing
+- [Database Schema](backend/models/) - Database structure
+- [Implementation Plan](.gemini/antigravity/brain/*/implementation_plan.md) - Development roadmap
+
+## 🌐 Deployment
+
+### Backend (Render)
+1. Connect GitHub repository
+2. Set environment variables in Render dashboard
+3. Deploy from `backend` directory
+
+### Frontend (Vercel)
+1. Connect GitHub repository
+2. Set build command: `cd frontend && npm run build`
+3. Set output directory: `frontend/dist`
+4. Deploy
+
+## 📊 Database Models
+
+- `users` - Admin accounts and authentication
+- `content_sections` - Dynamic website content
+- `partners` - Partner organizations
+- `events` - Events and programs
+- `testimonials` - User testimonials
+- `reports` - Annual/impact reports
+- `media_library` - Uploaded media files
+- `values` - Organization values
+- `wekume_app_features` - App features
+- `support_forms` - Contact form submissions
+- `ai_assistant_logs` - AI conversation logs
+- `page_analytics` - Page visit tracking
+- `volunteer_applications` - Volunteer applications
+- `social_links` - Social media links
+
+## 🤝 Contributing
+
+This project is for Wekume Initiative. For questions or contributions, contact the development team.
+
+## 📄 License
+
+MIT
+
+## 💡 Next Steps
+
+1. Complete CMS admin interface
+2. Integrate AI assistant with OpenAI/Claude
+3. Build media upload functionality
+4. Implement analytics dashboard
+5. Deploy to production
+
+---
+
+Built with ❤️ for Wekume Initiative

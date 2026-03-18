@@ -1,0 +1,122 @@
+import { useEffect, useState } from 'react';
+import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
+import PageHeader from '../components/PageHeader';
+import { contentAPI } from '../services/api';
+import { FileText, Download, Calendar, Search, Loader } from 'lucide-react';
+
+function Reports() {
+    const [reports, setReports] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [searchTerm, setSearchTerm] = useState('');
+
+    useEffect(() => {
+        const fetchReports = async () => {
+            try {
+                const response = await contentAPI.getReports();
+                // Filter to only published reports for public view
+                const published = (response.data.reports || []).filter(r => r.is_published);
+                setReports(published);
+            } catch (error) {
+                console.error("Error fetching reports:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchReports();
+    }, []);
+
+    const filteredReports = reports.filter(report =>
+        report.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        report.year.toString().includes(searchTerm)
+    );
+
+    return (
+        <>
+            <Navbar />
+
+            <PageHeader
+                badge="Documents"
+                title="Wekume Reports"
+                subtitle="Explore our annual reports, strategic plans, and performance documents."
+            />
+
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 min-h-[60vh] bg-white dark:bg-gray-900">
+
+                {/* Search / Filter */}
+                <div className="flex flex-col md:flex-row justify-between items-center mb-8 sm:mb-10 gap-6 md:gap-8">
+                    <p className="text-base sm:text-lg text-gray-600 dark:text-gray-300 text-center md:text-left">
+                        Explore our annual reports, strategic plans, and performance documents.
+                    </p>
+                    <div className="relative w-full md:w-96 shrink-0">
+                        <input
+                            type="text"
+                            placeholder="Search reports..."
+                            className="w-full pl-10 pr-4 py-3 border border-gray-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent shadow-sm transition-shadow"
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                        />
+                        <Search className="absolute left-3 top-3.5 text-gray-400" size={20} />
+                    </div>
+                </div>
+
+                {/* Reports Grid */}
+                {loading ? (
+                    <div className="text-center py-20 flex justify-center items-center gap-2 text-primary-600">
+                        <Loader className="animate-spin" /> Loading documents...
+                    </div>
+                ) : filteredReports.length > 0 ? (
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+                        {filteredReports.map(report => (
+                            <div key={report.id} className="group bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-lg hover:shadow-2xl transition-all overflow-hidden flex flex-col">
+                                {/* Preview / Icon Area */}
+                                <div className="h-48 bg-gradient-to-br from-primary-50 to-secondary-50 dark:from-gray-700 dark:to-gray-600 flex items-center justify-center p-8 group-hover:scale-105 transition-transform duration-500">
+                                    {report.cover_image_url ? (
+                                        <img src={report.cover_image_url} alt={report.title} className="h-full w-auto object-contain shadow-md rounded" />
+                                    ) : (
+                                        <FileText size={64} className="text-primary-300" />
+                                    )}
+                                </div>
+
+                                <div className="p-8 flex-1 flex flex-col">
+                                    <div className="flex justify-between items-start mb-4">
+                                        <span className="bg-primary-50 dark:bg-primary-900/40 text-primary-700 dark:text-primary-300 px-3 py-1 rounded-full text-xs font-bold font-heading">
+                                            {report.year}
+                                        </span>
+                                        {/* Optional badges can go here */}
+                                    </div>
+
+                                    <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
+                                        {report.title}
+                                    </h3>
+                                    <p className="text-gray-500 dark:text-gray-400 text-sm mb-6 flex-1 line-clamp-3">
+                                        {report.description || "Download the full PDF report to view details."}
+                                    </p>
+
+                                    <a
+                                        href={report.file_url}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="w-full bg-primary-600 text-white py-3 rounded-xl font-bold hover:bg-primary-700 transition-all flex items-center justify-center gap-2 shadow-md hover:shadow-lg"
+                                    >
+                                        <Download size={20} /> Download PDF
+                                    </a>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                ) : (
+                    <div className="text-center py-24 bg-gray-50 dark:bg-gray-800 rounded-2xl border-2 border-dashed border-gray-200 dark:border-gray-700">
+                        <FileText className="mx-auto text-gray-300 mb-4" size={48} />
+                        <h3 className="text-xl font-bold text-gray-900 dark:text-white">No reports found</h3>
+                        <p className="text-gray-500 dark:text-gray-400 mt-2">Try adjusting your search terms.</p>
+                    </div>
+                )}
+            </div>
+
+            <Footer />
+        </>
+    );
+}
+
+export default Reports;
