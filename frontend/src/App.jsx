@@ -13,7 +13,8 @@ import Contact from './pages/Contact';
 import Donate from './pages/Donate';
 import AdminLogin from './pages/AdminLogin';
 import AdminDashboard from './pages/AdminDashboard';
-import LinaAIChat from './components/LinaAIChat';
+import KiraAIChat from './components/KiraAIChat';
+import FounderBadge from './components/FounderBadge';
 import Testimonials from './pages/Testimonials';
 import USHome from './pages/us/USHome';
 import USFunders from './pages/us/USFunders';
@@ -21,7 +22,8 @@ import USRewards from './pages/us/USRewards';
 import USImpact from './pages/us/USImpact';
 function AppContent() {
     const location = useLocation();
-    const isWelcomePage = location.pathname === '/';
+    // Hide AI chat on the landing welcome page and admin pages
+    const hideChat = location.pathname === '/' || location.pathname.startsWith('/admin');
 
     return (
         <div className="App min-h-screen bg-white dark:bg-gray-900 transition-colors">
@@ -68,7 +70,8 @@ function AppContent() {
                 <Route path="/admin/login" element={<AdminLogin />} />
                 <Route path="/admin/dashboard" element={<AdminDashboard />} />
             </Routes>
-            {!isWelcomePage && <LinaAIChat />}
+            <FounderBadge />
+            {!hideChat && <KiraAIChat />}
         </div>
     );
 }
