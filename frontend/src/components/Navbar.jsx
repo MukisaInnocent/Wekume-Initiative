@@ -89,13 +89,6 @@ function Navbar({ isTransparent = false, backgroundImages, currentBackgroundInde
                                 <span className={`absolute -bottom-1 left-0 w-0 h-0.5 transition-all duration-300 group-hover:w-full ${isLightMode ? 'bg-white' : 'bg-primary-600 dark:bg-primary-400'}`}></span>
                             </NavLink>
                         ))}
-                        <Link
-                            to="/admin/login"
-                            className={`p-2 rounded-full transition-colors hover:bg-black/5 dark:hover:bg-white/10 ${textColorClass}`}
-                            title="Admin Login"
-                        >
-                            <Lock size={20} />
-                        </Link>
                         <ThemeToggle />
                         {isUS && (
                             <Link
@@ -157,15 +150,6 @@ function Navbar({ isTransparent = false, backgroundImages, currentBackgroundInde
                                     Donate Now
                                 </Link>
                             )}
-                            <Link
-                                to="/admin/login"
-                                className="block w-full text-center mt-4 text-gray-500 dark:text-gray-400 font-medium hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
-                                onClick={() => setIsMenuOpen(false)}
-                            >
-                                <div className="flex items-center justify-center gap-2">
-                                    <Lock size={16} /> Admin Login
-                                </div>
-                            </Link>
                         </div>
                     </div>
 

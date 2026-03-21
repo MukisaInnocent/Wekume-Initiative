@@ -13,7 +13,7 @@ import Contact from './pages/Contact';
 import Donate from './pages/Donate';
 import AdminLogin from './pages/AdminLogin';
 import AdminDashboard from './pages/AdminDashboard';
-import KiraAIChat from './components/KiraAIChat';
+import LinaAIChat from './components/LinaAIChat';
 import FounderBadge from './components/FounderBadge';
 import Testimonials from './pages/Testimonials';
 import USHome from './pages/us/USHome';
@@ -71,7 +71,7 @@ function AppContent() {
                 <Route path="/admin/dashboard" element={<AdminDashboard />} />
             </Routes>
             <FounderBadge />
-            {!hideChat && <KiraAIChat />}
+            {!hideChat && <LinaAIChat />}
         </div>
     );
 }
