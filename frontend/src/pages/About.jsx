@@ -1,26 +1,29 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import PageHeader from '../components/PageHeader';
 import { contentAPI } from '../services/api';
-import { Heart, Users, Lightbulb } from 'lucide-react';
+import { Heart, Users, Lightbulb, Smartphone, Calendar, Gift, DollarSign, Briefcase, ArrowRight } from 'lucide-react';
 import { useRegion } from '../context/RegionContext';
 
 function About() {
-    const { region } = useRegion();
+    const { region, isUS } = useRegion();
     const [sections, setSections] = useState({});
     const [values, setValues] = useState([]);
+    const [teamMembers, setTeamMembers] = useState([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const [missionRes, visionRes, storyRes, valuesRes] = await Promise.all([
+                const [missionRes, visionRes, storyRes, valuesRes, teamRes] = await Promise.all([
                     contentAPI.getSection('about_mission', region),
                     contentAPI.getSection('about_vision', region),
                     contentAPI.getSection('about_story', region),
-                    contentAPI.getValues()
+                    contentAPI.getValues(),
+                    contentAPI.getTeamMembers(region)
                 ]);
 
                 setSections({
@@ -29,6 +32,7 @@ function About() {
                     story: storyRes.data.content
                 });
                 setValues(valuesRes.data.values || []);
+                setTeamMembers(teamRes.data?.members || []);
             } catch (error) {
                 console.error("Error fetching about data:", error);
             } finally {
@@ -143,6 +147,99 @@ function About() {
                         <p className="text-lg md:text-xl text-gray-300 leading-relaxed">
                             Wekume addresses these issues by offering an inclusive, digital platform that simplifies access to information, support, and resources tailored to students’ needs.
                         </p>
+                    </div>
+                </div>
+
+                {/* Meet Our Team */}
+                <div className="py-8 sm:py-10 md:py-12">
+                    <div className="text-center mb-10 sm:mb-12 md:mb-16">
+                        <span className="text-purple-600 dark:text-purple-400 font-semibold tracking-wider uppercase text-xs sm:text-sm">Our People</span>
+                        <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold text-gray-900 dark:text-white mt-2">Meet Our Team</h2>
+                        <p className="text-gray-500 dark:text-gray-400 mt-3 max-w-xl mx-auto">The passionate individuals driving the Wekume mission forward.</p>
+                    </div>
+
+                    {teamMembers.length > 0 ? (
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
+                            {teamMembers.filter(m => m.is_active !== false).map((member) => (
+                                <motion.div
+                                    key={member.id}
+                                    whileHover={{ y: -6 }}
+                                    className="bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-lg border border-gray-100 dark:border-gray-700 group"
+                                >
+                                    <div className="h-48 bg-gradient-to-br from-purple-100 to-pink-100 dark:from-purple-900/40 dark:to-pink-900/30 flex items-center justify-center overflow-hidden">
+                                        {member.photo_url ? (
+                                            <img src={member.photo_url} alt={member.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                                        ) : (
+                                            <span className="text-5xl font-bold text-purple-400/40">{member.name.charAt(0)}</span>
+                                        )}
+                                    </div>
+                                    <div className="p-5 text-center">
+                                        <h3 className="text-lg font-bold text-gray-900 dark:text-white">{member.name}</h3>
+                                        <p className="text-sm text-purple-600 dark:text-purple-400 font-medium mb-2">{member.role}</p>
+                                        {member.description && (
+                                            <p className="text-xs text-gray-500 dark:text-gray-400 line-clamp-2">{member.description}</p>
+                                        )}
+                                    </div>
+                                </motion.div>
+                            ))}
+                        </div>
+                    ) : (
+                        <div className="text-center py-12">
+                            <p className="text-gray-400 dark:text-gray-500">Team members will appear here soon.</p>
+                        </div>
+                    )}
+                </div>
+
+                {/* What We Do */}
+                <div className="py-8 sm:py-10 md:py-12">
+                    <div className="text-center mb-10 sm:mb-12 md:mb-16">
+                        <span className="text-orange-600 dark:text-orange-400 font-semibold tracking-wider uppercase text-xs sm:text-sm">Our Work</span>
+                        <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold text-gray-900 dark:text-white mt-2">What We Do</h2>
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {[
+                            { icon: <Smartphone size={28} />, title: 'Wekume App', desc: 'A mobile platform for health info, SafeChat, and QuickTest tools.', color: 'text-violet-600 bg-violet-100 dark:bg-violet-900/30' },
+                            { icon: <Calendar size={28} />, title: 'Events & Outreaches', desc: 'Community events, workshops, and campus health drives.', color: 'text-orange-600 bg-orange-100 dark:bg-orange-900/30' },
+                            { icon: <Users size={28} />, title: 'Volunteer Programs', desc: 'Mobilizing youth as health ambassadors across universities.', color: 'text-blue-600 bg-blue-100 dark:bg-blue-900/30' },
+                            ...(isUS ? [
+                                { icon: <Gift size={28} />, title: 'Rewards & Recognition', desc: 'Incentive programs for engaged community members.', color: 'text-pink-600 bg-pink-100 dark:bg-pink-900/30' },
+                                { icon: <DollarSign size={28} />, title: 'Funders Program', desc: 'Transparent impact tracking for international supporters.', color: 'text-emerald-600 bg-emerald-100 dark:bg-emerald-900/30' },
+                            ] : [])
+                        ].map((item, i) => (
+                            <div key={i} className="flex gap-4 p-6 bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 hover:shadow-lg transition-shadow">
+                                <div className={`w-14 h-14 rounded-xl flex items-center justify-center flex-shrink-0 ${item.color}`}>{item.icon}</div>
+                                <div>
+                                    <h3 className="font-bold text-gray-900 dark:text-white mb-1">{item.title}</h3>
+                                    <p className="text-sm text-gray-500 dark:text-gray-400">{item.desc}</p>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                {/* Get Involved */}
+                <div className="bg-gradient-to-br from-purple-50 to-orange-50 dark:from-purple-900/20 dark:to-orange-900/20 rounded-3xl p-8 md:p-12">
+                    <div className="text-center mb-8">
+                        <h2 className="text-2xl sm:text-3xl font-heading font-bold text-gray-900 dark:text-white">Get Involved</h2>
+                        <p className="text-gray-500 dark:text-gray-400 mt-2">There are many ways to join the movement.</p>
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                        {[
+                            { icon: <Briefcase size={22} />, title: 'Staff', link: `/${region}/contact`, color: 'text-purple-600' },
+                            { icon: <Heart size={22} />, title: 'Volunteer / Intern', link: `/${region}/get-involved`, color: 'text-orange-600' },
+                            { icon: <Users size={22} />, title: 'Partner', link: `/${region}/contact`, color: 'text-blue-600' },
+                            ...(isUS ? [{ icon: <DollarSign size={22} />, title: 'Fund Wekume', link: '/us/funders', color: 'text-emerald-600' }] : [])
+                        ].map((item, i) => (
+                            <Link
+                                key={i}
+                                to={item.link}
+                                className="flex items-center gap-3 p-4 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 hover:shadow-md hover:-translate-y-1 transition-all group"
+                            >
+                                <div className={`${item.color}`}>{item.icon}</div>
+                                <span className="font-semibold text-gray-900 dark:text-white text-sm">{item.title}</span>
+                                <ArrowRight size={16} className="ml-auto text-gray-400 group-hover:text-purple-600 transition-colors" />
+                            </Link>
+                        ))}
                     </div>
                 </div>
 

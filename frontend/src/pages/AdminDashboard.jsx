@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { LogOut, Users, FileText, MessageSquare, Calendar, BarChart3, CheckCircle, XCircle, Clock, Edit2, Trash2, Plus, Briefcase, Layout, Image } from 'lucide-react';
+import { LogOut, Users, FileText, MessageSquare, Calendar, BarChart3, CheckCircle, XCircle, Clock, Edit2, Trash2, Plus, Briefcase, Layout, Image, UserCircle } from 'lucide-react';
 import { authAPI, adminAPI, contentAPI } from '../services/api';
 import Modal from '../components/Modal';
 import EventForm from '../components/forms/EventForm';
@@ -11,6 +11,78 @@ import MediaLibrary from '../components/MediaLibrary';
 import BackgroundManager from '../components/Admin/BackgroundManager';
 
 import TestimonialForm from '../components/forms/TestimonialForm';
+
+/* ─── Inline Team Member Form ──────────────────────── */
+function TeamMemberFormInline({ member, defaultRegion, onSubmit, onCancel, loading }) {
+    const [form, setForm] = useState({
+        name: member?.name || '',
+        role: member?.role || '',
+        description: member?.description || '',
+        photo_url: member?.photo_url || '',
+        region: member?.region || defaultRegion || 'global',
+        display_order: member?.display_order || 0,
+        is_active: member?.is_active !== undefined ? member.is_active : true,
+    });
+
+    const handleChange = (e) => {
+        const { name, value, type, checked } = e.target;
+        setForm(prev => ({ ...prev, [name]: type === 'checkbox' ? checked : value }));
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        onSubmit({ ...form, display_order: parseInt(form.display_order) || 0 });
+    };
+
+    return (
+        <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-1">Name *</label>
+                    <input name="name" value={form.name} onChange={handleChange} required className="w-full border border-gray-300 rounded-xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-purple-500" />
+                </div>
+                <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-1">Role *</label>
+                    <input name="role" value={form.role} onChange={handleChange} required placeholder="e.g., CEO, Program Director" className="w-full border border-gray-300 rounded-xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-purple-500" />
+                </div>
+            </div>
+            <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-1">Description</label>
+                <textarea name="description" value={form.description} onChange={handleChange} rows={3} className="w-full border border-gray-300 rounded-xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-purple-500" />
+            </div>
+            <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-1">Photo URL</label>
+                <input name="photo_url" value={form.photo_url} onChange={handleChange} placeholder="https://..." className="w-full border border-gray-300 rounded-xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-purple-500" />
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-1">Region</label>
+                    <select name="region" value={form.region} onChange={handleChange} className="w-full border border-gray-300 rounded-xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-purple-500">
+                        <option value="global">Global</option>
+                        <option value="ug">Uganda</option>
+                        <option value="us">USA</option>
+                    </select>
+                </div>
+                <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-1">Display Order</label>
+                    <input name="display_order" type="number" value={form.display_order} onChange={handleChange} className="w-full border border-gray-300 rounded-xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-purple-500" />
+                </div>
+                <div className="flex items-end pb-1">
+                    <label className="flex items-center gap-2 cursor-pointer">
+                        <input name="is_active" type="checkbox" checked={form.is_active} onChange={handleChange} className="w-5 h-5 rounded text-purple-600" />
+                        <span className="text-sm font-semibold text-gray-700">Active</span>
+                    </label>
+                </div>
+            </div>
+            <div className="flex justify-end gap-3 pt-4">
+                <button type="button" onClick={onCancel} className="px-5 py-2.5 rounded-xl border border-gray-300 text-gray-600 font-semibold hover:bg-gray-50 transition-colors">Cancel</button>
+                <button type="submit" disabled={loading} className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-purple-600 to-pink-600 text-white font-semibold hover:shadow-lg hover:shadow-purple-500/30 transition-all disabled:opacity-50">
+                    {loading ? 'Saving…' : (member ? 'Update Member' : 'Add Member')}
+                </button>
+            </div>
+        </form>
+    );
+}
 
 function AdminDashboard() {
 
@@ -24,6 +96,7 @@ function AdminDashboard() {
     const [contentSections, setContentSections] = useState([]);
     const [supportForms, setSupportForms] = useState([]);
     const [volunteerApplications, setVolunteerApplications] = useState([]);
+    const [teamMembers, setTeamMembers] = useState([]);
     const [activeTab, setActiveTab] = useState('overview');
     const [loading, setLoading] = useState(true);
     const [adminRegion, setAdminRegion] = useState('global'); // 'global', 'ug', or 'us'
@@ -136,6 +209,15 @@ function AdminDashboard() {
             setVolunteerApplications(response.data.applications);
         } catch (error) {
             console.error("Error fetching volunteer applications:", error);
+        }
+    };
+
+    const fetchTeamMembers = async () => {
+        try {
+            const response = await adminAPI.getAllTeamMembers();
+            setTeamMembers(response.data.members);
+        } catch (error) {
+            console.error('Error fetching team members:', error);
         }
     };
 
@@ -281,6 +363,7 @@ function AdminDashboard() {
                         <button onClick={() => setActiveTab('reports')} className={`py-3 px-5 rounded-xl font-semibold text-sm whitespace-nowrap transition-all duration-300 ${activeTab === 'reports' ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg shadow-purple-500/30' : 'text-gray-600 hover:bg-purple-50 hover:text-purple-700'}`}><FileText className="inline mr-2" size={18} />Reports</button>
                         <button onClick={() => setActiveTab('forms')} className={`py-3 px-5 rounded-xl font-semibold text-sm whitespace-nowrap transition-all duration-300 ${activeTab === 'forms' ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg shadow-purple-500/30' : 'text-gray-600 hover:bg-purple-50 hover:text-purple-700'}`}><MessageSquare className="inline mr-2" size={18} />Support Forms</button>
                         <button onClick={() => setActiveTab('volunteers')} className={`py-3 px-5 rounded-xl font-semibold text-sm whitespace-nowrap transition-all duration-300 ${activeTab === 'volunteers' ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg shadow-purple-500/30' : 'text-gray-600 hover:bg-purple-50 hover:text-purple-700'}`}><Users className="inline mr-2" size={18} />Volunteers</button>
+                        <button onClick={() => { setActiveTab('team'); fetchTeamMembers(); }} className={`py-3 px-5 rounded-xl font-semibold text-sm whitespace-nowrap transition-all duration-300 ${activeTab === 'team' ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg shadow-purple-500/30' : 'text-gray-600 hover:bg-purple-50 hover:text-purple-700'}`}><UserCircle className="inline mr-2" size={18} />Team</button>
                     </div>
                 </div>
             </div>
@@ -504,6 +587,67 @@ function AdminDashboard() {
                         </div>
                     </div>
                 )}
+
+                {/* Team Members Tab */}
+                {activeTab === 'team' && (
+                    <div>
+                        <div className="flex justify-between items-center mb-8">
+                            <h2 className="text-3xl font-heading font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">Team Members</h2>
+                            <button onClick={() => openModal('create_team')} className="flex items-center gap-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white px-6 py-3 rounded-xl hover:shadow-lg hover:shadow-purple-500/30 hover:scale-105 transition-all duration-300 font-semibold">
+                                <Plus size={20} /> Add Member
+                            </button>
+                        </div>
+                        <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg shadow-purple-500/10 overflow-hidden border border-purple-100/50">
+                            <div className="overflow-x-auto">
+                                <table className="min-w-full">
+                                    <thead className="bg-gradient-to-r from-purple-50 to-pink-50/50">
+                                        <tr>
+                                            <th className="px-6 py-4 text-left text-xs font-bold text-purple-600 uppercase tracking-wider">Member</th>
+                                            <th className="px-6 py-4 text-left text-xs font-bold text-purple-600 uppercase tracking-wider">Role</th>
+                                            <th className="px-6 py-4 text-left text-xs font-bold text-purple-600 uppercase tracking-wider">Region</th>
+                                            <th className="px-6 py-4 text-left text-xs font-bold text-purple-600 uppercase tracking-wider">Status</th>
+                                            <th className="px-6 py-4 text-right text-xs font-bold text-purple-600 uppercase tracking-wider">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody className="divide-y divide-purple-100/50">
+                                        {teamMembers.length === 0 ? (
+                                            <tr><td colSpan="5" className="px-6 py-12 text-center text-gray-400">No team members yet. Click "Add Member" to get started.</td></tr>
+                                        ) : (
+                                            teamMembers.map((member) => (
+                                                <tr key={member.id} className="hover:bg-purple-50/50 transition-colors">
+                                                    <td className="px-6 py-4">
+                                                        <div className="flex items-center gap-3">
+                                                            <div className="h-10 w-10 rounded-full bg-gradient-to-br from-purple-200 to-pink-200 flex items-center justify-center text-purple-700 font-bold overflow-hidden flex-shrink-0">
+                                                                {member.photo_url ? <img src={member.photo_url} alt={member.name} className="h-full w-full object-cover" /> : member.name.charAt(0)}
+                                                            </div>
+                                                            <div>
+                                                                <div className="font-semibold text-gray-800">{member.name}</div>
+                                                                {member.description && <div className="text-xs text-gray-500 truncate max-w-[200px]">{member.description}</div>}
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td className="px-6 py-4 text-sm text-gray-600">{member.role}</td>
+                                                    <td className="px-6 py-4"><span className="text-xs font-bold uppercase bg-purple-100 text-purple-700 px-2 py-1 rounded-lg">{member.region}</span></td>
+                                                    <td className="px-6 py-4">
+                                                        <span className={`text-xs font-bold px-2 py-1 rounded-lg ${member.is_active ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500'}`}>
+                                                            {member.is_active ? 'Active' : 'Inactive'}
+                                                        </span>
+                                                    </td>
+                                                    <td className="px-6 py-4 text-right">
+                                                        <div className="flex justify-end gap-2">
+                                                            <button onClick={() => openModal('edit_team', member)} className="p-2 rounded-lg bg-purple-100 text-purple-700 hover:bg-purple-200 transition-all"><Edit2 size={16} /></button>
+                                                            <button onClick={() => handleDelete(adminAPI.deleteTeamMember, member.id, fetchTeamMembers, 'team member')} className="p-2 rounded-lg bg-red-100 text-red-600 hover:bg-red-200 transition-all"><Trash2 size={16} /></button>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            ))
+                                        )}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                )}
             </div>
 
             {/* Modals */}
@@ -520,7 +664,9 @@ function AdminDashboard() {
                                             modalType === 'create_testimonial' ? 'Add Testimonial' :
                                                 modalType === 'edit_testimonial' ? 'Edit Testimonial' :
                                                     modalType === 'edit_content' ? 'Edit Content Section' :
-                                                        'Edit Item'
+                                                        modalType === 'create_team' ? 'Add Team Member' :
+                                                            modalType === 'edit_team' ? 'Edit Team Member' :
+                                                                'Edit Item'
                 }
             >
                 {(modalType === 'create_event' || modalType === 'edit_event') && (
@@ -564,6 +710,15 @@ function AdminDashboard() {
                         defaultRegion={adminRegion}
                         title={`Edit ${selectedItem.section_title}`}
                         onSubmit={handleUpdateSection}
+                        onCancel={() => setIsModalOpen(false)}
+                        loading={actionLoading}
+                    />
+                )}
+                {(modalType === 'create_team' || modalType === 'edit_team') && (
+                    <TeamMemberFormInline
+                        member={selectedItem}
+                        defaultRegion={adminRegion}
+                        onSubmit={(data) => modalType === 'create_team' ? handleCreate(adminAPI.createTeamMember, data, fetchTeamMembers) : handleUpdate(adminAPI.updateTeamMember, selectedItem.id, data, fetchTeamMembers)}
                         onCancel={() => setIsModalOpen(false)}
                         loading={actionLoading}
                     />

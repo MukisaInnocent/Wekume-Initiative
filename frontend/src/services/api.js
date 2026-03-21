@@ -44,8 +44,9 @@ api.interceptors.request.use(
 api.interceptors.response.use(
     (response) => response,
     (error) => {
-        if (error.response?.status === 401) {
-            // Token expired or invalid
+        const originalRequest = error.config;
+        if (error.response?.status === 401 && originalRequest.url !== '/auth/login') {
+            // Token expired or invalid (and not a login attempt)
             localStorage.removeItem('token');
             localStorage.removeItem('user');
             window.location.href = '/admin/login';
@@ -173,6 +174,12 @@ export const adminAPI = {
     // Volunteer Applications
     getAllVolunteerApplications: () => api.get('/admin/volunteer-applications'),
     updateVolunteerStatus: (id, data) => api.put(`/admin/volunteer-applications/${id}`, data),
+
+    // Team Members
+    getAllTeamMembers: () => api.get('/admin/team'),
+    createTeamMember: (data) => api.post('/admin/team', data),
+    updateTeamMember: (id, data) => api.put(`/admin/team/${id}`, data),
+    deleteTeamMember: (id) => api.delete(`/admin/team/${id}`),
 };
 
 // ===== AI ASSISTANT API =====

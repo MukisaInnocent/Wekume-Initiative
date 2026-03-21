@@ -46,17 +46,50 @@ function Contact() {
         setSpotlightPos({ x: -500, y: -500 }); // Move spotlight away
     };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+    // Contact details (can be loaded from ConfigurableBlock API in the future)
+    const contactInfo = {
+        whatsapp: '+256000000000',
+        email: 'info@wekume.org',
+        phone: '+256 000 000 000',
+        poBox: 'P.O. Box 0000, Kampala',
+        officeAddress: 'Plot 00, Example Rd, Kampala, Uganda'
+    };
+
+    const saveAndRedirect = async (channel) => {
+        if (!formData.name || !formData.email || !formData.message) {
+            setStatus('error');
+            return;
+        }
         setStatus('submitting');
         try {
-            await formAPI.submitSupport(formData);
+            await formAPI.submitSupport({ ...formData, channel });
             setStatus('success');
+
+            // Build redirect URL
+            if (channel === 'whatsapp') {
+                const waNumber = contactInfo.whatsapp.replace(/[^0-9]/g, '');
+                const waText = encodeURIComponent(
+                    `Hi Wekume! My name is ${formData.name}.\n\nSubject: ${formData.subject || 'General Inquiry'}\n\n${formData.message}\n\n— Sent from wekume.org`
+                );
+                window.open(`https://wa.me/${waNumber}?text=${waText}`, '_blank');
+            } else if (channel === 'email') {
+                const mailSubject = encodeURIComponent(formData.subject || 'Message from wekume.org');
+                const mailBody = encodeURIComponent(
+                    `Hi Wekume,\n\n${formData.message}\n\nFrom: ${formData.name}\nEmail: ${formData.email}`
+                );
+                window.open(`mailto:${contactInfo.email}?subject=${mailSubject}&body=${mailBody}`, '_self');
+            }
+
             setFormData({ name: '', email: '', subject: '', message: '' });
         } catch (error) {
             console.error("Form submission error:", error);
             setStatus('error');
         }
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        await saveAndRedirect('form');
     };
 
     const handleFocus = (field) => setFocusedField(field);
@@ -161,27 +194,42 @@ function Contact() {
                                         <p className="text-purple-100 text-base sm:text-lg opacity-90">Reach out via any channel.</p>
                                     </div>
 
-                                    <div className="space-y-5">
+                                    <div className="space-y-4">
+                                        <ContactItem
+                                            icon={<MessageCircle size={22} />}
+                                            label="WhatsApp"
+                                            value={contactInfo.whatsapp}
+                                            href={`https://wa.me/${contactInfo.whatsapp.replace(/[^0-9]/g, '')}`}
+                                            color="text-green-300"
+                                            hoverBg="group-hover:bg-green-500/20"
+                                        />
                                         <ContactItem
                                             icon={<Mail size={22} />}
                                             label="Email Us"
-                                            value="info@wekume.org"
-                                            href="mailto:info@wekume.org"
+                                            value={contactInfo.email}
+                                            href={`mailto:${contactInfo.email}`}
                                             color="text-yellow-300"
                                             hoverBg="group-hover:bg-yellow-500/20"
                                         />
                                         <ContactItem
                                             icon={<Phone size={22} />}
                                             label="Call Us"
-                                            value="+256 000 000 000"
-                                            href="tel:+256000000000"
+                                            value={contactInfo.phone}
+                                            href={`tel:${contactInfo.phone.replace(/\s/g, '')}`}
                                             color="text-orange-300"
                                             hoverBg="group-hover:bg-orange-500/20"
                                         />
                                         <ContactItem
                                             icon={<MapPin size={22} />}
-                                            label="Visit Us"
-                                            value="Kampala, Uganda"
+                                            label="PO Box"
+                                            value={contactInfo.poBox}
+                                            color="text-blue-300"
+                                            hoverBg="group-hover:bg-blue-500/20"
+                                        />
+                                        <ContactItem
+                                            icon={<MapPin size={22} />}
+                                            label="Office"
+                                            value={contactInfo.officeAddress}
                                             color="text-purple-300"
                                             hoverBg="group-hover:bg-purple-500/20"
                                         />
@@ -258,21 +306,53 @@ function Contact() {
                                                 </div>
                                             )}
 
+                                            {/* Smart Send Buttons */}
+                                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                                <button
+                                                    type="button"
+                                                    disabled={status === 'submitting'}
+                                                    onClick={() => saveAndRedirect('whatsapp')}
+                                                    className="group relative w-full bg-green-600 hover:bg-green-700 text-white py-3.5 rounded-xl font-bold overflow-hidden transition-all hover:scale-[1.02] active:scale-[0.98] shadow-lg flex items-center justify-center gap-2"
+                                                >
+                                                    {status === 'submitting' ? (
+                                                        <Loader className="animate-spin" size={18} />
+                                                    ) : (
+                                                        <>
+                                                            <MessageCircle size={18} />
+                                                            <span className="tracking-wide text-sm">Send via WhatsApp</span>
+                                                        </>
+                                                    )}
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    disabled={status === 'submitting'}
+                                                    onClick={() => saveAndRedirect('email')}
+                                                    className="group relative w-full bg-blue-600 hover:bg-blue-700 text-white py-3.5 rounded-xl font-bold overflow-hidden transition-all hover:scale-[1.02] active:scale-[0.98] shadow-lg flex items-center justify-center gap-2"
+                                                >
+                                                    {status === 'submitting' ? (
+                                                        <Loader className="animate-spin" size={18} />
+                                                    ) : (
+                                                        <>
+                                                            <Mail size={18} />
+                                                            <span className="tracking-wide text-sm">Send via Email</span>
+                                                        </>
+                                                    )}
+                                                </button>
+                                            </div>
                                             <button
                                                 type="submit"
                                                 disabled={status === 'submitting'}
-                                                className="group relative w-full bg-primary-900 text-white py-4 rounded-xl font-bold overflow-hidden transition-all hover:scale-[1.02] active:scale-[0.98] shadow-2xl hover:shadow-orange-500/20"
+                                                className="group relative w-full bg-primary-900 text-white py-3.5 rounded-xl font-bold overflow-hidden transition-all hover:scale-[1.02] active:scale-[0.98] shadow-2xl hover:shadow-orange-500/20"
                                             >
                                                 <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-purple-800 via-primary-900 to-purple-800 opacity-100 group-hover:opacity-0 transition-opacity duration-300"></div>
                                                 <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-orange-500 via-yellow-500 to-orange-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-
                                                 <div className="relative flex items-center justify-center gap-2">
                                                     {status === 'submitting' ? (
-                                                        <Loader className="animate-spin" size={20} />
+                                                        <Loader className="animate-spin" size={18} />
                                                     ) : (
                                                         <>
-                                                            <span className="tracking-wide">SEND MESSAGE</span>
-                                                            <ArrowRight size={18} className="transform group-hover:translate-x-1 transition-transform" />
+                                                            <span className="tracking-wide text-sm">SAVE MESSAGE ONLY</span>
+                                                            <ArrowRight size={16} className="transform group-hover:translate-x-1 transition-transform" />
                                                         </>
                                                     )}
                                                 </div>

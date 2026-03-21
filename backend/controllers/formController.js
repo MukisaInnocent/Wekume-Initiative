@@ -4,7 +4,7 @@ const { SupportForm, VolunteerApplication } = require('../models');
 
 exports.submitSupportForm = async (req, res) => {
     try {
-        const { name, email, phone, subject, message, form_type } = req.body;
+        const { name, email, phone, subject, message, form_type, channel } = req.body;
 
         if (!name || !email || !message) {
             return res.status(400).json({
@@ -18,7 +18,8 @@ exports.submitSupportForm = async (req, res) => {
             phone,
             subject,
             message,
-            form_type: form_type || 'contact'
+            form_type: form_type || 'contact',
+            channel: channel || 'form'
         });
 
         res.status(201).json({

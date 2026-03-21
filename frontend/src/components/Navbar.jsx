@@ -2,7 +2,6 @@ import { Link, useLocation, NavLink } from 'react-router-dom';
 import { Menu, X, ChevronRight, Lock } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import ThemeToggle from './ThemeToggle';
-import oldLogo from '../assets/images/old-logo.png';
 import { useRegion } from '../context/RegionContext';
 
 function Navbar({ isTransparent = false, backgroundImages, currentBackgroundIndex }) {
@@ -106,10 +105,6 @@ function Navbar({ isTransparent = false, backgroundImages, currentBackgroundInde
                                 Donate
                             </Link>
                         )}
-                        {/* Legacy Logo */}
-                        <a href="https://wekume.org" className="transition-transform duration-300 hover:scale-105 flex-shrink-0">
-                            <img src={oldLogo} alt="Original Wekume" className="h-14 w-auto min-w-[56px] flex-shrink-0 object-contain" />
-                        </a>
                     </div>
 
                     {/* Mobile Menu Button — inside the same flex row as the brand */}
@@ -122,10 +117,6 @@ function Navbar({ isTransparent = false, backgroundImages, currentBackgroundInde
                         >
                             {isMenuOpen ? <X size={28} /> : <Menu size={28} />}
                         </button>
-                        {/* Legacy Logo */}
-                        <a href="https://wekume.org" className="transition-transform duration-300 hover:scale-105 flex-shrink-0">
-                            <img src={oldLogo} alt="Original Wekume" className="h-10 w-auto min-w-[40px] flex-shrink-0 object-contain" />
-                        </a>
                     </div>
                 </div>
             </div>

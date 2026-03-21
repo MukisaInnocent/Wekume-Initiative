@@ -38,6 +38,11 @@ module.exports = (sequelize) => {
             type: DataTypes.ENUM('new', 'in_progress', 'resolved', 'closed'),
             defaultValue: 'new'
         },
+        channel: {
+            type: DataTypes.ENUM('email', 'whatsapp', 'form'),
+            defaultValue: 'form',
+            allowNull: false
+        },
         assigned_to: {
             type: DataTypes.INTEGER,
             allowNull: true,

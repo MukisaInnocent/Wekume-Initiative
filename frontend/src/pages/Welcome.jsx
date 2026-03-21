@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, MapPin, Search, ChevronDown, Zap, Globe2, Users, Heart } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { ArrowRight, Zap, Globe2, Users, Heart } from 'lucide-react';
 
 /* ─── Country data ──────────────────────────────────────────────── */
 const africanCountries = new Set([
@@ -13,23 +13,6 @@ const africanCountries = new Set([
     "Sao Tome and Principe","Senegal","Seychelles","Sierra Leone","Somalia","South Africa","South Sudan",
     "Sudan","Tanzania","Togo","Tunisia","Uganda","Zambia","Zimbabwe"
 ]);
-
-const allCountries = [
-    "Afghanistan","Albania","Algeria","Andorra","Angola","Antigua and Barbuda","Argentina","Armenia","Australia","Austria","Azerbaijan",
-    "Bahamas","Bahrain","Bangladesh","Barbados","Belarus","Belgium","Belize","Benin","Bhutan","Bolivia","Bosnia and Herzegovina","Botswana","Brazil","Brunei","Bulgaria","Burkina Faso","Burundi",
-    "Cabo Verde","Cambodia","Cameroon","Canada","Central African Republic","Chad","Chile","China","Colombia","Comoros","Costa Rica","Croatia","Cuba","Cyprus","Czechia",
-    "Democratic Republic of the Congo","Denmark","Djibouti","Dominica","Dominican Republic",
-    "Ecuador","Egypt","El Salvador","Equatorial Guinea","Eritrea","Estonia","Eswatini","Ethiopia",
-    "Fiji","Finland","France","Gabon","Gambia","Georgia","Germany","Ghana","Greece","Grenada","Guatemala","Guinea","Guinea-Bissau","Guyana",
-    "Haiti","Honduras","Hungary","Iceland","India","Indonesia","Iran","Iraq","Ireland","Israel","Italy","Ivory Coast","Jamaica","Japan","Jordan",
-    "Kazakhstan","Kenya","Kiribati","Kuwait","Kyrgyzstan","Laos","Latvia","Lebanon","Lesotho","Liberia","Libya","Liechtenstein","Lithuania","Luxembourg",
-    "Madagascar","Malawi","Malaysia","Maldives","Mali","Malta","Marshall Islands","Mauritania","Mauritius","Mexico","Micronesia","Moldova","Monaco","Mongolia","Montenegro","Morocco","Mozambique","Myanmar",
-    "Namibia","Nauru","Nepal","Netherlands","New Zealand","Nicaragua","Niger","Nigeria","North Korea","North Macedonia","Norway","Oman",
-    "Pakistan","Palau","Palestine State","Panama","Papua New Guinea","Paraguay","Peru","Philippines","Poland","Portugal","Qatar",
-    "Republic of the Congo","Romania","Russia","Rwanda","Saint Kitts and Nevis","Saint Lucia","Saint Vincent and the Grenadines","Samoa","San Marino","Sao Tome and Principe","Saudi Arabia","Senegal","Serbia","Seychelles","Sierra Leone","Singapore","Slovakia","Slovenia","Solomon Islands","Somalia","South Africa","South Korea","South Sudan","Spain","Sri Lanka","Sudan","Suriname","Sweden","Switzerland","Syria",
-    "Taiwan","Tajikistan","Tanzania","Thailand","Timor-Leste","Togo","Tonga","Trinidad and Tobago","Tunisia","Turkey","Turkmenistan","Tuvalu",
-    "Uganda","Ukraine","United Arab Emirates","United Kingdom","United States","Uruguay","Uzbekistan","Vanuatu","Vatican City","Venezuela","Vietnam","Yemen","Zambia","Zimbabwe"
-];
 
 /* ─── Stats ─────────────────────────────────────────────────────── */
 const stats = [
@@ -92,55 +75,32 @@ function GridBackground() {
 
 /* ─── Main component ─────────────────────────────────────────────── */
 function Welcome() {
-    const [selectedCountry, setSelectedCountry] = useState('');
-    const [query, setQuery] = useState('');
-    const [dropdownOpen, setDropdownOpen] = useState(false);
-    const [detecting, setDetecting] = useState(false);
+    const [detecting, setDetecting] = useState(true);
     const [statsVisible, setStatsVisible] = useState(false);
+    const [detectedRegion, setDetectedRegion] = useState(null); // 'ug' or 'us'
+    const [detectedCountryName, setDetectedCountryName] = useState('');
     const statsRef = useRef(null);
-    const dropdownRef = useRef(null);
     const navigate = useNavigate();
 
-    const filtered = allCountries.filter(c =>
-        c.toLowerCase().includes(query.toLowerCase())
-    );
-
-    const handleContinue = () => {
-        if (!selectedCountry) return;
-        navigate(africanCountries.has(selectedCountry) ? '/ug' : '/us');
-    };
-
-    const handleDetect = () => {
-        if (!navigator.geolocation) return;
-        setDetecting(true);
-        navigator.geolocation.getCurrentPosition(
-            async (pos) => {
-                try {
-                    const res = await fetch(
-                        `https://nominatim.openstreetmap.org/reverse?lat=${pos.coords.latitude}&lon=${pos.coords.longitude}&format=json`
-                    );
-                    const data = await res.json();
-                    const country = data?.address?.country;
-                    if (country && allCountries.includes(country)) {
-                        setSelectedCountry(country);
-                        setQuery(country);
-                    }
-                } catch { /* silent */ }
-                setDetecting(false);
-            },
-            () => setDetecting(false)
-        );
-    };
-
-    // Close dropdown on outside click
+    // IP-based auto-detection on page load
     useEffect(() => {
-        const handler = (e) => {
-            if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
-                setDropdownOpen(false);
+        const detectByIP = async () => {
+            setDetecting(true);
+            try {
+                const res = await fetch('https://ipapi.co/json/');
+                const data = await res.json();
+                const country = data?.country_name;
+                if (country) {
+                    setDetectedCountryName(country);
+                    const isAfrican = africanCountries.has(country);
+                    setDetectedRegion(isAfrican ? 'ug' : 'us');
+                }
+            } catch {
+                // Silent fail
             }
+            setDetecting(false);
         };
-        document.addEventListener('mousedown', handler);
-        return () => document.removeEventListener('mousedown', handler);
+        detectByIP();
     }, []);
 
     // Trigger counter animation when stats section is visible
@@ -254,7 +214,7 @@ function Welcome() {
                     </motion.div>
                 </motion.div>
 
-                {/* ── RIGHT: Country selector card ─────────────── */}
+                {/* ── RIGHT: Auto-Detection Card ─────────────── */}
                 <motion.div
                     initial={{ opacity: 0, x: 40, scale: 0.97 }}
                     animate={{ opacity: 1, x: 0, scale: 1 }}
@@ -267,146 +227,58 @@ function Welcome() {
                             background: 'linear-gradient(135deg, rgba(167,139,250,0.5) 0%, rgba(139,92,246,0.1) 50%, rgba(236,72,153,0.3) 100%)',
                         }}
                     >
-                        <div className="bg-[#0f0a1e]/95 backdrop-blur-2xl rounded-[calc(2rem-1px)] p-8 sm:p-10">
+                        <div className="bg-[#0f0a1e]/95 backdrop-blur-2xl rounded-[calc(2rem-1px)] p-8 sm:p-10 text-center">
 
                             {/* Card header */}
-                            <div className="flex flex-col items-center text-center mb-8">
-                                <div className="w-14 h-14 bg-violet-500/15 border border-violet-500/30 rounded-2xl flex items-center justify-center mb-5 text-violet-400">
-                                    <Globe2 size={28} />
-                                </div>
-                                <h2 className="text-2xl font-extrabold text-white mb-2">Where are you?</h2>
-                                <p className="text-gray-400 text-sm leading-relaxed">
-                                    Select your country so we can show you the most relevant experience.
+                            <div className="w-16 h-16 bg-violet-500/15 border border-violet-500/30 rounded-2xl flex items-center justify-center mx-auto mb-6 text-violet-400">
+                                <Globe2 size={32} />
+                            </div>
+
+                            <h2 className="text-2xl font-extrabold text-white mb-6">Choose Your Experience</h2>
+
+                            {detecting ? (
+                                <p className="text-gray-400 text-sm leading-relaxed mb-8">
+                                    Detecting your location...
                                 </p>
-                            </div>
-
-                            {/* Auto-detect */}
-                            <button
-                                onClick={handleDetect}
-                                disabled={detecting}
-                                className="w-full flex items-center justify-center gap-2 mb-4 py-3 px-5 rounded-xl border border-violet-500/30 bg-violet-500/10 text-violet-300 text-sm font-semibold hover:bg-violet-500/20 transition-all disabled:opacity-50"
-                            >
-                                {detecting ? (
-                                    <>
-                                        <motion.div
-                                            className="w-4 h-4 border-2 border-violet-400 border-t-transparent rounded-full"
-                                            animate={{ rotate: 360 }}
-                                            transition={{ repeat: Infinity, duration: 0.7, ease: 'linear' }}
-                                        />
-                                        Detecting location…
-                                    </>
-                                ) : (
-                                    <>
-                                        <MapPin size={16} />
-                                        Auto-detect my location
-                                    </>
-                                )}
-                            </button>
-
-                            <div className="flex items-center gap-3 mb-4">
-                                <div className="flex-1 h-px bg-white/10" />
-                                <span className="text-xs text-gray-600 font-medium">or choose manually</span>
-                                <div className="flex-1 h-px bg-white/10" />
-                            </div>
-
-                            {/* Searchable dropdown */}
-                            <div className="relative mb-6" ref={dropdownRef}>
-                                <div
-                                    onClick={() => setDropdownOpen(o => !o)}
-                                    className="w-full flex items-center gap-3 bg-white/5 border border-white/15 rounded-xl px-4 py-3.5 cursor-pointer hover:bg-white/8 transition-colors"
-                                >
-                                    <Search size={16} className="text-gray-500 flex-shrink-0" />
-                                    <input
-                                        type="text"
-                                        value={dropdownOpen ? query : selectedCountry || ''}
-                                        onChange={e => { setQuery(e.target.value); setDropdownOpen(true); }}
-                                        onFocus={() => { setDropdownOpen(true); setQuery(''); }}
-                                        placeholder="Search country…"
-                                        className="flex-1 bg-transparent text-white placeholder-gray-500 text-sm outline-none"
-                                        onClick={e => e.stopPropagation()}
-                                    />
-                                    <ChevronDown
-                                        size={16}
-                                        className={`text-gray-500 flex-shrink-0 transition-transform duration-200 ${dropdownOpen ? 'rotate-180' : ''}`}
-                                    />
-                                </div>
-
-                                <AnimatePresence>
-                                    {dropdownOpen && (
-                                        <motion.ul
-                                            initial={{ opacity: 0, y: -8, scale: 0.98 }}
-                                            animate={{ opacity: 1, y: 0, scale: 1 }}
-                                            exit={{ opacity: 0, y: -8, scale: 0.98 }}
-                                            transition={{ duration: 0.15 }}
-                                            className="absolute z-50 w-full mt-2 bg-[#130d24] border border-white/10 rounded-2xl shadow-2xl overflow-y-auto"
-                                            style={{ maxHeight: '220px' }}
-                                        >
-                                            {filtered.length === 0 ? (
-                                                <li className="px-4 py-4 text-gray-500 text-sm text-center">No countries found.</li>
-                                            ) : filtered.map(country => (
-                                                <li
-                                                    key={country}
-                                                    onClick={() => {
-                                                        setSelectedCountry(country);
-                                                        setQuery(country);
-                                                        setDropdownOpen(false);
-                                                    }}
-                                                    className={`px-4 py-2.5 text-sm cursor-pointer flex items-center gap-2 transition-colors ${
-                                                        selectedCountry === country
-                                                            ? 'bg-violet-600/30 text-violet-200'
-                                                            : 'text-gray-300 hover:bg-white/8'
-                                                    }`}
-                                                >
-                                                    {africanCountries.has(country) && (
-                                                        <span className="text-[10px] bg-emerald-500/20 text-emerald-400 px-1.5 py-0.5 rounded-md font-semibold flex-shrink-0">🌍 Africa</span>
-                                                    )}
-                                                    {country}
-                                                </li>
-                                            ))}
-                                        </motion.ul>
+                            ) : (
+                                <>
+                                    {detectedCountryName && (
+                                        <div className="mb-8 border-b border-white/5 pb-6">
+                                            <p className="text-gray-400 text-sm mb-1">We've detected your region as</p>
+                                            <p className="text-xl font-bold text-white mb-2">{detectedCountryName}</p>
+                                            <p className="text-gray-500 text-sm">
+                                                {detectedRegion === 'ug'
+                                                    ? "It looks like you're in Africa. We recommend visiting our Activities."
+                                                    : "It looks like you're outside Africa. We recommend the Global Site."}
+                                            </p>
+                                        </div>
                                     )}
-                                </AnimatePresence>
-                            </div>
 
-                            {/* CTA button */}
-                            <motion.button
-                                onClick={handleContinue}
-                                disabled={!selectedCountry}
-                                whileHover={selectedCountry ? { scale: 1.02 } : {}}
-                                whileTap={selectedCountry ? { scale: 0.98 } : {}}
-                                className={`w-full py-4 px-6 rounded-xl font-bold text-lg flex items-center justify-center gap-2 transition-all duration-300 ${
-                                    selectedCountry
-                                        ? 'bg-gradient-to-r from-violet-600 via-purple-600 to-pink-600 text-white shadow-lg shadow-violet-900/50'
-                                        : 'bg-white/5 text-gray-600 cursor-not-allowed border border-white/5'
-                                }`}
-                                style={selectedCountry ? {
-                                    boxShadow: '0 0 30px rgba(124,58,237,0.4), 0 4px 20px rgba(0,0,0,0.4)'
-                                } : {}}
-                            >
-                                {selectedCountry ? (
-                                    <>Enter Experience <ArrowRight size={20} /></>
-                                ) : (
-                                    'Select a country to continue'
-                                )}
-                            </motion.button>
-
-                            {/* Region indicator */}
-                            <AnimatePresence>
-                                {selectedCountry && (
-                                    <motion.p
-                                        initial={{ opacity: 0, height: 0 }}
-                                        animate={{ opacity: 1, height: 'auto' }}
-                                        exit={{ opacity: 0, height: 0 }}
-                                        className="text-center text-xs text-gray-500 mt-3"
-                                    >
-                                        You'll be directed to the{' '}
-                                        <span className="text-violet-400 font-semibold">
-                                            {africanCountries.has(selectedCountry) ? 'Uganda / Africa' : 'United States'}
-                                        </span>{' '}
-                                        experience.
-                                    </motion.p>
-                                )}
-                            </AnimatePresence>
+                                    <div className="flex flex-col gap-3">
+                                        <button
+                                            onClick={() => navigate('/us')}
+                                            className={`w-full py-4 px-6 rounded-xl font-bold text-[15px] transition-all duration-300 flex items-center justify-center gap-2 ${
+                                                detectedRegion === 'us' || !detectedRegion
+                                                    ? 'bg-gradient-to-r from-violet-600 via-purple-600 to-pink-600 text-white shadow-lg shadow-violet-900/50'
+                                                    : 'bg-white/5 border border-white/15 text-gray-300 hover:bg-white/10 hover:-translate-y-0.5'
+                                            }`}
+                                        >
+                                            Visit the Global Site <ArrowRight size={18} />
+                                        </button>
+                                        
+                                        <button
+                                            onClick={() => navigate('/ug')}
+                                            className={`w-full py-4 px-6 rounded-xl font-bold text-[15px] transition-all duration-300 flex items-center justify-center gap-2 ${
+                                                detectedRegion === 'ug'
+                                                    ? 'bg-gradient-to-r from-violet-600 via-purple-600 to-pink-600 text-white shadow-lg shadow-violet-900/50'
+                                                    : 'bg-white/5 border border-white/15 text-gray-300 hover:bg-white/10 hover:-translate-y-0.5'
+                                            }`}
+                                        >
+                                            Visit Our Activities <ArrowRight size={18} />
+                                        </button>
+                                    </div>
+                                </>
+                            )}
 
                             {/* Founders link */}
                             <div className="mt-8 pt-6 border-t border-white/5 text-center">

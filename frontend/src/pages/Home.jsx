@@ -1,12 +1,89 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import HeroCarousel from '../components/HeroCarousel';
-import { ArrowRight, Heart, Users, Lightbulb, Calendar, ArrowUpRight, MessageCircle, Shield, Clock, Quote, Sparkles, CheckCircle, Activity } from 'lucide-react';
+import { ArrowRight, Heart, Users, Lightbulb, Calendar, ArrowUpRight, MessageCircle, Shield, Clock, Quote, Sparkles, CheckCircle, Activity, Target, Eye, Flag } from 'lucide-react';
 import { contentAPI, backgroundAPI } from '../services/api';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useRegion } from '../context/RegionContext';
+
+/* ─── Mission / Vision / Objectives Rotator ─────────── */
+const missionSlides = [
+    {
+        icon: Target,
+        label: 'Our Mission',
+        title: 'Empowering Youth Through Health & Knowledge',
+        text: 'To provide university students with accessible, stigma-free reproductive health information and resources, fostering informed decisions and personal growth.',
+        gradient: 'from-violet-600 to-purple-600'
+    },
+    {
+        icon: Eye,
+        label: 'Our Vision',
+        title: 'A World Where Every Student Thrives',
+        text: 'We envision a future where every young person — regardless of background — has the knowledge, resources, and confidence to navigate their health and build a brighter future.',
+        gradient: 'from-pink-600 to-rose-600'
+    },
+    {
+        icon: Flag,
+        label: 'Our Objectives',
+        title: 'Measurable Goals, Tangible Impact',
+        text: 'Bridge health information gaps on campuses. Build a mobile platform that reaches 10,000+ students. Create partnerships that sustain grassroots impact across borders.',
+        gradient: 'from-orange-500 to-amber-600'
+    }
+];
+
+function MissionRotator() {
+    const [idx, setIdx] = useState(0);
+
+    useEffect(() => {
+        const timer = setInterval(() => setIdx(prev => (prev + 1) % missionSlides.length), 5000);
+        return () => clearInterval(timer);
+    }, []);
+
+    const slide = missionSlides[idx];
+    const Icon = slide.icon;
+
+    return (
+        <section className="py-16 md:py-24 relative overflow-hidden bg-gray-50 dark:bg-gray-800/50">
+            <div className="absolute top-0 right-0 w-72 h-72 bg-purple-200/30 dark:bg-purple-800/10 rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute bottom-0 left-0 w-60 h-60 bg-orange-200/30 dark:bg-orange-800/10 rounded-full blur-3xl pointer-events-none" />
+
+            <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+                <AnimatePresence mode="wait">
+                    <motion.div
+                        key={idx}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -20 }}
+                        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                    >
+                        <div className={`w-16 h-16 mx-auto mb-6 rounded-2xl bg-gradient-to-br ${slide.gradient} flex items-center justify-center text-white shadow-lg`}>
+                            <Icon size={28} />
+                        </div>
+                        <span className="text-sm font-bold uppercase tracking-widest text-purple-600 dark:text-purple-400">{slide.label}</span>
+                        <h2 className="text-3xl md:text-4xl lg:text-5xl font-heading font-bold text-gray-900 dark:text-white mt-3 mb-6">{slide.title}</h2>
+                        <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 leading-relaxed max-w-2xl mx-auto">{slide.text}</p>
+                    </motion.div>
+                </AnimatePresence>
+
+                {/* Dots */}
+                <div className="flex justify-center gap-2 mt-10">
+                    {missionSlides.map((_, i) => (
+                        <button
+                            key={i}
+                            onClick={() => setIdx(i)}
+                            className={`h-2.5 rounded-full transition-all duration-300 ${
+                                i === idx ? 'w-8 bg-purple-600' : 'w-2.5 bg-gray-300 dark:bg-gray-600 hover:bg-purple-400'
+                            }`}
+                            aria-label={`Go to slide ${i + 1}`}
+                        />
+                    ))}
+                </div>
+            </div>
+        </section>
+    );
+}
 
 function Home() {
     const { region } = useRegion();
@@ -92,6 +169,9 @@ function Home() {
                 backgroundImages={backgroundImages}
                 setCurrentBackgroundIndex={setCurrentBackgroundIndex}
             />
+
+            {/* Mission / Vision / Objectives Rotator */}
+            <MissionRotator />
 
             {/* Introduction / Our Story Section */}
             <section className="py-20 md:py-32 relative overflow-hidden">
