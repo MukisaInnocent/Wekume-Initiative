@@ -1,6 +1,7 @@
 import { Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import { ThemeProvider } from './context/ThemeContext';
 import { RegionProvider } from './context/RegionContext';
+import { SidebarProvider, useSidebar } from './context/SidebarContext';
 import ScrollToTop from './components/ScrollToTop';
 import Welcome from './pages/Welcome';
 import Home from './pages/Home';
@@ -22,11 +23,16 @@ import USRewards from './pages/us/USRewards';
 import USImpact from './pages/us/USImpact';
 function AppContent() {
     const location = useLocation();
+    const { isCollapsed } = useSidebar();
+    
     // Hide AI chat on the landing welcome page and admin pages
     const hideChat = location.pathname === '/' || location.pathname.startsWith('/admin');
 
+    const isHome = location.pathname === '/' || location.pathname === '/ug' || location.pathname === '/us' || location.pathname === '/ug/' || location.pathname === '/us/';
+    const isPublicSidebar = !isHome && !location.pathname.startsWith('/admin');
+
     return (
-        <div className="App min-h-screen bg-white dark:bg-gray-900 transition-colors">
+        <div className={`App min-h-screen bg-white dark:bg-gray-900 transition-all duration-300 ${isPublicSidebar ? (isCollapsed ? 'lg:pl-0' : 'lg:pl-72') : ''}`}>
             <Routes>
                 {/* Public Routes */}
                 <Route path="/" element={<Welcome />} />
@@ -80,8 +86,10 @@ function App() {
     return (
         <ThemeProvider>
             <RegionProvider>
-                <ScrollToTop />
-                <AppContent />
+                <SidebarProvider>
+                    <ScrollToTop />
+                    <AppContent />
+                </SidebarProvider>
             </RegionProvider>
         </ThemeProvider>
     );

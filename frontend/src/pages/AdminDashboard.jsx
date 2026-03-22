@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { LogOut, Users, FileText, MessageSquare, Calendar, BarChart3, CheckCircle, XCircle, Clock, Edit2, Trash2, Plus, Briefcase, Layout, Image, UserCircle } from 'lucide-react';
+import { LogOut, Users, FileText, MessageSquare, Calendar, BarChart3, CheckCircle, Clock, Edit2, Trash2, Plus, Briefcase, Layout, Image as ImageIcon, UserCircle, Menu, X, ChevronLeft } from 'lucide-react';
 import { authAPI, adminAPI, contentAPI } from '../services/api';
 import Modal from '../components/Modal';
 import EventForm from '../components/forms/EventForm';
@@ -9,8 +9,21 @@ import ContentSectionForm from '../components/forms/ContentSectionForm';
 import ReportForm from '../components/forms/ReportForm';
 import MediaLibrary from '../components/MediaLibrary';
 import BackgroundManager from '../components/Admin/BackgroundManager';
-
 import TestimonialForm from '../components/forms/TestimonialForm';
+
+const navItems = [
+    { id: 'overview', label: 'Overview', icon: BarChart3 },
+    { id: 'content', label: 'Content', icon: Layout },
+    { id: 'backgrounds', label: 'Backgrounds', icon: ImageIcon },
+    { id: 'media', label: 'Media Library', icon: FileText },
+    { id: 'events', label: 'Events', icon: Calendar },
+    { id: 'partners', label: 'Partners', icon: Briefcase },
+    { id: 'testimonials', label: 'Testimonials', icon: MessageSquare },
+    { id: 'reports', label: 'Reports', icon: FileText },
+    { id: 'forms', label: 'Support Forms', icon: MessageSquare },
+    { id: 'volunteers', label: 'Volunteers', icon: Users },
+    { id: 'team', label: 'Team', icon: UserCircle },
+];
 
 /* ─── Inline Team Member Form ──────────────────────── */
 function TeamMemberFormInline({ member, defaultRegion, onSubmit, onCancel, loading }) {
@@ -106,6 +119,8 @@ function AdminDashboard() {
     const [modalType, setModalType] = useState(null);
     const [selectedItem, setSelectedItem] = useState(null);
     const [actionLoading, setActionLoading] = useState(false);
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    const [isCollapsed, setIsCollapsed] = useState(false);
 
     useEffect(() => {
         checkAuth();
@@ -312,64 +327,132 @@ function AdminDashboard() {
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-50 via-purple-50/30 to-pink-50/20 relative overflow-hidden">
-            {/* Decorative background blobs */}
-            <div className="absolute top-0 right-0 w-96 h-96 bg-purple-300/20 rounded-full blur-3xl animate-float"></div>
-            <div className="absolute bottom-0 left-0 w-96 h-96 bg-pink-300/20 rounded-full blur-3xl animate-float-delayed"></div>
+        <div className="min-h-screen bg-slate-50 flex overflow-hidden">
+            {/* Mobile Sidebar Overlay */}
+            {isSidebarOpen && (
+                <div 
+                    className="fixed inset-0 bg-purple-900/20 backdrop-blur-sm z-40 lg:hidden"
+                    onClick={() => setIsSidebarOpen(false)}
+                />
+            )}
 
-            {/* Top Bar */}
-            <div className="bg-white/80 backdrop-blur-md shadow-lg shadow-purple-500/5 sticky top-0 z-50 border-b border-purple-100/50">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex justify-between items-center">
-                    <div>
-                        <h1 className="text-3xl font-heading font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">Admin Dashboard</h1>
-                        <p className="text-sm text-purple-600/70 font-medium mt-1">Wekume Initiative CMS</p>
-                    </div>
-                    <div className="flex items-center gap-4">
-                        <select 
-                            value={adminRegion}
-                            onChange={(e) => setAdminRegion(e.target.value)}
-                            className="bg-white/50 border border-purple-200/60 rounded-xl px-4 py-3 text-sm font-semibold text-gray-700 outline-none focus:ring-2 focus:ring-purple-500 shadow-sm transition-all hover:bg-white"
-                        >
-                            <option value="global">🌐 Global (All Regions)</option>
-                            <option value="ug">🇺🇬 Uganda Only</option>
-                            <option value="us">🇺🇸 USA Only</option>
-                        </select>
-                        <div className="bg-gradient-to-r from-purple-500/10 to-pink-500/10 px-5 py-3 rounded-2xl border border-purple-200/50">
-                            <p className="text-sm font-bold text-gray-900">{user.fullname}</p>
-                            <p className="text-xs text-purple-600 capitalize font-medium">{user.role.replace('_', ' ')}</p>
+            {/* Sidebar */}
+            <aside className={`fixed inset-y-0 left-0 z-50 w-72 bg-white border-r border-purple-100/50 flex flex-col transition-transform duration-300 ease-in-out ${isSidebarOpen ? 'translate-x-0 shadow-2xl shadow-purple-900/20' : (isCollapsed ? '-translate-x-full' : '-translate-x-full lg:translate-x-0')} shadow-lg`}>
+                {/* Sidebar Header */}
+                <div className="h-20 flex items-center justify-between px-6 border-b border-purple-50 group relative">
+                    <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-600 to-pink-600 flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-purple-500/30 flex-shrink-0">
+                            W
                         </div>
-                        <button
-                            onClick={handleLogout}
-                            className="flex items-center gap-2 text-white bg-gradient-to-r from-red-500 to-pink-600 px-5 py-3 rounded-xl hover:shadow-lg hover:scale-105 transition-all duration-300 font-medium"
+                        <div>
+                            <h2 className="text-lg font-bold bg-gradient-to-r from-purple-700 to-pink-600 bg-clip-text text-transparent leading-tight whitespace-nowrap">Wekume CMS</h2>
+                            <p className="text-[10px] font-semibold text-purple-400 uppercase tracking-widest">Admin Dashboard</p>
+                        </div>
+                    </div>
+                    <button onClick={() => setIsSidebarOpen(false)} className="lg:hidden p-2 text-gray-400 hover:text-purple-600 hover:bg-purple-50 rounded-lg transition-colors">
+                        <X size={20} />
+                    </button>
+                    
+                    {/* Desktop Hide Toggle */}
+                    <button 
+                        onClick={() => setIsCollapsed(true)}
+                        title="Hide sidebar"
+                        className="hidden lg:flex absolute -right-3 top-1/2 -translate-y-1/2 w-6 h-6 bg-white border border-purple-200 rounded-full items-center justify-center text-gray-400 hover:text-purple-600 shadow-sm opacity-0 group-hover:opacity-100 transition-opacity z-10"
+                    >
+                        <ChevronLeft size={14} />
+                    </button>
+                </div>
+
+                {/* Sidebar Navigation */}
+                <div className="flex-1 overflow-y-auto px-4 py-6 space-y-1 nice-scrollbar">
+                    {navItems.map((item) => {
+                        const Icon = item.icon;
+                        const isActive = activeTab === item.id;
+                        return (
+                            <button
+                                key={item.id}
+                                onClick={() => {
+                                    if (item.id === 'team') fetchTeamMembers();
+                                    setActiveTab(item.id);
+                                    if (window.innerWidth < 1024) setIsSidebarOpen(false);
+                                }}
+                                className={`w-full flex items-center gap-3 px-3 py-3.5 rounded-xl transition-all duration-200 group relative ${
+                                    isActive 
+                                        ? 'bg-gradient-to-r from-purple-500/10 to-pink-500/10 text-purple-700 font-bold shadow-sm border border-purple-100/50' 
+                                        : 'text-gray-500 hover:bg-purple-50/50 hover:text-purple-600 font-medium border border-transparent'
+                                }`}
+                            >
+                                <Icon size={20} className={`flex-shrink-0 group-hover:scale-110 transition-transform ${isActive ? 'text-purple-600' : 'text-gray-400 group-hover:text-purple-500 transition-colors'}`} />
+                                <span className="whitespace-nowrap flex-1 text-left">{item.label}</span>
+                                {isActive && <div className="w-1.5 h-1.5 rounded-full bg-purple-600 animate-pulse flex-shrink-0" />}
+                            </button>
+                        );
+                    })}
+                </div>
+
+                {/* Sidebar Footer (User Info & Logout) */}
+                <div className="p-4 border-t border-purple-50 bg-gray-50/50 flex-shrink-0">
+                    <div className="flex items-center gap-3 p-3 bg-white border border-purple-100 rounded-xl mb-3 shadow-sm">
+                        <div className="w-10 h-10 rounded-full bg-gradient-to-r from-purple-100 to-pink-100 border border-purple-200 flex items-center justify-center font-bold text-purple-700 flex-shrink-0" title={user?.fullname || 'Admin'}>
+                            {user?.fullname?.charAt(0) || 'U'}
+                        </div>
+                        <div className="overflow-hidden">
+                            <p className="text-sm font-bold text-gray-900 truncate">{user?.fullname}</p>
+                            <p className="text-xs text-purple-600 font-medium capitalize truncate">{user?.role?.replace('_', ' ')}</p>
+                        </div>
+                    </div>
+                    
+                    <button
+                        onClick={handleLogout}
+                        className="w-full flex items-center justify-center gap-2 rounded-xl text-red-600 font-semibold hover:bg-red-50 hover:text-red-700 transition-colors border border-transparent hover:border-red-100 px-4 py-2.5"
+                    >
+                        <LogOut size={18} />
+                        Logout
+                    </button>
+                </div>
+            </aside>
+
+            {/* Main Content Area */}
+            <main className={`flex-1 flex flex-col min-h-screen relative overflow-x-hidden transition-all duration-300 ${isCollapsed ? 'lg:ml-0' : 'lg:ml-72'}`}>
+                {/* Decorative blobs for main area */}
+                <div className="fixed top-0 right-0 w-[500px] h-[500px] bg-purple-300/10 rounded-full blur-[100px] pointer-events-none -mr-40 -mt-40"></div>
+                <div className={`fixed bottom-0 w-[500px] h-[500px] bg-pink-300/10 rounded-full blur-[100px] pointer-events-none -ml-40 -mb-40 transition-all duration-300 ${isCollapsed ? 'left-0' : 'left-72'}`}></div>
+
+                {/* Topbar for main area */}
+                <header className="h-20 bg-white/60 backdrop-blur-xl border-b border-purple-100/50 sticky top-0 z-30 flex items-center justify-between px-4 sm:px-6 lg:px-8 shadow-sm">
+                    <div className="flex items-center gap-4">
+                        <button 
+                            onClick={() => {
+                                if (window.innerWidth < 1024) setIsSidebarOpen(true);
+                                else setIsCollapsed(false);
+                            }}
+                            className={`p-2.5 bg-white border border-purple-100 rounded-xl text-purple-600 shadow-sm hover:bg-purple-50 transition-colors hover:scale-105 active:scale-95 ${!isCollapsed ? 'lg:hidden' : ''}`}
                         >
-                            <LogOut size={18} />
-                            Logout
+                            <Menu size={20} />
                         </button>
+                        <h1 className="text-xl sm:text-2xl font-heading font-bold bg-gradient-to-r from-purple-700 to-pink-600 bg-clip-text text-transparent hidden sm:block">
+                            {navItems.find(i => i.id === activeTab)?.label || 'Dashboard'}
+                        </h1>
                     </div>
-                </div>
-            </div>
-
-            {/* Tab Navigation */}
-            <div className="bg-white/70 backdrop-blur-sm border-b border-purple-100/50 sticky top-[73px] z-40">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex space-x-2 overflow-x-auto py-3">
-                        <button onClick={() => setActiveTab('overview')} className={`py-3 px-5 rounded-xl font-semibold text-sm whitespace-nowrap transition-all duration-300 ${activeTab === 'overview' ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg shadow-purple-500/30' : 'text-gray-600 hover:bg-purple-50 hover:text-purple-700'}`}><BarChart3 className="inline mr-2" size={18} />Overview</button>
-                        <button onClick={() => setActiveTab('content')} className={`py-3 px-5 rounded-xl font-semibold text-sm whitespace-nowrap transition-all duration-300 ${activeTab === 'content' ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg shadow-purple-500/30' : 'text-gray-600 hover:bg-purple-50 hover:text-purple-700'}`}><Layout className="inline mr-2" size={18} />Content</button>
-                        <button onClick={() => setActiveTab('backgrounds')} className={`py-3 px-5 rounded-xl font-semibold text-sm whitespace-nowrap transition-all duration-300 ${activeTab === 'backgrounds' ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg shadow-purple-500/30' : 'text-gray-600 hover:bg-purple-50 hover:text-purple-700'}`}><Image className="inline mr-2" size={18} />Backgrounds</button>
-                        <button onClick={() => setActiveTab('media')} className={`py-3 px-5 rounded-xl font-semibold text-sm whitespace-nowrap transition-all duration-300 ${activeTab === 'media' ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg shadow-purple-500/30' : 'text-gray-600 hover:bg-purple-50 hover:text-purple-700'}`}><FileText className="inline mr-2" size={18} />Media Library</button>
-                        <button onClick={() => setActiveTab('events')} className={`py-3 px-5 rounded-xl font-semibold text-sm whitespace-nowrap transition-all duration-300 ${activeTab === 'events' ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg shadow-purple-500/30' : 'text-gray-600 hover:bg-purple-50 hover:text-purple-700'}`}><Calendar className="inline mr-2" size={18} />Events</button>
-                        <button onClick={() => setActiveTab('partners')} className={`py-3 px-5 rounded-xl font-semibold text-sm whitespace-nowrap transition-all duration-300 ${activeTab === 'partners' ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg shadow-purple-500/30' : 'text-gray-600 hover:bg-purple-50 hover:text-purple-700'}`}><Briefcase className="inline mr-2" size={18} />Partners</button>
-                        <button onClick={() => setActiveTab('testimonials')} className={`py-3 px-5 rounded-xl font-semibold text-sm whitespace-nowrap transition-all duration-300 ${activeTab === 'testimonials' ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg shadow-purple-500/30' : 'text-gray-600 hover:bg-purple-50 hover:text-purple-700'}`}><MessageSquare className="inline mr-2" size={18} />Testimonials</button>
-                        <button onClick={() => setActiveTab('reports')} className={`py-3 px-5 rounded-xl font-semibold text-sm whitespace-nowrap transition-all duration-300 ${activeTab === 'reports' ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg shadow-purple-500/30' : 'text-gray-600 hover:bg-purple-50 hover:text-purple-700'}`}><FileText className="inline mr-2" size={18} />Reports</button>
-                        <button onClick={() => setActiveTab('forms')} className={`py-3 px-5 rounded-xl font-semibold text-sm whitespace-nowrap transition-all duration-300 ${activeTab === 'forms' ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg shadow-purple-500/30' : 'text-gray-600 hover:bg-purple-50 hover:text-purple-700'}`}><MessageSquare className="inline mr-2" size={18} />Support Forms</button>
-                        <button onClick={() => setActiveTab('volunteers')} className={`py-3 px-5 rounded-xl font-semibold text-sm whitespace-nowrap transition-all duration-300 ${activeTab === 'volunteers' ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg shadow-purple-500/30' : 'text-gray-600 hover:bg-purple-50 hover:text-purple-700'}`}><Users className="inline mr-2" size={18} />Volunteers</button>
-                        <button onClick={() => { setActiveTab('team'); fetchTeamMembers(); }} className={`py-3 px-5 rounded-xl font-semibold text-sm whitespace-nowrap transition-all duration-300 ${activeTab === 'team' ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg shadow-purple-500/30' : 'text-gray-600 hover:bg-purple-50 hover:text-purple-700'}`}><UserCircle className="inline mr-2" size={18} />Team</button>
+                    
+                    <div className="flex items-center gap-3">
+                        <div className="bg-white border border-purple-100 rounded-xl p-1 shadow-sm flex items-center">
+                            <span className="pl-3 pr-2 text-xs font-semibold text-gray-400 tracking-wider">REGION</span>
+                            <select 
+                                value={adminRegion}
+                                onChange={(e) => setAdminRegion(e.target.value)}
+                                className="bg-transparent text-sm font-bold text-purple-700 outline-none cursor-pointer pr-8 py-1.5 focus:ring-0"
+                            >
+                                <option value="global">Global</option>
+                                <option value="ug">Uganda</option>
+                                <option value="us">USA</option>
+                            </select>
+                        </div>
                     </div>
-                </div>
-            </div>
+                </header>
 
-            {/* Dashboard Content */}
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                {/* Dashboard Tab Content */}
+                <div className="flex-1 p-4 sm:p-6 lg:p-8 relative z-10 nice-scrollbar overflow-y-auto w-full max-w-7xl mx-auto pb-24">
                 {activeTab === 'overview' && analytics && (
                     <div>
                         <h2 className="text-3xl font-heading font-bold mb-8 bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">Overview</h2>
@@ -648,7 +731,8 @@ function AdminDashboard() {
                         </div>
                     </div>
                 )}
-            </div>
+                </div>
+            </main>
 
             {/* Modals */}
             <Modal
