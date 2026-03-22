@@ -34,7 +34,7 @@ function USFunders() {
                             <TrendingUp size={40} className="mx-auto mb-4 opacity-80" />
                             <h3 className="text-2xl font-bold mb-4">Individual Philanthropy & Seed Funding</h3>
                             <p className="text-blue-100 mb-8 max-w-3xl mx-auto">Join our inner circle of early-stage backers. Your seed funds directly build the Wekume App architecture and train peer educators.</p>
-                            <Link to="/us/donate" className="bg-white text-blue-800 px-8 py-3 rounded-full font-bold hover:bg-gray-100 transition shadow">Donate Directly</Link>
+                            <Link to="/us/support" className="bg-white text-blue-800 px-8 py-3 rounded-full font-bold hover:bg-gray-100 transition shadow">Support Us Directly</Link>
                         </div>
                     </div>
                 </div>

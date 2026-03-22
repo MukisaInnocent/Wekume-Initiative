@@ -11,7 +11,7 @@ import Events from './pages/Events';
 import GetInvolved from './pages/GetInvolved';
 import Reports from './pages/Reports';
 import Contact from './pages/Contact';
-import Donate from './pages/Donate';
+import Support from './pages/Support';
 import AdminLogin from './pages/AdminLogin';
 import AdminDashboard from './pages/AdminDashboard';
 import LinaAIChat from './components/LinaAIChat';
@@ -45,7 +45,7 @@ function AppContent() {
                 <Route path="/reports" element={<Navigate to="/ug/reports" replace />} />
                 <Route path="/contact" element={<Navigate to="/ug/contact" replace />} />
                 <Route path="/testimonials" element={<Navigate to="/ug/testimonials" replace />} />
-                <Route path="/donate" element={<Navigate to="/us/donate" replace />} />
+                <Route path="/support" element={<Navigate to="/us/support" replace />} />
 
                 {/* Uganda (UG) Routes */}
                 <Route path="/ug" element={<Home />} />
@@ -70,7 +70,7 @@ function AppContent() {
                 <Route path="/us/reports" element={<Reports />} />
                 <Route path="/us/contact" element={<Contact />} />
                 <Route path="/us/testimonials" element={<Testimonials />} />
-                <Route path="/us/donate" element={<Donate />} />
+                <Route path="/us/support" element={<Support />} />
 
                 {/* Admin Routes */}
                 <Route path="/admin/login" element={<AdminLogin />} />

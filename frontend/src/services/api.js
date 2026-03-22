@@ -109,9 +109,9 @@ export const formAPI = {
     submitVolunteer: (data) => api.post('/content/forms/volunteer', data)
 };
 
-// ===== DONATION API =====
+// ===== CONTRIBUTION API =====
 
-export const donationAPI = {
+export const ContributionAPI = {
     create: (data) => api.post('/donations', data)
 };
 

@@ -36,7 +36,7 @@ function USRewards() {
                     </div>
 
                     <div className="mt-16 text-center">
-                        <Link to="/us/donate" className="bg-purple-600 text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-purple-700 transition shadow-lg inline-block">
+                        <Link to="/us/support" className="bg-purple-600 text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-purple-700 transition shadow-lg inline-block">
                             Start Earning Rewards
                         </Link>
                     </div>
