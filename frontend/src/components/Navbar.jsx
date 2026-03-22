@@ -115,11 +115,11 @@ function Navbar({ isTransparent = false, backgroundImages, currentBackgroundInde
                   <div className="p-4 border-t border-gray-100 dark:border-gray-800 flex-shrink-0">
                        {isUS && (
                            <Link
-                               to="/us/donate"
+                               to="/us/support"
                                className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-purple-600 to-orange-500 text-white px-4 py-3 rounded-xl font-bold hover:shadow-lg hover:-translate-y-0.5 transition-all text-sm mb-4"
                                onClick={() => setIsMenuOpen(false)}
                            >
-                               <Heart size={16} /> Donate Now
+                               <Heart size={16} /> Support Now
                            </Link>
                        )}
                        <div className="flex items-center justify-between px-2 w-full">
@@ -199,10 +199,10 @@ function Navbar({ isTransparent = false, backgroundImages, currentBackgroundInde
                             <ThemeToggle />
                             {isUS && (
                                 <Link
-                                    to="/us/donate"
+                                    to="/us/support"
                                     className={`px-6 py-2.5 rounded-full font-bold transition-all transform hover:-translate-y-0.5 hover:shadow-lg ${buttonClass}`}
                                 >
-                                    Donate
+                                    Support
                                 </Link>
                             )}
                         </div>

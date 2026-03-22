@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
-import { donationAPI } from '../services/api';
+import { ContributionAPI } from '../services/api';
 import { Heart, CreditCard, Smartphone, Check, ArrowRight, Mail, Phone, User, MessageSquare, AlertCircle, Copy, CheckCircle } from 'lucide-react';
 
-function Donate() {
-    const [donationType, setDonationType] = useState('one-time');
+function Support() {
+    const [ContributionType, setContributionType] = useState('one-time');
     const [amount, setAmount] = useState('50000');
     const [showCustomAmount, setShowCustomAmount] = useState(false);
     const [paymentMethod, setPaymentMethod] = useState('mobile_money');
@@ -46,14 +46,14 @@ function Donate() {
         }
 
         if (parseInt(amount) < 1000) {
-            newErrors.amount = 'Minimum donation amount is UGX 1,000';
+            newErrors.amount = 'Minimum Contribution amount is UGX 1,000';
         }
 
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
 
-    const handleDonate = async (e) => {
+    const handleSupport = async (e) => {
         e.preventDefault();
 
         if (!validateForm()) {
@@ -69,10 +69,10 @@ function Donate() {
                 amount: parseInt(amount, 10),
                 currency: 'UGX',
                 payment_method: paymentMethod,
-                donation_type: donationType
+                Contribution_type: ContributionType
             };
 
-            const response = await donationAPI.create(payload);
+            const response = await ContributionAPI.create(payload);
             setInstructions(response.data.instructions);
             setTransactionRef(response.data.transaction_ref || `WKM-${Date.now()}`);
             setStatus('success');
@@ -80,7 +80,7 @@ function Donate() {
             // Simulate sending confirmation email/SMS
             console.log('Confirmation sent to:', details.email, details.phone_number);
         } catch (error) {
-            console.error("Donation failed:", error);
+            console.error("Contribution failed:", error);
             setStatus('error');
             setErrors({ submit: error.response?.data?.error || 'Something went wrong. Please try again.' });
         }
@@ -126,13 +126,13 @@ function Donate() {
             <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 bg-white dark:bg-gray-900">
                 <div className="grid lg:grid-cols-5 gap-12">
 
-                    {/* Donation Form */}
+                    {/* Contribution Form */}
                     <div className="lg:col-span-3">
                         <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl border border-primary-100 dark:border-gray-700 overflow-hidden">
                             <div className="bg-gradient-to-r from-primary-50 to-pink-50 dark:from-gray-800 dark:to-gray-800 p-6 border-b border-primary-100 dark:border-gray-700">
                                 <h2 className="text-2xl font-bold text-primary-900 dark:text-white flex items-center gap-2">
                                     <Heart className="text-pink-500 fill-current" size={28} />
-                                    Complete Your Donation
+                                    Complete Your Contribution
                                 </h2>
                                 <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">All fields are required for transaction processing</p>
                             </div>
@@ -149,7 +149,7 @@ function Donate() {
                                     <div className="bg-gradient-to-r from-primary-50 to-purple-50 dark:from-gray-700 dark:to-gray-700 border-2 border-primary-200 dark:border-gray-600 rounded-2xl p-6 mb-6 text-left">
                                         <div className="flex items-center gap-2 mb-4">
                                             <CheckCircle className="text-green-600" size={24} />
-                                            <h4 className="font-bold text-primary-900 dark:text-white text-lg">Donation Confirmed</h4>
+                                            <h4 className="font-bold text-primary-900 dark:text-white text-lg">Contribution Confirmed</h4>
                                         </div>
 
                                         <div className="space-y-3 text-sm">
@@ -203,27 +203,27 @@ function Donate() {
                                         className="text-primary-600 font-semibold hover:text-primary-800 transition-colors flex items-center gap-2 mx-auto"
                                     >
                                         <ArrowRight size={16} />
-                                        Make another donation
+                                        Make another Contribution
                                     </button>
                                 </div>
                             ) : (
-                                <form onSubmit={handleDonate} className="p-6 md:p-8 space-y-6">
+                                <form onSubmit={handleSupport} className="p-6 md:p-8 space-y-6">
 
-                                    {/* Donation Type */}
+                                    {/* Contribution Type */}
                                     <div>
-                                        <label className="block text-sm font-bold text-primary-700 dark:text-primary-400 mb-3 uppercase tracking-wide">Donation Type</label>
+                                        <label className="block text-sm font-bold text-primary-700 dark:text-primary-400 mb-3 uppercase tracking-wide">Contribution Type</label>
                                         <div className="grid grid-cols-2 gap-3">
                                             <button
                                                 type="button"
-                                                onClick={() => setDonationType('one-time')}
-                                                className={`py-3 px-4 rounded-xl font-semibold border-2 transition-all ${donationType === 'one-time' ? 'bg-primary-600 text-white border-primary-600 shadow-md' : 'bg-white dark:bg-gray-700 text-primary-600 dark:text-primary-300 border-primary-200 dark:border-gray-600 hover:border-primary-400'}`}
+                                                onClick={() => setContributionType('one-time')}
+                                                className={`py-3 px-4 rounded-xl font-semibold border-2 transition-all ${ContributionType === 'one-time' ? 'bg-primary-600 text-white border-primary-600 shadow-md' : 'bg-white dark:bg-gray-700 text-primary-600 dark:text-primary-300 border-primary-200 dark:border-gray-600 hover:border-primary-400'}`}
                                             >
                                                 One-Time
                                             </button>
                                             <button
                                                 type="button"
-                                                onClick={() => setDonationType('monthly')}
-                                                className={`py-3 px-4 rounded-xl font-semibold border-2 transition-all ${donationType === 'monthly' ? 'bg-primary-600 text-white border-primary-600 shadow-md' : 'bg-white dark:bg-gray-700 text-primary-600 dark:text-primary-300 border-primary-200 dark:border-gray-600 hover:border-primary-400'}`}
+                                                onClick={() => setContributionType('monthly')}
+                                                className={`py-3 px-4 rounded-xl font-semibold border-2 transition-all ${ContributionType === 'monthly' ? 'bg-primary-600 text-white border-primary-600 shadow-md' : 'bg-white dark:bg-gray-700 text-primary-600 dark:text-primary-300 border-primary-200 dark:border-gray-600 hover:border-primary-400'}`}
                                             >
                                                 Monthly
                                             </button>
@@ -374,7 +374,7 @@ function Donate() {
                                                 checked={details.is_anonymous}
                                                 onChange={e => setDetails({ ...details, is_anonymous: e.target.checked })}
                                             />
-                                            <label htmlFor="anon" className="text-sm text-gray-700 dark:text-gray-300 font-medium">Make my donation anonymous</label>
+                                            <label htmlFor="anon" className="text-sm text-gray-700 dark:text-gray-300 font-medium">Make my Contribution anonymous</label>
                                         </div>
                                     </div>
 
@@ -398,7 +398,7 @@ function Donate() {
                                         ) : (
                                             <>
                                                 <Heart fill="currentColor" size={20} />
-                                                Donate {parseInt(amount).toLocaleString()} UGX
+                                                Support {parseInt(amount).toLocaleString()} UGX
                                             </>
                                         )}
                                     </button>
@@ -447,7 +447,7 @@ function Donate() {
 
                         <div className="bg-gradient-to-br from-yellow-50 to-orange-50 dark:from-gray-800 dark:to-gray-800 rounded-2xl p-6 border-2 border-yellow-200 dark:border-gray-700">
                             <p className="text-sm text-gray-700 dark:text-gray-300 font-medium">
-                                <span className="text-secondary-600 dark:text-secondary-400 font-bold">💡 Tip:</span> Monthly donations help us plan better programs and create sustainable impact.
+                                <span className="text-secondary-600 dark:text-secondary-400 font-bold">💡 Tip:</span> Monthly Contributions help us plan better programs and create sustainable impact.
                             </p>
                         </div>
                     </div>
@@ -459,4 +459,5 @@ function Donate() {
     );
 }
 
-export default Donate;
+export default Support;
+

@@ -3,6 +3,7 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { formAPI } from '../services/api';
 import { Mail, Phone, MapPin, Send, CheckCircle, Loader, ArrowRight, Sparkles, MessageCircle, Heart } from 'lucide-react';
+import { useRegion } from '../context/RegionContext';
 
 function Contact() {
     const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' });
@@ -47,12 +48,14 @@ function Contact() {
     };
 
     // Contact details (can be loaded from ConfigurableBlock API in the future)
+    const { isUS } = useRegion();
+    
     const contactInfo = {
-        whatsapp: '+256000000000',
-        email: 'info@wekume.org',
-        phone: '+256 000 000 000',
-        poBox: 'P.O. Box 0000, Kampala',
-        officeAddress: 'Plot 00, Example Rd, Kampala, Uganda'
+        whatsapp: '+256766344603',
+        email: 'admin@wekume.org',
+        phone: '+256 766 344 603',
+        poBox: isUS ? '' : 'PO BOX 180589, Kampala GPO',
+        officeAddress: isUS ? 'Friends of Wekume (US), 4844 North 300 West Ste 300, Provo, Utah 84604, USA' : 'Wekume Youth Initiative, Uganda'
     };
 
     const saveAndRedirect = async (channel) => {
@@ -219,16 +222,18 @@ function Contact() {
                                             color="text-orange-300"
                                             hoverBg="group-hover:bg-orange-500/20"
                                         />
+                                        {contactInfo.poBox && (
+                                            <ContactItem
+                                                icon={<MapPin size={22} />}
+                                                label="PO Box"
+                                                value={contactInfo.poBox}
+                                                color="text-blue-300"
+                                                hoverBg="group-hover:bg-blue-500/20"
+                                            />
+                                        )}
                                         <ContactItem
                                             icon={<MapPin size={22} />}
-                                            label="PO Box"
-                                            value={contactInfo.poBox}
-                                            color="text-blue-300"
-                                            hoverBg="group-hover:bg-blue-500/20"
-                                        />
-                                        <ContactItem
-                                            icon={<MapPin size={22} />}
-                                            label="Office"
+                                            label={isUS ? "Address" : "Office"}
                                             value={contactInfo.officeAddress}
                                             color="text-purple-300"
                                             hoverBg="group-hover:bg-purple-500/20"

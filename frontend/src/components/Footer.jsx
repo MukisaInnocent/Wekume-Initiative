@@ -89,41 +89,51 @@ function Footer() {
                         </ul>
                     </div>
 
-                    {/* Column 3: Programs */}
+                    {/* Column 3: What We Do */}
                     <div>
-                        <h3 className="text-sm font-bold uppercase tracking-widest text-pink-300 mb-4">Our Programs</h3>
-                        <ul className="space-y-2.5">
-                            {[
-                                { to: `${prefix}/wekume-app`, label: 'Wekume App' },
-                                { to: prefix, label: 'Lina AI Safe Chat' },
-                                { to: `${prefix}/events`, label: 'Health Events' },
-                                { to: `${prefix}/reports`, label: 'Impact Reports' },
-                                isUS ? { to: '/us/donate', label: 'Support Us' } : null,
-                            ].filter(Boolean).map(({ to, label }) => (
-                                <li key={label}>
-                                    <Link
-                                        to={to}
-                                        className="text-sm text-purple-200 hover:text-white hover:translate-x-1 inline-flex items-center gap-1.5 transition-all duration-200 group"
-                                    >
-                                        <ArrowRight size={12} className="opacity-0 group-hover:opacity-100 transition-opacity" />
-                                        {label}
-                                    </Link>
-                                </li>
-                            ))}
+                        <h3 className="text-sm font-bold uppercase tracking-widest text-pink-300 mb-4">What We Do</h3>
+                        <ul className="space-y-2.5 text-sm text-purple-200">
+                            <li className="flex items-start gap-2">
+                                <span className="text-pink-400 mt-0.5">•</span> SRH Education
+                            </li>
+                            <li className="flex items-start gap-2">
+                                <span className="text-pink-400 mt-0.5">•</span> Skill Development & Entrepreneurship
+                            </li>
                         </ul>
                     </div>
 
                     {/* Column 4: Contact & Newsletter */}
                     <div>
-                        <h3 className="text-sm font-bold uppercase tracking-widest text-pink-300 mb-4">Stay Connected</h3>
-                        <div className="space-y-2 mb-6">
+                        <h3 className="text-sm font-bold uppercase tracking-widest text-pink-300 mb-4">Contact Us</h3>
+                        <div className="space-y-2 mb-6 text-sm text-purple-200">
                             <a
-                                href="mailto:info@wekume.org"
-                                className="flex items-center gap-2 text-sm text-purple-200 hover:text-white transition-colors"
+                                href="mailto:admin@wekume.org"
+                                className="flex items-center gap-2 hover:text-white transition-colors"
                             >
                                 <Mail size={14} className="text-pink-400 flex-shrink-0" />
-                                info@wekume.org
+                                admin@wekume.org
                             </a>
+                            <p className="flex items-center gap-2">
+                                <span className="text-pink-400 font-bold tracking-wider">Mobile:</span> +256 766 344 603
+                            </p>
+                            
+                            <div className="mt-4 pt-4 border-t border-white/10 space-y-1">
+                                {isUS ? (
+                                    <>
+                                        <p className="font-bold text-white mb-2">Friends of Wekume (US)</p>
+                                        <p>4844 North 300 West Ste 300</p>
+                                        <p>Provo, Utah 84604</p>
+                                        <p>USA</p>
+                                    </>
+                                ) : (
+                                    <>
+                                        <p className="font-bold text-white mb-2">Wekume Youth Initiative</p>
+                                        <p>PO BOX 180589</p>
+                                        <p>Kampala GPO,</p>
+                                        <p>Uganda</p>
+                                    </>
+                                )}
+                            </div>
                         </div>
 
                         {/* Newsletter */}
