@@ -80,9 +80,10 @@ function About() {
                     <div className="relative">
                         <div className="absolute inset-0 bg-gradient-to-tr from-purple-200 to-orange-100 dark:from-purple-900 dark:to-orange-900 rounded-2xl sm:rounded-3xl transform rotate-3"></div>
                         <img
-                            src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-                            alt="Students collaborating"
+                            src="/uploads/soup-assets/events/inter-university-dialogue-makerere.jpg"
+                            alt="Wekume team at Inter-University Dialogue, Makerere University"
                             className="relative rounded-2xl sm:rounded-3xl shadow-xl w-full h-auto object-cover"
+                            onError={(e) => { e.target.style.display = 'none'; }}
                         />
                     </div>
                 </div>

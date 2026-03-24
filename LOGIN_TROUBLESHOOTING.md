@@ -9,7 +9,7 @@ I have updated the backend to **explicitly allow connections** from your fronten
 
 ### Try This First:
 1. **Refresh** the login page
-2. Try logging in again (Email: `admin@wekume.org`, Pwd: `WekumeAdmin2024!`)
+2. Try logging in again (Email: `admin@wekume.org`, Pwd: `ChangeThisPassword123!`)
 
 ## If It Still Fails:
 
@@ -24,12 +24,12 @@ Look at the terminal running the backend (where you see `npm run dev`).
 - If so, tell me what URL it says was blocked.
 
 ### 3. Verify Ports
-- Backend must be on: `http://localhost:5000` (check terminal)
-- Frontend must be on: `http://localhost:5173` (check browser URL)
+- Backend must be on: `http://localhost:5050` (check terminal)
+- Frontend must be on: `http://localhost:5173` or `http://localhost:5200` (check browser URL)
 
 ### 4. Direct Test
 Open this link in a new tab:
-[http://localhost:5000/health](http://localhost:5000/health)
+[http://localhost:5050/health](http://localhost:5050/health)
 
 - If it works: Backend is fine.
 - If it fails: Backend is stopped. Run `npm run dev` in backend folder.
