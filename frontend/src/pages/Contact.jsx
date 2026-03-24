@@ -2,12 +2,13 @@ import { useState, useEffect, useRef } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { formAPI } from '../services/api';
-import { Mail, Phone, MapPin, Send, CheckCircle, Loader, ArrowRight, Sparkles, MessageCircle, Heart } from 'lucide-react';
+import { Mail, Phone, MapPin, Send, CheckCircle, Loader, ArrowRight, Sparkles, MessageCircle, Heart, AlertCircle } from 'lucide-react';
 import { useRegion } from '../context/RegionContext';
 
 function Contact() {
     const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' });
     const [status, setStatus] = useState('idle'); // idle, submitting, success, error
+    const [errors, setErrors] = useState({});
     const [focusedField, setFocusedField] = useState(null);
     const [mounted, setMounted] = useState(false);
 
@@ -58,12 +59,27 @@ function Contact() {
         officeAddress: isUS ? 'Friends of Wekume (US), 4844 North 300 West Ste 300, Provo, Utah 84604, USA' : 'Wekume Youth Initiative, Uganda'
     };
 
+    const validateForm = () => {
+        const newErrors = {};
+        if (!formData.name.trim()) newErrors.name = 'Full name is required';
+        if (!formData.email.trim()) {
+            newErrors.email = 'Email address is required';
+        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+            newErrors.email = 'Please enter a valid email address';
+        }
+        if (!formData.message.trim()) newErrors.message = 'Please enter a message';
+
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
+    };
+
     const saveAndRedirect = async (channel) => {
-        if (!formData.name || !formData.email || !formData.message) {
+        if (!validateForm()) {
             setStatus('error');
             return;
         }
         setStatus('submitting');
+        setErrors({});
         try {
             await formAPI.submitSupport({ ...formData, channel });
             setStatus('success');
@@ -84,9 +100,11 @@ function Contact() {
             }
 
             setFormData({ name: '', email: '', subject: '', message: '' });
+            setErrors({});
         } catch (error) {
             console.error("Form submission error:", error);
             setStatus('error');
+            setErrors({ submit: error.response?.data?.error || 'Failed to connect to the server. Please check your connection.' });
         }
     };
 
@@ -284,12 +302,14 @@ function Contact() {
                                                     value={formData.name}
                                                     onChange={e => setFormData({ ...formData, name: e.target.value })}
                                                     onFocus={() => handleFocus('name')} onBlur={handleBlur}
+                                                    error={errors.name}
                                                 />
                                                 <FloatingInput
                                                     id="email" label="Email Address" type="email"
                                                     value={formData.email}
                                                     onChange={e => setFormData({ ...formData, email: e.target.value })}
                                                     onFocus={() => handleFocus('email')} onBlur={handleBlur}
+                                                    error={errors.email}
                                                 />
                                             </div>
                                             <FloatingInput
@@ -303,11 +323,13 @@ function Contact() {
                                                 value={formData.message}
                                                 onChange={e => setFormData({ ...formData, message: e.target.value })}
                                                 onFocus={() => handleFocus('message')} onBlur={handleBlur}
+                                                error={errors.message}
                                             />
 
                                             {status === 'error' && (
-                                                <div className="p-3 bg-red-50 text-red-600 rounded-lg text-xs font-bold uppercase tracking-wide border border-red-100 flex items-center gap-2">
-                                                    <span>Error:</span> Something went wrong.
+                                                <div className="p-3 bg-red-50 text-red-600 rounded-xl text-xs font-bold uppercase tracking-wide border border-red-100 flex items-center gap-2">
+                                                    <AlertCircle size={16} />
+                                                    <span>{errors.submit || 'Please check the form for errors.'}</span>
                                                 </div>
                                             )}
 
@@ -377,43 +399,45 @@ function Contact() {
 }
 
 // Sub-components for cleanliness
-const FloatingInput = ({ id, label, value, onChange, onFocus, onBlur, type = "text" }) => (
+const FloatingInput = ({ id, label, value, onChange, onFocus, onBlur, error, type = "text" }) => (
     <div className="relative group">
         <input
-            type={type} required id={id}
-            className="peer w-full px-4 py-3.5 rounded-xl border-2 border-transparent bg-gray-50/50 dark:bg-gray-800 focus:bg-white dark:focus:bg-gray-700 focus:border-purple-500/50 focus:ring-4 focus:ring-purple-500/10 outline-none transition-all duration-300 placeholder-transparent text-gray-900 dark:text-white font-medium box-border"
+            type={type} id={id}
+            className={`peer w-full px-4 py-3.5 rounded-xl border-2 bg-gray-50/50 dark:bg-gray-800 focus:bg-white dark:focus:bg-gray-700 outline-none transition-all duration-300 placeholder-transparent text-gray-900 dark:text-white font-medium box-border ${error ? 'border-red-500/50 focus:border-red-500 focus:ring-red-500/10' : 'border-transparent focus:border-purple-500/50 focus:ring-purple-500/10 focus:ring-4'}`}
             placeholder={label}
             value={value} onChange={onChange} onFocus={onFocus} onBlur={onBlur}
         />
         <label
             htmlFor={id}
-            className="absolute left-4 top-3.5 text-gray-400 dark:text-gray-500 text-base transition-all duration-300 pointer-events-none z-10
-            peer-placeholder-shown:top-3.5 peer-placeholder-shown:text-gray-400 dark:peer-placeholder-shown:text-gray-500 peer-placeholder-shown:text-base
-            peer-focus:-top-2.5 peer-focus:text-xs peer-focus:text-purple-600 peer-focus:bg-white dark:peer-focus:bg-gray-800 peer-focus:px-2 peer-focus:ml-2 rounded-full shadow-sm border border-gray-100 dark:border-gray-700
-            peer-[&:not(:placeholder-shown)]:-top-2.5 peer-[&:not(:placeholder-shown)]:text-xs peer-[&:not(:placeholder-shown)]:text-gray-500 dark:peer-[&:not(:placeholder-shown)]:text-gray-400 peer-[&:not(:placeholder-shown)]:bg-white dark:peer-[&:not(:placeholder-shown)]:bg-gray-800 peer-[&:not(:placeholder-shown)]:px-2 peer-[&:not(:placeholder-shown)]:ml-2 peer-[&:not(:placeholder-shown)]:rounded-full peer-[&:not(:placeholder-shown)]:shadow-sm peer-[&:not(:placeholder-shown)]:border peer-[&:not(:placeholder-shown)]:border-gray-100 dark:peer-[&:not(:placeholder-shown)]:border-gray-700"
+            className={`absolute left-4 transition-all duration-300 pointer-events-none z-10
+            ${value ? '-top-2.5 text-xs bg-white dark:bg-gray-800 px-2 ml-2 rounded-full shadow-sm border border-gray-100 dark:border-gray-700' : 'top-3.5 text-base text-gray-400 dark:text-gray-500'}
+            peer-focus:-top-2.5 peer-focus:text-xs peer-focus:px-2 peer-focus:ml-2 rounded-full shadow-sm border border-gray-100 dark:border-gray-700
+            ${error ? 'text-red-500 peer-focus:text-red-600' : 'text-gray-400 peer-focus:text-purple-600 peer-focus:bg-white dark:peer-focus:bg-gray-800'}`}
         >
             {label}
         </label>
+        {error && <p className="text-[10px] font-bold text-red-500 mt-1 ml-2 uppercase tracking-tight">{error}</p>}
     </div>
 );
 
-const FloatingTextArea = ({ id, label, value, onChange, onFocus, onBlur }) => (
+const FloatingTextArea = ({ id, label, value, onChange, onFocus, onBlur, error }) => (
     <div className="relative group">
         <textarea
-            required rows="4" id={id}
-            className="peer w-full px-4 py-3.5 rounded-xl border-2 border-transparent bg-gray-50/50 dark:bg-gray-800 focus:bg-white dark:focus:bg-gray-700 focus:border-purple-500/50 focus:ring-4 focus:ring-purple-500/10 outline-none transition-all duration-300 placeholder-transparent text-gray-900 dark:text-white font-medium resize-none box-border"
+            rows="4" id={id}
+            className={`peer w-full px-4 py-3.5 rounded-xl border-2 bg-gray-50/50 dark:bg-gray-800 focus:bg-white dark:focus:bg-gray-700 outline-none transition-all duration-300 placeholder-transparent text-gray-900 dark:text-white font-medium resize-none box-border ${error ? 'border-red-500/50 focus:border-red-500 focus:ring-red-500/10' : 'border-transparent focus:border-purple-500/50 focus:ring-purple-500/10 focus:ring-4'}`}
             placeholder={label}
             value={value} onChange={onChange} onFocus={onFocus} onBlur={onBlur}
         ></textarea>
         <label
             htmlFor={id}
-            className="absolute left-4 top-3.5 text-gray-400 dark:text-gray-500 text-base transition-all duration-300 pointer-events-none z-10
-            peer-placeholder-shown:top-3.5 peer-placeholder-shown:text-gray-400 dark:peer-placeholder-shown:text-gray-500 peer-placeholder-shown:text-base
-            peer-focus:-top-2.5 peer-focus:text-xs peer-focus:text-purple-600 peer-focus:bg-white dark:peer-focus:bg-gray-800 peer-focus:px-2 peer-focus:ml-2 rounded-full shadow-sm border border-gray-100 dark:border-gray-700
-            peer-[&:not(:placeholder-shown)]:-top-2.5 peer-[&:not(:placeholder-shown)]:text-xs peer-[&:not(:placeholder-shown)]:text-gray-500 dark:peer-[&:not(:placeholder-shown)]:text-gray-400 peer-[&:not(:placeholder-shown)]:bg-white dark:peer-[&:not(:placeholder-shown)]:bg-gray-800 peer-[&:not(:placeholder-shown)]:px-2 peer-[&:not(:placeholder-shown)]:ml-2 peer-[&:not(:placeholder-shown)]:rounded-full peer-[&:not(:placeholder-shown)]:shadow-sm peer-[&:not(:placeholder-shown)]:border peer-[&:not(:placeholder-shown)]:border-gray-100 dark:peer-[&:not(:placeholder-shown)]:border-gray-700"
+            className={`absolute left-4 transition-all duration-300 pointer-events-none z-10
+            ${value ? '-top-2.5 text-xs bg-white dark:bg-gray-800 px-2 ml-2 rounded-full shadow-sm border border-gray-100 dark:border-gray-700' : 'top-3.5 text-base text-gray-400 dark:text-gray-500'}
+            peer-focus:-top-2.5 peer-focus:text-xs peer-focus:px-2 peer-focus:ml-2 rounded-full shadow-sm border border-gray-100 dark:border-gray-700
+            ${error ? 'text-red-500 peer-focus:text-red-600' : 'text-gray-400 peer-focus:text-purple-600 peer-focus:bg-white dark:peer-focus:bg-gray-800'}`}
         >
             {label}
         </label>
+        {error && <p className="text-[10px] font-bold text-red-500 mt-1 ml-2 uppercase tracking-tight">{error}</p>}
     </div>
 );
 

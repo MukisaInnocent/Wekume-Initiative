@@ -28,6 +28,14 @@ exports.submitSupportForm = async (req, res) => {
         });
     } catch (error) {
         console.error('Submit support form error:', error);
+        
+        // Handle Sequelize validation errors specifically
+        if (error.name === 'SequelizeValidationError') {
+            return res.status(400).json({ 
+                error: error.errors.map(e => e.message).join(', ') 
+            });
+        }
+        
         res.status(500).json({ error: 'Failed to submit form' });
     }
 };
