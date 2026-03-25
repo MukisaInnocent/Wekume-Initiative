@@ -7,15 +7,12 @@ const OpenAI = require('openai');
 class OpenAIService {
     constructor() {
         const apiKey = process.env.OPENAI_API_KEY;
-        const baseURL = process.env.OPENAI_BASE_URL; // Only use if explicitly provided
-        
+        const baseURL = process.env.OPENAI_BASE_URL || 'https://devs.ai/api/v1';
+
         if (apiKey) {
-            const config = { apiKey };
-            if (baseURL) {
-                config.baseURL = baseURL;
-            }
+            const config = { apiKey, baseURL };
             this.client = new OpenAI(config);
-            console.log(`AI Service initialized (provider: ${baseURL || 'OpenAI Official'})`);
+            console.log(`AI Service initialized (provider: ${baseURL})`);
         } else {
             console.warn('OpenAI API Key missing. AI features will be disabled.');
             this.client = null;
