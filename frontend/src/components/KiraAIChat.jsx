@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { X, Send, Minimize2, Maximize2, Trash2, Sparkles } from 'lucide-react';
-import axios from 'axios';
+import { aiAPI } from '../services/api';
 import { motion, AnimatePresence } from 'framer-motion';
 
 // Gender-neutral AI orb icon SVG
@@ -84,7 +84,7 @@ function KiraAIChat() {
         setIsLoading(true);
 
         try {
-            const response = await axios.post('/api/ai/chat', {
+            const response = await aiAPI.chat({
                 message: userMessage,
                 conversationId,
                 history: messages.map(msg => ({
