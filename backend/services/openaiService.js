@@ -7,13 +7,15 @@ const OpenAI = require('openai');
 class OpenAIService {
     constructor() {
         const apiKey = process.env.OPENAI_API_KEY;
+        const baseURL = process.env.OPENAI_BASE_URL || 'https://devs.ai/api/v1';
         if (apiKey) {
-            this.client = new OpenAI({ apiKey });
+            this.client = new OpenAI({ apiKey, baseURL });
+            console.log(`AI Service initialized (provider: ${baseURL})`);
         } else {
             console.warn('OpenAI API Key missing. AI features will be disabled.');
             this.client = null;
         }
-        this.model = process.env.OPENAI_MODEL || 'gpt-4-turbo-preview';
+        this.model = process.env.OPENAI_MODEL || 'gpt-4o-mini';
     }
 
     /**

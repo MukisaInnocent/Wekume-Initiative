@@ -13,14 +13,19 @@ async function testOpenAI() {
     console.log('✅ API Key found (starts with: ' + process.env.OPENAI_API_KEY.substring(0, 7) + '...)');
 
     try {
+        const baseURL = process.env.OPENAI_BASE_URL || 'https://devs.ai/api/v1';
+        console.log('🌐 Using API base URL: ' + baseURL);
+
         const openai = new OpenAI({
-            apiKey: process.env.OPENAI_API_KEY
+            apiKey: process.env.OPENAI_API_KEY,
+            baseURL: baseURL
         });
 
-        console.log('📡 Sending test request to OpenAI...');
+        const model = process.env.OPENAI_MODEL || 'gpt-4o-mini';
+        console.log('📡 Sending test request (model: ' + model + ')...');
 
         const response = await openai.chat.completions.create({
-            model: "gpt-3.5-turbo", // Use cheaper model for test
+            model: model,
             messages: [{ role: "user", content: "Hello, can you hear me?" }],
             max_tokens: 10
         });

@@ -39,11 +39,11 @@ exports.chat = async (req, res) => {
             const newConversationId = conversationId || `conv_${Date.now()}`;
 
             await AIAssistantLog.create({
-                conversation_id: newConversationId,
-                user_message: sanitizedMessage,
+                session_id: newConversationId,
+                user_question: sanitizedMessage,
                 ai_response: 'CRISIS DETECTED - Escalated to human support',
-                context_used: 'Crisis keywords detected',
-                was_escalated: true
+                topic_category: 'other',
+                escalated: true
             });
 
             // Create urgent support ticket
@@ -60,7 +60,7 @@ Conversation ID: ${newConversationId}
 
 IMMEDIATE ACTION REQUIRED - Contact user through chat or emergency services if possible.`,
                 status: 'new',
-                priority: 'urgent'
+                form_type: 'support'
             });
 
             const crisisResponse = `I've detected that you might be going through a very difficult situation, and I want you to know that help is available right now.
@@ -113,11 +113,11 @@ You don't have to go through this alone. Please reach out to one of these servic
 
         // Log conversation
         await AIAssistantLog.create({
-            conversation_id: newConversationId,
-            user_message: sanitizedMessage,
+            session_id: newConversationId,
+            user_question: sanitizedMessage,
             ai_response: aiResponse,
-            context_used: context.substring(0, 500), // Store truncated context
-            was_escalated: false
+            topic_category: 'general',
+            escalated: false
         });
 
         res.json({
@@ -146,7 +146,7 @@ exports.getConversations = async (req, res) => {
 
         const whereClause = {};
         if (escalated === 'true') {
-            whereClause.was_escalated = true;
+            whereClause.escalated = true;
         }
 
         const conversations = await AIAssistantLog.findAll({
@@ -157,10 +157,10 @@ exports.getConversations = async (req, res) => {
 
         // Group by conversation_id
         const groupedConversations = conversations.reduce((acc, log) => {
-            if (!acc[log.conversation_id]) {
-                acc[log.conversation_id] = [];
+            if (!acc[log.session_id]) {
+                acc[log.session_id] = [];
             }
-            acc[log.conversation_id].push(log);
+            acc[log.session_id].push(log);
             return acc;
         }, {});
 
@@ -168,7 +168,7 @@ exports.getConversations = async (req, res) => {
         const stats = {
             total_messages: conversations.length,
             total_conversations: Object.keys(groupedConversations).length,
-            escalated_conversations: conversations.filter(c => c.was_escalated).length
+            escalated_conversations: conversations.filter(c => c.escalated).length
         };
 
         res.json({
@@ -188,12 +188,12 @@ exports.getConversations = async (req, res) => {
 exports.getAnalytics = async (req, res) => {
     try {
         const totalMessages = await AIAssistantLog.count();
-        const escalatedCount = await AIAssistantLog.count({ where: { was_escalated: true } });
+        const escalatedCount = await AIAssistantLog.count({ where: { escalated: true } });
 
         // Get unique conversations
         const conversations = await AIAssistantLog.findAll({
-            attributes: ['conversation_id'],
-            group: ['conversation_id']
+            attributes: ['session_id'],
+            group: ['session_id']
         });
 
         const stats = {
