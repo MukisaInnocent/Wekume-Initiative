@@ -62,7 +62,7 @@ function Navbar({ isTransparent = false, backgroundImages, currentBackgroundInde
             {isMenuOpen && <div className="fixed inset-0 bg-gray-900/40 backdrop-blur-sm z-50 lg:hidden" onClick={() => setIsMenuOpen(false)} />}
             
             {/* Sidebar */}
-            <aside className={`fixed inset-y-0 left-0 w-72 bg-white dark:bg-gray-900 border-r border-gray-100 dark:border-gray-800 shadow-xl lg:shadow-none z-50 transition-transform duration-300 flex flex-col ${isMenuOpen ? 'translate-x-0' : '-translate-x-full'} ${!isHome && !isCollapsed ? 'lg:translate-x-0' : ''}`}>
+            <aside className={`fixed inset-y-0 left-0 w-72 bg-white dark:bg-gray-900 border-r border-gray-100 dark:border-gray-800 shadow-xl z-50 transition-transform duration-300 flex flex-col ${isMenuOpen ? 'translate-x-0' : '-translate-x-full'}`}>
                   {/* Sidebar Header */}
                   <div className="h-20 flex items-center justify-between px-6 border-b border-gray-100 dark:border-gray-800 flex-shrink-0 relative group">
                        <Link to={isUS ? "/us" : "/ug"} className="flex items-center gap-3">
@@ -111,7 +111,7 @@ function Navbar({ isTransparent = false, backgroundImages, currentBackgroundInde
                        })}
                   </div>
 
-                  {/* Sidebar Footer */}
+                   {/* Sidebar Footer */}
                   <div className="p-4 border-t border-gray-100 dark:border-gray-800 flex-shrink-0">
                        {isUS && (
                            <Link
@@ -130,33 +130,6 @@ function Navbar({ isTransparent = false, backgroundImages, currentBackgroundInde
             </aside>
         </>
     );
-
-    if (!isHome) {
-        return (
-            <>
-                {/* Hamburger Top Bar (Mobile always, Desktop when Sidebar is hidden) */}
-                <div className={`sticky top-0 z-40 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md border-b border-gray-100 dark:border-gray-800 px-4 h-16 flex items-center justify-between shadow-sm ${!isCollapsed ? 'lg:hidden' : ''}`}>
-                     <div className="flex items-center gap-3">
-                        <Link to={isUS ? "/us" : "/ug"} className="flex items-center gap-2">
-                             <img src="/assets/wekume-logo.png" className="w-8 h-8 rounded-lg object-contain" alt="Wekume" />
-                             <span className="font-bold text-gray-900 dark:text-white">Wekume</span>
-                        </Link>
-                     </div>
-                     <div className="flex gap-2 items-center">
-                        <ThemeToggle />
-                        <button onClick={() => {
-                            if (window.innerWidth < 1024) setIsMenuOpen(true);
-                            else setIsCollapsed(false);
-                        }} className="p-2 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors hover:scale-105 active:scale-95">
-                             <Menu />
-                        </button>
-                     </div>
-                </div>
-
-                {renderSidebar()}
-            </>
-        );
-    }
 
     return (
         <>

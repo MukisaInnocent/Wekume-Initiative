@@ -29,10 +29,9 @@ function AppContent() {
     const hideChat = location.pathname === '/' || location.pathname.startsWith('/admin');
 
     const isHome = location.pathname === '/' || location.pathname === '/ug' || location.pathname === '/us' || location.pathname === '/ug/' || location.pathname === '/us/';
-    const isPublicSidebar = !isHome && !location.pathname.startsWith('/admin');
 
     return (
-        <div className={`App min-h-screen bg-white dark:bg-gray-900 transition-all duration-300 ${isPublicSidebar ? (isCollapsed ? 'lg:pl-0' : 'lg:pl-72') : ''}`}>
+        <div className="App min-h-screen bg-white dark:bg-gray-900 transition-all duration-300">
             <Routes>
                 {/* Public Routes */}
                 <Route path="/" element={<Welcome />} />

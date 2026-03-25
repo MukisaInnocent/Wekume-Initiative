@@ -41,7 +41,7 @@ function Reports() {
                 subtitle="Explore our annual reports, strategic plans, and performance documents."
             />
 
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 min-h-[60vh] bg-white dark:bg-gray-900">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 min-h-[50vh] bg-white dark:bg-gray-900">
 
                 {/* Search / Filter */}
                 <div className="flex flex-col md:flex-row justify-between items-center mb-8 sm:mb-10 gap-6 md:gap-8">
@@ -106,7 +106,7 @@ function Reports() {
                         ))}
                     </div>
                 ) : (
-                    <div className="text-center py-24 bg-gray-50 dark:bg-gray-800 rounded-2xl border-2 border-dashed border-gray-200 dark:border-gray-700">
+                    <div className="text-center py-16 bg-gray-50 dark:bg-gray-800 rounded-2xl border-2 border-dashed border-gray-200 dark:border-gray-700">
                         <FileText className="mx-auto text-gray-300 mb-4" size={48} />
                         <h3 className="text-xl font-bold text-gray-900 dark:text-white">No reports found</h3>
                         <p className="text-gray-500 dark:text-gray-400 mt-2">Try adjusting your search terms.</p>

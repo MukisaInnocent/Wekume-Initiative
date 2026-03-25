@@ -42,11 +42,10 @@ function Events() {
                 subtitle="Join us in our upcoming activities and see what we've been up to."
             />
 
-            <div className="bg-gray-50 dark:bg-gray-900 py-12 sm:py-16 md:py-20 min-h-screen">
+            <div className="bg-gray-50 dark:bg-gray-900 py-8 sm:py-10 md:py-12 min-h-[70vh]">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
                     {/* Filter Tabs */}
-                    <div className="flex justify-center mb-8 sm:mb-10 md:mb-12">
+                    <div className="flex justify-center mb-6 sm:mb-8 md:mb-10">
                         <div className="bg-white dark:bg-gray-800 p-1 rounded-lg shadow-sm inline-flex flex-wrap sm:flex-nowrap justify-center w-full sm:w-auto">
                             <button
                                 onClick={() => setFilter('upcoming')}
@@ -65,7 +64,7 @@ function Events() {
 
                     {/* Events Grid */}
                     {loading ? (
-                        <div className="text-center py-20 text-gray-600 dark:text-gray-300">Loading events...</div>
+                        <div className="text-center py-16 text-gray-600 dark:text-gray-300">Loading events...</div>
                     ) : filteredEvents.length > 0 ? (
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
                             {filteredEvents.map(event => (
@@ -106,7 +105,7 @@ function Events() {
                             ))}
                         </div>
                     ) : (
-                        <div className="text-center py-20 bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700">
+                        <div className="text-center py-16 bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700">
                             <Calendar className="mx-auto text-gray-300 mb-4" size={48} />
                             <h3 className="text-xl font-bold text-gray-900 dark:text-white">No {filter} events found</h3>
                             <p className="text-gray-500 dark:text-gray-400 mt-2">Check back later for updates or browse our other events.</p>

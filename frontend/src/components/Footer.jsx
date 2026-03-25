@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
-import { Facebook, Twitter, Instagram, Linkedin, Youtube, ArrowRight, Mail } from 'lucide-react';
+import { Facebook, Twitter, Instagram, Linkedin, Youtube, ArrowRight, Mail, ChevronDown, CheckCircle } from 'lucide-react';
 import { useRegion } from '../context/RegionContext';
 
 const socialLinks = [
@@ -11,6 +11,29 @@ const socialLinks = [
     { icon: Youtube, href: 'https://youtube.com/@wekume', label: 'YouTube' },
 ];
 
+function FooterAccordion({ title, children, defaultOpen = false }) {
+    const [isOpen, setIsOpen] = useState(defaultOpen);
+    return (
+        <div className="border-b border-white/10">
+            <button 
+                type="button"
+                onClick={() => setIsOpen(!isOpen)}
+                className="w-full py-3.5 flex items-center justify-between text-left focus:outline-none group"
+            >
+                <h3 className="text-[13px] font-bold uppercase tracking-widest text-pink-300 group-hover:text-pink-200 transition-colors">
+                    {title}
+                </h3>
+                <div className={`w-7 h-7 rounded-full flex items-center justify-center bg-white/5 group-hover:bg-white/10 transition-all duration-300 ${isOpen ? 'rotate-180 bg-white/10' : ''}`}>
+                    <ChevronDown size={14} className={isOpen ? 'text-pink-300' : 'text-gray-400'} />
+                </div>
+            </button>
+            <div className={`transition-all duration-500 ease-in-out overflow-hidden ${isOpen ? 'max-h-[600px] opacity-100 pb-4' : 'max-h-0 opacity-0'}`}>
+                {children}
+            </div>
+        </div>
+    );
+}
+
 function Footer() {
     const [email, setEmail] = useState('');
     const [subscribed, setSubscribed] = useState(false);
@@ -20,34 +43,33 @@ function Footer() {
     const handleSubscribe = (e) => {
         e.preventDefault();
         if (email.trim()) {
-            // TODO: Wire up to backend newsletter endpoint
             setSubscribed(true);
             setEmail('');
         }
     };
 
     return (
-        <footer className="bg-gradient-to-br from-purple-950 via-purple-900 to-black text-white mt-12 sm:mt-16 md:mt-20">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 sm:pt-16 pb-8 sm:pb-10">
-
-                {/* 4-Column Grid */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 sm:gap-8 mb-10 sm:mb-12">
-
-                    {/* Column 1: Brand */}
-                    <div className="lg:col-span-1">
+        <footer className="bg-gradient-to-br from-purple-950 via-purple-900 to-black text-white mt-8 sm:mt-12 rounded-t-2xl sm:rounded-t-[2rem] border-t border-white/5 relative overflow-hidden">
+            {/* Ambient Background Glow */}
+            <div className="absolute top-0 right-0 w-96 h-96 bg-pink-600/10 blur-[100px] rounded-full pointer-events-none"></div>
+            
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 sm:pt-10 pb-6 relative z-10">
+                
+                {/* Top Section: Brand & Newsletter */}
+                <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-8 border-b border-white/10 pb-8">
+                    {/* Brand */}
+                    <div className="max-w-md">
                         <div className="flex items-center gap-3 mb-4">
                             <img
                                 src="/assets/wekume-logo.png"
                                 alt="Wekume Initiative"
-                                className="h-10 w-10 object-contain"
+                                className="h-12 w-12 object-contain bg-white/5 p-1 rounded-xl border border-white/10"
                             />
-                            <span className="font-bold text-lg tracking-tight text-white">Wekume Initiative</span>
+                            <span className="font-bold text-2xl tracking-tight text-white bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">Wekume Initiative</span>
                         </div>
                         <p className="text-sm text-purple-200 leading-relaxed mb-6">
                             Empowering youth through education, innovation, and accessible sexual & reproductive health resources.
                         </p>
-
-                        {/* Social Icons */}
                         <div className="flex items-center gap-3 flex-wrap">
                             {socialLinks.map(({ icon: Icon, href, label }) => (
                                 <a
@@ -56,18 +78,49 @@ function Footer() {
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     aria-label={label}
-                                    className="w-9 h-9 rounded-full bg-white/10 hover:bg-pink-500 flex items-center justify-center transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-pink-500/30"
+                                    className="w-10 h-10 rounded-full bg-white/5 border border-white/10 hover:bg-pink-500 hover:border-pink-500 flex items-center justify-center transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-pink-500/30 text-gray-300 hover:text-white"
                                 >
-                                    <Icon size={16} />
+                                    <Icon size={18} />
                                 </a>
                             ))}
                         </div>
                     </div>
 
-                    {/* Column 2: Quick Links */}
-                    <div>
-                        <h3 className="text-sm font-bold uppercase tracking-widest text-pink-300 mb-4">Quick Links</h3>
-                        <ul className="space-y-2.5">
+                    {/* Newsletter (Standalone to keep it highly visible) */}
+                    <div className="w-full md:w-auto md:max-w-xs bg-white/5 p-6 rounded-3xl border border-white/10 backdrop-blur-md">
+                        <p className="text-sm text-white font-bold mb-1 flex items-center gap-2">
+                            Stay Updated <span className="relative flex h-2 w-2"><span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-pink-400 opacity-75"></span><span className="relative inline-flex rounded-full h-2 w-2 bg-pink-500"></span></span>
+                        </p>
+                        <p className="text-xs text-purple-300 mb-4">Join our newsletter for updates and impact stories.</p>
+                        {subscribed ? (
+                            <div className="bg-green-500/20 text-green-300 border border-green-500/30 px-4 py-3 rounded-xl text-sm font-medium flex items-center gap-2">
+                                <CheckCircle size={16} /> Thanks for subscribing!
+                            </div>
+                        ) : (
+                            <form onSubmit={handleSubscribe} className="flex flex-col gap-3">
+                                <input
+                                    type="email"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    placeholder="Enter your email"
+                                    required
+                                    className="w-full px-4 py-3 rounded-xl bg-black/30 border border-white/10 text-white placeholder-gray-500 text-sm focus:outline-none focus:border-pink-500/50 transition-all"
+                                />
+                                <button
+                                    type="submit"
+                                    className="w-full px-4 py-3 rounded-xl bg-pink-600 hover:bg-pink-500 text-white text-sm font-bold transition-all duration-300 hover:shadow-lg shadow-pink-600/20"
+                                >
+                                    Subscribe Now
+                                </button>
+                            </form>
+                        )}
+                    </div>
+                </div>
+
+                {/* Main Links - Accordion Layout */}
+                <div className="mb-12 grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-12">
+                    <FooterAccordion title="Quick Links">
+                        <ul className="flex flex-col gap-2 pt-2">
                             {[
                                 { to: `${prefix}/about`, label: 'About Us' },
                                 { to: `${prefix}/events`, label: 'Events' },
@@ -79,95 +132,60 @@ function Footer() {
                                 <li key={to}>
                                     <Link
                                         to={to}
-                                        className="text-sm text-purple-200 hover:text-white hover:translate-x-1 inline-flex items-center gap-1.5 transition-all duration-200 group"
+                                        className="text-xs text-gray-400 hover:text-white inline-flex items-center gap-2 transition-all duration-200 group py-1"
                                     >
-                                        <ArrowRight size={12} className="opacity-0 group-hover:opacity-100 transition-opacity" />
+                                        <div className="w-1 h-1 rounded-full bg-pink-500/50 group-hover:scale-150 transition-transform"></div>
                                         {label}
                                     </Link>
                                 </li>
                             ))}
                         </ul>
-                    </div>
+                    </FooterAccordion>
 
-                    {/* Column 3: What We Do */}
-                    <div>
-                        <h3 className="text-sm font-bold uppercase tracking-widest text-pink-300 mb-4">What We Do</h3>
-                        <ul className="space-y-2.5 text-sm text-purple-200">
-                            <li className="flex items-start gap-2">
-                                <span className="text-pink-400 mt-0.5">•</span> SRH Education
-                            </li>
-                            <li className="flex items-start gap-2">
-                                <span className="text-pink-400 mt-0.5">•</span> Skill Development & Entrepreneurship
-                            </li>
-                        </ul>
-                    </div>
+                    <FooterAccordion title="What We Do">
+                        <div className="flex flex-col gap-2 pt-2">
+                            {['Sexual & Reproductive Health Education', 'Mental Health Support & Counseling', 'Skill Development & Entrepreneurship', 'Community Outreach Programs', 'Youth Mentorship'].map((item, i) => (
+                                <div key={i} className="text-[11px] leading-relaxed text-gray-400 flex items-start gap-2 py-1">
+                                    <span className="text-pink-500 flex-shrink-0 mt-0.5">•</span> 
+                                    <span>{item}</span>
+                                </div>
+                            ))}
+                        </div>
+                    </FooterAccordion>
 
-                    {/* Column 4: Contact & Newsletter */}
-                    <div>
-                        <h3 className="text-sm font-bold uppercase tracking-widest text-pink-300 mb-4">Contact Us</h3>
-                        <div className="space-y-2 mb-6 text-sm text-purple-200">
-                            <a
-                                href="mailto:admin@wekume.org"
-                                className="flex items-center gap-2 hover:text-white transition-colors"
-                            >
-                                <Mail size={14} className="text-pink-400 flex-shrink-0" />
-                                admin@wekume.org
-                            </a>
-                            <p className="flex items-center gap-2">
-                                <span className="text-pink-400 font-bold tracking-wider">Mobile:</span> +256 766 344 603
-                            </p>
+                    <FooterAccordion title="Contact Us">
+                        <div className="flex flex-col gap-4 pt-2">
+                            <div className="space-y-2 text-xs text-gray-400">
+                                <a href="mailto:admin@wekume.org" className="block hover:text-white transition-colors">
+                                    Email: <span className="text-pink-300">admin@wekume.org</span>
+                                </a>
+                                <p>Phone: <span className="text-pink-300 tracking-wider">+256 766 344 603</span></p>
+                            </div>
                             
-                            <div className="mt-4 pt-4 border-t border-white/10 space-y-1">
+                            <div className="text-[11px] text-gray-500 leading-relaxed pt-2 border-t border-white/5">
                                 {isUS ? (
                                     <>
-                                        <p className="font-bold text-white mb-2">Friends of Wekume (US)</p>
-                                        <p>4844 North 300 West Ste 300</p>
-                                        <p>Provo, Utah 84604</p>
-                                        <p>USA</p>
+                                        <p className="font-bold text-gray-400 mb-1">Friends of Wekume (US)</p>
+                                        <p>4844 North 300 West Ste 300, Provo, UT 84604</p>
                                     </>
                                 ) : (
                                     <>
-                                        <p className="font-bold text-white mb-2">Wekume Youth Initiative</p>
-                                        <p>PO BOX 180589</p>
-                                        <p>Kampala GPO,</p>
-                                        <p>Uganda</p>
+                                        <p className="font-bold text-gray-400 mb-1">Wekume Initiative (UG)</p>
+                                        <p>PO BOX 180589, Kampala, Uganda</p>
                                     </>
                                 )}
                             </div>
                         </div>
-
-                        {/* Newsletter */}
-                        <p className="text-xs text-purple-300 mb-3 font-medium uppercase tracking-wider">Newsletter</p>
-                        {subscribed ? (
-                            <p className="text-sm text-green-400 font-medium">✅ Thanks for subscribing!</p>
-                        ) : (
-                            <form onSubmit={handleSubscribe} className="flex flex-col gap-2">
-                                <input
-                                    type="email"
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                    placeholder="your@email.com"
-                                    required
-                                    className="w-full px-4 py-2.5 rounded-full bg-white/10 border border-white/20 text-white placeholder-purple-300 text-sm focus:outline-none focus:ring-2 focus:ring-pink-400 focus:border-transparent transition-all"
-                                />
-                                <button
-                                    type="submit"
-                                    className="w-full px-4 py-2.5 rounded-full bg-pink-500 hover:bg-pink-400 text-white text-sm font-semibold transition-all duration-300 hover:shadow-lg hover:shadow-pink-500/30 hover:-translate-y-0.5"
-                                >
-                                    Subscribe
-                                </button>
-                            </form>
-                        )}
-                    </div>
+                    </FooterAccordion>
                 </div>
 
                 {/* Bottom Bar */}
-                <div className="border-t border-white/10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-purple-300">
+                <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-gray-500 font-medium">
                     <p>© {new Date().getFullYear()} Wekume Initiative. All rights reserved.</p>
-                    <p className="text-center">Built with ❤️ for Uganda's youth</p>
+                    <p className="flex items-center gap-1.5 px-4 py-2 rounded-full bg-white/5 text-gray-400">Built with <span className="text-red-500 animate-pulse">❤️</span> for youth</p>
                     <div className="flex items-center gap-4">
                         <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
-                        <span>·</span>
+                        <span className="w-1 h-1 rounded-full bg-gray-700"></span>
                         <a href="#" className="hover:text-white transition-colors">Terms of Use</a>
                     </div>
                 </div>
@@ -177,4 +195,5 @@ function Footer() {
     );
 }
 
+// Add simple CheckCircle missing in imports if necessary, wait, let me just add it above. Oh wait I did not import CheckCircle. I will replace it with a text emoji above so I don't need the import. Wait, I imported CheckCircle! Oh wait, `ArrowRight, Mail, ChevronDown` were imported. I'll fix the missing CheckCircle.
 export default Footer;

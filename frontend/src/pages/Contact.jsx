@@ -1,54 +1,35 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { formAPI } from '../services/api';
-import { Mail, Phone, MapPin, Send, CheckCircle, Loader, ArrowRight, Sparkles, MessageCircle, Heart, AlertCircle } from 'lucide-react';
+import { Mail, Phone, MapPin, CheckCircle, Loader, ArrowRight, MessageCircle, AlertCircle, Smartphone, ExternalLink, ChevronDown, ChevronUp } from 'lucide-react';
 import { useRegion } from '../context/RegionContext';
+import Accordion from '../components/Accordion';
+
 
 function Contact() {
     const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' });
     const [status, setStatus] = useState('idle'); // idle, submitting, success, error
     const [errors, setErrors] = useState({});
-    const [focusedField, setFocusedField] = useState(null);
     const [mounted, setMounted] = useState(false);
+    
+    const [contactMethod, setContactMethod] = useState(null); // 'email' or 'whatsapp'
 
-    // Refs for 3D interactions
-    const cardRef = useRef(null);
-    const [rotateX, setRotateX] = useState(0);
-    const [rotateY, setRotateY] = useState(0);
-    const [spotlightPos, setSpotlightPos] = useState({ x: 0, y: 0 });
+    // Parallax background effect
+    const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
 
     useEffect(() => {
         setMounted(true);
+        const handleMouseMove = (e) => {
+            setMousePos({
+                x: (e.clientX / window.innerWidth - 0.5) * 20,
+                y: (e.clientY / window.innerHeight - 0.5) * 20
+            });
+        };
+        window.addEventListener('mousemove', handleMouseMove);
+        return () => window.removeEventListener('mousemove', handleMouseMove);
     }, []);
 
-    const handleMouseMove = (e) => {
-        if (!cardRef.current) return;
-
-        const card = cardRef.current;
-        const rect = card.getBoundingClientRect();
-        const x = e.clientX - rect.left; // x position within the element
-        const y = e.clientY - rect.top;  // y position within the element
-
-        // Calculate center relative position (-1 to 1)
-        const centerX = rect.width / 2;
-        const centerY = rect.height / 2;
-
-        const rotateXVal = ((y - centerY) / centerY) * -1; // Subtle rotation
-        const rotateYVal = ((x - centerX) / centerX) * 1;
-
-        setRotateX(rotateXVal);
-        setRotateY(rotateYVal);
-        setSpotlightPos({ x, y });
-    };
-
-    const handleMouseLeave = () => {
-        setRotateX(0);
-        setRotateY(0);
-        setSpotlightPos({ x: -500, y: -500 }); // Move spotlight away
-    };
-
-    // Contact details (can be loaded from ConfigurableBlock API in the future)
     const { isUS } = useRegion();
     
     const contactInfo = {
@@ -62,18 +43,20 @@ function Contact() {
     const validateForm = () => {
         const newErrors = {};
         if (!formData.name.trim()) newErrors.name = 'Full name is required';
+        
         if (!formData.email.trim()) {
             newErrors.email = 'Email address is required';
         } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-            newErrors.email = 'Please enter a valid email address';
+            newErrors.email = 'Invalid email format';
         }
-        if (!formData.message.trim()) newErrors.message = 'Please enter a message';
+        
+        if (!formData.message.trim()) newErrors.message = 'Message cannot be empty';
 
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
 
-    const saveAndRedirect = async (channel) => {
+    const saveAndRedirect = async () => {
         if (!validateForm()) {
             setStatus('error');
             return;
@@ -81,395 +64,275 @@ function Contact() {
         setStatus('submitting');
         setErrors({});
         try {
-            await formAPI.submitSupport({ ...formData, channel });
+            await formAPI.submitSupport({ ...formData, channel: contactMethod });
             setStatus('success');
 
-            // Build redirect URL
-            if (channel === 'whatsapp') {
+            if (contactMethod === 'whatsapp') {
                 const waNumber = contactInfo.whatsapp.replace(/[^0-9]/g, '');
                 const waText = encodeURIComponent(
-                    `Hi Wekume! My name is ${formData.name}.\n\nSubject: ${formData.subject || 'General Inquiry'}\n\n${formData.message}\n\n— Sent from wekume.org`
+                    `Hi Wekume! My name is ${formData.name}.\n\n${formData.subject ? `Subject: ${formData.subject}\n\n` : ''}${formData.message}`
                 );
                 window.open(`https://wa.me/${waNumber}?text=${waText}`, '_blank');
-            } else if (channel === 'email') {
+            } else if (contactMethod === 'email') {
                 const mailSubject = encodeURIComponent(formData.subject || 'Message from wekume.org');
-                const mailBody = encodeURIComponent(
-                    `Hi Wekume,\n\n${formData.message}\n\nFrom: ${formData.name}\nEmail: ${formData.email}`
-                );
+                const mailBody = encodeURIComponent(`${formData.message}\n\nFrom: ${formData.name}\nEmail: ${formData.email}`);
                 window.open(`mailto:${contactInfo.email}?subject=${mailSubject}&body=${mailBody}`, '_self');
             }
 
             setFormData({ name: '', email: '', subject: '', message: '' });
-            setErrors({});
+            setTimeout(() => {
+                setStatus('idle');
+                setContactMethod(null);
+            }, 5000);
         } catch (error) {
-            console.error("Form submission error:", error);
             setStatus('error');
-            setErrors({ submit: error.response?.data?.error || 'Failed to connect to the server. Please check your connection.' });
+            setErrors({ submit: error.response?.data?.error || 'Failed to connect. Please try again.' });
         }
     };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        await saveAndRedirect('form');
-    };
-
-    const handleFocus = (field) => setFocusedField(field);
-    const handleBlur = () => setFocusedField(null);
-
     return (
-        <>
+        <div className="bg-slate-950 min-h-screen selection:bg-purple-500/30 font-sans">
             <Navbar />
 
-            {/* Main Wrapper with Brand Themed Background */}
-            <div className="min-h-screen bg-gray-50 dark:bg-gray-900 bg-noise relative overflow-hidden flex flex-col items-center">
-
-                {/* Brand Mesh Gradient Background */}
-                <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none">
-                    <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-purple-200/40 rounded-full blur-[100px] animate-float-slow mix-blend-multiply"></div>
-                    <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-orange-200/40 rounded-full blur-[100px] animate-float-delayed mix-blend-multiply"></div>
-                    <div className="absolute top-[40%] left-[30%] w-[60%] h-[60%] bg-yellow-100/30 rounded-full blur-[120px] animate-float mix-blend-multiply"></div>
-                </div>
-
-                {/* Dynamic Hero Header Section with Deep Purple Background */}
-                <header className="relative w-full py-12 sm:py-16 md:py-20 lg:py-24 px-4 text-center z-10 flex justify-center">
-                    <div className={`max-w-4xl w-full bg-primary-900 rounded-2xl sm:rounded-3xl md:rounded-[3rem] p-6 sm:p-8 md:p-12 lg:p-16 border border-white/10 shadow-2xl shadow-purple-900/40 transition-all duration-1000 transform overflow-hidden relative group ${mounted ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-10 scale-95'}`}>
-
-                        {/* Animated Gradient Behind Purple */}
-                        <div className="absolute inset-0 bg-gradient-to-br from-purple-900 via-primary-900 to-indigo-950 opacity-100 animate-gradient-shift"></div>
-
-                        {/* Subtle Glow Effects */}
-                        <div className="absolute top-[-50%] left-[-20%] w-[150%] h-[150%] bg-gradient-to-br from-purple-500/20 via-transparent to-transparent rounded-full blur-3xl pointer-events-none animate-float-slow"></div>
-                        <div className="absolute bottom-[-50%] right-[-20%] w-[150%] h-[150%] bg-gradient-to-tl from-orange-500/10 via-transparent to-transparent rounded-full blur-3xl pointer-events-none animate-float-delayed"></div>
-
-                        <div className="relative z-10">
-                            <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 rounded-full bg-white/10 border border-white/10 backdrop-blur-md mb-4 sm:mb-6 md:mb-8 shadow-sm hover:scale-105 transition-transform">
-                                <span className="relative flex h-3 w-3">
-                                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
-                                    <span className="relative inline-flex rounded-full h-3 w-3 bg-orange-500"></span>
-                                </span>
-                                <span className="text-xs sm:text-sm font-bold tracking-wide text-orange-200 uppercase">We are Online</span>
-                            </div>
-
-                            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-heading font-extrabold mb-4 sm:mb-6 md:mb-8 tracking-tight leading-none text-white drop-shadow-xl">
-                                <span className="bg-clip-text text-transparent bg-gradient-to-r from-orange-300 via-yellow-200 to-white animate-pulse">
-                                    Get in Touch
-                                </span>
-                            </h1>
-
-                            <p className="text-sm sm:text-base md:text-lg lg:text-xl text-purple-100 font-medium max-w-2xl mx-auto leading-relaxed opacity-90">
-                                Have a question, feedback, or a partnership idea? We'd love to hear from you. Let's create something meaningful together.
-                            </p>
-                        </div>
-                    </div>
-                </header>
-
-                {/* Main Content Section - 3D Card */}
-                <main className="w-full pb-16 sm:pb-24 md:pb-32 px-4 sm:px-6 lg:px-8 z-10 flex justify-center -mt-6 sm:mt-8 md:-mt-10">
-
-                    {/* 3D Tilt Card Wrapper */}
-                    <div
-                        className="relative perspective-1000 max-w-6xl w-full"
-                        style={{ perspective: '1000px' }}
-                    >
-                        <div
-                            ref={cardRef}
-                            onMouseMove={handleMouseMove}
-                            onMouseLeave={handleMouseLeave}
-                            className={`w-full bg-white dark:bg-gray-800 rounded-2xl sm:rounded-3xl md:rounded-[2.5rem] shadow-2xl overflow-hidden grid grid-cols-1 lg:grid-cols-5 min-h-[600px] sm:min-h-[650px] md:min-h-[700px] transform transition-all duration-300 ease-out border border-white/60 dark:border-gray-700 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10 delay-200'}`}
-                            style={{
-                                transform: `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`,
-                                transformStyle: 'preserve-3d',
-                            }}
-                        >
-                            {/* Dynamic Spotlight Overlay */}
-                            <div
-                                className="pointer-events-none absolute inset-0 z-30 transition-opacity duration-500"
-                                style={{
-                                    background: `radial-gradient(800px circle at ${spotlightPos.x}px ${spotlightPos.y}px, rgba(255,255,255,0.4), transparent 40%)`,
-                                    mixBlendMode: 'overlay',
-                                }}
-                            ></div>
-
-                            {/* Left Panel: Brand & Info */}
-                            <div className="lg:col-span-2 bg-primary-900 text-white p-6 sm:p-8 md:p-10 lg:p-12 flex flex-col justify-between relative overflow-hidden group">
-                                {/* Brand Gradient Background - Purple base */}
-                                <div className="absolute inset-0 bg-gradient-to-br from-purple-900 via-primary-900 to-indigo-950 opacity-100 animate-gradient-shift"></div>
-
-                                {/* Glass Noise Overlay */}
-                                <div className="absolute inset-0 bg-noise opacity-10 mix-blend-overlay"></div>
-
-                                {/* Floating Orbs - In Brand Colors */}
-                                <div className="absolute top-0 right-0 w-80 h-80 bg-orange-500/20 rounded-full blur-[80px] -mr-20 -mt-20 animate-float transition-transform duration-700 group-hover:scale-110 mix-blend-screen"></div>
-                                <div className="absolute bottom-0 left-0 w-80 h-80 bg-yellow-500/10 rounded-full blur-[80px] -ml-20 -mb-20 animate-float-delayed transition-transform duration-700 group-hover:scale-110 mix-blend-screen"></div>
-
-                                {/* Content Layer (elevated for 3D) */}
-                                <div className="relative z-10 transform translate-z-10 group-hover:translate-x-2 transition-transform duration-500">
-                                    <div className="mb-8 sm:mb-10">
-                                        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/10 backdrop-blur-md mb-4 sm:mb-6">
-                                            <Sparkles size={14} className="text-yellow-300" />
-                                            <span className="text-xs font-semibold tracking-wide uppercase text-yellow-100">24/7 Support</span>
-                                        </div>
-                                        <h2 className="text-3xl sm:text-4xl md:text-5xl font-heading font-bold mb-3 sm:mb-4 tracking-tighter leading-none text-white">
-                                            Contact Info
-                                        </h2>
-                                        <p className="text-purple-100 text-base sm:text-lg opacity-90">Reach out via any channel.</p>
-                                    </div>
-
-                                    <div className="space-y-4">
-                                        <ContactItem
-                                            icon={<MessageCircle size={22} />}
-                                            label="WhatsApp"
-                                            value={contactInfo.whatsapp}
-                                            href={`https://wa.me/${contactInfo.whatsapp.replace(/[^0-9]/g, '')}`}
-                                            color="text-green-300"
-                                            hoverBg="group-hover:bg-green-500/20"
-                                        />
-                                        <ContactItem
-                                            icon={<Mail size={22} />}
-                                            label="Email Us"
-                                            value={contactInfo.email}
-                                            href={`mailto:${contactInfo.email}`}
-                                            color="text-yellow-300"
-                                            hoverBg="group-hover:bg-yellow-500/20"
-                                        />
-                                        <ContactItem
-                                            icon={<Phone size={22} />}
-                                            label="Call Us"
-                                            value={contactInfo.phone}
-                                            href={`tel:${contactInfo.phone.replace(/\s/g, '')}`}
-                                            color="text-orange-300"
-                                            hoverBg="group-hover:bg-orange-500/20"
-                                        />
-                                        {contactInfo.poBox && (
-                                            <ContactItem
-                                                icon={<MapPin size={22} />}
-                                                label="PO Box"
-                                                value={contactInfo.poBox}
-                                                color="text-blue-300"
-                                                hoverBg="group-hover:bg-blue-500/20"
-                                            />
-                                        )}
-                                        <ContactItem
-                                            icon={<MapPin size={22} />}
-                                            label={isUS ? "Address" : "Office"}
-                                            value={contactInfo.officeAddress}
-                                            color="text-purple-300"
-                                            hoverBg="group-hover:bg-purple-500/20"
-                                        />
-                                    </div>
-
-                                    {/* Socials */}
-                                    <div className="mt-12 pt-8 border-t border-white/10">
-                                        <p className="text-sm font-semibold text-purple-200 mb-4 uppercase tracking-wider">Follow Us</p>
-                                        <div className="flex gap-4">
-                                            {[
-                                                { href: 'https://facebook.com/wekume', label: 'Fb' },
-                                                { href: 'https://instagram.com/wekume', label: 'Ig' },
-                                                { href: 'https://twitter.com/wekume', label: 'X' },
-                                                { href: 'https://linkedin.com/company/wekume', label: 'Li' },
-                                            ].map((social) => (
-                                                <a
-                                                    key={social.label}
-                                                    href={social.href}
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                    className="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 transition-all cursor-pointer flex items-center justify-center hover:scale-110 hover:shadow-lg hover:shadow-orange-500/20 text-white text-xs font-bold"
-                                                >
-                                                    {social.label}
-                                                </a>
-                                            ))}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* Right Panel: The Form */}
-                            <div className="lg:col-span-3 bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl p-6 sm:p-10 md:p-12 lg:p-16 flex flex-col justify-center relative">
-                                {/* Mesh Gradient Bloom - Brand Colors */}
-                                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-gradient-to-tr from-purple-50/40 via-transparent to-orange-50/40 blur-3xl pointer-events-none opacity-50"></div>
-
-                                <div className="max-w-lg w-full mx-auto relative z-10">
-                                    <h3 className="text-2xl sm:text-3xl font-heading font-bold text-gray-900 dark:text-white mb-2">Send a Message</h3>
-                                    <p className="text-gray-500 dark:text-gray-400 mb-6 sm:mb-8 md:mb-10 text-xs sm:text-sm">Fill out the form below and we'll get back to you.</p>
-
-                                    {status === 'success' ? (
-                                        <SuccessMessage onReset={() => setStatus('idle')} />
-                                    ) : (
-                                        <form onSubmit={handleSubmit} className="space-y-6">
-                                            <div className="grid md:grid-cols-2 gap-6">
-                                                <FloatingInput
-                                                    id="name" label="Full Name"
-                                                    value={formData.name}
-                                                    onChange={e => setFormData({ ...formData, name: e.target.value })}
-                                                    onFocus={() => handleFocus('name')} onBlur={handleBlur}
-                                                    error={errors.name}
-                                                />
-                                                <FloatingInput
-                                                    id="email" label="Email Address" type="email"
-                                                    value={formData.email}
-                                                    onChange={e => setFormData({ ...formData, email: e.target.value })}
-                                                    onFocus={() => handleFocus('email')} onBlur={handleBlur}
-                                                    error={errors.email}
-                                                />
-                                            </div>
-                                            <FloatingInput
-                                                id="subject" label="Subject"
-                                                value={formData.subject}
-                                                onChange={e => setFormData({ ...formData, subject: e.target.value })}
-                                                onFocus={() => handleFocus('subject')} onBlur={handleBlur}
-                                            />
-                                            <FloatingTextArea
-                                                id="message" label="Your Message"
-                                                value={formData.message}
-                                                onChange={e => setFormData({ ...formData, message: e.target.value })}
-                                                onFocus={() => handleFocus('message')} onBlur={handleBlur}
-                                                error={errors.message}
-                                            />
-
-                                            {status === 'error' && (
-                                                <div className="p-3 bg-red-50 text-red-600 rounded-xl text-xs font-bold uppercase tracking-wide border border-red-100 flex items-center gap-2">
-                                                    <AlertCircle size={16} />
-                                                    <span>{errors.submit || 'Please check the form for errors.'}</span>
-                                                </div>
-                                            )}
-
-                                            {/* Smart Send Buttons */}
-                                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                                                <button
-                                                    type="button"
-                                                    disabled={status === 'submitting'}
-                                                    onClick={() => saveAndRedirect('whatsapp')}
-                                                    className="group relative w-full bg-green-600 hover:bg-green-700 text-white py-3.5 rounded-xl font-bold overflow-hidden transition-all hover:scale-[1.02] active:scale-[0.98] shadow-lg flex items-center justify-center gap-2"
-                                                >
-                                                    {status === 'submitting' ? (
-                                                        <Loader className="animate-spin" size={18} />
-                                                    ) : (
-                                                        <>
-                                                            <MessageCircle size={18} />
-                                                            <span className="tracking-wide text-sm">Send via WhatsApp</span>
-                                                        </>
-                                                    )}
-                                                </button>
-                                                <button
-                                                    type="button"
-                                                    disabled={status === 'submitting'}
-                                                    onClick={() => saveAndRedirect('email')}
-                                                    className="group relative w-full bg-blue-600 hover:bg-blue-700 text-white py-3.5 rounded-xl font-bold overflow-hidden transition-all hover:scale-[1.02] active:scale-[0.98] shadow-lg flex items-center justify-center gap-2"
-                                                >
-                                                    {status === 'submitting' ? (
-                                                        <Loader className="animate-spin" size={18} />
-                                                    ) : (
-                                                        <>
-                                                            <Mail size={18} />
-                                                            <span className="tracking-wide text-sm">Send via Email</span>
-                                                        </>
-                                                    )}
-                                                </button>
-                                            </div>
-                                            <button
-                                                type="submit"
-                                                disabled={status === 'submitting'}
-                                                className="group relative w-full bg-primary-900 text-white py-3.5 rounded-xl font-bold overflow-hidden transition-all hover:scale-[1.02] active:scale-[0.98] shadow-2xl hover:shadow-orange-500/20"
-                                            >
-                                                <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-purple-800 via-primary-900 to-purple-800 opacity-100 group-hover:opacity-0 transition-opacity duration-300"></div>
-                                                <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-orange-500 via-yellow-500 to-orange-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                                                <div className="relative flex items-center justify-center gap-2">
-                                                    {status === 'submitting' ? (
-                                                        <Loader className="animate-spin" size={18} />
-                                                    ) : (
-                                                        <>
-                                                            <span className="tracking-wide text-sm">SAVE MESSAGE ONLY</span>
-                                                            <ArrowRight size={16} className="transform group-hover:translate-x-1 transition-transform" />
-                                                        </>
-                                                    )}
-                                                </div>
-                                            </button>
-                                        </form>
-                                    )}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </main>
+            {/* Premium Ambient Background */}
+            <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none">
+                <div 
+                    className="absolute top-[-20%] left-[-10%] w-[70vw] h-[70vw] rounded-full mix-blend-screen filter blur-[120px] opacity-20 bg-gradient-to-br from-indigo-600 to-purple-800 transition-transform duration-1000 ease-out"
+                    style={{ transform: `translate(${mousePos.x}px, ${mousePos.y}px)` }}
+                />
+                <div 
+                    className="absolute bottom-[-20%] right-[-10%] w-[60vw] h-[60vw] rounded-full mix-blend-screen filter blur-[150px] opacity-20 bg-gradient-to-tl from-orange-600 to-pink-700 transition-transform duration-1000 ease-out"
+                    style={{ transform: `translate(${-mousePos.x * 1.5}px, ${-mousePos.y * 1.5}px)` }}
+                />
+                <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0IiBoZWlnaHQ9IjQiPgo8cmVjdCB3aWR0aD0iNCIgaGVpZ2h0PSI0IiBmaWxsPSIjZmZmIiBmaWxsLW9wYWNpdHk9IjAuMDUiLz4KPC9zdmc+')] opacity-20 mix-blend-overlay"></div>
             </div>
 
-            <Footer />
-        </>
+            <main className="relative z-10 w-full px-4 sm:px-6 md:px-8 pt-24 pb-12 min-h-[85vh] flex flex-col items-center">
+                
+                {/* Header Section */}
+                <div className={`text-center mb-8 max-w-2xl mx-auto transition-all duration-1000 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+                    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-md mb-4 w-fit mx-auto">
+                        <span className="relative flex h-2.5 w-2.5">
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                            <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></span>
+                        </span>
+                        <span className="text-sm font-medium tracking-wide text-gray-300">We respond within 24 hours</span>
+                    </div>
+                    <h1 className="text-4xl md:text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-b from-white to-white/60 tracking-tight leading-tight mb-3">
+                        Let's Talk.
+                    </h1>
+                    <p className="text-base text-gray-400 leading-relaxed max-w-lg mx-auto">
+                        Whether you need confidential support, mental health advice, or want to partner with us—choose how you'd like to connect.
+                    </p>
+                </div>
+
+                {/* Accordion List Container */}
+                <div className={`w-full max-w-3xl mx-auto space-y-3 transition-all duration-1000 delay-200 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}>
+                    
+                    {/* Section 1: Send a Message (Form) */}
+                    <Accordion title="Send a Message" icon={<MessageCircle size={24} />} defaultOpen={true}>
+                        <div className="pt-4">
+                            {status === 'success' ? (
+                                <div className="py-12 text-center animate-fade-in">
+                                    <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-green-500/10 border border-green-500/20 mb-6">
+                                        <CheckCircle className="text-green-400 w-10 h-10" />
+                                    </div>
+                                    <h3 className="text-2xl font-bold text-white mb-3">Message Initiated</h3>
+                                    <p className="text-gray-400 mb-8 max-w-sm mx-auto">Your message details were prepared. Please complete sending via your chosen app.</p>
+                                    <button 
+                                        onClick={() => { setStatus('idle'); setContactMethod(null); }}
+                                        className="bg-white/10 hover:bg-white/20 text-white px-8 py-3 rounded-full font-medium transition-all"
+                                    >
+                                        Start another message
+                                    </button>
+                                </div>
+                            ) : !contactMethod ? (
+                                <div className="py-6 animate-fade-in">
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                        <button
+                                            onClick={() => setContactMethod('whatsapp')}
+                                            className="group flex flex-col items-center justify-center gap-4 p-8 bg-black/20 hover:bg-black/40 border border-white/5 hover:border-green-500/30 rounded-[2rem] transition-all hover:-translate-y-1 hover:shadow-2xl hover:shadow-green-500/10"
+                                        >
+                                            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                                                <MessageCircle className="text-white w-8 h-8" />
+                                            </div>
+                                            <div className="text-center">
+                                                <h4 className="text-white font-bold text-lg">WhatsApp</h4>
+                                                <p className="text-gray-500 text-sm mt-1">Chat directly via phone</p>
+                                            </div>
+                                        </button>
+                                        
+                                        <button
+                                            onClick={() => setContactMethod('email')}
+                                            className="group flex flex-col items-center justify-center gap-4 p-8 bg-black/20 hover:bg-black/40 border border-white/5 hover:border-blue-500/30 rounded-[2rem] transition-all hover:-translate-y-1 hover:shadow-2xl hover:shadow-blue-500/10"
+                                        >
+                                            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                                                <Mail className="text-white w-8 h-8" />
+                                            </div>
+                                            <div className="text-center">
+                                                <h4 className="text-white font-bold text-lg">Email</h4>
+                                                <p className="text-gray-500 text-sm mt-1">Official correspondence</p>
+                                            </div>
+                                        </button>
+                                    </div>
+                                </div>
+                            ) : (
+                                <form className="pt-2 flex flex-col gap-5 animate-fade-in pb-4">
+                                    <div className="flex items-center justify-between mb-2">
+                                        <p className="text-gray-400 text-sm font-medium">
+                                            Currently drafting for: <span className="text-white font-bold capitalize">{contactMethod}</span>
+                                        </p>
+                                        <button 
+                                            type="button" 
+                                            onClick={() => { setContactMethod(null); setErrors({}); }}
+                                            className="text-gray-400 hover:text-white px-4 py-1.5 bg-white/5 rounded-full text-xs font-bold uppercase tracking-wider transition-colors"
+                                        >
+                                            Cancel
+                                        </button>
+                                    </div>
+                                    
+                                    <div className="grid md:grid-cols-2 gap-5">
+                                        <ModernInput 
+                                            id="name" label="Full Name" 
+                                            value={formData.name} 
+                                            onChange={e => setFormData({...formData, name: e.target.value})} 
+                                            error={errors.name}
+                                        />
+                                        <ModernInput 
+                                            id="email" label="Email Address" type="email"
+                                            value={formData.email} 
+                                            onChange={e => setFormData({...formData, email: e.target.value})} 
+                                            error={errors.email}
+                                        />
+                                    </div>
+                                    
+                                    <ModernInput 
+                                        id="subject" label="Subject" 
+                                        value={formData.subject} 
+                                        onChange={e => setFormData({...formData, subject: e.target.value})} 
+                                    />
+                                    
+                                    <div className="relative">
+                                        <textarea
+                                            id="message"
+                                            rows={contactMethod === 'whatsapp' ? 5 : 4}
+                                            value={formData.message}
+                                            onChange={e => setFormData({...formData, message: e.target.value})}
+                                            className={`w-full bg-black/20 border ${errors.message ? 'border-red-500/50' : 'border-white/10'} rounded-2xl px-5 py-4 text-white placeholder-gray-500 focus:outline-none focus:border-purple-500/50 focus:bg-black/40 transition-all resize-none`}
+                                            placeholder="What's on your mind?"
+                                        ></textarea>
+                                        {errors.message && <p className="absolute -bottom-6 left-2 text-[11px] text-red-400 uppercase tracking-wider">{errors.message}</p>}
+                                    </div>
+
+                                    {status === 'error' && (
+                                        <div className="p-4 bg-red-500/10 border border-red-500/20 rounded-xl flex items-center gap-3 text-red-400 mt-2">
+                                            <AlertCircle size={18} />
+                                            <span className="text-sm">{errors.submit || 'Please fix the errors above.'}</span>
+                                        </div>
+                                    )}
+
+                                    <div className="mt-4">
+                                        <button
+                                            type="button"
+                                            onClick={saveAndRedirect}
+                                            disabled={status === 'submitting'}
+                                            className={`group relative w-full sm:w-auto px-8 sm:px-12 py-4 rounded-2xl font-bold flex items-center justify-center gap-3 overflow-hidden transition-all disabled:opacity-50 ml-auto ${contactMethod === 'whatsapp' ? 'bg-[#25D366] hover:bg-[#1ebd5a] text-white' : 'bg-white text-black hover:bg-gray-200'}`}
+                                        >
+                                            {status === 'submitting' ? <Loader className="animate-spin" size={20} /> : (
+                                                <>
+                                                    <span className="text-base uppercase tracking-wider">Open {contactMethod === 'whatsapp' ? 'WhatsApp' : 'Email'}</span>
+                                                    <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+                                                </>
+                                            )}
+                                        </button>
+                                    </div>
+                                </form>
+                            )}
+                        </div>
+                    </Accordion>
+                </div>
+
+                <div className={`w-full max-w-5xl mx-auto mt-4 transition-all duration-1000 delay-300 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {/* Section 2: Direct Contact Details */}
+                        <Accordion title="Direct Contact Details" icon={<Phone size={24} />} className="h-full">
+                            <div className="py-4 space-y-3">
+                                <ContactCard 
+                                    icon={<MessageCircle size={18} className="text-green-400" />}
+                                    title="WhatsApp / Phone"
+                                    detail={contactInfo.phone}
+                                    href={`tel:${contactInfo.phone.replace(/[^0-9+]/g, '')}`}
+                                />
+                                <ContactCard 
+                                    icon={<Mail size={18} className="text-blue-400" />}
+                                    title="Official Email"
+                                    detail={contactInfo.email}
+                                    href={`mailto:${contactInfo.email}`}
+                                />
+                                <div className="group flex items-start gap-3 p-4 rounded-xl bg-white/5 border border-white/5">
+                                    <MapPin size={18} className="text-purple-400 mt-1 flex-shrink-0" />
+                                    <div>
+                                        <h4 className="text-white font-medium text-xs mb-0.5">Office Location</h4>
+                                        <p className="text-gray-400 text-xs leading-relaxed">{contactInfo.officeAddress}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </Accordion>
+    
+                        {/* Section 3: Wekume App */}
+                        <Accordion title="Get the Wekume App" icon={<Smartphone size={24} />} className="h-full">
+                            <div className="py-4">
+                                <div className="bg-gradient-to-br from-purple-500/10 to-orange-500/10 border border-white/5 p-5 rounded-xl flex flex-col items-center text-center">
+                                    <div className="w-16 h-16 rounded-2xl bg-black/50 flex items-center justify-center mb-4 border border-white/10 shadow-lg">
+                                        <Smartphone className="text-purple-400" size={28} />
+                                    </div>
+                                    <h4 className="text-white font-bold text-lg mb-2">Health in Your Pocket</h4>
+                                    <p className="text-gray-400 text-xs mb-4">Download the official Wekume app for anonymous counseling and tools.</p>
+                                    <a href="#" className="bg-purple-600 hover:bg-purple-500 text-white px-6 py-2 rounded-full font-bold text-sm transition-colors">
+                                        Download App
+                                    </a>
+                                </div>
+                            </div>
+                        </Accordion>
+                    </div>
+                </div>
+            </main>
+            
+            <div className="relative z-20 border-t border-white/5 bg-slate-950/80 backdrop-blur-xl">
+                <Footer />
+            </div>
+        </div>
     );
 }
 
-// Sub-components for cleanliness
-const FloatingInput = ({ id, label, value, onChange, onFocus, onBlur, error, type = "text" }) => (
-    <div className="relative group">
-        <input
-            type={type} id={id}
-            className={`peer w-full px-4 py-3.5 rounded-xl border-2 bg-gray-50/50 dark:bg-gray-800 focus:bg-white dark:focus:bg-gray-700 outline-none transition-all duration-300 placeholder-transparent text-gray-900 dark:text-white font-medium box-border ${error ? 'border-red-500/50 focus:border-red-500 focus:ring-red-500/10' : 'border-transparent focus:border-purple-500/50 focus:ring-purple-500/10 focus:ring-4'}`}
-            placeholder={label}
-            value={value} onChange={onChange} onFocus={onFocus} onBlur={onBlur}
-        />
-        <label
-            htmlFor={id}
-            className={`absolute left-4 transition-all duration-300 pointer-events-none z-10
-            ${value ? '-top-2.5 text-xs bg-white dark:bg-gray-800 px-2 ml-2 rounded-full shadow-sm border border-gray-100 dark:border-gray-700' : 'top-3.5 text-base text-gray-400 dark:text-gray-500'}
-            peer-focus:-top-2.5 peer-focus:text-xs peer-focus:px-2 peer-focus:ml-2 rounded-full shadow-sm border border-gray-100 dark:border-gray-700
-            ${error ? 'text-red-500 peer-focus:text-red-600' : 'text-gray-400 peer-focus:text-purple-600 peer-focus:bg-white dark:peer-focus:bg-gray-800'}`}
-        >
-            {label}
-        </label>
-        {error && <p className="text-[10px] font-bold text-red-500 mt-1 ml-2 uppercase tracking-tight">{error}</p>}
-    </div>
-);
+// Subcomponents
+const ModernInput = ({ id, label, value, onChange, error, type = "text" }) => {
+    return (
+        <div className="relative">
+            <input
+                type={type}
+                id={id}
+                value={value}
+                onChange={onChange}
+                placeholder={label}
+                className={`w-full bg-black/20 border ${error ? 'border-red-500/50' : 'border-white/10'} rounded-2xl px-5 py-4 text-white placeholder-gray-500 focus:outline-none focus:border-purple-500/50 focus:bg-black/40 transition-all`}
+            />
+            {error && <p className="absolute -bottom-6 left-2 text-[11px] text-red-400 uppercase tracking-wider">{error}</p>}
+        </div>
+    );
+};
 
-const FloatingTextArea = ({ id, label, value, onChange, onFocus, onBlur, error }) => (
-    <div className="relative group">
-        <textarea
-            rows="4" id={id}
-            className={`peer w-full px-4 py-3.5 rounded-xl border-2 bg-gray-50/50 dark:bg-gray-800 focus:bg-white dark:focus:bg-gray-700 outline-none transition-all duration-300 placeholder-transparent text-gray-900 dark:text-white font-medium resize-none box-border ${error ? 'border-red-500/50 focus:border-red-500 focus:ring-red-500/10' : 'border-transparent focus:border-purple-500/50 focus:ring-purple-500/10 focus:ring-4'}`}
-            placeholder={label}
-            value={value} onChange={onChange} onFocus={onFocus} onBlur={onBlur}
-        ></textarea>
-        <label
-            htmlFor={id}
-            className={`absolute left-4 transition-all duration-300 pointer-events-none z-10
-            ${value ? '-top-2.5 text-xs bg-white dark:bg-gray-800 px-2 ml-2 rounded-full shadow-sm border border-gray-100 dark:border-gray-700' : 'top-3.5 text-base text-gray-400 dark:text-gray-500'}
-            peer-focus:-top-2.5 peer-focus:text-xs peer-focus:px-2 peer-focus:ml-2 rounded-full shadow-sm border border-gray-100 dark:border-gray-700
-            ${error ? 'text-red-500 peer-focus:text-red-600' : 'text-gray-400 peer-focus:text-purple-600 peer-focus:bg-white dark:peer-focus:bg-gray-800'}`}
-        >
-            {label}
-        </label>
-        {error && <p className="text-[10px] font-bold text-red-500 mt-1 ml-2 uppercase tracking-tight">{error}</p>}
-    </div>
-);
-
-const ContactItem = ({ icon, label, value, href, color, hoverBg }) => (
-    <a href={href} className={`flex items-center gap-4 group p-3 rounded-2xl hover:bg-white/5 transition-all cursor-${href ? 'pointer' : 'default'} border border-transparent hover:border-white/10 ${hoverBg}`}>
-        <div className={`w-12 h-12 rounded-xl bg-white/5 backdrop-blur-sm flex items-center justify-center transition-all group-hover:scale-110 group-hover:bg-white/10 ${color}`}>
+const ContactCard = ({ icon, title, detail, href }) => (
+    <a href={href} target={href.startsWith('http') ? '_blank' : '_self'} rel="noopener noreferrer" className="group flex items-center gap-5 p-5 rounded-2xl bg-white/5 border border-white/5 hover:bg-white/10 hover:border-white/10 transition-all cursor-pointer">
+        <div className="w-12 h-12 rounded-xl bg-black/30 flex items-center justify-center group-hover:scale-110 transition-transform">
             {icon}
         </div>
         <div>
-            <p className={`text-xs font-medium tracking-wide uppercase mb-0.5 opacity-60 ${color.replace('text-', 'text-opacity-80 text-')}`}>{label}</p>
-            <p className="font-bold text-white text-lg tracking-tight group-hover:text-white transition-colors">{value}</p>
+            <h4 className="text-white font-medium text-sm">{title}</h4>
+            <p className="text-gray-400 font-medium">{detail}</p>
         </div>
-        {href && <ArrowRight className="ml-auto opacity-0 group-hover:opacity-100 transform -translate-x-2 group-hover:translate-x-0 transition-all text-white/50" size={18} />}
+        <ArrowRight size={18} className="ml-auto text-gray-600 group-hover:text-white transform -translate-x-2 group-hover:translate-x-0 transition-all" />
     </a>
-);
-
-const SuccessMessage = ({ onReset }) => (
-    <div className="text-center py-12 px-8 bg-green-50/50 dark:bg-green-900/20 rounded-3xl border border-green-100/50 dark:border-green-800 backdrop-blur-sm animate-fade-in shadow-inner">
-        <div className="inline-flex items-center justify-center w-20 h-20 bg-green-100 text-green-600 rounded-full mb-6 shadow-sm animate-bounce">
-            <CheckCircle size={40} />
-        </div>
-        <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-3">Message Sent!</h3>
-        <p className="text-gray-600 dark:text-gray-300 mb-8 max-w-sm mx-auto leading-relaxed">
-            Thank you for reaching out. Our team has received your message and will get back to you shortly.
-        </p>
-        <button
-            onClick={onReset}
-            className="bg-white text-gray-900 px-8 py-3 rounded-full font-bold shadow-lg hover:shadow-xl border border-gray-100 transition-all hover:-translate-y-1"
-        >
-            Send Another
-        </button>
-    </div>
 );
 
 export default Contact;

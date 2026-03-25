@@ -16,7 +16,7 @@ function GetInvolved() {
                     backgroundSize: '32px 32px'
                 }}></div>
 
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 md:py-32 relative z-10">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 md:py-20 relative z-10">
                     <div className="max-w-3xl">
                         <span className="inline-block py-1 px-3 rounded-full bg-orange-500/20 text-orange-300 text-xs sm:text-sm font-semibold mb-4 sm:mb-6 border border-orange-500/30">
                             Join the Movement
@@ -44,7 +44,7 @@ function GetInvolved() {
             </div>
 
             {/* How can you start section */}
-            <div className="py-16 sm:py-20 md:py-24 bg-gray-50 dark:bg-gray-900">
+            <div className="py-8 sm:py-10 md:py-12 bg-gray-50 dark:bg-gray-900">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center mb-12 sm:mb-16">
                         <h2 className="text-3xl sm:text-4xl font-heading font-bold text-gray-900 dark:text-white mb-4">Here’s How You Can Start</h2>
@@ -98,9 +98,9 @@ function GetInvolved() {
             </div>
 
             {/* CTA Section */}
-            <div className="bg-white dark:bg-gray-900 py-12 sm:py-16 md:py-20 relative overflow-hidden">
+            <div className="bg-white dark:bg-gray-900 py-8 sm:py-10 md:py-12 relative overflow-hidden">
                 <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-                    <div className="bg-gradient-to-r from-purple-600 to-indigo-700 rounded-2xl sm:rounded-3xl p-8 sm:p-10 md:p-16 text-center text-white shadow-2xl relative overflow-hidden">
+                    <div className="bg-gradient-to-r from-purple-600 to-indigo-700 rounded-2xl sm:rounded-3xl p-6 sm:p-8 md:p-12 text-center text-white shadow-2xl relative overflow-hidden">
                         {/* Background Pattern */}
                         <div className="absolute inset-0 opacity-10">
                             <div className="absolute inset-0" style={{ backgroundImage: 'radial-gradient(circle, white 1px, transparent 1px)', backgroundSize: '24px 24px' }}></div>

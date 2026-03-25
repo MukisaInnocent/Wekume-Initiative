@@ -201,7 +201,7 @@ function Testimonials() {
             />
 
             {/* Testimonials Carousel */}
-            <section className="py-12 sm:py-16 md:py-20 flex-grow">
+            <section className="py-8 sm:py-10 md:py-12 flex-grow">
                 <div className="max-w-7xl mx-auto px-8 sm:px-10 lg:px-14">
                     {loading ? (
                         <div className="flex justify-center items-center h-64">

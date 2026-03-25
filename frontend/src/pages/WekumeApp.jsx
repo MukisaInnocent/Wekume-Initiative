@@ -31,7 +31,7 @@ function WekumeApp() {
     return (
         <>
             <Navbar />
-            <div className="bg-primary-900 text-white pt-20 pb-32 sm:pt-24 sm:pb-40 md:pt-32 md:pb-48 overflow-hidden relative">
+            <div className="bg-primary-900 text-white pt-16 pb-24 sm:pt-20 sm:pb-28 md:pt-24 md:pb-32 overflow-hidden relative">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
                     <div className="inline-flex p-3 sm:p-4 bg-white/10 rounded-full mb-4 sm:mb-6 backdrop-blur-sm"><Smartphone size={28} className="sm:w-8 sm:h-8" /></div>
                     <h1 className="text-3xl sm:text-4xl md:text-6xl font-heading font-bold mb-4 sm:mb-6 leading-tight">{content.title}</h1>

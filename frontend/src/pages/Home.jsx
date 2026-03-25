@@ -45,7 +45,7 @@ function MissionRotator() {
     const Icon = slide.icon;
 
     return (
-        <section className="py-16 md:py-24 relative overflow-hidden bg-gray-50 dark:bg-gray-800/50">
+        <section className="py-12 md:py-16 relative overflow-hidden bg-gray-50 dark:bg-gray-800/50">
             <div className="absolute top-0 right-0 w-72 h-72 bg-purple-200/30 dark:bg-purple-800/10 rounded-full blur-3xl pointer-events-none" />
             <div className="absolute bottom-0 left-0 w-60 h-60 bg-orange-200/30 dark:bg-orange-800/10 rounded-full blur-3xl pointer-events-none" />
 
@@ -174,7 +174,7 @@ function Home() {
             <MissionRotator />
 
             {/* Introduction / Our Story Section */}
-            <section className="py-20 md:py-32 relative overflow-hidden">
+            <section className="py-16 md:py-20 relative overflow-hidden">
                 {/* Decorative Elements */}
                 <div className="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 bg-purple-100 dark:bg-purple-900/20 rounded-full blur-3xl opacity-50 pointer-events-none"></div>
                 <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-80 h-80 bg-orange-50 dark:bg-orange-900/20 rounded-full blur-3xl opacity-50 pointer-events-none"></div>
@@ -259,7 +259,7 @@ function Home() {
             </section>
 
             {/* Meet Lina - AI Safe Chat Section */}
-            <section className="py-20 md:py-32 bg-gray-50 dark:bg-gray-900 relative overflow-hidden">
+            <section className="py-16 md:py-20 bg-gray-50 dark:bg-gray-900 relative overflow-hidden">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                     <motion.div
                         initial="hidden"
@@ -359,7 +359,7 @@ function Home() {
             </section>
 
             {/* Values Section */}
-            <section className="py-24 bg-white dark:bg-gray-800">
+            <section className="py-16 bg-white dark:bg-gray-800">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
@@ -418,7 +418,7 @@ function Home() {
 
             {/* Upcoming Events Preview */}
             {events.length > 0 && (
-                <section className="py-24 bg-gray-50 dark:bg-gray-900">
+            <section className="py-16 bg-gray-50 dark:bg-gray-900">
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
@@ -509,7 +509,7 @@ function Home() {
 
             {/* Testimonials Section */}
             {testimonials.length > 0 && (
-                <section className="py-24 bg-purple-900 text-white overflow-hidden relative">
+                <section className="py-16 bg-purple-900 text-white overflow-hidden relative">
                     <div className="absolute top-0 left-0 w-96 h-96 bg-pink-500 rounded-full blur-[120px] opacity-20 -ml-20 -mt-20"></div>
                     <div className="absolute bottom-0 right-0 w-96 h-96 bg-blue-500 rounded-full blur-[120px] opacity-20 -mr-20 -mb-20"></div>
 
@@ -560,7 +560,7 @@ function Home() {
             )}
 
             {/* Call to Action */}
-            <section className="relative py-24 overflow-hidden">
+            <section className="relative py-16 overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-br from-purple-800 to-orange-600"></div>
                 <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
 
