@@ -35,28 +35,28 @@ function PartnerForm({ partner, defaultRegion = 'global', onSubmit, onCancel, lo
     return (
         <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Partner Name</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">Partner Name</label>
                 <input
                     type="text"
                     name="name"
                     required
                     value={formData.name}
                     onChange={handleChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                     placeholder="e.g., Makerere University"
                 />
             </div>
 
             <div className="grid grid-cols-2 gap-4">
                 <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Partner Type</label>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">Partner Type</label>
                     <div className="relative">
                         <Briefcase className="absolute left-3 top-2.5 text-gray-400" size={18} />
                         <select
                             name="type"
                             value={formData.type}
                             onChange={handleChange}
-                            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                            className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                         >
                             <option value="corporate">Corporate</option>
                             <option value="ngo">NGO</option>
@@ -68,25 +68,25 @@ function PartnerForm({ partner, defaultRegion = 'global', onSubmit, onCancel, lo
                 </div>
 
                 <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Display Order</label>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">Display Order</label>
                     <input
                         type="number"
                         name="display_order"
                         value={formData.display_order}
                         onChange={handleChange}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                     />
                 </div>
             </div>
 
             <div className="grid grid-cols-2 gap-4">
                 <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Target Region</label>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">Target Region</label>
                     <select
                         name="region"
                         value={formData.region}
                         onChange={handleChange}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                     >
                         <option value="global">Global (Both Regions)</option>
                         <option value="ug">Uganda Only</option>
@@ -96,19 +96,19 @@ function PartnerForm({ partner, defaultRegion = 'global', onSubmit, onCancel, lo
             </div>
 
             <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Description (Optional)</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">Description (Optional)</label>
                 <textarea
                     name="description"
                     rows="3"
                     value={formData.description}
                     onChange={handleChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                     placeholder="Brief details about the partnership..."
                 ></textarea>
             </div>
 
             <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Logo</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">Logo</label>
                 <div className="flex gap-2">
                     <div className="relative flex-grow">
                         <ImageIcon className="absolute left-3 top-2.5 text-gray-400" size={18} />
@@ -117,7 +117,7 @@ function PartnerForm({ partner, defaultRegion = 'global', onSubmit, onCancel, lo
                             name="logo_url"
                             value={formData.logo_url}
                             onChange={handleChange}
-                            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-gray-50"
+                            className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-gray-50 dark:bg-gray-900/50"
                             placeholder="Logo URL will appear here..."
                             readOnly
                         />
@@ -156,7 +156,7 @@ function PartnerForm({ partner, defaultRegion = 'global', onSubmit, onCancel, lo
             </div>
 
             <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Website URL</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">Website URL</label>
                 <div className="relative">
                     <LinkIcon className="absolute left-3 top-2.5 text-gray-400" size={18} />
                     <input
@@ -164,7 +164,7 @@ function PartnerForm({ partner, defaultRegion = 'global', onSubmit, onCancel, lo
                         name="website"
                         value={formData.website}
                         onChange={handleChange}
-                        className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                        className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                         placeholder="https://partner-site.com"
                     />
                 </div>
@@ -177,9 +177,9 @@ function PartnerForm({ partner, defaultRegion = 'global', onSubmit, onCancel, lo
                     id="is_active"
                     checked={formData.is_active}
                     onChange={handleChange}
-                    className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                    className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 dark:border-gray-600 rounded"
                 />
-                <label htmlFor="is_active" className="text-sm font-medium text-gray-700">
+                <label htmlFor="is_active" className="text-sm font-medium text-gray-700 dark:text-gray-200">
                     Partner is active
                 </label>
             </div>
@@ -188,7 +188,7 @@ function PartnerForm({ partner, defaultRegion = 'global', onSubmit, onCancel, lo
                 <button
                     type="button"
                     onClick={onCancel}
-                    className="px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
+                    className="px-4 py-2 text-gray-700 dark:text-gray-200 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
                 >
                     Cancel
                 </button>

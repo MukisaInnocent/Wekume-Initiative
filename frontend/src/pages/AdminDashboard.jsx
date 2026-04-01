@@ -51,44 +51,44 @@ function TeamMemberFormInline({ member, defaultRegion, onSubmit, onCancel, loadi
         <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-1">Name *</label>
-                    <input name="name" value={form.name} onChange={handleChange} required className="w-full border border-gray-300 rounded-xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-purple-500" />
+                    <label className="block text-sm font-semibold text-gray-700 dark:text-gray-200 mb-1">Name *</label>
+                    <input name="name" value={form.name} onChange={handleChange} required className="w-full border border-gray-300 dark:border-gray-600 rounded-xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-purple-500" />
                 </div>
                 <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-1">Role *</label>
-                    <input name="role" value={form.role} onChange={handleChange} required placeholder="e.g., CEO, Program Director" className="w-full border border-gray-300 rounded-xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-purple-500" />
+                    <label className="block text-sm font-semibold text-gray-700 dark:text-gray-200 mb-1">Role *</label>
+                    <input name="role" value={form.role} onChange={handleChange} required placeholder="e.g., CEO, Program Director" className="w-full border border-gray-300 dark:border-gray-600 rounded-xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-purple-500" />
                 </div>
             </div>
             <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-1">Description</label>
-                <textarea name="description" value={form.description} onChange={handleChange} rows={3} className="w-full border border-gray-300 rounded-xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-purple-500" />
+                <label className="block text-sm font-semibold text-gray-700 dark:text-gray-200 mb-1">Description</label>
+                <textarea name="description" value={form.description} onChange={handleChange} rows={3} className="w-full border border-gray-300 dark:border-gray-600 rounded-xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-purple-500" />
             </div>
             <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-1">Photo URL</label>
-                <input name="photo_url" value={form.photo_url} onChange={handleChange} placeholder="https://..." className="w-full border border-gray-300 rounded-xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-purple-500" />
+                <label className="block text-sm font-semibold text-gray-700 dark:text-gray-200 mb-1">Photo URL</label>
+                <input name="photo_url" value={form.photo_url} onChange={handleChange} placeholder="https://..." className="w-full border border-gray-300 dark:border-gray-600 rounded-xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-purple-500" />
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-1">Region</label>
-                    <select name="region" value={form.region} onChange={handleChange} className="w-full border border-gray-300 rounded-xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-purple-500">
+                    <label className="block text-sm font-semibold text-gray-700 dark:text-gray-200 mb-1">Region</label>
+                    <select name="region" value={form.region} onChange={handleChange} className="w-full border border-gray-300 dark:border-gray-600 rounded-xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-purple-500">
                         <option value="global">Global</option>
                         <option value="ug">Uganda</option>
                         <option value="us">USA</option>
                     </select>
                 </div>
                 <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-1">Display Order</label>
-                    <input name="display_order" type="number" value={form.display_order} onChange={handleChange} className="w-full border border-gray-300 rounded-xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-purple-500" />
+                    <label className="block text-sm font-semibold text-gray-700 dark:text-gray-200 mb-1">Display Order</label>
+                    <input name="display_order" type="number" value={form.display_order} onChange={handleChange} className="w-full border border-gray-300 dark:border-gray-600 rounded-xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-purple-500" />
                 </div>
                 <div className="flex items-end pb-1">
                     <label className="flex items-center gap-2 cursor-pointer">
-                        <input name="is_active" type="checkbox" checked={form.is_active} onChange={handleChange} className="w-5 h-5 rounded text-purple-600" />
-                        <span className="text-sm font-semibold text-gray-700">Active</span>
+                        <input name="is_active" type="checkbox" checked={form.is_active} onChange={handleChange} className="w-5 h-5 rounded text-purple-600 dark:text-purple-400" />
+                        <span className="text-sm font-semibold text-gray-700 dark:text-gray-200">Active</span>
                     </label>
                 </div>
             </div>
             <div className="flex justify-end gap-3 pt-4">
-                <button type="button" onClick={onCancel} className="px-5 py-2.5 rounded-xl border border-gray-300 text-gray-600 font-semibold hover:bg-gray-50 transition-colors">Cancel</button>
+                <button type="button" onClick={onCancel} className="px-5 py-2.5 rounded-xl border border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-300 font-semibold hover:bg-gray-50 dark:bg-gray-900/50 transition-colors">Cancel</button>
                 <button type="submit" disabled={loading} className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-purple-600 to-pink-600 text-white font-semibold hover:shadow-lg hover:shadow-purple-500/30 transition-all disabled:opacity-50">
                     {loading ? 'Saving…' : (member ? 'Update Member' : 'Add Member')}
                 </button>
@@ -287,7 +287,7 @@ function AdminDashboard() {
 
     // Specific wrappers
     const handleUpdateSection = async (formData) => {
-        return handleUpdate(adminAPI.updateSection, formData.key, formData, fetchContent);
+        return handleUpdate(adminAPI.updateContentSection, formData.key, formData, fetchContent);
     };
 
     const openModal = (type, item = null) => {
@@ -327,7 +327,7 @@ function AdminDashboard() {
     }
 
     return (
-        <div className="min-h-screen bg-slate-50 flex overflow-hidden">
+        <div className="min-h-screen bg-slate-50 dark:bg-gray-900 flex overflow-hidden">
             {/* Mobile Sidebar Overlay */}
             {isSidebarOpen && (
                 <div 
@@ -337,7 +337,7 @@ function AdminDashboard() {
             )}
 
             {/* Sidebar */}
-            <aside className={`fixed inset-y-0 left-0 z-50 w-72 bg-white border-r border-purple-100/50 flex flex-col transition-transform duration-300 ease-in-out ${isSidebarOpen ? 'translate-x-0 shadow-2xl shadow-purple-900/20' : (isCollapsed ? '-translate-x-full' : '-translate-x-full lg:translate-x-0')} shadow-lg`}>
+            <aside className={`fixed inset-y-0 left-0 z-50 w-72 bg-white dark:bg-gray-800 border-r border-purple-100/50 flex flex-col transition-transform duration-300 ease-in-out ${isSidebarOpen ? 'translate-x-0 shadow-2xl shadow-purple-900/20' : (isCollapsed ? '-translate-x-full' : '-translate-x-full lg:translate-x-0')} shadow-lg`}>
                 {/* Sidebar Header */}
                 <div className="h-20 flex items-center justify-between px-6 border-b border-purple-50 group relative">
                     <div className="flex items-center gap-3">
@@ -349,7 +349,7 @@ function AdminDashboard() {
                             <p className="text-[10px] font-semibold text-purple-400 uppercase tracking-widest">Admin Dashboard</p>
                         </div>
                     </div>
-                    <button onClick={() => setIsSidebarOpen(false)} className="lg:hidden p-2 text-gray-400 hover:text-purple-600 hover:bg-purple-50 rounded-lg transition-colors">
+                    <button onClick={() => setIsSidebarOpen(false)} className="lg:hidden p-2 text-gray-400 hover:text-purple-600 dark:text-purple-400 hover:bg-purple-50 dark:bg-purple-900/20 rounded-lg transition-colors">
                         <X size={20} />
                     </button>
                     
@@ -357,7 +357,7 @@ function AdminDashboard() {
                     <button 
                         onClick={() => setIsCollapsed(true)}
                         title="Hide sidebar"
-                        className="hidden lg:flex absolute -right-3 top-1/2 -translate-y-1/2 w-6 h-6 bg-white border border-purple-200 rounded-full items-center justify-center text-gray-400 hover:text-purple-600 shadow-sm opacity-0 group-hover:opacity-100 transition-opacity z-10"
+                        className="hidden lg:flex absolute -right-3 top-1/2 -translate-y-1/2 w-6 h-6 bg-white dark:bg-gray-800 border border-purple-200 rounded-full items-center justify-center text-gray-400 hover:text-purple-600 dark:text-purple-400 shadow-sm opacity-0 group-hover:opacity-100 transition-opacity z-10"
                     >
                         <ChevronLeft size={14} />
                     </button>
@@ -379,10 +379,10 @@ function AdminDashboard() {
                                 className={`w-full flex items-center gap-3 px-3 py-3.5 rounded-xl transition-all duration-200 group relative ${
                                     isActive 
                                         ? 'bg-gradient-to-r from-purple-500/10 to-pink-500/10 text-purple-700 font-bold shadow-sm border border-purple-100/50' 
-                                        : 'text-gray-500 hover:bg-purple-50/50 hover:text-purple-600 font-medium border border-transparent'
+                                        : 'text-gray-500 dark:text-gray-400 hover:bg-purple-50 dark:bg-purple-900/20/50 hover:text-purple-600 dark:text-purple-400 font-medium border border-transparent'
                                 }`}
                             >
-                                <Icon size={20} className={`flex-shrink-0 group-hover:scale-110 transition-transform ${isActive ? 'text-purple-600' : 'text-gray-400 group-hover:text-purple-500 transition-colors'}`} />
+                                <Icon size={20} className={`flex-shrink-0 group-hover:scale-110 transition-transform ${isActive ? 'text-purple-600 dark:text-purple-400' : 'text-gray-400 group-hover:text-purple-500 transition-colors'}`} />
                                 <span className="whitespace-nowrap flex-1 text-left">{item.label}</span>
                                 {isActive && <div className="w-1.5 h-1.5 rounded-full bg-purple-600 animate-pulse flex-shrink-0" />}
                             </button>
@@ -391,14 +391,14 @@ function AdminDashboard() {
                 </div>
 
                 {/* Sidebar Footer (User Info & Logout) */}
-                <div className="p-4 border-t border-purple-50 bg-gray-50/50 flex-shrink-0">
-                    <div className="flex items-center gap-3 p-3 bg-white border border-purple-100 rounded-xl mb-3 shadow-sm">
+                <div className="p-4 border-t border-purple-50 bg-gray-50 dark:bg-gray-900/50/50 flex-shrink-0">
+                    <div className="flex items-center gap-3 p-3 bg-white dark:bg-gray-800 border border-purple-100 rounded-xl mb-3 shadow-sm">
                         <div className="w-10 h-10 rounded-full bg-gradient-to-r from-purple-100 to-pink-100 border border-purple-200 flex items-center justify-center font-bold text-purple-700 flex-shrink-0" title={user?.fullname || 'Admin'}>
                             {user?.fullname?.charAt(0) || 'U'}
                         </div>
                         <div className="overflow-hidden">
-                            <p className="text-sm font-bold text-gray-900 truncate">{user?.fullname}</p>
-                            <p className="text-xs text-purple-600 font-medium capitalize truncate">{user?.role?.replace('_', ' ')}</p>
+                            <p className="text-sm font-bold text-gray-900 dark:text-white truncate">{user?.fullname}</p>
+                            <p className="text-xs text-purple-600 dark:text-purple-400 font-medium capitalize truncate">{user?.role?.replace('_', ' ')}</p>
                         </div>
                     </div>
                     
@@ -419,14 +419,14 @@ function AdminDashboard() {
                 <div className={`fixed bottom-0 w-[500px] h-[500px] bg-pink-300/10 rounded-full blur-[100px] pointer-events-none -ml-40 -mb-40 transition-all duration-300 ${isCollapsed ? 'left-0' : 'left-72'}`}></div>
 
                 {/* Topbar for main area */}
-                <header className="h-20 bg-white/60 backdrop-blur-xl border-b border-purple-100/50 sticky top-0 z-30 flex items-center justify-between px-4 sm:px-6 lg:px-8 shadow-sm">
+                <header className="h-20 bg-white dark:bg-gray-800/60 backdrop-blur-xl border-b border-purple-100/50 sticky top-0 z-30 flex items-center justify-between px-4 sm:px-6 lg:px-8 shadow-sm">
                     <div className="flex items-center gap-4">
                         <button 
                             onClick={() => {
                                 if (window.innerWidth < 1024) setIsSidebarOpen(true);
                                 else setIsCollapsed(false);
                             }}
-                            className={`p-2.5 bg-white border border-purple-100 rounded-xl text-purple-600 shadow-sm hover:bg-purple-50 transition-colors hover:scale-105 active:scale-95 ${!isCollapsed ? 'lg:hidden' : ''}`}
+                            className={`p-2.5 bg-white dark:bg-gray-800 border border-purple-100 rounded-xl text-purple-600 dark:text-purple-400 shadow-sm hover:bg-purple-50 dark:bg-purple-900/20 transition-colors hover:scale-105 active:scale-95 ${!isCollapsed ? 'lg:hidden' : ''}`}
                         >
                             <Menu size={20} />
                         </button>
@@ -436,7 +436,7 @@ function AdminDashboard() {
                     </div>
                     
                     <div className="flex items-center gap-3">
-                        <div className="bg-white border border-purple-100 rounded-xl p-1 shadow-sm flex items-center">
+                        <div className="bg-white dark:bg-gray-800 border border-purple-100 rounded-xl p-1 shadow-sm flex items-center">
                             <span className="pl-3 pr-2 text-xs font-semibold text-gray-400 tracking-wider">REGION</span>
                             <select 
                                 value={adminRegion}
@@ -458,34 +458,34 @@ function AdminDashboard() {
                         <h2 className="text-3xl font-heading font-bold mb-8 bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">Overview</h2>
                         {/* Stats Grid */}
                         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                            <div className="group bg-white/80 backdrop-blur-sm p-7 rounded-2xl shadow-lg shadow-purple-500/10 cursor-pointer hover:shadow-2xl hover:shadow-purple-500/20 hover:-translate-y-1 transition-all duration-300 border border-purple-100/50" onClick={() => setActiveTab('events')}>
-                                <div className="flex items-center justify-between"><div><p className="text-purple-600/70 text-sm font-semibold uppercase tracking-wide">Total Events</p><p className="text-4xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mt-3">{analytics.totalEvents}</p><p className="text-xs text-gray-600 mt-2 font-medium">{analytics.publishedEvents} published</p></div><div className="p-4 bg-gradient-to-br from-purple-500/10 to-pink-500/10 rounded-2xl group-hover:scale-110 transition-transform"><Calendar className="text-purple-600" size={36} /></div></div>
+                            <div className="group bg-white dark:bg-gray-800/80 backdrop-blur-sm p-7 rounded-2xl shadow-lg shadow-purple-500/10 cursor-pointer hover:shadow-2xl hover:shadow-purple-500/20 hover:-translate-y-1 transition-all duration-300 border border-purple-100/50" onClick={() => setActiveTab('events')}>
+                                <div className="flex items-center justify-between"><div><p className="text-purple-600 dark:text-purple-400/70 text-sm font-semibold uppercase tracking-wide">Total Events</p><p className="text-4xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mt-3">{analytics.totalEvents}</p><p className="text-xs text-gray-600 dark:text-gray-300 mt-2 font-medium">{analytics.publishedEvents} published</p></div><div className="p-4 bg-gradient-to-br from-purple-500/10 to-pink-500/10 rounded-2xl group-hover:scale-110 transition-transform"><Calendar className="text-purple-600 dark:text-purple-400" size={36} /></div></div>
                             </div>
-                            <div className="group bg-white/80 backdrop-blur-sm p-7 rounded-2xl shadow-lg shadow-purple-500/10 cursor-pointer hover:shadow-2xl hover:shadow-purple-500/20 hover:-translate-y-1 transition-all duration-300 border border-purple-100/50" onClick={() => setActiveTab('partners')}>
-                                <div className="flex items-center justify-between"><div><p className="text-purple-600/70 text-sm font-semibold uppercase tracking-wide">Partners</p><p className="text-4xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mt-3">{analytics.totalPartners}</p><p className="text-xs text-gray-600 mt-2 font-medium">Active partnerships</p></div><div className="p-4 bg-gradient-to-br from-purple-500/10 to-pink-500/10 rounded-2xl group-hover:scale-110 transition-transform"><Briefcase className="text-purple-600" size={36} /></div></div>
+                            <div className="group bg-white dark:bg-gray-800/80 backdrop-blur-sm p-7 rounded-2xl shadow-lg shadow-purple-500/10 cursor-pointer hover:shadow-2xl hover:shadow-purple-500/20 hover:-translate-y-1 transition-all duration-300 border border-purple-100/50" onClick={() => setActiveTab('partners')}>
+                                <div className="flex items-center justify-between"><div><p className="text-purple-600 dark:text-purple-400/70 text-sm font-semibold uppercase tracking-wide">Partners</p><p className="text-4xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mt-3">{analytics.totalPartners}</p><p className="text-xs text-gray-600 dark:text-gray-300 mt-2 font-medium">Active partnerships</p></div><div className="p-4 bg-gradient-to-br from-purple-500/10 to-pink-500/10 rounded-2xl group-hover:scale-110 transition-transform"><Briefcase className="text-purple-600 dark:text-purple-400" size={36} /></div></div>
                             </div>
-                            <div className="group bg-white/80 backdrop-blur-sm p-7 rounded-2xl shadow-lg shadow-orange-500/10 cursor-pointer hover:shadow-2xl hover:shadow-orange-500/20 hover:-translate-y-1 transition-all duration-300 border border-orange-100/50" onClick={() => setActiveTab('testimonials')}>
-                                <div className="flex items-center justify-between"><div><p className="text-orange-600/70 text-sm font-semibold uppercase tracking-wide">Testimonials</p><p className="text-4xl font-bold bg-gradient-to-r from-orange-500 to-pink-600 bg-clip-text text-transparent mt-3">{analytics.totalTestimonials}</p><p className="text-xs text-gray-600 mt-2 font-medium">{analytics.approvedTestimonials} approved</p></div><div className="p-4 bg-gradient-to-br from-orange-500/10 to-pink-500/10 rounded-2xl group-hover:scale-110 transition-transform"><MessageSquare className="text-orange-600" size={36} /></div></div>
+                            <div className="group bg-white dark:bg-gray-800/80 backdrop-blur-sm p-7 rounded-2xl shadow-lg shadow-orange-500/10 cursor-pointer hover:shadow-2xl hover:shadow-orange-500/20 hover:-translate-y-1 transition-all duration-300 border border-orange-100/50" onClick={() => setActiveTab('testimonials')}>
+                                <div className="flex items-center justify-between"><div><p className="text-orange-600/70 text-sm font-semibold uppercase tracking-wide">Testimonials</p><p className="text-4xl font-bold bg-gradient-to-r from-orange-500 to-pink-600 bg-clip-text text-transparent mt-3">{analytics.totalTestimonials}</p><p className="text-xs text-gray-600 dark:text-gray-300 mt-2 font-medium">{analytics.approvedTestimonials} approved</p></div><div className="p-4 bg-gradient-to-br from-orange-500/10 to-pink-500/10 rounded-2xl group-hover:scale-110 transition-transform"><MessageSquare className="text-orange-600" size={36} /></div></div>
                             </div>
-                            <div className="group bg-white/80 backdrop-blur-sm p-7 rounded-2xl shadow-lg shadow-purple-500/10 cursor-pointer hover:shadow-2xl hover:shadow-purple-500/20 hover:-translate-y-1 transition-all duration-300 border border-purple-100/50" onClick={() => setActiveTab('volunteers')}>
-                                <div className="flex items-center justify-between"><div><p className="text-purple-600/70 text-sm font-semibold uppercase tracking-wide">Volunteers</p><p className="text-4xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mt-3">{analytics.volunteerApplications.total}</p><p className="text-xs text-gray-600 mt-2 font-medium">{analytics.volunteerApplications.pending} pending</p></div><div className="p-4 bg-gradient-to-br from-purple-500/10 to-pink-500/10 rounded-2xl group-hover:scale-110 transition-transform"><Users className="text-purple-600" size={36} /></div></div>
+                            <div className="group bg-white dark:bg-gray-800/80 backdrop-blur-sm p-7 rounded-2xl shadow-lg shadow-purple-500/10 cursor-pointer hover:shadow-2xl hover:shadow-purple-500/20 hover:-translate-y-1 transition-all duration-300 border border-purple-100/50" onClick={() => setActiveTab('volunteers')}>
+                                <div className="flex items-center justify-between"><div><p className="text-purple-600 dark:text-purple-400/70 text-sm font-semibold uppercase tracking-wide">Volunteers</p><p className="text-4xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mt-3">{analytics.volunteerApplications.total}</p><p className="text-xs text-gray-600 dark:text-gray-300 mt-2 font-medium">{analytics.volunteerApplications.pending} pending</p></div><div className="p-4 bg-gradient-to-br from-purple-500/10 to-pink-500/10 rounded-2xl group-hover:scale-110 transition-transform"><Users className="text-purple-600 dark:text-purple-400" size={36} /></div></div>
                             </div>
                         </div>
                         {/* Recent Activity */}
                         <div className="grid md:grid-cols-2 gap-6">
-                            <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg shadow-purple-500/10 p-7 border border-purple-100/50">
+                            <div className="bg-white dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl shadow-lg shadow-purple-500/10 p-7 border border-purple-100/50">
                                 <h3 className="text-xl font-heading font-bold mb-6 bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">Support Forms Status</h3>
                                 <div className="space-y-4">
-                                    <div className="flex items-center justify-between p-4 bg-gradient-to-r from-purple-50 to-pink-50/50 rounded-xl border border-purple-100/50 hover:shadow-md transition-shadow"><div className="flex items-center gap-3"><div className="p-2 bg-white rounded-lg shadow-sm"><CheckCircle className="text-purple-600" size={22} /></div><span className="font-semibold text-gray-700">Resolved</span></div><span className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">{analytics.supportForms.resolved}</span></div>
-                                    <div className="flex items-center justify-between p-4 bg-gradient-to-r from-orange-50 to-pink-50/50 rounded-xl border border-orange-100/50 hover:shadow-md transition-shadow"><div className="flex items-center gap-3"><div className="p-2 bg-white rounded-lg shadow-sm"><Clock className="text-orange-600" size={22} /></div><span className="font-semibold text-gray-700">In Progress</span></div><span className="text-3xl font-bold bg-gradient-to-r from-orange-500 to-pink-600 bg-clip-text text-transparent">{analytics.supportForms.inProgress}</span></div>
-                                    <div className="flex items-center justify-between p-4 bg-gradient-to-r from-purple-50 to-pink-50/50 rounded-xl border border-purple-100/50 hover:shadow-md transition-shadow"><div className="flex items-center gap-3"><div className="p-2 bg-white rounded-lg shadow-sm"><FileText className="text-purple-600" size={22} /></div><span className="font-semibold text-gray-700">New</span></div><span className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">{analytics.supportForms.new}</span></div>
+                                    <div className="flex items-center justify-between p-4 bg-gradient-to-r from-purple-50 to-pink-50/50 rounded-xl border border-purple-100/50 hover:shadow-md transition-shadow"><div className="flex items-center gap-3"><div className="p-2 bg-white dark:bg-gray-800 rounded-lg shadow-sm"><CheckCircle className="text-purple-600 dark:text-purple-400" size={22} /></div><span className="font-semibold text-gray-700 dark:text-gray-200">Resolved</span></div><span className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">{analytics.supportForms.resolved}</span></div>
+                                    <div className="flex items-center justify-between p-4 bg-gradient-to-r from-orange-50 to-pink-50/50 rounded-xl border border-orange-100/50 hover:shadow-md transition-shadow"><div className="flex items-center gap-3"><div className="p-2 bg-white dark:bg-gray-800 rounded-lg shadow-sm"><Clock className="text-orange-600" size={22} /></div><span className="font-semibold text-gray-700 dark:text-gray-200">In Progress</span></div><span className="text-3xl font-bold bg-gradient-to-r from-orange-500 to-pink-600 bg-clip-text text-transparent">{analytics.supportForms.inProgress}</span></div>
+                                    <div className="flex items-center justify-between p-4 bg-gradient-to-r from-purple-50 to-pink-50/50 rounded-xl border border-purple-100/50 hover:shadow-md transition-shadow"><div className="flex items-center gap-3"><div className="p-2 bg-white dark:bg-gray-800 rounded-lg shadow-sm"><FileText className="text-purple-600 dark:text-purple-400" size={22} /></div><span className="font-semibold text-gray-700 dark:text-gray-200">New</span></div><span className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">{analytics.supportForms.new}</span></div>
                                 </div>
                             </div>
-                            <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg shadow-purple-500/10 p-7 border border-purple-100/50">
+                            <div className="bg-white dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl shadow-lg shadow-purple-500/10 p-7 border border-purple-100/50">
                                 <h3 className="text-xl font-heading font-bold mb-6 bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">Volunteer Applications</h3>
                                 <div className="space-y-4">
-                                    <div className="flex items-center justify-between p-4 bg-gradient-to-r from-purple-50 to-pink-50/50 rounded-xl border border-purple-100/50 hover:shadow-md transition-shadow"><div className="flex items-center gap-3"><div className="p-2 bg-white rounded-lg shadow-sm"><CheckCircle className="text-purple-600" size={22} /></div><span className="font-semibold text-gray-700">Approved</span></div><span className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">{analytics.volunteerApplications.approved}</span></div>
-                                    <div className="flex items-center justify-between p-4 bg-gradient-to-r from-orange-50 to-pink-50/50 rounded-xl border border-orange-100/50 hover:shadow-md transition-shadow"><div className="flex items-center gap-3"><div className="p-2 bg-white rounded-lg shadow-sm"><Clock className="text-orange-600" size={22} /></div><span className="font-semibold text-gray-700">Pending Review</span></div><span className="text-3xl font-bold bg-gradient-to-r from-orange-500 to-pink-600 bg-clip-text text-transparent">{analytics.volunteerApplications.pending}</span></div>
+                                    <div className="flex items-center justify-between p-4 bg-gradient-to-r from-purple-50 to-pink-50/50 rounded-xl border border-purple-100/50 hover:shadow-md transition-shadow"><div className="flex items-center gap-3"><div className="p-2 bg-white dark:bg-gray-800 rounded-lg shadow-sm"><CheckCircle className="text-purple-600 dark:text-purple-400" size={22} /></div><span className="font-semibold text-gray-700 dark:text-gray-200">Approved</span></div><span className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">{analytics.volunteerApplications.approved}</span></div>
+                                    <div className="flex items-center justify-between p-4 bg-gradient-to-r from-orange-50 to-pink-50/50 rounded-xl border border-orange-100/50 hover:shadow-md transition-shadow"><div className="flex items-center gap-3"><div className="p-2 bg-white dark:bg-gray-800 rounded-lg shadow-sm"><Clock className="text-orange-600" size={22} /></div><span className="font-semibold text-gray-700 dark:text-gray-200">Pending Review</span></div><span className="text-3xl font-bold bg-gradient-to-r from-orange-500 to-pink-600 bg-clip-text text-transparent">{analytics.volunteerApplications.pending}</span></div>
                                 </div>
                             </div>
                         </div>
@@ -496,23 +496,23 @@ function AdminDashboard() {
                     <div>
                         <div className="flex justify-between items-center mb-6">
                             <h2 className="text-3xl font-heading font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">Content Management</h2>
-                            {adminRegion !== 'global' && <span className="bg-purple-100 text-purple-700 text-xs font-bold px-3 py-1 rounded-full uppercase">Filtering by: {adminRegion}</span>}
+                            {adminRegion !== 'global' && <span className="bg-purple-100 dark:bg-purple-900/30 text-purple-700 text-xs font-bold px-3 py-1 rounded-full uppercase">Filtering by: {adminRegion}</span>}
                         </div>
                         <div className="grid md:grid-cols-2 gap-6">
                             {contentSections
                                 .filter(s => adminRegion === 'global' || s.region === 'global' || s.region === adminRegion)
                                 .map(section => (
-                                <div key={section.id} className="group bg-white/80 backdrop-blur-sm p-7 rounded-2xl shadow-lg shadow-purple-500/10 hover:shadow-2xl hover:shadow-purple-500/20 hover:-translate-y-1 transition-all duration-300 border border-purple-100/50">
+                                <div key={section.id} className="group bg-white dark:bg-gray-800/80 backdrop-blur-sm p-7 rounded-2xl shadow-lg shadow-purple-500/10 hover:shadow-2xl hover:shadow-purple-500/20 hover:-translate-y-1 transition-all duration-300 border border-purple-100/50">
                                     <div className="flex justify-between items-start">
                                         <div>
                                             <div className="flex items-center gap-2">
-                                                <div className="uppercase tracking-wide text-xs text-purple-600 font-bold">{section.key.replace('_', ' ')}</div>
-                                                <span className="text-[10px] bg-gray-100 text-gray-500 px-2 py-0.5 rounded-full uppercase">{section.region}</span>
+                                                <div className="uppercase tracking-wide text-xs text-purple-600 dark:text-purple-400 font-bold">{section.section_key?.replace('_', ' ')}</div>
+                                                <span className="text-[10px] bg-gray-100 text-gray-500 dark:text-gray-400 px-2 py-0.5 rounded-full uppercase">{section.region}</span>
                                             </div>
-                                            <h3 className="mt-3 text-xl font-bold text-gray-900">{section.section_title}</h3>
-                                            <p className="mt-3 text-gray-600 text-sm line-clamp-2">Click edit to manage textual content and configuration.</p>
+                                            <h3 className="mt-3 text-xl font-bold text-gray-900 dark:text-white">{section.section_title}</h3>
+                                            <p className="mt-3 text-gray-600 dark:text-gray-300 text-sm line-clamp-2">{section.content_text || 'Click edit to manage textual content and configuration.'}</p>
                                         </div>
-                                        <button onClick={() => openModal('edit_content', section)} className="p-3 text-purple-600 hover:bg-purple-50 rounded-xl transition-colors group-hover:scale-110"><Edit2 size={20} /></button>
+                                        <button onClick={() => openModal('edit_content', section)} className="p-3 text-purple-600 dark:text-purple-400 hover:bg-purple-50 dark:bg-purple-900/20 rounded-xl transition-colors group-hover:scale-110"><Edit2 size={20} /></button>
                                     </div>
                                 </div>
                             ))}
@@ -533,35 +533,35 @@ function AdminDashboard() {
                 {activeTab === 'events' && (
                     <div>
                         <div className="flex justify-between items-center mb-6"><h2 className="text-3xl font-heading font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">Events Management</h2><button onClick={() => openModal('create_event')} className="bg-gradient-to-r from-purple-600 to-pink-600 text-white px-6 py-3 rounded-xl hover:shadow-xl hover:scale-105 transition-all duration-300 flex items-center gap-2 font-semibold"><Plus size={20} /> Create Event</button></div>
-                        <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg shadow-purple-500/10 overflow-hidden border border-purple-100/50"><div className="overflow-x-auto"><table className="w-full text-left"><thead className="bg-gradient-to-r from-purple-50/80 to-pink-50/50 text-purple-700 uppercase text-xs font-bold border-b border-purple-200/50"><tr><th className="px-6 py-4">Title</th><th className="px-6 py-4">Date</th><th className="px-6 py-4">Location</th><th className="px-6 py-4">Status</th><th className="px-6 py-4 text-right">Actions</th></tr></thead><tbody className="divide-y divide-purple-100/30">{events.length === 0 ? (<tr><td colSpan="5" className="px-6 py-12 text-center text-gray-500">No events found. Create your first event!</td></tr>) : (events.filter(e => adminRegion === 'global' || e.region === 'global' || e.region === adminRegion).map((event) => (<tr key={event.id} className="hover:bg-purple-50/30 transition-colors"><td className="px-6 py-4"><div className="font-semibold text-gray-900">{event.title} <span className="ml-2 text-[10px] bg-gray-100 text-gray-500 px-2 py-0.5 rounded-full uppercase">{event.region}</span></div><div className="text-xs text-purple-600 capitalize font-medium">{event.event_type}</div></td><td className="px-6 py-4 text-gray-700 font-medium">{new Date(event.event_date).toLocaleDateString()}</td><td className="px-6 py-4 text-gray-600 text-sm">{event.location}</td><td className="px-6 py-4"><span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold ${event.is_published ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white' : 'bg-gray-200 text-gray-700'}`}>{event.is_published ? 'Published' : 'Draft'}</span></td><td className="px-6 py-4 text-right flex justify-end gap-3"><button onClick={() => openModal('edit_event', event)} className="text-purple-600 hover:text-purple-800 hover:scale-110 transition-transform" title="Edit"><Edit2 size={18} /></button>{user.role === 'super_admin' && <button onClick={() => handleDelete(adminAPI.deleteEvent, event.id, fetchEvents, 'event')} className="text-red-600 hover:text-red-800 hover:scale-110 transition-transform" title="Delete"><Trash2 size={18} /></button>}</td></tr>)))}</tbody></table></div></div>
+                        <div className="bg-white dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl shadow-lg shadow-purple-500/10 overflow-hidden border border-purple-100/50"><div className="overflow-x-auto"><table className="w-full text-left"><thead className="bg-gradient-to-r from-purple-50/80 to-pink-50/50 text-purple-700 uppercase text-xs font-bold border-b border-purple-200/50"><tr><th className="px-6 py-4">Title</th><th className="px-6 py-4">Date</th><th className="px-6 py-4">Location</th><th className="px-6 py-4">Status</th><th className="px-6 py-4 text-right">Actions</th></tr></thead><tbody className="divide-y divide-purple-100/30">{events.length === 0 ? (<tr><td colSpan="5" className="px-6 py-12 text-center text-gray-500 dark:text-gray-400">No events found. Create your first event!</td></tr>) : (events.filter(e => adminRegion === 'global' || e.region === 'global' || e.region === adminRegion).map((event) => (<tr key={event.id} className="hover:bg-purple-50 dark:bg-purple-900/20/30 transition-colors"><td className="px-6 py-4"><div className="font-semibold text-gray-900 dark:text-white">{event.title} <span className="ml-2 text-[10px] bg-gray-100 text-gray-500 dark:text-gray-400 px-2 py-0.5 rounded-full uppercase">{event.region}</span></div><div className="text-xs text-purple-600 dark:text-purple-400 capitalize font-medium">{event.event_type}</div></td><td className="px-6 py-4 text-gray-700 dark:text-gray-200 font-medium">{new Date(event.event_date).toLocaleDateString()}</td><td className="px-6 py-4 text-gray-600 dark:text-gray-300 text-sm">{event.location}</td><td className="px-6 py-4"><span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold ${event.is_published ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white' : 'bg-gray-200 text-gray-700 dark:text-gray-200'}`}>{event.is_published ? 'Published' : 'Draft'}</span></td><td className="px-6 py-4 text-right flex justify-end gap-3"><button onClick={() => openModal('edit_event', event)} className="text-purple-600 dark:text-purple-400 hover:text-purple-800 hover:scale-110 transition-transform" title="Edit"><Edit2 size={18} /></button>{user.role === 'super_admin' && <button onClick={() => handleDelete(adminAPI.deleteEvent, event.id, fetchEvents, 'event')} className="text-red-600 hover:text-red-800 hover:scale-110 transition-transform" title="Delete"><Trash2 size={18} /></button>}</td></tr>)))}</tbody></table></div></div>
                     </div>
                 )}
 
                 {activeTab === 'partners' && (
                     <div>
                         <div className="flex justify-between items-center mb-6"><h2 className="text-3xl font-heading font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">Partners Management</h2><button onClick={() => openModal('create_partner')} className="bg-gradient-to-r from-purple-600 to-pink-600 text-white px-6 py-3 rounded-xl hover:shadow-xl hover:scale-105 transition-all duration-300 flex items-center gap-2 font-semibold"><Plus size={20} /> Add Partner</button></div>
-                        <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg shadow-purple-500/10 overflow-hidden border border-purple-100/50"><div className="overflow-x-auto"><table className="w-full text-left"><thead className="bg-gradient-to-r from-purple-50/80 to-pink-50/50 text-purple-700 uppercase text-xs font-bold border-b border-purple-200/50"><tr><th className="px-6 py-4">Name</th><th className="px-6 py-4">Type</th><th className="px-6 py-4">Website</th><th className="px-6 py-4">Status</th><th className="px-6 py-4 text-right">Actions</th></tr></thead><tbody className="divide-y divide-purple-100/30">{partners.length === 0 ? (<tr><td colSpan="5" className="px-6 py-12 text-center text-gray-500">No partners found. Add your first partner!</td></tr>) : (partners.filter(p => adminRegion === 'global' || p.region === 'global' || p.region === adminRegion).map((partner) => (<tr key={partner.id} className="hover:bg-purple-50/30 transition-colors"><td className="px-6 py-4 hover:text-purple-600 cursor-pointer font-medium" onClick={() => openModal('edit_partner', partner)}><div className="flex items-center gap-3">{partner.logo_url && <img src={partner.logo_url} alt={partner.name} className="h-10 w-10 object-contain rounded-lg border border-purple-100" />}<span className="font-semibold text-gray-900">{partner.name} <span className="ml-2 text-[10px] bg-gray-100 text-gray-500 px-2 py-0.5 rounded-full uppercase">{partner.region}</span></span></div></td><td className="px-6 py-4 text-gray-700 capitalize font-medium">{partner.type}</td><td className="px-6 py-4 text-gray-600 text-sm">{partner.website ? <a href={partner.website} target="_blank" rel="noreferrer" className="text-purple-600 hover:text-purple-800 hover:underline font-medium">Visit Link</a> : '-'}</td><td className="px-6 py-4"><span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold ${partner.is_active ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white' : 'bg-red-100 text-red-700'}`}>{partner.is_active ? 'Active' : 'Inactive'}</span></td><td className="px-6 py-4 text-right flex justify-end gap-3"><button onClick={() => openModal('edit_partner', partner)} className="text-purple-600 hover:text-purple-800 hover:scale-110 transition-transform" title="Edit"><Edit2 size={18} /></button>{user.role === 'super_admin' && <button onClick={() => handleDelete(adminAPI.deletePartner, partner.id, fetchPartners, 'partner')} className="text-red-600 hover:text-red-800 hover:scale-110 transition-transform" title="Delete"><Trash2 size={18} /></button>}</td></tr>)))}</tbody></table></div></div>
+                        <div className="bg-white dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl shadow-lg shadow-purple-500/10 overflow-hidden border border-purple-100/50"><div className="overflow-x-auto"><table className="w-full text-left"><thead className="bg-gradient-to-r from-purple-50/80 to-pink-50/50 text-purple-700 uppercase text-xs font-bold border-b border-purple-200/50"><tr><th className="px-6 py-4">Name</th><th className="px-6 py-4">Type</th><th className="px-6 py-4">Website</th><th className="px-6 py-4">Status</th><th className="px-6 py-4 text-right">Actions</th></tr></thead><tbody className="divide-y divide-purple-100/30">{partners.length === 0 ? (<tr><td colSpan="5" className="px-6 py-12 text-center text-gray-500 dark:text-gray-400">No partners found. Add your first partner!</td></tr>) : (partners.filter(p => adminRegion === 'global' || p.region === 'global' || p.region === adminRegion).map((partner) => (<tr key={partner.id} className="hover:bg-purple-50 dark:bg-purple-900/20/30 transition-colors"><td className="px-6 py-4 hover:text-purple-600 dark:text-purple-400 cursor-pointer font-medium" onClick={() => openModal('edit_partner', partner)}><div className="flex items-center gap-3">{partner.logo_url && <img src={partner.logo_url} alt={partner.name} className="h-10 w-10 object-contain rounded-lg border border-purple-100" />}<span className="font-semibold text-gray-900 dark:text-white">{partner.name} <span className="ml-2 text-[10px] bg-gray-100 text-gray-500 dark:text-gray-400 px-2 py-0.5 rounded-full uppercase">{partner.region}</span></span></div></td><td className="px-6 py-4 text-gray-700 dark:text-gray-200 capitalize font-medium">{partner.type}</td><td className="px-6 py-4 text-gray-600 dark:text-gray-300 text-sm">{partner.website ? <a href={partner.website} target="_blank" rel="noreferrer" className="text-purple-600 dark:text-purple-400 hover:text-purple-800 hover:underline font-medium">Visit Link</a> : '-'}</td><td className="px-6 py-4"><span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold ${partner.is_active ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white' : 'bg-red-100 text-red-700'}`}>{partner.is_active ? 'Active' : 'Inactive'}</span></td><td className="px-6 py-4 text-right flex justify-end gap-3"><button onClick={() => openModal('edit_partner', partner)} className="text-purple-600 dark:text-purple-400 hover:text-purple-800 hover:scale-110 transition-transform" title="Edit"><Edit2 size={18} /></button>{user.role === 'super_admin' && <button onClick={() => handleDelete(adminAPI.deletePartner, partner.id, fetchPartners, 'partner')} className="text-red-600 hover:text-red-800 hover:scale-110 transition-transform" title="Delete"><Trash2 size={18} /></button>}</td></tr>)))}</tbody></table></div></div>
                     </div>
                 )}
 
                 {activeTab === 'testimonials' && (
                     <div>
                         <div className="flex justify-between items-center mb-6"><h2 className="text-3xl font-heading font-bold bg-gradient-to-r from-orange-500 to-pink-600 bg-clip-text text-transparent">Testimonials Management</h2><button onClick={() => openModal('create_testimonial')} className="bg-gradient-to-r from-orange-500 to-pink-600 text-white px-6 py-3 rounded-xl hover:shadow-xl hover:scale-105 transition-all duration-300 flex items-center gap-2 font-semibold"><Plus size={20} /> Add Testimonial</button></div>
-                        <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg shadow-orange-500/10 overflow-hidden border border-orange-100/50"><div className="overflow-x-auto"><table className="w-full text-left"><thead className="bg-gradient-to-r from-orange-50/80 to-pink-50/50 text-orange-700 uppercase text-xs font-bold border-b border-orange-200/50"><tr><th className="px-6 py-4">Author</th><th className="px-6 py-4">Role</th><th className="px-6 py-4">Rating</th><th className="px-6 py-4">Status</th><th className="px-6 py-4 text-right">Actions</th></tr></thead><tbody className="divide-y divide-orange-100/30">{testimonials.length === 0 ? (<tr><td colSpan="5" className="px-6 py-12 text-center text-gray-500">No testimonials found.</td></tr>) : (testimonials.filter(t => adminRegion === 'global' || t.region === 'global' || t.region === adminRegion).map((test) => (<tr key={test.id} className="hover:bg-orange-50/30 transition-colors"><td className="px-6 py-4"><div className="flex items-center gap-3">{test.photo_url && <img src={test.photo_url} alt={test.author_name} className="h-10 w-10 object-cover rounded-full border-2 border-orange-200" />}<div className="font-semibold text-gray-900">{test.author_name} <span className="ml-2 text-[10px] bg-gray-100 text-gray-500 px-2 py-0.5 rounded-full uppercase">{test.region}</span></div></div></td><td className="px-6 py-4 text-gray-700 font-medium">{test.author_role}</td><td className="px-6 py-4 text-gray-700 font-bold">{test.rating}/5</td><td className="px-6 py-4"><span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold ${test.is_approved ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}`}>{test.is_approved ? 'Approved' : 'Pending'}</span>{test.is_featured && <span className="ml-2 inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-blue-100 text-blue-800">Featured</span>}</td><td className="px-6 py-4 text-right flex justify-end gap-3"><button onClick={() => openModal('edit_testimonial', test)} className="text-orange-600 hover:text-orange-800 hover:scale-110 transition-transform" title="Edit"><Edit2 size={18} /></button><button onClick={() => handleDelete(adminAPI.deleteTestimonial, test.id, fetchTestimonials, 'testimonial')} className="text-red-600 hover:text-red-800 hover:scale-110 transition-transform" title="Delete"><Trash2 size={18} /></button></td></tr>)))}</tbody></table></div></div>
+                        <div className="bg-white dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl shadow-lg shadow-orange-500/10 overflow-hidden border border-orange-100/50"><div className="overflow-x-auto"><table className="w-full text-left"><thead className="bg-gradient-to-r from-orange-50/80 to-pink-50/50 text-orange-700 uppercase text-xs font-bold border-b border-orange-200/50"><tr><th className="px-6 py-4">Author</th><th className="px-6 py-4">Role</th><th className="px-6 py-4">Rating</th><th className="px-6 py-4">Status</th><th className="px-6 py-4 text-right">Actions</th></tr></thead><tbody className="divide-y divide-orange-100/30">{testimonials.length === 0 ? (<tr><td colSpan="5" className="px-6 py-12 text-center text-gray-500 dark:text-gray-400">No testimonials found.</td></tr>) : (testimonials.filter(t => adminRegion === 'global' || t.region === 'global' || t.region === adminRegion).map((test) => (<tr key={test.id} className="hover:bg-orange-50/30 transition-colors"><td className="px-6 py-4"><div className="flex items-center gap-3">{test.photo_url && <img src={test.photo_url} alt={test.author_name} className="h-10 w-10 object-cover rounded-full border-2 border-orange-200" />}<div className="font-semibold text-gray-900 dark:text-white">{test.author_name} <span className="ml-2 text-[10px] bg-gray-100 text-gray-500 dark:text-gray-400 px-2 py-0.5 rounded-full uppercase">{test.region}</span></div></div></td><td className="px-6 py-4 text-gray-700 dark:text-gray-200 font-medium">{test.author_role}</td><td className="px-6 py-4 text-gray-700 dark:text-gray-200 font-bold">{test.rating}/5</td><td className="px-6 py-4"><span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold ${test.is_approved ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}`}>{test.is_approved ? 'Approved' : 'Pending'}</span>{test.is_featured && <span className="ml-2 inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-blue-100 text-blue-800">Featured</span>}</td><td className="px-6 py-4 text-right flex justify-end gap-3"><button onClick={() => openModal('edit_testimonial', test)} className="text-orange-600 hover:text-orange-800 hover:scale-110 transition-transform" title="Edit"><Edit2 size={18} /></button><button onClick={() => handleDelete(adminAPI.deleteTestimonial, test.id, fetchTestimonials, 'testimonial')} className="text-red-600 hover:text-red-800 hover:scale-110 transition-transform" title="Delete"><Trash2 size={18} /></button></td></tr>)))}</tbody></table></div></div>
                     </div>
                 )}
 
                 {activeTab === 'reports' && (
                     <div>
                         <div className="flex justify-between items-center mb-6"><h2 className="text-3xl font-heading font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">Reports Management</h2><button onClick={() => openModal('create_report')} className="bg-gradient-to-r from-purple-600 to-pink-600 text-white px-6 py-3 rounded-xl hover:shadow-xl hover:scale-105 transition-all duration-300 flex items-center gap-2 font-semibold"><Plus size={20} /> Add Report</button></div>
-                        <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg shadow-purple-500/10 overflow-hidden border border-purple-100/50"><div className="overflow-x-auto"><table className="w-full text-left"><thead className="bg-gradient-to-r from-purple-50/80 to-pink-50/50 text-purple-700 uppercase text-xs font-bold border-b border-purple-200/50"><tr><th className="px-6 py-4">Title</th><th className="px-6 py-4">Year</th><th className="px-6 py-4">Downloads</th><th className="px-6 py-4">Status</th><th className="px-6 py-4 text-right">Actions</th></tr></thead><tbody className="divide-y divide-purple-100/30">{reports.length === 0 ? (<tr><td colSpan="5" className="px-6 py-12 text-center text-gray-500">No reports found. Upload your first report!</td></tr>) : (reports.map((report) => (<tr key={report.id} className="hover:bg-purple-50/30 transition-colors"><td className="px-6 py-4"><div className="font-semibold text-gray-900">{report.title}</div></td><td className="px-6 py-4 text-gray-700 font-medium">{report.year}</td><td className="px-6 py-4 text-gray-700 font-medium">{report.downloads || 0}</td><td className="px-6 py-4"><span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold ${report.is_published ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white' : 'bg-gray-200 text-gray-700'}`}>{report.is_published ? 'Published' : 'Draft'}</span></td><td className="px-6 py-4 text-right flex justify-end gap-3"><button onClick={() => openModal('edit_report', report)} className="text-purple-600 hover:text-purple-800 hover:scale-110 transition-transform" title="Edit"><Edit2 size={18} /></button>{user.role === 'super_admin' && <button onClick={() => handleDelete(adminAPI.deleteReport, report.id, fetchReports, 'report')} className="text-red-600 hover:text-red-800 hover:scale-110 transition-transform" title="Delete"><Trash2 size={18} /></button>}</td></tr>)))}</tbody></table></div></div>
+                        <div className="bg-white dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl shadow-lg shadow-purple-500/10 overflow-hidden border border-purple-100/50"><div className="overflow-x-auto"><table className="w-full text-left"><thead className="bg-gradient-to-r from-purple-50/80 to-pink-50/50 text-purple-700 uppercase text-xs font-bold border-b border-purple-200/50"><tr><th className="px-6 py-4">Title</th><th className="px-6 py-4">Year</th><th className="px-6 py-4">Downloads</th><th className="px-6 py-4">Status</th><th className="px-6 py-4 text-right">Actions</th></tr></thead><tbody className="divide-y divide-purple-100/30">{reports.length === 0 ? (<tr><td colSpan="5" className="px-6 py-12 text-center text-gray-500 dark:text-gray-400">No reports found. Upload your first report!</td></tr>) : (reports.map((report) => (<tr key={report.id} className="hover:bg-purple-50 dark:bg-purple-900/20/30 transition-colors"><td className="px-6 py-4"><div className="font-semibold text-gray-900 dark:text-white">{report.title}</div></td><td className="px-6 py-4 text-gray-700 dark:text-gray-200 font-medium">{report.year}</td><td className="px-6 py-4 text-gray-700 dark:text-gray-200 font-medium">{report.downloads || 0}</td><td className="px-6 py-4"><span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold ${report.is_published ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white' : 'bg-gray-200 text-gray-700 dark:text-gray-200'}`}>{report.is_published ? 'Published' : 'Draft'}</span></td><td className="px-6 py-4 text-right flex justify-end gap-3"><button onClick={() => openModal('edit_report', report)} className="text-purple-600 dark:text-purple-400 hover:text-purple-800 hover:scale-110 transition-transform" title="Edit"><Edit2 size={18} /></button>{user.role === 'super_admin' && <button onClick={() => handleDelete(adminAPI.deleteReport, report.id, fetchReports, 'report')} className="text-red-600 hover:text-red-800 hover:scale-110 transition-transform" title="Delete"><Trash2 size={18} /></button>}</td></tr>)))}</tbody></table></div></div>
                     </div>
                 )}
 
                 {activeTab === 'forms' && (
                     <div>
                         <h2 className="text-3xl font-heading font-bold mb-6 bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">Support Forms</h2>
-                        <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg shadow-purple-500/10 overflow-hidden border border-purple-100/50">
+                        <div className="bg-white dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl shadow-lg shadow-purple-500/10 overflow-hidden border border-purple-100/50">
                             <div className="overflow-x-auto">
                                 <table className="w-full text-left">
                                     <thead className="bg-gradient-to-r from-purple-50/80 to-pink-50/50 text-purple-700 uppercase text-xs font-bold border-b border-purple-200/50">
@@ -575,15 +575,15 @@ function AdminDashboard() {
                                     </thead>
                                     <tbody className="divide-y divide-purple-100/30">
                                         {supportForms.length === 0 ? (
-                                            <tr><td colSpan="5" className="px-6 py-12 text-center text-gray-500">No support forms submitted yet.</td></tr>
+                                            <tr><td colSpan="5" className="px-6 py-12 text-center text-gray-500 dark:text-gray-400">No support forms submitted yet.</td></tr>
                                         ) : (
                                             supportForms.map((form) => (
-                                                <tr key={form.id} className="hover:bg-purple-50/30 transition-colors">
+                                                <tr key={form.id} className="hover:bg-purple-50 dark:bg-purple-900/20/30 transition-colors">
                                                     <td className="px-6 py-4">
-                                                        <div className="font-semibold text-gray-900">{form.name}</div>
-                                                        <div className="text-xs text-purple-600 font-medium">{form.email}</div>
+                                                        <div className="font-semibold text-gray-900 dark:text-white">{form.name}</div>
+                                                        <div className="text-xs text-purple-600 dark:text-purple-400 font-medium">{form.email}</div>
                                                     </td>
-                                                    <td className="px-6 py-4 text-gray-700 whitespace-nowrap overflow-hidden text-ellipsis max-w-[200px]">{form.subject}</td>
+                                                    <td className="px-6 py-4 text-gray-700 dark:text-gray-200 whitespace-nowrap overflow-hidden text-ellipsis max-w-[200px]">{form.subject}</td>
                                                     <td className="px-6 py-4">
                                                         <select
                                                             value={form.status}
@@ -599,9 +599,9 @@ function AdminDashboard() {
                                                             <option value="resolved">Resolved</option>
                                                         </select>
                                                     </td>
-                                                    <td className="px-6 py-4 text-sm text-gray-500">{new Date(form.created_at).toLocaleDateString()}</td>
+                                                    <td className="px-6 py-4 text-sm text-gray-500 dark:text-gray-400">{new Date(form.created_at).toLocaleDateString()}</td>
                                                     <td className="px-6 py-4 text-right flex justify-end gap-3">
-                                                        <button onClick={() => alert(`Message from ${form.name}:\n\n${form.message}`)} className="text-purple-600 hover:text-purple-800 hover:scale-110 transition-transform bg-purple-100 px-3 py-1 rounded-lg text-xs font-bold">View Message</button>
+                                                        <button onClick={() => alert(`Message from ${form.name}:\n\n${form.message}`)} className="text-purple-600 dark:text-purple-400 hover:text-purple-800 hover:scale-110 transition-transform bg-purple-100 dark:bg-purple-900/30 px-3 py-1 rounded-lg text-xs font-bold">View Message</button>
                                                     </td>
                                                 </tr>
                                             ))
@@ -616,7 +616,7 @@ function AdminDashboard() {
                 {activeTab === 'volunteers' && (
                     <div>
                         <h2 className="text-3xl font-heading font-bold mb-6 bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">Volunteer Applications</h2>
-                        <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg shadow-purple-500/10 overflow-hidden border border-purple-100/50">
+                        <div className="bg-white dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl shadow-lg shadow-purple-500/10 overflow-hidden border border-purple-100/50">
                             <div className="overflow-x-auto">
                                 <table className="w-full text-left">
                                     <thead className="bg-gradient-to-r from-purple-50/80 to-pink-50/50 text-purple-700 uppercase text-xs font-bold border-b border-purple-200/50">
@@ -630,17 +630,17 @@ function AdminDashboard() {
                                     </thead>
                                     <tbody className="divide-y divide-purple-100/30">
                                         {volunteerApplications.length === 0 ? (
-                                            <tr><td colSpan="5" className="px-6 py-12 text-center text-gray-500">No volunteer applications yet.</td></tr>
+                                            <tr><td colSpan="5" className="px-6 py-12 text-center text-gray-500 dark:text-gray-400">No volunteer applications yet.</td></tr>
                                         ) : (
                                             volunteerApplications.map((app) => (
-                                                <tr key={app.id} className="hover:bg-purple-50/30 transition-colors">
+                                                <tr key={app.id} className="hover:bg-purple-50 dark:bg-purple-900/20/30 transition-colors">
                                                     <td className="px-6 py-4">
-                                                        <div className="font-semibold text-gray-900">{app.first_name} {app.last_name}</div>
-                                                        <div className="text-xs text-purple-600 font-medium">{app.email}</div>
+                                                        <div className="font-semibold text-gray-900 dark:text-white">{app.first_name} {app.last_name}</div>
+                                                        <div className="text-xs text-purple-600 dark:text-purple-400 font-medium">{app.email}</div>
                                                     </td>
                                                     <td className="px-6 py-4">
-                                                        <div className="text-sm font-medium text-gray-700 capitalize">{app.preferred_role?.replace('_', ' ') || 'General'}</div>
-                                                        <div className="text-xs text-gray-500">{app.availability || 'Not specified'}</div>
+                                                        <div className="text-sm font-medium text-gray-700 dark:text-gray-200 capitalize">{app.preferred_role?.replace('_', ' ') || 'General'}</div>
+                                                        <div className="text-xs text-gray-500 dark:text-gray-400">{app.availability || 'Not specified'}</div>
                                                     </td>
                                                     <td className="px-6 py-4">
                                                         <select
@@ -657,9 +657,9 @@ function AdminDashboard() {
                                                             <option value="rejected">Rejected</option>
                                                         </select>
                                                     </td>
-                                                    <td className="px-6 py-4 text-sm text-gray-500">{new Date(app.created_at).toLocaleDateString()}</td>
+                                                    <td className="px-6 py-4 text-sm text-gray-500 dark:text-gray-400">{new Date(app.created_at).toLocaleDateString()}</td>
                                                     <td className="px-6 py-4 text-right flex justify-end gap-3">
-                                                        <button onClick={() => alert(`Experience/Motivation:\n\n${app.experience || app.motivation || 'None provided'}`)} className="text-purple-600 hover:text-purple-800 hover:scale-110 transition-transform bg-purple-100 px-3 py-1 rounded-lg text-xs font-bold">View Details</button>
+                                                        <button onClick={() => alert(`Experience/Motivation:\n\n${app.experience || app.motivation || 'None provided'}`)} className="text-purple-600 dark:text-purple-400 hover:text-purple-800 hover:scale-110 transition-transform bg-purple-100 dark:bg-purple-900/30 px-3 py-1 rounded-lg text-xs font-bold">View Details</button>
                                                     </td>
                                                 </tr>
                                             ))
@@ -680,16 +680,16 @@ function AdminDashboard() {
                                 <Plus size={20} /> Add Member
                             </button>
                         </div>
-                        <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg shadow-purple-500/10 overflow-hidden border border-purple-100/50">
+                        <div className="bg-white dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl shadow-lg shadow-purple-500/10 overflow-hidden border border-purple-100/50">
                             <div className="overflow-x-auto">
                                 <table className="min-w-full">
                                     <thead className="bg-gradient-to-r from-purple-50 to-pink-50/50">
                                         <tr>
-                                            <th className="px-6 py-4 text-left text-xs font-bold text-purple-600 uppercase tracking-wider">Member</th>
-                                            <th className="px-6 py-4 text-left text-xs font-bold text-purple-600 uppercase tracking-wider">Role</th>
-                                            <th className="px-6 py-4 text-left text-xs font-bold text-purple-600 uppercase tracking-wider">Region</th>
-                                            <th className="px-6 py-4 text-left text-xs font-bold text-purple-600 uppercase tracking-wider">Status</th>
-                                            <th className="px-6 py-4 text-right text-xs font-bold text-purple-600 uppercase tracking-wider">Actions</th>
+                                            <th className="px-6 py-4 text-left text-xs font-bold text-purple-600 dark:text-purple-400 uppercase tracking-wider">Member</th>
+                                            <th className="px-6 py-4 text-left text-xs font-bold text-purple-600 dark:text-purple-400 uppercase tracking-wider">Role</th>
+                                            <th className="px-6 py-4 text-left text-xs font-bold text-purple-600 dark:text-purple-400 uppercase tracking-wider">Region</th>
+                                            <th className="px-6 py-4 text-left text-xs font-bold text-purple-600 dark:text-purple-400 uppercase tracking-wider">Status</th>
+                                            <th className="px-6 py-4 text-right text-xs font-bold text-purple-600 dark:text-purple-400 uppercase tracking-wider">Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody className="divide-y divide-purple-100/50">
@@ -697,28 +697,28 @@ function AdminDashboard() {
                                             <tr><td colSpan="5" className="px-6 py-12 text-center text-gray-400">No team members yet. Click "Add Member" to get started.</td></tr>
                                         ) : (
                                             teamMembers.map((member) => (
-                                                <tr key={member.id} className="hover:bg-purple-50/50 transition-colors">
+                                                <tr key={member.id} className="hover:bg-purple-50 dark:bg-purple-900/20/50 transition-colors">
                                                     <td className="px-6 py-4">
                                                         <div className="flex items-center gap-3">
                                                             <div className="h-10 w-10 rounded-full bg-gradient-to-br from-purple-200 to-pink-200 flex items-center justify-center text-purple-700 font-bold overflow-hidden flex-shrink-0">
                                                                 {member.photo_url ? <img src={member.photo_url} alt={member.name} className="h-full w-full object-cover" /> : member.name.charAt(0)}
                                                             </div>
                                                             <div>
-                                                                <div className="font-semibold text-gray-800">{member.name}</div>
-                                                                {member.description && <div className="text-xs text-gray-500 truncate max-w-[200px]">{member.description}</div>}
+                                                                <div className="font-semibold text-gray-800 dark:text-gray-100">{member.name}</div>
+                                                                {member.description && <div className="text-xs text-gray-500 dark:text-gray-400 truncate max-w-[200px]">{member.description}</div>}
                                                             </div>
                                                         </div>
                                                     </td>
-                                                    <td className="px-6 py-4 text-sm text-gray-600">{member.role}</td>
-                                                    <td className="px-6 py-4"><span className="text-xs font-bold uppercase bg-purple-100 text-purple-700 px-2 py-1 rounded-lg">{member.region}</span></td>
+                                                    <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-300">{member.role}</td>
+                                                    <td className="px-6 py-4"><span className="text-xs font-bold uppercase bg-purple-100 dark:bg-purple-900/30 text-purple-700 px-2 py-1 rounded-lg">{member.region}</span></td>
                                                     <td className="px-6 py-4">
-                                                        <span className={`text-xs font-bold px-2 py-1 rounded-lg ${member.is_active ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500'}`}>
+                                                        <span className={`text-xs font-bold px-2 py-1 rounded-lg ${member.is_active ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500 dark:text-gray-400'}`}>
                                                             {member.is_active ? 'Active' : 'Inactive'}
                                                         </span>
                                                     </td>
                                                     <td className="px-6 py-4 text-right">
                                                         <div className="flex justify-end gap-2">
-                                                            <button onClick={() => openModal('edit_team', member)} className="p-2 rounded-lg bg-purple-100 text-purple-700 hover:bg-purple-200 transition-all"><Edit2 size={16} /></button>
+                                                            <button onClick={() => openModal('edit_team', member)} className="p-2 rounded-lg bg-purple-100 dark:bg-purple-900/30 text-purple-700 hover:bg-purple-200 transition-all"><Edit2 size={16} /></button>
                                                             <button onClick={() => handleDelete(adminAPI.deleteTeamMember, member.id, fetchTeamMembers, 'team member')} className="p-2 rounded-lg bg-red-100 text-red-600 hover:bg-red-200 transition-all"><Trash2 size={16} /></button>
                                                         </div>
                                                     </td>

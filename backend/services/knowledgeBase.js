@@ -50,10 +50,9 @@ Our counselors are trained to work with young people and understand the unique c
 
         crisis_support: `24/7 Crisis Support:
 If you or someone you know is in crisis, help is available:
-- Crisis Hotline: +256 XXX XXX XXX (24/7)
-- Emergency Services: 911 or 112
-- Samaritans Uganda: 077 909 090 9
-- Mental Health Helpline: 0800 221 221
+- Wekume Crisis Hotline: +256 766 344 603 (24/7)
+- Emergency Services: 999 or 112
+- Mental Health Uganda Helpline: 0800 21 21 21
 
 You're not alone. Reaching out for help is a sign of strength, not weakness. Our crisis counselors are available anytime to listen and support you.`,
 
@@ -101,7 +100,7 @@ All programs are FREE for youth ages 10-24. No ID or parental consent required f
 **Main Office (Kampala)**
 - Address: Plot 123, Kampala Road, Kampala
 - Hours: Monday-Friday 9 AM - 5 PM, Saturday 10 AM - 2 PM
-- Phone: +256 700 000 000
+- Phone: +256 766 344 603
 
 **Youth Centers:**
 - Kampala Youth Center - Open Daily 2 PM - 8 PM
@@ -110,14 +109,14 @@ All programs are FREE for youth ages 10-24. No ID or parental consent required f
 
 **Mobile Clinics:**
 - Visit schools and communities - Check our website for schedule
-- WhatsApp us for the next location near you: +256 700 000 001`,
+- WhatsApp us for the next location near you: +256 766 344 603`,
 
         contact: `Contact Wekume Initiative:
 
-- **General Inquiries:** info@wekume.org
-- **Phone:** +256 700 000 000
-- **WhatsApp:** +256 700 000 001
-- **Crisis Hotline:** +256 XXX XXX XXX (24/7)
+- **General Inquiries:** admin@wekume.org
+- **Phone:** +256 766 344 603
+- **WhatsApp:** +256 766 344 603
+- **Crisis Hotline:** +256 766 344 603 (24/7)
 - **Website:** www.wekume.org
 - **Social Media:**
   - Facebook: @WekumeInitiative

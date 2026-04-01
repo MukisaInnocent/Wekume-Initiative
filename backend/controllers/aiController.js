@@ -24,7 +24,7 @@ exports.chat = async (req, res) => {
         if (!openaiService.isConfigured()) {
             return res.status(503).json({
                 error: 'AI service not configured',
-                response: "I'm currently not available. Please contact our support team directly at info@wekume.org or call +256 700 000 000 for assistance."
+                response: "I'm currently not available. Please contact our support team directly at admin@wekume.org or call +256 766 344 603 for assistance."
             });
         }
 
@@ -66,12 +66,11 @@ IMMEDIATE ACTION REQUIRED - Contact user through chat or emergency services if p
             const crisisResponse = `I've detected that you might be going through a very difficult situation, and I want you to know that help is available right now.
 
 🆘 **If you're in immediate danger:**
-- Call Emergency Services: 911 or 112
-- Samaritans Uganda: 077 909 090 9 (24/7)
-- Mental Health Helpline: 0800 221 221
+- Call Emergency Services: 999 or 112
+- Mental Health Uganda Helpline: 0800 21 21 21
 
 💚 **Our Crisis Support:**
-- 24/7 Crisis Hotline: +256 XXX XXX XXX
+- 24/7 Crisis Hotline: +256 766 344 603
 - I've alerted our human support team who will reach out to help you
 
 You don't have to go through this alone. Please reach out to one of these services - they're here to help you right now. Your life matters.`;
@@ -104,7 +103,7 @@ You don't have to go through this alone. Please reach out to one of these servic
             console.error('OpenAI API Error:', error);
             return res.status(500).json({
                 error: 'AI service error',
-                response: "I'm having trouble responding right now. Please try again in a moment, or contact our support team directly at info@wekume.org."
+                response: "I'm having trouble responding right now. Please try again in a moment, or contact our support team directly at admin@wekume.org."
             });
         }
 
@@ -131,7 +130,7 @@ You don't have to go through this alone. Please reach out to one of these servic
         console.error('AI Chat error:', error);
         res.status(500).json({
             error: 'Failed to process request',
-            response: "I'm experiencing technical difficulties. Please contact our support team at info@wekume.org or call +256 700 000 000 for assistance."
+            response: "I'm experiencing technical difficulties. Please contact our support team at admin@wekume.org or call +256 766 344 603 for assistance."
         });
     }
 };

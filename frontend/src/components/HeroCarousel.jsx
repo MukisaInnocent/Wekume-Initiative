@@ -4,15 +4,15 @@ import { ArrowRight, ChevronLeft, ChevronRight, Play } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 // Background images are now passed as props from parent
-const slides = [
+const DEFAULT_SLIDES = [
     {
         id: 'mission',
         title: "Empowering Youth To Lead",
         subtitle: "Unlocking potential through education, health, and innovation. We built this platform to listen, support, and guide you.",
         ctaText: "Download Wekume App",
         ctaLink: "/wekume-app",
-        theme: "from-purple-600 via-primary-500 to-orange-500", // Purple/Pink/Orange
-        image: "/assets/IMG_0445.jpg" // Fallback
+        theme: "from-purple-600 via-primary-500 to-orange-500",
+        image: "/assets/IMG_0445.jpg"
     },
     {
         id: 'values',
@@ -20,8 +20,8 @@ const slides = [
         subtitle: "Creating safe, stigma-free spaces where every young person can thrive without fear of judgment.",
         ctaText: "Our Story",
         ctaLink: "/about",
-        theme: "from-blue-600 via-purple-500 to-pink-500", // Blue/Purple/Pink
-        image: "/assets/IMG_0447.jpg" // Fallback
+        theme: "from-blue-600 via-purple-500 to-pink-500",
+        image: "/assets/IMG_0447.jpg"
     },
     {
         id: 'purpose',
@@ -29,24 +29,39 @@ const slides = [
         subtitle: "Access confidential SRHR services, book appointments, and chat with Lina anytime, anywhere.",
         ctaText: "Get Involved",
         ctaLink: "/get-involved",
-        theme: "from-orange-500 via-red-500 to-purple-600", // Orange/Red/Purple
-        image: "/assets/IMG_20250321_112053.jpg" // Fallback
+        theme: "from-orange-500 via-red-500 to-purple-600",
+        image: "/assets/IMG_20250321_112053.jpg"
     }
 ];
 
-function HeroCarousel({ currentBackgroundIndex, backgroundImages, setCurrentBackgroundIndex }) {
+function HeroCarousel({ currentBackgroundIndex, backgroundImages, setCurrentBackgroundIndex, contentSections = [] }) {
     const [currentSlide, setCurrentSlide] = useState(0);
     const [isHovering, setIsHovering] = useState(false);
+
+    // Derive active slides from contentSections or fallback
+    const slides = DEFAULT_SLIDES.map((defSlide, index) => {
+        const slideKey = `hero_s${index + 1}_title`;
+        const dbSection = contentSections.find(s => s.section_key === slideKey);
+        
+        if (dbSection) {
+            return {
+                ...defSlide,
+                title: dbSection.section_title || defSlide.title,
+                subtitle: dbSection.content_text || defSlide.subtitle
+            };
+        }
+        return defSlide;
+    });
 
     // Auto-play for Content Slides
     useEffect(() => {
         if (!isHovering) {
             const timer = setInterval(() => {
                 setCurrentSlide((prev) => (prev + 1) % slides.length);
-            }, 8000); // Change content every 8 seconds
+            }, 8000); 
             return () => clearInterval(timer);
         }
-    }, [isHovering]);
+    }, [isHovering, slides.length]);
 
     const nextSlide = () => {
         setCurrentSlide((prev) => (prev + 1) % slides.length);

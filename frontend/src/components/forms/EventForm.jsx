@@ -42,26 +42,26 @@ function EventForm({ event, defaultRegion = 'global', onSubmit, onCancel, loadin
     return (
         <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Event Title</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">Event Title</label>
                 <input
                     type="text"
                     name="title"
                     required
                     value={formData.title}
                     onChange={handleChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                     placeholder="e.g., Youth Innovation Summit 2024"
                 />
             </div>
 
             <div className="grid grid-cols-2 gap-4">
                 <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Event Type</label>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">Event Type</label>
                     <select
                         name="event_type"
                         value={formData.event_type}
                         onChange={handleChange}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                     >
                         <option value="workshop">Workshop</option>
                         <option value="training">Training</option>
@@ -72,7 +72,7 @@ function EventForm({ event, defaultRegion = 'global', onSubmit, onCancel, loadin
                 </div>
 
                 <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Date & Time</label>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">Date & Time</label>
                     <div className="relative">
                         <Calendar className="absolute left-3 top-2.5 text-gray-400" size={18} />
                         <input
@@ -81,7 +81,7 @@ function EventForm({ event, defaultRegion = 'global', onSubmit, onCancel, loadin
                             required
                             value={formData.event_date}
                             onChange={handleChange}
-                            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                            className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                         />
                     </div>
                 </div>
@@ -89,12 +89,12 @@ function EventForm({ event, defaultRegion = 'global', onSubmit, onCancel, loadin
 
             <div className="grid grid-cols-2 gap-4">
                 <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Target Region</label>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">Target Region</label>
                     <select
                         name="region"
                         value={formData.region}
                         onChange={handleChange}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                     >
                         <option value="global">Global (Both Regions)</option>
                         <option value="ug">Uganda Only</option>
@@ -103,20 +103,20 @@ function EventForm({ event, defaultRegion = 'global', onSubmit, onCancel, loadin
                 </div>
 
                 <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Category Code (Optional)</label>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">Category Code (Optional)</label>
                     <input
                         type="text"
                         name="category"
                         value={formData.category}
                         onChange={handleChange}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                         placeholder="e.g. 1, 2, 8, U"
                     />
                 </div>
             </div>
 
             <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Location</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">Location</label>
                 <div className="relative">
                     <MapPin className="absolute left-3 top-2.5 text-gray-400" size={18} />
                     <input
@@ -124,27 +124,27 @@ function EventForm({ event, defaultRegion = 'global', onSubmit, onCancel, loadin
                         name="location"
                         value={formData.location}
                         onChange={handleChange}
-                        className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                        className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                         placeholder="e.g., Makerere University Main Hall (or Online)"
                     />
                 </div>
             </div>
 
             <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">Description</label>
                 <textarea
                     name="description"
                     rows="4"
                     required
                     value={formData.description}
                     onChange={handleChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                     placeholder="Describe the event details..."
                 ></textarea>
             </div>
 
             <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Banner Image URL</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">Banner Image URL</label>
                 <div className="relative">
                     <ImageIcon className="absolute left-3 top-2.5 text-gray-400" size={18} />
                     <input
@@ -152,15 +152,15 @@ function EventForm({ event, defaultRegion = 'global', onSubmit, onCancel, loadin
                         name="banner_image_url"
                         value={formData.banner_image_url}
                         onChange={handleChange}
-                        className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                        className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                         placeholder="https://example.com/image.jpg"
                     />
                 </div>
-                <p className="text-xs text-gray-500 mt-1">Direct image link (Media Library upload coming soon)</p>
+                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">Direct image link (Media Library upload coming soon)</p>
             </div>
 
             <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Registration Link</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">Registration Link</label>
                 <div className="relative">
                     <LinkIcon className="absolute left-3 top-2.5 text-gray-400" size={18} />
                     <input
@@ -168,7 +168,7 @@ function EventForm({ event, defaultRegion = 'global', onSubmit, onCancel, loadin
                         name="registration_link"
                         value={formData.registration_link}
                         onChange={handleChange}
-                        className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                        className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                         placeholder="https://forms.google.com/..."
                     />
                 </div>
@@ -181,9 +181,9 @@ function EventForm({ event, defaultRegion = 'global', onSubmit, onCancel, loadin
                     id="is_published"
                     checked={formData.is_published}
                     onChange={handleChange}
-                    className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                    className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 dark:border-gray-600 rounded"
                 />
-                <label htmlFor="is_published" className="text-sm font-medium text-gray-700">
+                <label htmlFor="is_published" className="text-sm font-medium text-gray-700 dark:text-gray-200">
                     Publish this event immediately
                 </label>
             </div>
@@ -192,7 +192,7 @@ function EventForm({ event, defaultRegion = 'global', onSubmit, onCancel, loadin
                 <button
                     type="button"
                     onClick={onCancel}
-                    className="px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
+                    className="px-4 py-2 text-gray-700 dark:text-gray-200 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
                 >
                     Cancel
                 </button>

@@ -1,11 +1,12 @@
 import { useState, useRef, useEffect } from 'react';
-import { X, Send, MessageCircle, Loader, Minimize2, Maximize2, Trash2 } from 'lucide-react';
+import { X, Send, MessageCircle, Loader, Minimize2, Maximize2, Trash2, Sparkles } from 'lucide-react';
 import { aiAPI } from '../services/api';
 import { motion, AnimatePresence } from 'framer-motion';
 
 function LinaAIChat() {
     const [isOpen, setIsOpen] = useState(false);
     const [isMinimized, setIsMinimized] = useState(false);
+    const [showAdvert, setShowAdvert] = useState(true);
     const [messages, setMessages] = useState([
         {
             role: 'assistant',
@@ -68,7 +69,7 @@ function LinaAIChat() {
         } catch (error) {
             console.error('Chat error:', error);
             const errorMessage = error.response?.data?.response ||
-                "I'm having trouble responding right now. Please try again in a moment, or contact our support team at info@wekume.org.";
+                "I'm having trouble responding right now. Please try again in a moment, or contact our support team at admin@wekume.org.";
 
             setMessages(prev => [...prev, {
                 role: 'assistant',
@@ -273,11 +274,13 @@ function LinaAIChat() {
             </AnimatePresence>
 
             {/* Floating Button */}
-            <motion.button
+            <motion.div
                 onClick={handleToggleChat}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="group relative pointer-events-auto outline-none"
+                role="button"
+                tabIndex={0}
+                className="group relative pointer-events-auto outline-none cursor-pointer"
                 aria-label={isOpen ? "Close Lina AI Chat" : "Open Lina AI Chat"}
             >
                 {/* Ping Animation */}
@@ -306,16 +309,40 @@ function LinaAIChat() {
                     </div>
                 </div>
 
-                {/* Tooltip */}
-                {!isOpen && (
-                    <div className="absolute bottom-full right-0 mb-3 w-48 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
-                        <div className="bg-gray-900 text-white text-sm py-2 px-4 rounded-xl shadow-xl border border-gray-700 relative">
-                            Chat with Lina (AI)
-                            <div className="absolute -bottom-1 right-8 w-3 h-3 bg-gray-900 transform rotate-45 border-r border-b border-gray-700"></div>
-                        </div>
-                    </div>
-                )}
-            </motion.button>
+                {/* Mini Advert Bubble */}
+                <AnimatePresence>
+                    {!isOpen && showAdvert && (
+                        <motion.div
+                            initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                            exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.2 } }}
+                            className="absolute bottom-full right-0 mb-4 w-64 pointer-events-auto"
+                        >
+                            <div className="bg-gradient-to-r from-purple-600 to-blue-600 text-white p-4 rounded-2xl shadow-2xl relative pr-8">
+                                <button
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        setShowAdvert(false);
+                                    }}
+                                    className="absolute top-2 right-2 p-1 bg-white/10 hover:bg-white/20 rounded-full transition-colors"
+                                    aria-label="Close advert"
+                                >
+                                    <X size={14} />
+                                </button>
+                                <div className="font-bold text-sm mb-1 flex items-center gap-1.5">
+                                    <Sparkles size={14} className="text-pink-300" />
+                                    Safe & Confidential
+                                </div>
+                                <p className="text-xs text-purple-100 leading-relaxed">
+                                    Have health questions but afraid to ask? Chat anonymously with Lina 24/7.
+                                </p>
+                                {/* Pointer arrow */}
+                                <div className="absolute -bottom-2 right-6 w-4 h-4 bg-gradient-to-l from-blue-600 to-transparent transform rotate-45 border-r border-b border-white/10"></div>
+                            </div>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
+            </motion.div>
         </div>
     );
 }

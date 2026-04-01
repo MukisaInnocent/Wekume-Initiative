@@ -209,7 +209,7 @@ const getPaymentInstructions = (method, ref, amount) => {
         
 1. Dial *165# (MTN) or *185# (Airtel)
 2. Select Send Money
-3. Enter: +256 700 000 000
+3. Enter: +256 766 344 603
 4. Enter amount: ${parseInt(amount).toLocaleString()} UGX
 5. Use reference: ${ref}
 

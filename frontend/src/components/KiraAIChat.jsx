@@ -109,7 +109,7 @@ function KiraAIChat() {
         } catch (error) {
             console.error('Chat error:', error);
             const errorMessage = error.response?.data?.response ||
-                "I'm having trouble responding right now. Please try again in a moment, or contact our support team at info@wekume.org.";
+                "I'm having trouble responding right now. Please try again in a moment, or contact our support team at admin@wekume.org.";
 
             setMessages(prev => [...prev, {
                 role: 'assistant',

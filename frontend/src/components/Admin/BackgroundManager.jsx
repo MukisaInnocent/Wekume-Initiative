@@ -175,7 +175,7 @@ const BackgroundManager = () => {
                                 </p>
                             </div>
                             <div className="flex justify-between items-center">
-                                <span className={`text-xs font-medium ${bg.is_active ? 'text-green-600' : 'text-gray-500'}`}>
+                                <span className={`text-xs font-medium ${bg.is_active ? 'text-green-600' : 'text-gray-500 dark:text-gray-400'}`}>
                                     {bg.is_active ? 'Active' : 'Inactive'}
                                 </span>
                                 <span className="text-xs text-gray-400">
@@ -187,7 +187,7 @@ const BackgroundManager = () => {
                 ))}
 
                 {backgrounds.length === 0 && (
-                    <div className="col-span-full py-12 text-center text-gray-500 bg-gray-50 dark:bg-gray-800/50 rounded-xl border border-dashed border-gray-300 dark:border-gray-700">
+                    <div className="col-span-full py-12 text-center text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-800/50 rounded-xl border border-dashed border-gray-300 dark:border-gray-700">
                         <ImageIcon size={48} className="mx-auto mb-4 opacity-50" />
                         <p>No background images found.</p>
                         <p className="text-sm mt-1">Upload images to get started.</p>

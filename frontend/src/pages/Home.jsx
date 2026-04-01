@@ -8,83 +8,6 @@ import { contentAPI, backgroundAPI } from '../services/api';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRegion } from '../context/RegionContext';
 
-/* ─── Mission / Vision / Objectives Rotator ─────────── */
-const missionSlides = [
-    {
-        icon: Target,
-        label: 'Our Mission',
-        title: 'Empowering Youth Through Health & Knowledge',
-        text: 'To provide university students with accessible, stigma-free reproductive health information and resources, fostering informed decisions and personal growth.',
-        gradient: 'from-violet-600 to-purple-600'
-    },
-    {
-        icon: Eye,
-        label: 'Our Vision',
-        title: 'A World Where Every Student Thrives',
-        text: 'We envision a future where every young person — regardless of background — has the knowledge, resources, and confidence to navigate their health and build a brighter future.',
-        gradient: 'from-pink-600 to-rose-600'
-    },
-    {
-        icon: Flag,
-        label: 'Our Objectives',
-        title: 'Measurable Goals, Tangible Impact',
-        text: 'Bridge health information gaps on campuses. Build a mobile platform that reaches 10,000+ students. Create partnerships that sustain grassroots impact across borders.',
-        gradient: 'from-orange-500 to-amber-600'
-    }
-];
-
-function MissionRotator() {
-    const [idx, setIdx] = useState(0);
-
-    useEffect(() => {
-        const timer = setInterval(() => setIdx(prev => (prev + 1) % missionSlides.length), 5000);
-        return () => clearInterval(timer);
-    }, []);
-
-    const slide = missionSlides[idx];
-    const Icon = slide.icon;
-
-    return (
-        <section className="py-12 md:py-16 relative overflow-hidden bg-gray-50 dark:bg-gray-800/50">
-            <div className="absolute top-0 right-0 w-72 h-72 bg-purple-200/30 dark:bg-purple-800/10 rounded-full blur-3xl pointer-events-none" />
-            <div className="absolute bottom-0 left-0 w-60 h-60 bg-orange-200/30 dark:bg-orange-800/10 rounded-full blur-3xl pointer-events-none" />
-
-            <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-                <AnimatePresence mode="wait">
-                    <motion.div
-                        key={idx}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -20 }}
-                        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                    >
-                        <div className={`w-16 h-16 mx-auto mb-6 rounded-2xl bg-gradient-to-br ${slide.gradient} flex items-center justify-center text-white shadow-lg`}>
-                            <Icon size={28} />
-                        </div>
-                        <span className="text-sm font-bold uppercase tracking-widest text-purple-600 dark:text-purple-400">{slide.label}</span>
-                        <h2 className="text-3xl md:text-4xl lg:text-5xl font-heading font-bold text-gray-900 dark:text-white mt-3 mb-6">{slide.title}</h2>
-                        <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 leading-relaxed max-w-2xl mx-auto">{slide.text}</p>
-                    </motion.div>
-                </AnimatePresence>
-
-                {/* Dots */}
-                <div className="flex justify-center gap-2 mt-10">
-                    {missionSlides.map((_, i) => (
-                        <button
-                            key={i}
-                            onClick={() => setIdx(i)}
-                            className={`h-2.5 rounded-full transition-all duration-300 ${
-                                i === idx ? 'w-8 bg-purple-600' : 'w-2.5 bg-gray-300 dark:bg-gray-600 hover:bg-purple-400'
-                            }`}
-                            aria-label={`Go to slide ${i + 1}`}
-                        />
-                    ))}
-                </div>
-            </div>
-        </section>
-    );
-}
-
 function Home() {
     const { region } = useRegion();
 
@@ -92,9 +15,10 @@ function Home() {
     const [events, setEvents] = useState([]);
     const [partners, setPartners] = useState([]);
     const [testimonials, setTestimonials] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [currentBackgroundIndex, setCurrentBackgroundIndex] = useState(0);
+    const [contentSections, setContentSections] = useState([]);
     const [dynamicBackgrounds, setDynamicBackgrounds] = useState([]);
+    const [currentBackgroundIndex, setCurrentBackgroundIndex] = useState(0);
+    const [loading, setLoading] = useState(true);
 
     // Eager import as fallback
     const backgroundImagesModules = import.meta.glob('../assets/background images/*.{png,jpg,jpeg,webp,svg}', { eager: true });
@@ -117,18 +41,20 @@ function Home() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const [valuesRes, eventsRes, partnersRes, testimonialsRes, backgroundsRes] = await Promise.all([
+                const [valuesRes, eventsRes, partnersRes, testimonialsRes, backgroundsRes, sectionsRes] = await Promise.all([
                     contentAPI.getValues(),
                     contentAPI.getEvents(region),
                     contentAPI.getPartners(region),
                     contentAPI.getTestimonials(region),
-                    backgroundAPI.getActiveBackgrounds().catch(err => ({ data: { backgrounds: [] } })) // Soft fail for backgrounds
+                    backgroundAPI.getActiveBackgrounds().catch(err => ({ data: { backgrounds: [] } })),
+                    contentAPI.getSections(region).catch(err => ({ data: { sections: [] } }))
                 ]);
 
                 setValues(valuesRes.data.values || []);
                 setEvents(eventsRes.data.events?.slice(0, 3) || []); // Top 3 events
                 setPartners(partnersRes.data.partners || []);
                 setTestimonials(testimonialsRes.data.testimonials || []);
+                setContentSections(sectionsRes.data.sections || []);
 
                 if (backgroundsRes.data.backgrounds && backgroundsRes.data.backgrounds.length > 0) {
                     setDynamicBackgrounds(backgroundsRes.data.backgrounds);
@@ -168,195 +94,9 @@ function Home() {
                 currentBackgroundIndex={currentBackgroundIndex}
                 backgroundImages={backgroundImages}
                 setCurrentBackgroundIndex={setCurrentBackgroundIndex}
+                contentSections={contentSections}
             />
 
-            {/* Mission / Vision / Objectives Rotator */}
-            <MissionRotator />
-
-            {/* Introduction / Our Story Section */}
-            <section className="py-16 md:py-20 relative overflow-hidden">
-                {/* Decorative Elements */}
-                <div className="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 bg-purple-100 dark:bg-purple-900/20 rounded-full blur-3xl opacity-50 pointer-events-none"></div>
-                <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-80 h-80 bg-orange-50 dark:bg-orange-900/20 rounded-full blur-3xl opacity-50 pointer-events-none"></div>
-
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-                    <motion.div
-                        initial="hidden"
-                        whileInView="visible"
-                        viewport={{ once: true, margin: "-100px" }}
-                        variants={staggerContainer}
-                        className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center"
-                    >
-                        <div className="order-2 lg:order-1">
-                            <motion.span variants={fadeInUp} className="inline-block py-1 px-3 rounded-full bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 font-semibold text-xs tracking-wider uppercase mb-4">
-                                Our Origin Story
-                            </motion.span>
-                            <motion.h2 variants={fadeInUp} className="text-3xl md:text-5xl font-heading font-bold text-gray-900 dark:text-white mb-8 leading-tight">
-                                Wekume was born from a <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-orange-500">deeply personal promise</span>.
-                            </motion.h2>
-
-                            <motion.div variants={fadeInUp} className="space-y-6 text-lg text-gray-600 dark:text-gray-300 leading-relaxed">
-                                <p>
-                                    Our founder, <strong className="text-gray-900 dark:text-white">Joshua Walusimbi</strong>, witnessed firsthand the devastating impact of silence. Losing his sister to preventable health complications sparked a fire to change the narrative for other young people.
-                                </p>
-                                <p>
-                                    He realized that without safe, stigma-free spaces to ask questions and seek support, history would keep repeating itself. Wekume is the answer to that silence.
-                                </p>
-                                <p>
-                                    Today, <span className="font-bold text-purple-600 dark:text-purple-400">Wekume</span> ("Protect Yourself") empowers university students to take control of their health with confidence, dignity, and the right information.
-                                </p>
-                            </motion.div>
-
-                            <motion.div variants={fadeInUp} className="mt-10 flex items-center gap-6">
-                                <div className="flex -space-x-4">
-                                    {[1, 2, 3, 4].map((i) => (
-                                        <div key={i} className={`w-12 h-12 rounded-full border-2 border-white dark:border-gray-900 bg-gray-200 dark:bg-gray-700 flex items-center justify-center overflow-hidden`}>
-                                            <Users size={20} className="text-gray-400" />
-                                        </div>
-                                    ))}
-                                    <div className="w-12 h-12 rounded-full border-2 border-white dark:border-gray-900 bg-purple-600 text-white flex items-center justify-center text-xs font-bold">
-                                        500+
-                                    </div>
-                                </div>
-                                <div className="text-sm font-medium text-gray-500 dark:text-gray-400">
-                                    Students Impacted
-                                </div>
-                            </motion.div>
-                        </div>
-
-                        <motion.div variants={fadeInUp} className="order-1 lg:order-2 relative perspective-1000">
-                            {/* Card Stack Effect */}
-                            <motion.div
-                                className="relative z-10 bg-white dark:bg-gray-800 p-8 md:p-10 rounded-[2rem] shadow-2xl border border-gray-100 dark:border-gray-700"
-                                whileHover={{ rotateY: 5, rotateX: 5 }}
-                                transition={{ type: "spring", stiffness: 300 }}
-                            >
-                                <div className="absolute -top-10 -left-10 bg-gradient-to-br from-orange-400 to-pink-500 text-white p-6 rounded-2xl shadow-xl transform rotate-12">
-                                    <Lightbulb size={40} />
-                                </div>
-
-                                <blockquote className="text-xl md:text-2xl font-medium text-gray-700 dark:text-gray-200 italic mb-8 pt-6 relative">
-                                    <Quote className="absolute -top-4 -left-2 text-purple-200 dark:text-purple-900/50 w-16 h-16 -z-10" />
-                                    "Joshua knew things had to change. Through features like SafeChat, QuickTest, and our appointment scheduler, Wekume offers students discreet, trusted access to professional help."
-                                </blockquote>
-
-                                <div className="flex items-center gap-5 border-t border-gray-100 dark:border-gray-700 pt-8">
-                                    <div className="w-16 h-16 rounded-full bg-purple-100 dark:bg-purple-900/50 flex items-center justify-center text-purple-600 dark:text-purple-400 font-bold text-2xl">
-                                        JW
-                                    </div>
-                                    <div>
-                                        <div className="font-bold text-gray-900 dark:text-white text-lg">Joshua Walusimbi</div>
-                                        <div className="text-purple-600 dark:text-purple-400">Founder, Wekume Initiative</div>
-                                    </div>
-                                </div>
-                            </motion.div>
-
-                            {/* Decorative backing */}
-                            <div className="absolute inset-0 bg-gradient-to-br from-purple-600 to-orange-500 rounded-[2rem] transform rotate-3 scale-105 opacity-20 -z-10 blur-sm"></div>
-                        </motion.div>
-                    </motion.div>
-                </div>
-            </section>
-
-            {/* Meet Lina - AI Safe Chat Section */}
-            <section className="py-16 md:py-20 bg-gray-50 dark:bg-gray-900 relative overflow-hidden">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-                    <motion.div
-                        initial="hidden"
-                        whileInView="visible"
-                        viewport={{ once: true, margin: "-100px" }}
-                        className="relative rounded-3xl overflow-hidden shadow-2xl"
-                    >
-                        {/* Full Background Gradient */}
-                        <div className="absolute inset-0 bg-gradient-to-br from-blue-900 via-purple-900 to-gray-900"></div>
-
-                        {/* Animated Orbs */}
-                        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-500/30 rounded-full blur-[100px] -mr-40 -mt-40 animate-pulse-slow"></div>
-                        <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-purple-600/30 rounded-full blur-[100px] -ml-40 -mb-40 animate-pulse-slow delay-1000"></div>
-
-                        <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center p-8 md:p-16">
-                            <motion.div variants={staggerContainer} initial="hidden" whileInView="visible">
-                                <motion.div variants={fadeInUp} className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-500/20 border border-blue-400/30 text-blue-200 text-sm font-semibold mb-6">
-                                    <Sparkles size={16} className="text-blue-300" />
-                                    AI-Powered Support
-                                </motion.div>
-                                <motion.h2 variants={fadeInUp} className="text-4xl md:text-5xl font-heading font-bold text-white mb-6">
-                                    Meet <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-300">Lina</span>
-                                    <br />Your Safe Space.
-                                </motion.h2>
-                                <motion.p variants={fadeInUp} className="text-blue-100 text-lg mb-8 leading-relaxed max-w-xl">
-                                    Have questions about your health but afraid to ask? Lina is here 24/7.
-                                    Click the icon in the corner to start a <span className="font-bold text-white">secure, private, and anonymous</span> conversation.
-                                </motion.p>
-
-                                <motion.div variants={fadeInUp} className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-10">
-                                    {[
-                                        { icon: Shield, text: "100% Private & Anonymous", color: "text-green-400" },
-                                        { icon: Clock, text: "Available 24/7/365", color: "text-blue-400" },
-                                        { icon: CheckCircle, text: "Accurate Information", color: "text-purple-400" },
-                                        { icon: MessageCircle, text: "Judgement-Free Zone", color: "text-pink-400" }
-                                    ].map((item, idx) => (
-                                        <div key={idx} className="flex items-center gap-3 bg-white/5 border border-white/10 rounded-xl p-3">
-                                            <item.icon size={20} className={item.color} />
-                                            <span className="text-white/90 text-sm font-medium">{item.text}</span>
-                                        </div>
-                                    ))}
-                                </motion.div>
-
-                                <motion.div variants={fadeInUp} className="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/10">
-                                    <div className="flex items-start gap-4">
-                                        <div className="p-3 bg-blue-500/20 rounded-lg text-blue-300 shrink-0">
-                                            <Activity size={24} />
-                                        </div>
-                                        <div>
-                                            <h4 className="font-bold text-white text-lg mb-1">Deep Analysis Mode</h4>
-                                            <p className="text-sm text-blue-200 leading-relaxed">
-                                                Lina takes 30-40 seconds to cross-reference trusted medical databases and cultural context to provide the most accurate, helpful response possible.
-                                            </p>
-                                        </div>
-                                    </div>
-                                </motion.div>
-                            </motion.div>
-
-                            <motion.div
-                                initial={{ opacity: 0, x: 50 }}
-                                whileInView={{ opacity: 1, x: 0 }}
-                                transition={{ duration: 0.8 }}
-                                className="relative hidden lg:block"
-                            >
-                                {/* Augmented Reality / Holographic Effect Mockup */}
-                                <div className="relative mx-auto w-80">
-                                    <div className="absolute inset-0 bg-blue-500 blur-[80px] opacity-20"></div>
-                                    <img
-                                        src="/assets/lina-logo.jpg"
-                                        alt="Lina Chat"
-                                        className="relative z-10 w-full drop-shadow-2xl animate-float"
-                                    />
-                                    {/* Floating Chat Bubbles */}
-                                    <motion.div
-                                        animate={{ y: [0, -10, 0] }}
-                                        transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
-                                        className="absolute -right-12 top-20 bg-white text-gray-800 p-4 rounded-2xl rounded-bl-sm shadow-xl max-w-[200px] text-sm z-20"
-                                    >
-                                        <p>Hey! I'm Lina. What's on your mind today? 💜</p>
-                                    </motion.div>
-
-                                    <motion.div
-                                        animate={{ y: [0, -15, 0] }}
-                                        transition={{ repeat: Infinity, duration: 5, ease: "easeInOut", delay: 1 }}
-                                        className="absolute -left-12 bottom-20 bg-purple-600 text-white p-4 rounded-2xl rounded-tr-sm shadow-xl max-w-[200px] text-sm z-20"
-                                    >
-                                        <div className="flex items-center gap-2">
-                                            <Shield size={14} />
-                                            <span>Your chat is encrypted.</span>
-                                        </div>
-                                    </motion.div>
-                                </div>
-                            </motion.div>
-                        </div>
-                    </motion.div>
-                </div>
-            </section>
 
             {/* Values Section */}
             <section className="py-16 bg-white dark:bg-gray-800">
@@ -417,7 +157,6 @@ function Home() {
             </section>
 
             {/* Upcoming Events Preview */}
-            {events.length > 0 && (
             <section className="py-16 bg-gray-50 dark:bg-gray-900">
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                         <motion.div
@@ -440,15 +179,14 @@ function Home() {
                             viewport={{ once: true }}
                             className="grid md:grid-cols-3 gap-8"
                         >
-                            {events.map(event => (
+                            {events.length > 0 ? events.map(event => (
                                 <motion.div
                                     key={event.id}
                                     variants={fadeInUp}
                                     whileHover={{ y: -5 }}
-                                    className="group bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-2xl overflow-hidden hover:shadow-2xl transition-all duration-300"
+                                    className="group bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-2xl overflow-hidden hover:shadow-2xl transition-all duration-300 flex flex-col"
                                 >
                                     <div className="h-56 bg-gray-200 relative overflow-hidden group-hover:scale-105 transition-transform duration-500">
-                                        {/* Placeholder Background */}
                                         <div className="absolute inset-0 bg-gradient-to-br from-purple-500 to-orange-400 opacity-80"></div>
                                         <div className="absolute inset-0 flex items-center justify-center text-white/20">
                                             <Calendar size={64} />
@@ -463,101 +201,174 @@ function Home() {
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="p-8">
+                                    <div className="p-8 flex-1 flex flex-col">
                                         <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3 group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors">{event.title}</h3>
-                                        <p className="text-gray-600 dark:text-gray-300 text-sm line-clamp-3 mb-6 leading-relaxed">{event.description}</p>
-                                        <span className="text-purple-600 font-bold text-sm flex items-center gap-1 group-hover:gap-2 transition-all">Details <ArrowUpRight size={16} /></span>
+                                        <p className="text-gray-600 dark:text-gray-300 text-sm line-clamp-3 mb-6 leading-relaxed flex-1">{event.description}</p>
+                                        <Link to="/events" className="text-purple-600 font-bold text-sm flex items-center gap-1 group-hover:gap-2 transition-all w-fit mt-auto cursor-pointer">Read More <ArrowUpRight size={16} /></Link>
                                     </div>
                                 </motion.div>
-                            ))}
+                            )) : (
+                                [1, 2, 3].map(i => (
+                                    <motion.div
+                                        key={`fallback-event-${i}`}
+                                        variants={fadeInUp}
+                                        className="group bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-2xl overflow-hidden hover:shadow-2xl transition-all duration-300 flex flex-col opacity-80"
+                                    >
+                                        <div className="h-56 bg-gradient-to-br from-purple-500/20 to-orange-400/20 relative flex items-center justify-center text-purple-300">
+                                            <Calendar size={48} />
+                                        </div>
+                                        <div className="p-8 flex-1 flex flex-col">
+                                            <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-3/4 mb-4"></div>
+                                            <div className="space-y-2 mb-6 flex-1">
+                                                <div className="h-4 bg-gray-100 dark:bg-gray-700/50 rounded w-full"></div>
+                                                <div className="h-4 bg-gray-100 dark:bg-gray-700/50 rounded w-5/6"></div>
+                                            </div>
+                                            <Link to="/events" className="text-purple-600 font-bold text-sm flex items-center gap-1 group-hover:gap-2 transition-all w-fit mt-auto cursor-pointer">Explore Events <ArrowUpRight size={16} /></Link>
+                                        </div>
+                                    </motion.div>
+                                ))
+                            )}
                         </motion.div>
                         <div className="mt-12 text-center md:hidden">
-                            <Link to="/events" className="btn-secondary">View All Events</Link>
+                            <Link to="/events" className="px-6 py-3 bg-white dark:bg-gray-800 text-purple-600 font-bold rounded-xl shadow-md border border-gray-100 dark:border-gray-700">View All Events</Link>
                         </div>
                     </div>
                 </section>
-            )}
 
             {/* Partners Banner */}
-            <div className="py-16 border-y border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div className="py-16 border-y border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 overflow-hidden relative">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-20">
                     <p className="text-gray-400 font-medium uppercase tracking-widest text-xs mb-10">Trusted by our partners</p>
+                </div>
+                
+                {/* Gradient Masks for smooth entering/exiting */}
+                <div className="absolute left-0 top-0 bottom-0 w-24 sm:w-48 bg-gradient-to-r from-white dark:from-gray-900 to-transparent z-10 pointer-events-none"></div>
+                <div className="absolute right-0 top-0 bottom-0 w-24 sm:w-48 bg-gradient-to-l from-white dark:from-gray-900 to-transparent z-10 pointer-events-none"></div>
+
+                <div className="flex w-full overflow-hidden">
                     <motion.div
-                        initial={{ opacity: 0 }}
-                        whileInView={{ opacity: 1 }}
-                        className="flex flex-wrap justify-center gap-10 md:gap-16 items-center opacity-70 grayscale hover:grayscale-0 transition-all duration-500"
+                        className="flex gap-8 md:gap-12 items-center w-max px-8 py-4"
+                        animate={{ x: ["0%", "-50%"] }}
+                        transition={{ repeat: Infinity, ease: "linear", duration: 40 }}
                     >
                         {/* Fallback Partners if API data is missing/empty, or use real data */}
-                        {partners.length > 0 ? partners.map(partner => (
-                            partner.logo_url ? (
-                                <img key={partner.id} src={partner.logo_url} alt={partner.name} className="h-10 w-auto object-contain hover:scale-110 transition-transform" title={partner.name} />
-                            ) : (
-                                <span key={partner.id} className="text-lg font-bold text-gray-400">{partner.name}</span>
-                            )
+                        {partners.length > 0 ? [...partners, ...partners].map((partner, index) => (
+                            <div 
+                                key={`${partner.id}-${index}`} 
+                                className="group flex flex-col items-center justify-between p-6 rounded-2xl bg-gray-50/50 dark:bg-gray-800/30 border border-gray-100/50 dark:border-gray-700/50 hover:border-purple-300 dark:hover:border-purple-600 hover:bg-white dark:hover:bg-gray-800 hover:shadow-xl transition-all duration-500 shrink-0 w-[280px] md:w-[320px] h-[180px] cursor-default"
+                            >
+                                <div className="w-full flex flex-col items-center">
+                                    {partner.logo_url ? (
+                                        <div className="h-12 flex items-center justify-center mb-4 grayscale group-hover:grayscale-0 transition-all duration-500">
+                                            <img src={partner.logo_url} alt={partner.name} className="h-full w-auto object-contain" />
+                                        </div>
+                                    ) : (
+                                        <div className="h-12 flex flex-col items-center justify-center mb-2">
+                                            <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 text-[10px] font-bold uppercase tracking-widest mb-2 border border-purple-200/50 dark:border-purple-800/50">
+                                                <Users size={12} /> {partner.type || 'Partner'}
+                                            </div>
+                                        </div>
+                                    )}
+                                    <h4 className="text-lg font-heading font-black text-gray-800 dark:text-white group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors text-center truncate w-full uppercase tracking-tighter">{partner.name}</h4>
+                                </div>
+                                
+                                {partner.description && (
+                                    <p className="text-xs text-gray-500 dark:text-gray-400 text-center leading-normal line-clamp-3 mt-3 italic opacity-80 group-hover:opacity-100 transition-opacity">
+                                        "{partner.description}"
+                                    </p>
+                                )}
+                            </div>
                         )) : (
-                            // Static placeholders for design proof
-                            <>
-                                <div className="text-2xl font-bold text-gray-300">Partner 1</div>
-                                <div className="text-2xl font-bold text-gray-300">Partner 2</div>
-                                <div className="text-2xl font-bold text-gray-300">Partner 3</div>
-                                <div className="text-2xl font-bold text-gray-300">Partner 4</div>
-                            </>
+                            // Static placeholders if no data
+                            [1, 2, 3, 4, 5, 1, 2, 3, 4, 5].map((i, index) => (
+                                <div key={`fallback-${index}`} className="group flex flex-col items-center justify-center p-6 rounded-2xl bg-gray-50/50 dark:bg-gray-800/30 border border-dashed border-gray-200 dark:border-gray-700 shrink-0 w-[280px] h-[180px] opacity-40">
+                                    <Users size={32} className="text-gray-300 dark:text-gray-600 mb-3" />
+                                    <div className="text-xl font-bold text-gray-300 dark:text-gray-600">Partner {i}</div>
+                                </div>
+                            ))
                         )}
                     </motion.div>
                 </div>
             </div>
 
             {/* Testimonials Section */}
-            {testimonials.length > 0 && (
-                <section className="py-16 bg-purple-900 text-white overflow-hidden relative">
-                    <div className="absolute top-0 left-0 w-96 h-96 bg-pink-500 rounded-full blur-[120px] opacity-20 -ml-20 -mt-20"></div>
-                    <div className="absolute bottom-0 right-0 w-96 h-96 bg-blue-500 rounded-full blur-[120px] opacity-20 -mr-20 -mb-20"></div>
+            <section className="py-16 bg-purple-900 text-white overflow-hidden relative">
+                <div className="absolute top-0 left-0 w-96 h-96 bg-pink-500 rounded-full blur-[120px] opacity-20 -ml-20 -mt-20"></div>
+                <div className="absolute bottom-0 right-0 w-96 h-96 bg-blue-500 rounded-full blur-[120px] opacity-20 -mr-20 -mb-20"></div>
 
-                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-                        <div className="text-center mb-16">
-                            <h2 className="text-4xl font-heading font-bold">Stories of Impact</h2>
-                        </div>
-
-                        <div className="grid md:grid-cols-3 gap-8">
-                            {testimonials.slice(0, 3).map((testimonial, idx) => (
-                                <motion.div
-                                    key={testimonial.id}
-                                    initial={{ opacity: 0, y: 30 }}
-                                    whileInView={{ opacity: 1, y: 0 }}
-                                    transition={{ delay: idx * 0.1 }}
-                                    className="bg-white/5 backdrop-blur-md border border-white/10 p-8 rounded-3xl relative hover:bg-white/10 transition-colors"
-                                >
-                                    <div className="text-pink-400 mb-6 opacity-50">
-                                        <Quote size={32} className="transform rotate-180" />
-                                    </div>
-                                    <p className="text-purple-100 italic mb-8 leading-relaxed text-lg">"{testimonial.content}"</p>
-                                    <div className="flex items-center gap-4">
-                                        <div className="h-12 w-12 rounded-full bg-gradient-to-br from-pink-400 to-purple-500 p-0.5">
-                                            <div className="h-full w-full rounded-full bg-gray-900 flex items-center justify-center overflow-hidden">
-                                                {testimonial.photo_url ? (
-                                                    <img src={testimonial.photo_url} alt={testimonial.author_name} className="h-full w-full object-cover" />
-                                                ) : (
-                                                    <span className="font-bold text-white">{testimonial.author_name.charAt(0)}</span>
-                                                )}
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <h4 className="font-bold text-white">{testimonial.author_name}</h4>
-                                            <p className="text-sm text-pink-300">{testimonial.author_role || 'Community Member'}</p>
-                                        </div>
-                                    </div>
-                                </motion.div>
-                            ))}
-                        </div>
-
-                        <div className="mt-16 text-center">
-                            <Link to="/testimonials" className="inline-flex items-center gap-2 text-white border-b-2 border-pink-400 pb-1 hover:text-pink-300 hover:border-pink-300 transition-all font-bold">
-                                Read More Stories <ArrowRight size={18} />
-                            </Link>
-                        </div>
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                    <div className="text-center mb-16">
+                        <h2 className="text-4xl font-heading font-bold">Stories of Impact</h2>
                     </div>
-                </section>
-            )}
+
+                    <div className="grid md:grid-cols-3 gap-8">
+                        {testimonials.length > 0 ? testimonials.slice(0, 3).map((testimonial, idx) => (
+                            <motion.div
+                                key={testimonial.id}
+                                initial={{ opacity: 0, y: 30 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                transition={{ delay: idx * 0.1 }}
+                                className="bg-white/5 backdrop-blur-md border border-white/10 p-8 rounded-3xl relative hover:bg-white/10 transition-colors flex flex-col"
+                            >
+                                <div className="text-pink-400 mb-6 opacity-50">
+                                    <Quote size={32} className="transform rotate-180" />
+                                </div>
+                                <p className="text-purple-100 italic mb-8 leading-relaxed text-lg flex-1">"{testimonial.content}"</p>
+                                <div className="flex items-center gap-4 border-t border-white/10 pt-6 mt-auto">
+                                    <div className="h-12 w-12 rounded-full bg-gradient-to-br from-pink-400 to-purple-500 p-0.5">
+                                        <div className="h-full w-full rounded-full bg-gray-900 flex items-center justify-center overflow-hidden">
+                                            {testimonial.photo_url ? (
+                                                <img src={testimonial.photo_url} alt={testimonial.author_name} className="h-full w-full object-cover" />
+                                            ) : (
+                                                <span className="font-bold text-white">{testimonial.author_name.charAt(0)}</span>
+                                            )}
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h4 className="font-bold text-white">{testimonial.author_name}</h4>
+                                        <p className="text-sm text-pink-300">{testimonial.author_role || 'Community Member'}</p>
+                                    </div>
+                                </div>
+                                <Link to="/testimonials" className="text-pink-300 hover:text-white font-bold text-sm mt-4 flex items-center gap-1 transition-colors">Read Full Story <ArrowUpRight size={14}/></Link>
+                            </motion.div>
+                        )) : (
+                            // Fallback Testimonials
+                            [1, 2, 3].map((i) => (
+                            <motion.div
+                                key={`fallback-test-${i}`}
+                                initial={{ opacity: 0, y: 30 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                transition={{ delay: i * 0.1 }}
+                                className="bg-white/5 backdrop-blur-md border border-white/10 p-8 rounded-3xl relative flex flex-col opacity-60"
+                            >
+                                <div className="text-pink-400/50 mb-6">
+                                    <Quote size={32} className="transform rotate-180" />
+                                </div>
+                                <div className="space-y-3 mb-8 flex-1">
+                                    <div className="h-4 bg-white/10 rounded w-full"></div>
+                                    <div className="h-4 bg-white/10 rounded w-full"></div>
+                                    <div className="h-4 bg-white/10 rounded w-2/3"></div>
+                                </div>
+                                <div className="flex items-center gap-4 border-t border-white/10 pt-6 mt-auto">
+                                    <div className="h-12 w-12 rounded-full bg-white/10"></div>
+                                    <div className="space-y-2">
+                                        <div className="h-4 bg-white/20 rounded w-24"></div>
+                                        <div className="h-3 bg-white/10 rounded w-16"></div>
+                                    </div>
+                                </div>
+                                <Link to="/testimonials" className="text-pink-300 font-bold text-sm mt-4 flex items-center gap-1 transition-colors">Read Stories <ArrowUpRight size={14}/></Link>
+                            </motion.div>
+                            ))
+                        )}
+                    </div>
+
+                    <div className="mt-16 text-center">
+                        <Link to="/testimonials" className="inline-flex items-center gap-2 text-white border-b-2 border-pink-400 pb-1 hover:text-pink-300 hover:border-pink-300 transition-all font-bold tracking-wide">
+                            View All Stories <ArrowRight size={18} />
+                        </Link>
+                    </div>
+                </div>
+            </section>
 
             {/* Call to Action */}
             <section className="relative py-16 overflow-hidden">

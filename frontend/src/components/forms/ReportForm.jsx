@@ -33,21 +33,21 @@ function ReportForm({ report, onSubmit, onCancel, loading }) {
     return (
         <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Report Title</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">Report Title</label>
                 <input
                     type="text"
                     name="title"
                     required
                     value={formData.title}
                     onChange={handleChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                     placeholder="e.g., Annual Impact Report 2024"
                 />
             </div>
 
             <div className="grid grid-cols-2 gap-4">
                 <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Fiscal Year</label>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">Fiscal Year</label>
                     <div className="relative">
                         <Calendar className="absolute left-3 top-2.5 text-gray-400" size={18} />
                         <input
@@ -56,7 +56,7 @@ function ReportForm({ report, onSubmit, onCancel, loading }) {
                             required
                             value={formData.year}
                             onChange={handleChange}
-                            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                            className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                         />
                     </div>
                 </div>
@@ -68,28 +68,28 @@ function ReportForm({ report, onSubmit, onCancel, loading }) {
                         id="is_published"
                         checked={formData.is_published}
                         onChange={handleChange}
-                        className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                        className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 dark:border-gray-600 rounded"
                     />
-                    <label htmlFor="is_published" className="ml-2 text-sm font-medium text-gray-700">
+                    <label htmlFor="is_published" className="ml-2 text-sm font-medium text-gray-700 dark:text-gray-200">
                         Publish Immediately
                     </label>
                 </div>
             </div>
 
             <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">Description</label>
                 <textarea
                     name="description"
                     rows="3"
                     value={formData.description}
                     onChange={handleChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                     placeholder="Summary of the report..."
                 ></textarea>
             </div>
 
             <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">PDF File</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">PDF File</label>
                 <div className="flex gap-2">
                     <div className="relative flex-grow">
                         <FileText className="absolute left-3 top-2.5 text-gray-400" size={18} />
@@ -98,7 +98,7 @@ function ReportForm({ report, onSubmit, onCancel, loading }) {
                             name="file_url"
                             value={formData.file_url}
                             onChange={handleChange}
-                            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-gray-50"
+                            className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-gray-50 dark:bg-gray-900/50"
                             placeholder="File URL will appear here..."
                             readOnly
                         />
@@ -138,14 +138,14 @@ function ReportForm({ report, onSubmit, onCancel, loading }) {
                         </label>
                     </div>
                 </div>
-                <p className="text-xs text-gray-500 mt-1">Upload the report PDF document.</p>
+                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">Upload the report PDF document.</p>
             </div>
 
             <div className="flex justify-end gap-3 pt-4 border-t">
                 <button
                     type="button"
                     onClick={onCancel}
-                    className="px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
+                    className="px-4 py-2 text-gray-700 dark:text-gray-200 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
                 >
                     Cancel
                 </button>

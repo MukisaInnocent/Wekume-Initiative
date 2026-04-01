@@ -54,60 +54,60 @@ function TestimonialForm({ testimonial, defaultRegion = 'global', onSubmit, onCa
     return (
         <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Author Name *</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">Author Name *</label>
                 <input
                     type="text"
                     required
                     value={formData.author_name}
                     onChange={(e) => setFormData({ ...formData, author_name: e.target.value })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary-500 focus:border-primary-500"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-primary-500 focus:border-primary-500"
                     placeholder="e.g. John Doe"
                 />
             </div>
 
             <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Role / Title</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">Role / Title</label>
                 <input
                     type="text"
                     value={formData.author_role}
                     onChange={(e) => setFormData({ ...formData, author_role: e.target.value })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary-500 focus:border-primary-500"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-primary-500 focus:border-primary-500"
                     placeholder="e.g. Volunteer"
                 />
             </div>
 
             <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Testimonial Content *</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">Testimonial Content *</label>
                 <textarea
                     required
                     rows="4"
                     value={formData.content}
                     onChange={(e) => setFormData({ ...formData, content: e.target.value })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary-500 focus:border-primary-500"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-primary-500 focus:border-primary-500"
                     placeholder="Enter the testimonial text..."
                 />
             </div>
 
             <div className="grid grid-cols-2 gap-4">
                 <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Rating (1-5)</label>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">Rating (1-5)</label>
                     <input
                         type="number"
                         min="1"
                         max="5"
                         value={formData.rating}
                         onChange={(e) => setFormData({ ...formData, rating: parseInt(e.target.value) })}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary-500 focus:border-primary-500"
+                        className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-primary-500 focus:border-primary-500"
                     />
                 </div>
 
                 <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Target Region</label>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">Target Region</label>
                     <select
                         name="region"
                         value={formData.region}
                         onChange={(e) => setFormData({ ...formData, region: e.target.value })}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary-500 focus:border-primary-500"
+                        className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-primary-500 focus:border-primary-500"
                     >
                         <option value="global">Global (Both Regions)</option>
                         <option value="ug">Uganda Only</option>
@@ -123,7 +123,7 @@ function TestimonialForm({ testimonial, defaultRegion = 'global', onSubmit, onCa
                             onChange={(e) => setFormData({ ...formData, is_featured: e.target.checked })}
                             className="rounded text-primary-600 focus:ring-primary-500"
                         />
-                        <span className="text-sm text-gray-700">Featured</span>
+                        <span className="text-sm text-gray-700 dark:text-gray-200">Featured</span>
                     </label>
 
                     <label className="flex items-center space-x-2 cursor-pointer">
@@ -133,13 +133,13 @@ function TestimonialForm({ testimonial, defaultRegion = 'global', onSubmit, onCa
                             onChange={(e) => setFormData({ ...formData, is_approved: e.target.checked })}
                             className="rounded text-secondary-600 focus:ring-secondary-500"
                         />
-                        <span className="text-sm text-gray-700">Approved</span>
+                        <span className="text-sm text-gray-700 dark:text-gray-200">Approved</span>
                     </label>
                 </div>
             </div>
 
             <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Photo</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">Photo</label>
                 <div className="flex gap-4 items-center">
                     {formData.photo_url && (
                         <img src={formData.photo_url} alt="Preview" className="h-16 w-16 object-cover rounded-full border" />
@@ -149,14 +149,14 @@ function TestimonialForm({ testimonial, defaultRegion = 'global', onSubmit, onCa
                             type="file"
                             accept="image/*"
                             onChange={handleFileUpload}
-                            className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary-50 file:text-primary-700 hover:file:bg-primary-100"
+                            className="block w-full text-sm text-gray-500 dark:text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary-50 file:text-primary-700 hover:file:bg-primary-100"
                         />
                         <input
                             type="text"
                             placeholder="Or paste image URL"
                             value={formData.photo_url}
                             onChange={(e) => setFormData({ ...formData, photo_url: e.target.value })}
-                            className="mt-2 w-full px-3 py-1 text-sm border border-gray-300 rounded"
+                            className="mt-2 w-full px-3 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded"
                         />
                     </div>
                 </div>
@@ -166,7 +166,7 @@ function TestimonialForm({ testimonial, defaultRegion = 'global', onSubmit, onCa
                 <button
                     type="button"
                     onClick={onCancel}
-                    className="px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200"
+                    className="px-4 py-2 text-gray-700 dark:text-gray-200 bg-gray-100 rounded-lg hover:bg-gray-200"
                     disabled={loading}
                 >
                     Cancel
