@@ -38,6 +38,8 @@ function Home() {
         return () => clearInterval(timer);
     }, [backgroundImages.length]);
 
+
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -236,7 +238,7 @@ function Home() {
                 </section>
 
             {/* Partners Banner */}
-            <div className="py-16 border-y border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 overflow-hidden relative">
+            <div className="py-16 border-y border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 overflow-hidden relative pause-animation">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-20">
                     <p className="text-gray-400 font-medium uppercase tracking-widest text-xs mb-10">Trusted by our partners</p>
                 </div>
@@ -246,16 +248,13 @@ function Home() {
                 <div className="absolute right-0 top-0 bottom-0 w-24 sm:w-48 bg-gradient-to-l from-white dark:from-gray-900 to-transparent z-10 pointer-events-none"></div>
 
                 <div className="flex w-full overflow-hidden">
-                    <motion.div
-                        className="flex gap-8 md:gap-12 items-center w-max px-8 py-4"
-                        animate={{ x: ["0%", "-50%"] }}
-                        transition={{ repeat: Infinity, ease: "linear", duration: 40 }}
-                    >
+                    <div className="flex gap-8 md:gap-12 items-center w-max px-8 py-4 animate-scroll-marquee">
                         {/* Fallback Partners if API data is missing/empty, or use real data */}
-                        {partners.length > 0 ? [...partners, ...partners].map((partner, index) => (
+                        {partners.length > 0 ? [...partners, ...partners, ...partners, ...partners].map((partner, index) => (
                             <div 
                                 key={`${partner.id}-${index}`} 
-                                className="group flex flex-col items-center justify-between p-6 rounded-2xl bg-gray-50/50 dark:bg-gray-800/30 border border-gray-100/50 dark:border-gray-700/50 hover:border-purple-300 dark:hover:border-purple-600 hover:bg-white dark:hover:bg-gray-800 hover:shadow-xl transition-all duration-500 shrink-0 w-[280px] md:w-[320px] h-[180px] cursor-default"
+                                className="group flex flex-col items-center justify-between p-6 rounded-2xl bg-gray-50/50 dark:bg-gray-800/30 border border-gray-100/50 dark:border-gray-700/50 hover:border-purple-300 dark:hover:border-purple-600 hover:bg-white dark:hover:bg-gray-800 hover:shadow-xl transition-all duration-500 shrink-0 w-[280px] md:w-[320px] h-[180px] cursor-pointer focus:outline-none focus:ring-2 focus:ring-purple-500 hover:scale-[1.02]"
+                                tabIndex={0}
                             >
                                 <div className="w-full flex flex-col items-center">
                                     {partner.logo_url ? (
@@ -287,7 +286,7 @@ function Home() {
                                 </div>
                             ))
                         )}
-                    </motion.div>
+                    </div>
                 </div>
             </div>
 
@@ -296,77 +295,80 @@ function Home() {
                 <div className="absolute top-0 left-0 w-96 h-96 bg-pink-500 rounded-full blur-[120px] opacity-20 -ml-20 -mt-20"></div>
                 <div className="absolute bottom-0 right-0 w-96 h-96 bg-blue-500 rounded-full blur-[120px] opacity-20 -mr-20 -mb-20"></div>
 
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-                    <div className="text-center mb-16">
-                        <h2 className="text-4xl font-heading font-bold">Stories of Impact</h2>
-                    </div>
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 mb-12">
+                     <div className="text-center">
+                         <h2 className="text-4xl font-heading font-bold">Stories of Impact</h2>
+                     </div>
+                </div>
 
-                    <div className="grid md:grid-cols-3 gap-8">
-                        {testimonials.length > 0 ? testimonials.slice(0, 3).map((testimonial, idx) => (
-                            <motion.div
-                                key={testimonial.id}
-                                initial={{ opacity: 0, y: 30 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                transition={{ delay: idx * 0.1 }}
-                                className="bg-white/5 backdrop-blur-md border border-white/10 p-8 rounded-3xl relative hover:bg-white/10 transition-colors flex flex-col"
-                            >
-                                <div className="text-pink-400 mb-6 opacity-50">
-                                    <Quote size={32} className="transform rotate-180" />
-                                </div>
-                                <p className="text-purple-100 italic mb-8 leading-relaxed text-lg flex-1">"{testimonial.content}"</p>
-                                <div className="flex items-center gap-4 border-t border-white/10 pt-6 mt-auto">
-                                    <div className="h-12 w-12 rounded-full bg-gradient-to-br from-pink-400 to-purple-500 p-0.5">
-                                        <div className="h-full w-full rounded-full bg-gray-900 flex items-center justify-center overflow-hidden">
-                                            {testimonial.photo_url ? (
-                                                <img src={testimonial.photo_url} alt={testimonial.author_name} className="h-full w-full object-cover" />
-                                            ) : (
-                                                <span className="font-bold text-white">{testimonial.author_name.charAt(0)}</span>
-                                            )}
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <h4 className="font-bold text-white">{testimonial.author_name}</h4>
-                                        <p className="text-sm text-pink-300">{testimonial.author_role || 'Community Member'}</p>
-                                    </div>
-                                </div>
-                                <Link to="/testimonials" className="text-pink-300 hover:text-white font-bold text-sm mt-4 flex items-center gap-1 transition-colors">Read Full Story <ArrowUpRight size={14}/></Link>
-                            </motion.div>
-                        )) : (
-                            // Fallback Testimonials
-                            [1, 2, 3].map((i) => (
-                            <motion.div
-                                key={`fallback-test-${i}`}
-                                initial={{ opacity: 0, y: 30 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                transition={{ delay: i * 0.1 }}
-                                className="bg-white/5 backdrop-blur-md border border-white/10 p-8 rounded-3xl relative flex flex-col opacity-60"
-                            >
-                                <div className="text-pink-400/50 mb-6">
-                                    <Quote size={32} className="transform rotate-180" />
-                                </div>
-                                <div className="space-y-3 mb-8 flex-1">
-                                    <div className="h-4 bg-white/10 rounded w-full"></div>
-                                    <div className="h-4 bg-white/10 rounded w-full"></div>
-                                    <div className="h-4 bg-white/10 rounded w-2/3"></div>
-                                </div>
-                                <div className="flex items-center gap-4 border-t border-white/10 pt-6 mt-auto">
-                                    <div className="h-12 w-12 rounded-full bg-white/10"></div>
-                                    <div className="space-y-2">
-                                        <div className="h-4 bg-white/20 rounded w-24"></div>
-                                        <div className="h-3 bg-white/10 rounded w-16"></div>
-                                    </div>
-                                </div>
-                                <Link to="/testimonials" className="text-pink-300 font-bold text-sm mt-4 flex items-center gap-1 transition-colors">Read Stories <ArrowUpRight size={14}/></Link>
-                            </motion.div>
-                            ))
-                        )}
-                    </div>
+                <div className="w-full relative py-4 pause-animation">
+                     {/* Gradient Masks */}
+                     <div className="absolute left-0 top-0 bottom-0 w-16 sm:w-48 bg-gradient-to-r from-purple-900 to-transparent z-10 pointer-events-none"></div>
+                     <div className="absolute right-0 top-0 bottom-0 w-16 sm:w-48 bg-gradient-to-l from-purple-900 to-transparent z-10 pointer-events-none"></div>
 
-                    <div className="mt-16 text-center">
-                        <Link to="/testimonials" className="inline-flex items-center gap-2 text-white border-b-2 border-pink-400 pb-1 hover:text-pink-300 hover:border-pink-300 transition-all font-bold tracking-wide">
-                            View All Stories <ArrowRight size={18} />
-                        </Link>
-                    </div>
+                     <div className="flex w-max animate-scroll-marquee-slow gap-6 px-4">
+                         {testimonials.length > 0 ? [...testimonials, ...testimonials, ...testimonials, ...testimonials].map((t, idx) => (
+                             <div
+                                 key={`${t.id || idx}-${idx}`}
+                                 className="bg-white/5 backdrop-blur-xl border border-white/10 p-8 md:p-10 rounded-[2.5rem] relative w-[320px] md:w-[450px] shadow-2xl shrink-0 group focus:outline-none focus:ring-2 focus:ring-pink-500 transition-all hover:bg-white/10"
+                                 tabIndex={0}
+                             >
+                                 {/* Quote Icon Decor */}
+                                 <div className="absolute -top-5 -left-5 w-12 h-12 bg-gradient-to-br from-pink-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-xl rotate-12 group-hover:rotate-0 transition-transform">
+                                     <Quote size={20} className="text-white transform rotate-180" />
+                                 </div>
+
+                                 <div className="space-y-6 h-full flex flex-col justify-between">
+                                     <p className="text-base md:text-lg text-purple-50 italic font-medium leading-relaxed tracking-tight line-clamp-4">
+                                         "{t.content || "Join us in fueling a revolution in healthcare access for Africa's youth."}"
+                                     </p>
+
+                                     <div className="flex items-center justify-between border-t border-white/10 pt-6 mt-auto">
+                                         <div className="flex items-center gap-4">
+                                             <div className="w-12 h-12 rounded-full bg-gradient-to-br from-pink-400 to-purple-500 p-0.5 shadow-lg shrink-0">
+                                                 <div className="w-full h-full rounded-full bg-gray-900 flex items-center justify-center overflow-hidden border-2 border-transparent">
+                                                     {t.photo_url ? (
+                                                         <img src={t.photo_url} alt={t.author_name} className="w-full h-full object-cover" />
+                                                     ) : (
+                                                         <span className="text-sm font-bold text-white">{(t.author_name || 'U').charAt(0)}</span>
+                                                     )}
+                                                 </div>
+                                             </div>
+                                             <div className="text-left overflow-hidden">
+                                                 <h4 className="text-base md:text-lg font-black text-white tracking-wide truncate">
+                                                     {t.author_name || "Wekume Contributor"}
+                                                 </h4>
+                                                 <p className="text-pink-300 font-bold text-xs truncate">
+                                                     {t.author_role || "Community Member"}
+                                                 </p>
+                                             </div>
+                                         </div>
+                                     </div>
+                                 </div>
+                             </div>
+                         )) : (
+                             [1, 2, 3, 4, 1, 2, 3, 4].map((i, idx) => (
+                                 <div key={`fallback-${idx}`} className="bg-white/5 backdrop-blur-xl border border-white/10 p-8 rounded-[2.5rem] w-[320px] md:w-[450px] shadow-2xl shrink-0 animate-pulse">
+                                      <div className="h-4 bg-white/20 rounded w-3/4 mb-4"></div>
+                                      <div className="h-4 bg-white/20 rounded w-full mb-4"></div>
+                                      <div className="h-4 bg-white/20 rounded w-5/6 mb-8"></div>
+                                      <div className="flex items-center gap-4 border-t border-white/10 pt-6">
+                                         <div className="w-12 h-12 rounded-full bg-white/20 shrink-0"></div>
+                                         <div className="flex-1 w-full overflow-hidden">
+                                             <div className="h-4 bg-white/20 rounded w-24 mb-2"></div>
+                                             <div className="h-3 bg-white/20 rounded w-16"></div>
+                                         </div>
+                                      </div>
+                                 </div>
+                             ))
+                         )}
+                     </div>
+                </div>
+
+                <div className="mt-12 text-center relative z-10">
+                    <Link to="/testimonials" className="inline-flex items-center gap-2 text-white border-b-2 border-pink-400 pb-1 hover:text-pink-300 hover:border-pink-300 transition-all font-bold tracking-wide">
+                        View All Stories <ArrowRight size={18} />
+                    </Link>
                 </div>
             </section>
 

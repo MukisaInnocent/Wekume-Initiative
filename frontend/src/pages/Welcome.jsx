@@ -279,16 +279,6 @@ function Welcome() {
                                     </div>
                                 </>
                             )}
-
-                            {/* Founders link */}
-                            <div className="mt-8 pt-6 border-t border-white/5 text-center">
-                                <a
-                                    href="/?founder=WEKUME2026"
-                                    className="text-xs text-gray-600 hover:text-violet-400 transition-colors tracking-wide"
-                                >
-                                    Founders & Partners Portal →
-                                </a>
-                            </div>
                         </div>
                     </div>
                 </motion.div>

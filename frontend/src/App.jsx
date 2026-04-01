@@ -15,7 +15,6 @@ import Support from './pages/Support';
 import AdminLogin from './pages/AdminLogin';
 import AdminDashboard from './pages/AdminDashboard';
 import LinaAIChat from './components/LinaAIChat';
-import FounderBadge from './components/FounderBadge';
 import Testimonials from './pages/Testimonials';
 import USHome from './pages/us/USHome';
 import USFunders from './pages/us/USFunders';
@@ -75,7 +74,6 @@ function AppContent() {
                 <Route path="/admin/login" element={<AdminLogin />} />
                 <Route path="/admin/dashboard" element={<AdminDashboard />} />
             </Routes>
-            <FounderBadge />
             {!hideChat && <LinaAIChat />}
         </div>
     );

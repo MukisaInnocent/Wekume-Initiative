@@ -344,3 +344,24 @@ h6 {
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
 }
+
+/* Auto-scroll Marquee System */
+@keyframes scrollMarquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-scroll-marquee {
+  animation: scrollMarquee 40s linear infinite;
+}
+
+.animate-scroll-marquee-slow {
+  animation: scrollMarquee 60s linear infinite;
+}
+
+.pause-animation:hover .animate-scroll-marquee,
+.pause-animation:focus-within .animate-scroll-marquee,
+.pause-animation:hover .animate-scroll-marquee-slow,
+.pause-animation:focus-within .animate-scroll-marquee-slow {
+  animation-play-state: paused !important;
+}

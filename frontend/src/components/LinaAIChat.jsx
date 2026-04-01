@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 function LinaAIChat() {
     const [isOpen, setIsOpen] = useState(false);
     const [isMinimized, setIsMinimized] = useState(false);
-    const [showAdvert, setShowAdvert] = useState(true);
+    const [showAdvert, setShowAdvert] = useState(false);
     const [messages, setMessages] = useState([
         {
             role: 'assistant',
@@ -18,6 +18,39 @@ function LinaAIChat() {
     const [conversationId, setConversationId] = useState(null);
     const messagesEndRef = useRef(null);
     const inputRef = useRef(null);
+
+    // Initial 3s Delay and Interval Popup for Mobile
+    useEffect(() => {
+        const isMobile = window.innerWidth < 768;
+        
+        let initialTimer;
+        let intervalTimer;
+        let hideTimer;
+
+        if (isMobile) {
+            // Initial popup after 3 seconds
+            initialTimer = setTimeout(() => {
+                setShowAdvert(true);
+                // Hide after 5 seconds to provide initial visibility
+                hideTimer = setTimeout(() => setShowAdvert(false), 5000);
+            }, 3000);
+
+            // Repeat interval: Every 30s, show for 2s
+            intervalTimer = setInterval(() => {
+                setShowAdvert(true);
+                setTimeout(() => setShowAdvert(false), 2000);
+            }, 30000);
+        } else {
+            // Desktop: Show once after 2 seconds and stay
+            initialTimer = setTimeout(() => setShowAdvert(true), 2000);
+        }
+
+        return () => {
+            clearTimeout(initialTimer);
+            clearInterval(intervalTimer);
+            clearTimeout(hideTimer);
+        };
+    }, []);
 
     const scrollToBottom = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
