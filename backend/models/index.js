@@ -40,6 +40,7 @@ const TeamMember = require('./TeamMember')(sequelize);
 const ImpactMetric = require('./ImpactMetric')(sequelize);
 const ConfigurableBlock = require('./ConfigurableBlock')(sequelize);
 const Resource = require('./Resource')(sequelize);
+const EventRegistration = require('./EventRegistration')(sequelize);
 
 // Define relationships
 User.hasMany(ContentSection, { foreignKey: 'last_updated_by', as: 'updatedSections' });
@@ -47,6 +48,9 @@ ContentSection.belongsTo(User, { foreignKey: 'last_updated_by', as: 'updatedBy' 
 
 User.hasMany(Event, { foreignKey: 'created_by', as: 'createdEvents' });
 Event.belongsTo(User, { foreignKey: 'created_by', as: 'creator' });
+
+Event.hasMany(EventRegistration, { foreignKey: 'event_id', as: 'registrations' });
+EventRegistration.belongsTo(Event, { foreignKey: 'event_id', as: 'event' });
 
 User.hasMany(Report, { foreignKey: 'uploaded_by', as: 'uploadedReports' });
 Report.belongsTo(User, { foreignKey: 'uploaded_by', as: 'uploader' });
@@ -85,7 +89,8 @@ const db = {
     TeamMember,
     ImpactMetric,
     ConfigurableBlock,
-    Resource
+    Resource,
+    EventRegistration
 };
 
 // Initialize models function

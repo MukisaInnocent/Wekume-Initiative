@@ -35,7 +35,8 @@ async function migrate() {
             { model: models.TeamMember, name: 'team_members' },
             { model: models.ImpactMetric, name: 'impact_metrics' },
             { model: models.ConfigurableBlock, name: 'configurable_blocks' },
-            { model: models.Resource, name: 'resources' }
+            { model: models.Resource, name: 'resources' },
+            { model: models.EventRegistration, name: 'event_registrations' }
         ];
 
         for (const table of tablesToMigrate) {

@@ -78,6 +78,7 @@ export const contentAPI = {
     // Events
     getEvents: (region) => api.get('/content/events', { params: { region } }),
     getEvent: (id, region) => api.get(`/content/events/${id}`, { params: { region } }),
+    registerEvent: (id, data) => api.post(`/content/events/${id}/register`, data),
 
     // Testimonials
     getTestimonials: (region) => api.get('/content/testimonials', { params: { region } }),

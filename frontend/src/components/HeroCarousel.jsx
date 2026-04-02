@@ -3,40 +3,43 @@ import { Link } from 'react-router-dom';
 import { ArrowRight, ChevronLeft, ChevronRight, Play } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-// Background images are now passed as props from parent
-const DEFAULT_SLIDES = [
-    {
-        id: 'mission',
-        title: "Empowering Youth To Lead",
-        subtitle: "Unlocking potential through education, health, and innovation. We built this platform to listen, support, and guide you.",
-        ctaText: "Download Wekume App",
-        ctaLink: "/wekume-app",
-        theme: "from-purple-600 via-primary-500 to-orange-500",
-        image: "/assets/IMG_0445.jpg"
-    },
-    {
-        id: 'values',
-        title: "Integrity. Innovation. Inclusivity.",
-        subtitle: "Creating safe, stigma-free spaces where every young person can thrive without fear of judgment.",
-        ctaText: "Our Story",
-        ctaLink: "/about",
-        theme: "from-blue-600 via-purple-500 to-pink-500",
-        image: "/assets/IMG_0447.jpg"
-    },
-    {
-        id: 'purpose',
-        title: "Your Health, Your Future",
-        subtitle: "Access confidential SRHR services, book appointments, and chat with Lina anytime, anywhere.",
-        ctaText: "Get Involved",
-        ctaLink: "/get-involved",
-        theme: "from-orange-500 via-red-500 to-purple-600",
-        image: "/assets/IMG_20250321_112053.jpg"
-    }
-];
-
-function HeroCarousel({ currentBackgroundIndex, backgroundImages, setCurrentBackgroundIndex, contentSections = [] }) {
+function HeroCarousel({ currentBackgroundIndex, backgroundImages, setCurrentBackgroundIndex, contentSections = [], mission, vision, values, region }) {
     const [currentSlide, setCurrentSlide] = useState(0);
     const [isHovering, setIsHovering] = useState(false);
+
+    const formattedValues = values && values.length > 0 
+        ? values.map(v => v.title).join(" • ")
+        : "Integrity • Innovation • Inclusivity";
+
+    const DEFAULT_SLIDES = [
+        {
+            id: 'mission',
+            title: "Our Mission",
+            subtitle: mission || "Empowering university students to take control of their reproductive health while nurturing personal and professional growth.",
+            ctaText: "Download Wekume App",
+            ctaLink: region === 'us' ? "/us/wekume-app" : "/ug/wekume-app",
+            theme: "from-purple-600 via-primary-500 to-orange-500",
+            image: "/assets/IMG_0445.jpg"
+        },
+        {
+            id: 'objective',
+            title: "Our Vision",
+            subtitle: vision || "A healthier, informed future for the youth of Africa.",
+            ctaText: "Hear Our Story",
+            ctaLink: region === 'us' ? "/us/about" : "/ug/about",
+            theme: "from-blue-600 via-purple-500 to-pink-500",
+            image: "/assets/IMG_0447.jpg"
+        },
+        {
+            id: 'values',
+            title: "Core Values",
+            subtitle: formattedValues,
+            ctaText: "View Activities",
+            ctaLink: region === 'us' ? "/us/activities" : "/ug/activities",
+            theme: "from-orange-500 via-red-500 to-purple-600",
+            image: "/assets/IMG_20250321_112053.jpg"
+        }
+    ];
 
     // Derive active slides from contentSections or fallback
     const slides = DEFAULT_SLIDES.map((defSlide, index) => {
@@ -58,7 +61,7 @@ function HeroCarousel({ currentBackgroundIndex, backgroundImages, setCurrentBack
         if (!isHovering) {
             const timer = setInterval(() => {
                 setCurrentSlide((prev) => (prev + 1) % slides.length);
-            }, 8000); 
+            }, 5000); 
             return () => clearInterval(timer);
         }
     }, [isHovering, slides.length]);
@@ -71,34 +74,37 @@ function HeroCarousel({ currentBackgroundIndex, backgroundImages, setCurrentBack
         setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
     };
 
-    // Determine which images to show (Dynamic vs Fallback)
-    const activeImages = backgroundImages.length > 0 ? backgroundImages : slides.map(s => s.image);
-    const activeIndex = backgroundImages.length > 0 ? currentBackgroundIndex : currentSlide;
+    // Ensure we have exactly one image per slide
+    const activeImages = slides.map((slide, index) => {
+        if (backgroundImages && backgroundImages.length > index) {
+            return backgroundImages[index];
+        } else if (backgroundImages && backgroundImages.length > 0) {
+            return backgroundImages[index % backgroundImages.length];
+        }
+        return slide.image;
+    });
 
     return (
         <section
-            className="relative text-white min-h-[95vh] flex items-center overflow-hidden pt-[88px]"
+            className="relative text-white min-h-[95vh] flex items-center overflow-hidden pt-[88px] outline-none"
             onMouseEnter={() => setIsHovering(true)}
             onMouseLeave={() => setIsHovering(false)}
+            onFocus={() => setIsHovering(true)}
+            onBlur={() => setIsHovering(false)}
+            tabIndex={0}
         >
             {/* Background Slides */}
             {activeImages.map((imgSrc, index) => (
                 <div
                     key={index}
-                    className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${index === activeIndex ? 'opacity-100 z-0' : 'opacity-0 -z-10'}`}
+                    className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${index === currentSlide ? 'opacity-100 z-0' : 'opacity-0 -z-10'}`}
                 >
                     {/* Background Image */}
                     <div className="absolute inset-0">
-                        <motion.img
-                            key={imgSrc}
+                        <img
                             src={imgSrc}
                             alt={`Background ${index}`}
                             className="w-full h-full object-cover"
-                            initial={{ scale: 1.1 }}
-                            animate={{
-                                scale: index === activeIndex ? 1.05 : 1.1,
-                                transition: { duration: 10, ease: "linear" }
-                            }}
                         />
                         {/* Gradient Overlay for enhanced readability */}
                         <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-black/30"></div>
@@ -128,7 +134,7 @@ function HeroCarousel({ currentBackgroundIndex, backgroundImages, setCurrentBack
                             >
                                 <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
                                 <span className="text-xs font-bold text-white uppercase tracking-wider">
-                                    {slides[currentSlide].id === 'mission' ? 'Our Mission' : slides[currentSlide].id === 'values' ? 'Core Values' : 'Our Purpose'}
+                                    {slides[currentSlide].id === 'mission' ? 'Welcome to Wekume' : slides[currentSlide].id === 'objective' ? 'Our Vision' : 'Core Values'}
                                 </span>
                             </motion.div>
 
@@ -214,7 +220,7 @@ function HeroCarousel({ currentBackgroundIndex, backgroundImages, setCurrentBack
                     key={currentSlide}
                     initial={{ width: "0%" }}
                     animate={{ width: "100%" }}
-                    transition={{ duration: 8, ease: "linear" }}
+                    transition={{ duration: 5, ease: "linear" }}
                     className="h-full bg-primary-500"
                 />
             </div>

@@ -40,16 +40,14 @@ function Navbar({ isTransparent = false, backgroundImages, currentBackgroundInde
     const navLinks = isUS ? [
         { path: '/us', label: 'Home', icon: Home },
         { path: '/us/funders', label: 'Funders', icon: Heart },
-        { path: '/us/rewards', label: 'Rewards', icon: Gift },
         { path: '/us/impact', label: 'Impact Reporting', icon: BarChart2 },
         { path: '/us/contact', label: 'Contact', icon: Mail }
     ] : [
         { path: '/ug', label: 'Home', icon: Home },
-        { path: '/ug/about', label: 'About', icon: Info },
+        { path: '/ug/about', label: 'Our Story', icon: Info },
         { path: '/ug/wekume-app', label: 'Wekume App', icon: Smartphone },
-        { path: '/ug/events', label: 'Events', icon: Calendar },
-        { path: '/ug/get-involved', label: 'Get Involved', icon: Users },
-        { path: '/ug/testimonials', label: 'Testimonials', icon: MessageSquare },
+        { path: '/ug/activities', label: 'Activities', icon: Users },
+        { path: '/ug/rewards', label: 'Rewards', icon: Gift },
         { path: '/ug/reports', label: 'Reports', icon: FileText },
         { path: '/ug/contact', label: 'Contact', icon: Mail }
     ];
@@ -119,7 +117,7 @@ function Navbar({ isTransparent = false, backgroundImages, currentBackgroundInde
                                className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-purple-600 to-orange-500 text-white px-4 py-3 rounded-xl font-bold hover:shadow-lg hover:-translate-y-0.5 transition-all text-sm mb-4"
                                onClick={() => setIsMenuOpen(false)}
                            >
-                               <Heart size={16} /> Support Us
+                               <Heart size={16} /> Fund Us
                            </Link>
                        )}
                        <div className="flex items-center justify-between px-2 w-full">
@@ -175,7 +173,7 @@ function Navbar({ isTransparent = false, backgroundImages, currentBackgroundInde
                                     to="/us/support"
                                     className={`px-6 py-2.5 rounded-full font-bold transition-all transform hover:-translate-y-0.5 hover:shadow-lg ${buttonClass}`}
                                 >
-                                    Support
+                                    Fund Us
                                 </Link>
                             )}
                         </div>

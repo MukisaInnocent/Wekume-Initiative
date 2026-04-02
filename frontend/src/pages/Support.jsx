@@ -6,6 +6,7 @@ import { Heart, CreditCard, Smartphone, Check, ArrowRight, Mail, Phone, User, Me
 
 function Support() {
     const [ContributionType, setContributionType] = useState('one-time');
+    const [fundCategory, setFundCategory] = useState('Testing Kits');
     const [amount, setAmount] = useState('50000');
     const [showCustomAmount, setShowCustomAmount] = useState(false);
     const [paymentMethod, setPaymentMethod] = useState('mobile_money');
@@ -69,7 +70,8 @@ function Support() {
                 amount: parseInt(amount, 10),
                 currency: 'UGX',
                 payment_method: paymentMethod,
-                Contribution_type: ContributionType
+                Contribution_type: ContributionType,
+                fund_category: fundCategory
             };
 
             const response = await ContributionAPI.create(payload);
@@ -112,7 +114,7 @@ function Support() {
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
                     <div className="inline-flex items-center justify-center p-3 bg-white/10 backdrop-blur-sm rounded-full mb-6 animate-fade-in">
                         <Heart className="text-pink-300 mr-2 animate-pulse" fill="currentColor" size={24} />
-                        <span className="font-semibold tracking-wide uppercase text-sm">Support Our Cause</span>
+                        <span className="font-semibold tracking-wide uppercase text-sm">Fund Us</span>
                     </div>
                     <h1 className="text-4xl md:text-6xl font-heading font-bold mb-4 animate-fade-in">
                         Make an Impact Today
@@ -227,6 +229,23 @@ function Support() {
                                             >
                                                 Monthly
                                             </button>
+                                        </div>
+                                    </div>
+
+                                    {/* Fund Category */}
+                                    <div>
+                                        <label className="block text-sm font-bold text-primary-700 dark:text-primary-400 mb-3 uppercase tracking-wide">Fund a Specific Cause</label>
+                                        <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                                            {['Testing Kits', 'Salaries', 'Events', 'Internet', 'Cost of Treatment'].map((cat) => (
+                                                <button
+                                                    key={cat}
+                                                    type="button"
+                                                    onClick={() => setFundCategory(cat)}
+                                                    className={`py-3 px-3 rounded-xl font-semibold border-2 transition-all hover:scale-[1.02] text-sm ${fundCategory === cat ? 'bg-primary-600 text-white border-primary-600 shadow-md' : 'bg-white dark:bg-gray-700 text-primary-600 dark:text-primary-300 border-primary-200 dark:border-gray-600 hover:border-primary-400'}`}
+                                                >
+                                                    {cat}
+                                                </button>
+                                            ))}
                                         </div>
                                     </div>
 

@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const adminController = require('../controllers/adminController');
+const eventRegistrationController = require('../controllers/eventRegistrationController');
 const authMiddleware = require('../middleware/auth');
 const roleCheck = require('../middleware/roleCheck');
 
@@ -16,6 +17,9 @@ router.get('/events', adminController.getAllEvents);
 router.post('/events', adminController.createEvent);
 router.put('/events/:id', adminController.updateEvent);
 router.delete('/events/:id', roleCheck('super_admin'), adminController.deleteEvent);
+
+// ===== EVENT REGISTRATIONS =====
+router.get('/event-registrations', eventRegistrationController.getAllRegistrations);
 
 // ===== PARTNERS =====
 router.get('/partners', adminController.getAllPartners);

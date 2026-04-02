@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const contentController = require('../controllers/contentController');
 const formController = require('../controllers/formController');
+const eventRegistrationController = require('../controllers/eventRegistrationController');
 
 // ===== PUBLIC CONTENT ROUTES =====
 
@@ -15,6 +16,7 @@ router.get('/partners', contentController.getAllPartners);
 // Events
 router.get('/events', contentController.getPublishedEvents);
 router.get('/events/:id', contentController.getEventById);
+router.post('/events/:id/register', eventRegistrationController.registerForEvent);
 
 // Testimonials
 router.get('/testimonials', contentController.getApprovedTestimonials);

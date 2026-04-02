@@ -3,61 +3,49 @@ import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import HeroCarousel from '../components/HeroCarousel';
-import { ArrowRight, Heart, Users, Lightbulb, Calendar, ArrowUpRight, MessageCircle, Shield, Clock, Quote, Sparkles, CheckCircle, Activity, Target, Eye, Flag } from 'lucide-react';
+import { ArrowRight, Heart, Users, Lightbulb, Calendar, ArrowUpRight, MessageCircle, Shield, Clock, Quote, Sparkles, CheckCircle, Activity, Target, Eye, Flag, Gift, Smartphone } from 'lucide-react';
 import { contentAPI, backgroundAPI } from '../services/api';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRegion } from '../context/RegionContext';
 
 function Home() {
-    const { region } = useRegion();
+    const { region, isUS } = useRegion();
 
     const [values, setValues] = useState([]);
-    const [events, setEvents] = useState([]);
     const [partners, setPartners] = useState([]);
     const [testimonials, setTestimonials] = useState([]);
     const [contentSections, setContentSections] = useState([]);
     const [dynamicBackgrounds, setDynamicBackgrounds] = useState([]);
-    const [currentBackgroundIndex, setCurrentBackgroundIndex] = useState(0);
     const [loading, setLoading] = useState(true);
+    
+    // New state for mission and vision
+    const [mission, setMission] = useState(null);
+    const [vision, setVision] = useState(null);
 
-    // Eager import as fallback
     const backgroundImagesModules = import.meta.glob('../assets/background images/*.{png,jpg,jpeg,webp,svg}', { eager: true });
     const localBackgroundImages = Object.values(backgroundImagesModules).map(module => module.default);
-
-    // Use dynamic images if available, otherwise fallback
     const backgroundImages = dynamicBackgrounds.length > 0 ? dynamicBackgrounds.map(bg => bg.image_url) : localBackgroundImages;
-
-    // Auto-play for Background Images
-    useEffect(() => {
-        if (backgroundImages.length === 0) return;
-
-        const timer = setInterval(() => {
-            setCurrentBackgroundIndex((prev) => (prev + 1) % backgroundImages.length);
-        }, 8000); // Sync with HeroCarousel duration
-
-        return () => clearInterval(timer);
-    }, [backgroundImages.length]);
-
-
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const [valuesRes, eventsRes, partnersRes, testimonialsRes, backgroundsRes, sectionsRes] = await Promise.all([
+                const [valuesRes, partnersRes, testimonialsRes, backgroundsRes, sectionsRes, missionRes, visionRes] = await Promise.all([
                     contentAPI.getValues(),
-                    contentAPI.getEvents(region),
                     contentAPI.getPartners(region),
                     contentAPI.getTestimonials(region),
                     backgroundAPI.getActiveBackgrounds().catch(err => ({ data: { backgrounds: [] } })),
-                    contentAPI.getSections(region).catch(err => ({ data: { sections: [] } }))
+                    contentAPI.getSections(region).catch(err => ({ data: { sections: [] } })),
+                    contentAPI.getSection('about_mission', region).catch(() => ({ data: { content: null } })),
+                    contentAPI.getSection('about_vision', region).catch(() => ({ data: { content: null } }))
                 ]);
 
                 setValues(valuesRes.data.values || []);
-                setEvents(eventsRes.data.events?.slice(0, 3) || []); // Top 3 events
                 setPartners(partnersRes.data.partners || []);
                 setTestimonials(testimonialsRes.data.testimonials || []);
                 setContentSections(sectionsRes.data.sections || []);
-
+                setMission(missionRes.data?.content || "Empowering university students to take control of their reproductive health while nurturing personal and professional growth.");
+                setVision(visionRes.data?.content || "A healthier, informed future for the youth of Africa.");
+                
                 if (backgroundsRes.data.backgrounds && backgroundsRes.data.backgrounds.length > 0) {
                     setDynamicBackgrounds(backgroundsRes.data.backgrounds);
                 }
@@ -70,7 +58,6 @@ function Home() {
 
         fetchData();
     }, [region]);
-
 
     const fadeInUp = {
         hidden: { opacity: 0, y: 60 },
@@ -89,171 +76,136 @@ function Home() {
 
     return (
         <div className="overflow-x-hidden bg-white dark:bg-gray-900 transition-colors duration-300">
-            <Navbar isTransparent={true} backgroundImages={backgroundImages} currentBackgroundIndex={currentBackgroundIndex} />
+            <Navbar isTransparent={true} backgroundImages={backgroundImages} />
 
-            {/* Dynamic Hero Carousel */}
             <HeroCarousel
-                currentBackgroundIndex={currentBackgroundIndex}
                 backgroundImages={backgroundImages}
-                setCurrentBackgroundIndex={setCurrentBackgroundIndex}
                 contentSections={contentSections}
+                mission={mission}
+                vision={vision}
+                values={values}
+                region={region}
             />
 
-
-            {/* Values Section */}
-            <section className="py-16 bg-white dark:bg-gray-800">
+            {/* Vision, Mission, Values, & Why Us */}
+            <section className="py-20 bg-white dark:bg-gray-800">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
+                    {/* Why Us section integrated */}
+                    <motion.div 
+                        initial={{ opacity: 0, y: 30 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        className="text-center mb-16"
+                        className="bg-gray-900 text-white rounded-[2.5rem] p-8 sm:p-14 mb-20 relative overflow-hidden text-center max-w-5xl mx-auto border border-white/10"
                     >
-                        <h2 className="text-4xl font-heading font-bold text-gray-900 dark:text-white mb-4">Core Values</h2>
-                        <div className="h-1 w-20 bg-gradient-to-r from-purple-500 to-orange-500 mx-auto rounded-full"></div>
-                    </motion.div>
-
-                    <motion.div
-                        variants={staggerContainer}
-                        initial="hidden"
-                        whileInView="visible"
-                        viewport={{ once: true }}
-                        className="grid md:grid-cols-3 gap-8"
-                    >
-                        {/* Values Logic */}
-                        {values.length > 0 ? values.map((value, index) => (
-                            <motion.div
-                                key={value.id}
-                                variants={fadeInUp}
-                                whileHover={{ y: -10 }}
-                                className="text-center p-8 rounded-3xl bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-gray-700 transition-all hover:shadow-2xl hover:border-purple-200 dark:hover:border-purple-800"
-                            >
-                                <div className={`inline-flex p-5 rounded-2xl mb-6 shadow-md ${index % 2 === 0 ? 'bg-white text-orange-500' : 'bg-white text-purple-600'}`}>
-                                    {index === 0 ? <Heart size={32} /> : index === 1 ? <Users size={32} /> : <Lightbulb size={32} />}
-                                </div>
-                                <h3 className="text-2xl font-heading font-bold mb-4 text-gray-900 dark:text-white">{value.title}</h3>
-                                <p className="text-gray-600 dark:text-gray-400 leading-relaxed">{value.description}</p>
-                            </motion.div>
-                        )) : (
-                            // Fallback Values
-                            <>
-                                <motion.div variants={fadeInUp} whileHover={{ y: -10 }} className="text-center p-8 rounded-3xl bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-gray-700 hover:shadow-xl transition-all">
-                                    <div className="inline-flex p-5 rounded-2xl mb-6 bg-white text-orange-500 shadow-sm"><Heart size={32} /></div>
-                                    <h3 className="text-2xl font-heading font-bold mb-3 text-gray-900 dark:text-white">Learn, Unlearn, Relearn</h3>
-                                    <p className="text-gray-600 dark:text-gray-400">Embracing continuous growth and adaptation in an ever-changing world.</p>
-                                </motion.div>
-                                <motion.div variants={fadeInUp} whileHover={{ y: -10 }} className="text-center p-8 rounded-3xl bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-gray-700 hover:shadow-xl transition-all">
-                                    <div className="inline-flex p-5 rounded-2xl mb-6 bg-white text-purple-600 shadow-sm"><Users size={32} /></div>
-                                    <h3 className="text-2xl font-heading font-bold mb-3 text-gray-900 dark:text-white">Innovation</h3>
-                                    <p className="text-gray-600 dark:text-gray-400">Using technology and creative solutions to solve real problems.</p>
-                                </motion.div>
-                                <motion.div variants={fadeInUp} whileHover={{ y: -10 }} className="text-center p-8 rounded-3xl bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-gray-700 hover:shadow-xl transition-all">
-                                    <div className="inline-flex p-5 rounded-2xl mb-6 bg-white text-orange-500 shadow-sm"><Lightbulb size={32} /></div>
-                                    <h3 className="text-2xl font-heading font-bold mb-3 text-gray-900 dark:text-white">Accessibility</h3>
-                                    <p className="text-gray-600 dark:text-gray-400">Making education and health resources available to everyone.</p>
-                                </motion.div>
-                            </>
-                        )}
+                        <div className="absolute top-0 right-0 -mr-20 -mt-20 w-64 h-64 bg-purple-600/30 rounded-full blur-3xl pointer-events-none"></div>
+                        <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-64 h-64 bg-orange-600/30 rounded-full blur-3xl pointer-events-none"></div>
+                        
+                        <span className="text-orange-400 font-bold tracking-widest uppercase text-sm mb-4 block relative z-10">The Context</span>
+                        <h2 className="text-4xl font-heading font-black mb-6 relative z-10">Why We Exist</h2>
+                        <p className="text-lg text-gray-300 max-w-3xl mx-auto leading-relaxed relative z-10">
+                            Ugandan university students face unique challenges around reproductive health. Many lack access to safe resources, and stigma prevents open conversations. Wekume addresses these issues by offering an inclusive, digital platform that connects them to vital information, healthcare services, and a supportive community.
+                        </p>
                     </motion.div>
                 </div>
             </section>
 
-            {/* Upcoming Events Preview */}
-            <section className="py-16 bg-gray-50 dark:bg-gray-900">
-                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            className="flex justify-between items-end mb-12"
-                        >
-                            <div>
-                                <span className="text-orange-600 dark:text-orange-400 font-semibold tracking-wider uppercase text-sm">Get Involved</span>
-                                <h2 className="text-4xl font-heading font-bold text-gray-900 dark:text-white mt-2">Upcoming Events</h2>
-                            </div>
-                            <Link to="/events" className="hidden md:flex items-center gap-2 text-purple-600 font-bold hover:text-purple-700 hover:gap-3 transition-all">View All <ArrowRight size={20} /></Link>
-                        </motion.div>
+            {/* Events Description & Rewards Program Brief */}
+            <section className="py-20 bg-gray-50 dark:bg-gray-900 border-y border-gray-100 dark:border-gray-800">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="bg-white dark:bg-gray-800 rounded-[2.5rem] border border-gray-200 dark:border-gray-700 shadow-xl overflow-hidden flex flex-col md:flex-row group">
+                        
+                        <div className={`${!isUS ? 'md:w-1/2 border-r border-gray-100 dark:border-gray-700' : 'w-full'} p-6 sm:p-10 md:p-14 flex flex-col justify-center relative bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-900 group-hover:bg-white transition-colors`}>
+                            <span className="px-4 py-1.5 rounded-full bg-purple-100 dark:bg-purple-900/40 text-purple-600 dark:text-purple-400 text-sm font-bold tracking-wide w-fit mb-6 flex items-center gap-2">
+                                <Calendar size={16} /> Activities
+                            </span>
+                            <h2 className="text-3xl sm:text-4xl font-black text-gray-900 dark:text-white mb-6">Experience the Action</h2>
+                            <p className="text-gray-600 dark:text-gray-400 text-lg leading-relaxed mb-10">
+                                Wekume organizes impactful community drives, on-campus health dialogues, and hostel outreach programs. Our events are safe spaces to learn, connect, and empower one another. Join us in shaping a well-informed generation.
+                            </p>
+                            <Link to="/ug/activities" className="mt-auto text-purple-600 dark:text-purple-400 font-bold text-lg flex items-center gap-2 group-hover:gap-4 transition-all w-fit">
+                                View Our Events <ArrowRight size={20} />
+                            </Link>
+                        </div>
 
-                        <motion.div
-                            variants={staggerContainer}
-                            initial="hidden"
-                            whileInView="visible"
-                            viewport={{ once: true }}
-                            className="grid md:grid-cols-3 gap-8"
-                        >
-                            {events.length > 0 ? events.map(event => (
-                                <motion.div
-                                    key={event.id}
-                                    variants={fadeInUp}
-                                    whileHover={{ y: -5 }}
-                                    className="group bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-2xl overflow-hidden hover:shadow-2xl transition-all duration-300 flex flex-col"
+                        {!isUS && (
+                        <div className="md:w-1/2 p-6 sm:p-10 md:p-14 flex flex-col justify-center bg-gradient-to-br from-purple-600 to-orange-500 text-white relative overflow-hidden text-center md:text-left">
+                            <div className="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-white/10 rounded-full blur-2xl"></div>
+                            
+                            <span className="px-4 py-1.5 rounded-full bg-white/20 text-white text-sm font-bold tracking-wide w-fit mb-6 flex items-center gap-2">
+                                <Gift size={16} /> Rewards
+                            </span>
+                            <h2 className="text-3xl sm:text-4xl font-black text-white mb-6">Wekume Rewards</h2>
+                            <p className="text-purple-100 text-lg leading-relaxed mb-10 relative z-10">
+                                Be part of our activities and interact with our platform to earn points. Redeem your points for exclusive swag, essential health kits, and special event passes. Your active participation fuels the change and rewards your growth.
+                            </p>
+                            <Link to="/ug/rewards" className="mt-auto bg-white text-purple-600 font-bold py-3 px-8 rounded-full shadow-lg hover:shadow-xl hover:scale-105 transition-all w-fit flex items-center gap-2 relative z-10">
+                                Learn More <ArrowRight size={18} />
+                            </Link>
+                        </div>
+                        )}
+                    </div>
+                </div>
+            </section>
+
+            {/* Testimonials Marquee */}
+            {testimonials && testimonials.length > 0 && (
+                <section className="py-20 bg-white dark:bg-gray-900 border-t border-gray-100 dark:border-gray-800 overflow-hidden relative">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center mb-12 relative z-20">
+                        <span className="text-pink-600 dark:text-pink-400 font-bold tracking-wider uppercase text-sm mb-2 block">Voices of Change</span>
+                        <h2 className="text-3xl md:text-4xl font-heading font-black text-gray-900 dark:text-white mb-4">What Our Community Says</h2>
+                        <div className="h-1 w-20 bg-gradient-to-r from-pink-500 to-orange-500 mx-auto rounded-full"></div>
+                    </div>
+
+                    {/* Gradient Masks */}
+                    <div className="absolute left-0 top-0 bottom-0 w-16 sm:w-32 bg-gradient-to-r from-white dark:from-gray-900 to-transparent z-10 pointer-events-none"></div>
+                    <div className="absolute right-0 top-0 bottom-0 w-16 sm:w-32 bg-gradient-to-l from-white dark:from-gray-900 to-transparent z-10 pointer-events-none"></div>
+
+                    <div className="flex w-full overflow-hidden pause-animation">
+                        <div className="flex gap-6 items-stretch w-max px-4 py-4 animate-scroll-marquee">
+                            {[...testimonials, ...testimonials, ...testimonials].map((t, index) => (
+                                <div 
+                                    key={`${t.id || index}-${index}`}
+                                    className="group bg-gray-50 dark:bg-gray-800/50 p-6 sm:p-8 rounded-3xl border border-gray-100 dark:border-gray-700/50 shadow-sm hover:shadow-xl hover:border-pink-200 dark:hover:border-pink-800 transition-all duration-300 w-[85vw] sm:w-[350px] lg:w-[400px] shrink-0 flex flex-col relative"
+                                    tabIndex={0}
                                 >
-                                    <div className="h-56 bg-gray-200 relative overflow-hidden group-hover:scale-105 transition-transform duration-500">
-                                        <div className="absolute inset-0 bg-gradient-to-br from-purple-500 to-orange-400 opacity-80"></div>
-                                        <div className="absolute inset-0 flex items-center justify-center text-white/20">
-                                            <Calendar size={64} />
+                                    <Quote className="text-pink-200 dark:text-pink-900/40 absolute top-6 right-6" size={40} />
+                                    <p className="text-gray-700 dark:text-gray-300 italic mb-8 relative z-10 flex-1 text-lg">"{t.content}"</p>
+                                    <div className="flex items-center gap-4 mt-auto">
+                                        <div className="w-14 h-14 rounded-full overflow-hidden bg-gray-200 border-2 border-white dark:border-gray-700 shadow-sm shrink-0">
+                                            {t.photo_url ? (
+                                                <img src={t.photo_url} alt={t.author_name} className="w-full h-full object-cover" />
+                                            ) : (
+                                                <div className="w-full h-full flex items-center justify-center bg-pink-100 dark:bg-pink-900/30 text-pink-700 dark:text-pink-400 font-bold">{t.author_name?.charAt(0)}</div>
+                                            )}
                                         </div>
-
-                                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end p-6">
-                                            <div className="text-white">
-                                                <div className="flex items-center gap-2 text-sm font-bold bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full w-fit mb-2">
-                                                    <Calendar size={14} />
-                                                    {new Date(event.event_date).toLocaleDateString(undefined, { month: 'long', day: 'numeric' })}
-                                                </div>
-                                            </div>
+                                        <div>
+                                            <h4 className="font-bold text-gray-900 dark:text-white">{t.author_name}</h4>
+                                            <p className="text-xs text-pink-600 dark:text-pink-400 font-medium tracking-wide uppercase mt-0.5">{t.author_role}</p>
                                         </div>
                                     </div>
-                                    <div className="p-8 flex-1 flex flex-col">
-                                        <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3 group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors">{event.title}</h3>
-                                        <p className="text-gray-600 dark:text-gray-300 text-sm line-clamp-3 mb-6 leading-relaxed flex-1">{event.description}</p>
-                                        <Link to="/events" className="text-purple-600 font-bold text-sm flex items-center gap-1 group-hover:gap-2 transition-all w-fit mt-auto cursor-pointer">Read More <ArrowUpRight size={16} /></Link>
-                                    </div>
-                                </motion.div>
-                            )) : (
-                                [1, 2, 3].map(i => (
-                                    <motion.div
-                                        key={`fallback-event-${i}`}
-                                        variants={fadeInUp}
-                                        className="group bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-2xl overflow-hidden hover:shadow-2xl transition-all duration-300 flex flex-col opacity-80"
-                                    >
-                                        <div className="h-56 bg-gradient-to-br from-purple-500/20 to-orange-400/20 relative flex items-center justify-center text-purple-300">
-                                            <Calendar size={48} />
-                                        </div>
-                                        <div className="p-8 flex-1 flex flex-col">
-                                            <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-3/4 mb-4"></div>
-                                            <div className="space-y-2 mb-6 flex-1">
-                                                <div className="h-4 bg-gray-100 dark:bg-gray-700/50 rounded w-full"></div>
-                                                <div className="h-4 bg-gray-100 dark:bg-gray-700/50 rounded w-5/6"></div>
-                                            </div>
-                                            <Link to="/events" className="text-purple-600 font-bold text-sm flex items-center gap-1 group-hover:gap-2 transition-all w-fit mt-auto cursor-pointer">Explore Events <ArrowUpRight size={16} /></Link>
-                                        </div>
-                                    </motion.div>
-                                ))
-                            )}
-                        </motion.div>
-                        <div className="mt-12 text-center md:hidden">
-                            <Link to="/events" className="px-6 py-3 bg-white dark:bg-gray-800 text-purple-600 font-bold rounded-xl shadow-md border border-gray-100 dark:border-gray-700">View All Events</Link>
+                                </div>
+                            ))}
                         </div>
                     </div>
                 </section>
+            )}
 
             {/* Partners Banner */}
-            <div className="py-16 border-y border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 overflow-hidden relative pause-animation">
+            <div className="py-16 border-b border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 overflow-hidden relative pause-animation">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-20">
                     <p className="text-gray-400 font-medium uppercase tracking-widest text-xs mb-10">Trusted by our partners</p>
                 </div>
                 
-                {/* Gradient Masks for smooth entering/exiting */}
+                {/* Gradient Masks */}
                 <div className="absolute left-0 top-0 bottom-0 w-24 sm:w-48 bg-gradient-to-r from-white dark:from-gray-900 to-transparent z-10 pointer-events-none"></div>
                 <div className="absolute right-0 top-0 bottom-0 w-24 sm:w-48 bg-gradient-to-l from-white dark:from-gray-900 to-transparent z-10 pointer-events-none"></div>
 
                 <div className="flex w-full overflow-hidden">
                     <div className="flex gap-8 md:gap-12 items-center w-max px-8 py-4 animate-scroll-marquee">
-                        {/* Fallback Partners if API data is missing/empty, or use real data */}
                         {partners.length > 0 ? [...partners, ...partners, ...partners, ...partners].map((partner, index) => (
-                            <div 
+                            <button 
                                 key={`${partner.id}-${index}`} 
-                                className="group flex flex-col items-center justify-between p-6 rounded-2xl bg-gray-50/50 dark:bg-gray-800/30 border border-gray-100/50 dark:border-gray-700/50 hover:border-purple-300 dark:hover:border-purple-600 hover:bg-white dark:hover:bg-gray-800 hover:shadow-xl transition-all duration-500 shrink-0 w-[280px] md:w-[320px] h-[180px] cursor-pointer focus:outline-none focus:ring-2 focus:ring-purple-500 hover:scale-[1.02]"
+                                className="group flex flex-col items-center justify-between p-6 rounded-2xl bg-gray-50/50 dark:bg-gray-800/30 border border-gray-100/50 dark:border-gray-700/50 hover:border-purple-300 dark:hover:border-purple-600 hover:bg-white dark:hover:bg-gray-800 hover:shadow-xl transition-all duration-500 shrink-0 w-[85vw] sm:w-[280px] md:w-[320px] h-[180px] cursor-pointer focus:outline-none focus:ring-2 focus:ring-purple-500 hover:scale-[1.02]"
                                 tabIndex={0}
                             >
                                 <div className="w-full flex flex-col items-center">
@@ -270,19 +222,11 @@ function Home() {
                                     )}
                                     <h4 className="text-lg font-heading font-black text-gray-800 dark:text-white group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors text-center truncate w-full uppercase tracking-tighter">{partner.name}</h4>
                                 </div>
-                                
-                                {partner.description && (
-                                    <p className="text-xs text-gray-500 dark:text-gray-400 text-center leading-normal line-clamp-3 mt-3 italic opacity-80 group-hover:opacity-100 transition-opacity">
-                                        "{partner.description}"
-                                    </p>
-                                )}
-                            </div>
+                            </button>
                         )) : (
-                            // Static placeholders if no data
                             [1, 2, 3, 4, 5, 1, 2, 3, 4, 5].map((i, index) => (
-                                <div key={`fallback-${index}`} className="group flex flex-col items-center justify-center p-6 rounded-2xl bg-gray-50/50 dark:bg-gray-800/30 border border-dashed border-gray-200 dark:border-gray-700 shrink-0 w-[280px] h-[180px] opacity-40">
+                                <div key={`fallback-${index}`} className="group flex flex-col items-center justify-center p-6 rounded-2xl bg-gray-50/50 dark:bg-gray-800/30 border border-dashed border-gray-200 dark:border-gray-700 shrink-0 w-[85vw] sm:w-[280px] h-[180px] opacity-40">
                                     <Users size={32} className="text-gray-300 dark:text-gray-600 mb-3" />
-                                    <div className="text-xl font-bold text-gray-300 dark:text-gray-600">Partner {i}</div>
                                 </div>
                             ))
                         )}
@@ -290,114 +234,37 @@ function Home() {
                 </div>
             </div>
 
-            {/* Testimonials Section */}
-            <section className="py-16 bg-purple-900 text-white overflow-hidden relative">
-                <div className="absolute top-0 left-0 w-96 h-96 bg-pink-500 rounded-full blur-[120px] opacity-20 -ml-20 -mt-20"></div>
-                <div className="absolute bottom-0 right-0 w-96 h-96 bg-blue-500 rounded-full blur-[120px] opacity-20 -mr-20 -mb-20"></div>
+            {/* Call to Action: Fund Us (US ONLY) */}
+            {isUS && (
+            <section className="relative py-24 overflow-hidden bg-gray-900 text-white">
+                <div className="absolute inset-0 bg-gradient-to-tr from-purple-900 to-gray-900"></div>
+                <div className="absolute top-0 left-0 w-96 h-96 bg-purple-600 rounded-full blur-[150px] opacity-30 -translate-x-1/2 -translate-y-1/2 pointer-events-none"></div>
+                <div className="absolute bottom-0 right-0 w-96 h-96 bg-orange-500 rounded-full blur-[150px] opacity-20 translate-x-1/2 translate-y-1/2 pointer-events-none"></div>
 
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 mb-12">
-                     <div className="text-center">
-                         <h2 className="text-4xl font-heading font-bold">Stories of Impact</h2>
-                     </div>
-                </div>
-
-                <div className="w-full relative py-4 pause-animation">
-                     {/* Gradient Masks */}
-                     <div className="absolute left-0 top-0 bottom-0 w-16 sm:w-48 bg-gradient-to-r from-purple-900 to-transparent z-10 pointer-events-none"></div>
-                     <div className="absolute right-0 top-0 bottom-0 w-16 sm:w-48 bg-gradient-to-l from-purple-900 to-transparent z-10 pointer-events-none"></div>
-
-                     <div className="flex w-max animate-scroll-marquee-slow gap-6 px-4">
-                         {testimonials.length > 0 ? [...testimonials, ...testimonials, ...testimonials, ...testimonials].map((t, idx) => (
-                             <div
-                                 key={`${t.id || idx}-${idx}`}
-                                 className="bg-white/5 backdrop-blur-xl border border-white/10 p-8 md:p-10 rounded-[2.5rem] relative w-[320px] md:w-[450px] shadow-2xl shrink-0 group focus:outline-none focus:ring-2 focus:ring-pink-500 transition-all hover:bg-white/10"
-                                 tabIndex={0}
-                             >
-                                 {/* Quote Icon Decor */}
-                                 <div className="absolute -top-5 -left-5 w-12 h-12 bg-gradient-to-br from-pink-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-xl rotate-12 group-hover:rotate-0 transition-transform">
-                                     <Quote size={20} className="text-white transform rotate-180" />
-                                 </div>
-
-                                 <div className="space-y-6 h-full flex flex-col justify-between">
-                                     <p className="text-base md:text-lg text-purple-50 italic font-medium leading-relaxed tracking-tight line-clamp-4">
-                                         "{t.content || "Join us in fueling a revolution in healthcare access for Africa's youth."}"
-                                     </p>
-
-                                     <div className="flex items-center justify-between border-t border-white/10 pt-6 mt-auto">
-                                         <div className="flex items-center gap-4">
-                                             <div className="w-12 h-12 rounded-full bg-gradient-to-br from-pink-400 to-purple-500 p-0.5 shadow-lg shrink-0">
-                                                 <div className="w-full h-full rounded-full bg-gray-900 flex items-center justify-center overflow-hidden border-2 border-transparent">
-                                                     {t.photo_url ? (
-                                                         <img src={t.photo_url} alt={t.author_name} className="w-full h-full object-cover" />
-                                                     ) : (
-                                                         <span className="text-sm font-bold text-white">{(t.author_name || 'U').charAt(0)}</span>
-                                                     )}
-                                                 </div>
-                                             </div>
-                                             <div className="text-left overflow-hidden">
-                                                 <h4 className="text-base md:text-lg font-black text-white tracking-wide truncate">
-                                                     {t.author_name || "Wekume Contributor"}
-                                                 </h4>
-                                                 <p className="text-pink-300 font-bold text-xs truncate">
-                                                     {t.author_role || "Community Member"}
-                                                 </p>
-                                             </div>
-                                         </div>
-                                     </div>
-                                 </div>
-                             </div>
-                         )) : (
-                             [1, 2, 3, 4, 1, 2, 3, 4].map((i, idx) => (
-                                 <div key={`fallback-${idx}`} className="bg-white/5 backdrop-blur-xl border border-white/10 p-8 rounded-[2.5rem] w-[320px] md:w-[450px] shadow-2xl shrink-0 animate-pulse">
-                                      <div className="h-4 bg-white/20 rounded w-3/4 mb-4"></div>
-                                      <div className="h-4 bg-white/20 rounded w-full mb-4"></div>
-                                      <div className="h-4 bg-white/20 rounded w-5/6 mb-8"></div>
-                                      <div className="flex items-center gap-4 border-t border-white/10 pt-6">
-                                         <div className="w-12 h-12 rounded-full bg-white/20 shrink-0"></div>
-                                         <div className="flex-1 w-full overflow-hidden">
-                                             <div className="h-4 bg-white/20 rounded w-24 mb-2"></div>
-                                             <div className="h-3 bg-white/20 rounded w-16"></div>
-                                         </div>
-                                      </div>
-                                 </div>
-                             ))
-                         )}
-                     </div>
-                </div>
-
-                <div className="mt-12 text-center relative z-10">
-                    <Link to="/testimonials" className="inline-flex items-center gap-2 text-white border-b-2 border-pink-400 pb-1 hover:text-pink-300 hover:border-pink-300 transition-all font-bold tracking-wide">
-                        View All Stories <ArrowRight size={18} />
-                    </Link>
-                </div>
-            </section>
-
-            {/* Call to Action */}
-            <section className="relative py-16 overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-br from-purple-800 to-orange-600"></div>
-                <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
-
-                <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10 text-white">
+                <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+                    <Heart className="mx-auto text-pink-500 mb-6 animate-pulse" fill="currentColor" size={48} />
                     <motion.h2
-                        initial={{ opacity: 0, scale: 0.9 }}
-                        whileInView={{ opacity: 1, scale: 1 }}
-                        className="text-5xl font-heading font-bold mb-8"
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        className="text-4xl sm:text-5xl lg:text-6xl font-heading font-black text-white mb-8 tracking-tight"
                     >
-                        Ready to Make a Difference?
+                        Fund the Future
                     </motion.h2>
-                    <p className="text-2xl mb-12 text-purple-100 font-light">Join us in creating lasting change in our communities.</p>
-                    <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                    <p className="text-xl sm:text-2xl text-purple-100 font-medium mb-12 max-w-2xl mx-auto leading-relaxed">
+                        Your contribution provides testing kits, salaries, community events, and vital resources. Stand with us to empower youth across Uganda.
+                    </p>
+                    <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="inline-block">
                         <Link
-                            to="/contact"
-                            className="bg-white text-purple-700 px-12 py-5 rounded-full font-bold hover:shadow-2xl hover:shadow-black/20 transition-all inline-flex items-center gap-3 text-lg"
+                            to="/us/support"
+                            className="bg-white text-purple-700 px-8 py-4 sm:px-10 sm:py-5 rounded-full font-extrabold hover:shadow-[0_0_40px_rgba(255,255,255,0.3)] transition-all flex items-center justify-center gap-3 text-lg"
                         >
-                            Contact Us Today <ArrowRight size={20} />
+                            Fund Us Today <ArrowRight size={22} className="stroke-[3]" />
                         </Link>
                     </motion.div>
                 </div>
             </section>
+            )}
 
-            {/* Include Footer inside the motion context or just as is */}
             <div className="relative z-10">
                 <Footer />
             </div>
