@@ -1,482 +1,374 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { ContributionAPI } from '../services/api';
-import { Heart, CreditCard, Smartphone, Check, ArrowRight, Mail, Phone, User, MessageSquare, AlertCircle, Copy, CheckCircle } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Heart, CreditCard, Smartphone, Check, ArrowRight, Mail, Phone, User, MessageSquare, AlertCircle, Copy, CheckCircle, Globe, ChevronRight, Activity, DollarSign, ArrowLeft } from 'lucide-react';
+
+const COMMON_CURRENCIES = [
+    { code: 'USD', name: 'US Dollar', symbol: '$' },
+    { code: 'EUR', name: 'Euro', symbol: '€' },
+    { code: 'GBP', name: 'British Pound', symbol: '£' },
+    { code: 'UGX', name: 'Ugandan Shilling', symbol: 'UGX' },
+    { code: 'KES', name: 'Kenyan Shilling', symbol: 'KES' },
+    { code: 'AUD', name: 'Australian Dollar', symbol: 'A$' },
+    { code: 'CAD', name: 'Canadian Dollar', symbol: 'C$' }
+];
+
+const FUND_CATEGORIES = ['Testing Kits', 'Salaries', 'Events', 'Internet', 'Cost of Treatment'];
 
 function Support() {
-    const [ContributionType, setContributionType] = useState('one-time');
-    const [fundCategory, setFundCategory] = useState('Testing Kits');
-    const [amount, setAmount] = useState('50000');
-    const [showCustomAmount, setShowCustomAmount] = useState(false);
-    const [paymentMethod, setPaymentMethod] = useState('mobile_money');
-    const [copied, setCopied] = useState(false);
-
-    // Form State with enhanced contact details
-    const [details, setDetails] = useState({
-        donor_name: '',
-        email: '',
-        phone_number: '',
-        message: '',
-        is_anonymous: false
-    });
-
+    const [currentStep, setCurrentStep] = useState(1);
+    const [status, setStatus] = useState('idle');
     const [errors, setErrors] = useState({});
-    const [status, setStatus] = useState('idle'); // idle, submitting, success, error
+    
+    // Wizard State
+    const [currency, setCurrency] = useState(null);
+    const [contributionType, setContributionType] = useState('one-time');
+    const [fundCategory, setFundCategory] = useState('Testing Kits');
+    const [amount, setAmount] = useState('');
+    const [isCustomAmount, setIsCustomAmount] = useState(false);
+    const [paymentMethod, setPaymentMethod] = useState('');
+    
+    const [details, setDetails] = useState({
+        donor_name: '', email: '', phone_number: '', message: '', is_anonymous: false
+    });
+    
     const [instructions, setInstructions] = useState(null);
     const [transactionRef, setTransactionRef] = useState(null);
+    const [copied, setCopied] = useState(false);
 
-    // Form validation
-    const validateForm = () => {
+    // Derived preset amounts based on currency
+    const presetAmounts = useMemo(() => {
+        if (!currency) return [];
+        if (currency.code === 'UGX') return ['20000', '50000', '100000', '250000'];
+        if (currency.code === 'KES') return ['500', '1500', '3000', '10000'];
+        return ['25', '50', '100', '250']; // Default global tiers
+    }, [currency]);
+
+    // Derived payment methods based on currency
+    const availablePaymentMethods = useMemo(() => {
+        if (!currency) return [];
+        if (['UGX', 'KES'].includes(currency.code)) {
+            return [
+                { id: 'mobile_money', name: 'Mobile Money', icon: <Smartphone size={24}/>, desc: 'MTN / Airtel / M-Pesa' },
+                { id: 'bank_transfer', name: 'Bank Transfer', icon: <CreditCard size={24}/>, desc: 'Local Direct Deposit' }
+            ];
+        }
+        return [
+            { id: 'paypal', name: 'PayPal', icon: <Globe size={24}/>, desc: 'Fast & Secure' },
+            { id: 'card', name: 'Debit / Credit Card', icon: <CreditCard size={24}/>, desc: 'Stripe Secure Checkout' },
+            { id: 'bank_transfer', name: 'Wire Transfer', icon: <ArrowRight size={24}/>, desc: 'International Transfer' }
+        ];
+    }, [currency]);
+
+    // Set defaults when moving steps
+    const handleNextStep = (step) => {
+        if (step === 3 && amount === '') {
+            setAmount(presetAmounts[1]); // Default to 2nd tier
+        }
+        if (step === 3 && paymentMethod === '' && availablePaymentMethods.length > 0) {
+            setPaymentMethod(availablePaymentMethods[0].id);
+        }
+        setErrors({});
+        setCurrentStep(step);
+    };
+
+    const validateFinalStep = () => {
         const newErrors = {};
-
-        if (!details.donor_name.trim()) {
-            newErrors.donor_name = 'Full name is required';
-        }
-
-        if (!details.email.trim()) {
-            newErrors.email = 'Email is required';
-        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(details.email)) {
-            newErrors.email = 'Please enter a valid email address';
-        }
-
-        if (!details.phone_number.trim()) {
-            newErrors.phone_number = 'Phone number is required for transaction confirmation';
-        } else if (!/^(\+256|0)[0-9]{9}$/.test(details.phone_number.replace(/\s/g, ''))) {
-            newErrors.phone_number = 'Please enter a valid Ugandan phone number (+256... or 07...)';
-        }
-
-        if (parseInt(amount) < 1000) {
-            newErrors.amount = 'Minimum Contribution amount is UGX 1,000';
-        }
-
+        if (!details.donor_name.trim()) newErrors.donor_name = 'Required';
+        if (!details.email.trim() || !/^\S+@\S+\.\S+$/.test(details.email)) newErrors.email = 'Valid email required';
+        if (['UGX', 'KES'].includes(currency?.code) && !details.phone_number.trim()) newErrors.phone_number = 'Required for SMS';
+        
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
 
-    const handleSupport = async (e) => {
+    const handleSupportSubmit = async (e) => {
         e.preventDefault();
-
-        if (!validateForm()) {
-            return;
-        }
+        if (!validateFinalStep()) return;
 
         setStatus('submitting');
-        setErrors({});
-
         try {
             const payload = {
                 ...details,
-                amount: parseInt(amount, 10),
-                currency: 'UGX',
+                amount: parseFloat(amount),
+                currency: currency.code,
                 payment_method: paymentMethod,
-                Contribution_type: ContributionType,
+                contribution_type: contributionType,
                 fund_category: fundCategory
             };
 
             const response = await ContributionAPI.create(payload);
-            setInstructions(response.data.instructions);
-            setTransactionRef(response.data.transaction_ref || `WKM-${Date.now()}`);
+            setInstructions(response.data.instructions || 'Thank you! You will be redirected securely to complete your transaction shortly.');
+            setTransactionRef(response.data.transaction_ref || `WK-${Date.now().toString(36).toUpperCase()}`);
             setStatus('success');
-
-            // Simulate sending confirmation email/SMS
-            console.log('Confirmation sent to:', details.email, details.phone_number);
+            
+            // Advance to Success Step
+            setCurrentStep(5);
         } catch (error) {
-            console.error("Contribution failed:", error);
+            console.error(error);
+            setErrors({ submit: 'Transaction simulation failed. Please try again.' });
             setStatus('error');
-            setErrors({ submit: error.response?.data?.error || 'Something went wrong. Please try again.' });
         }
     };
 
-    const copyToClipboard = (text) => {
-        navigator.clipboard.writeText(text);
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
+    const resetWizard = () => {
+        setCurrentStep(1);
+        setStatus('idle');
+        setCurrency(null);
+        setAmount('');
+        setDetails({ donor_name: '', email: '', phone_number: '', message: '', is_anonymous: false });
     };
 
-    const resetForm = () => {
-        setStatus('idle');
-        setDetails({ donor_name: '', email: '', phone_number: '', message: '', is_anonymous: false });
-        setAmount('50000');
-        setShowCustomAmount(false);
-        setErrors({});
-    };
+    // Rendering smaller components for steps
+    const renderStepProgressBar = () => (
+        <div className="flex justify-between items-center mb-8 relative">
+            <div className="absolute top-1/2 left-0 w-full h-1 bg-gray-100 dark:bg-gray-700 -z-10 rounded-full overflow-hidden">
+                <div className="h-full bg-pink-500 transition-all duration-500" style={{ width: `${((currentStep-1)/3)*100}%` }}></div>
+            </div>
+            {[1, 2, 3, 4].map(num => (
+                <div key={num} className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm border-4 transition-all duration-300 shadow-sm ${currentStep >= num ? 'bg-pink-500 border-white dark:border-gray-800 text-white shadow-pink-500/30' : 'bg-gray-100 dark:bg-gray-800 border-white dark:border-gray-800 text-gray-400'}`}>
+                    {currentStep > num ? <Check size={16} strokeWidth={3} /> : num}
+                </div>
+            ))}
+        </div>
+    );
 
     return (
-        <>
+        <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
             <Navbar />
-
-            {/* Hero Section */}
-            <div className="bg-gradient-to-br from-purple-900 via-primary-800 to-orange-500 text-white py-20 relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-96 h-96 bg-white opacity-5 rounded-full blur-3xl translate-x-1/2 -translate-y-1/2"></div>
-                <div className="absolute bottom-0 left-0 w-80 h-80 bg-pink-500 opacity-10 rounded-full blur-3xl -translate-x-1/2 translate-y-1/2"></div>
-
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-                    <div className="inline-flex items-center justify-center p-3 bg-white/10 backdrop-blur-sm rounded-full mb-6 animate-fade-in">
-                        <Heart className="text-pink-300 mr-2 animate-pulse" fill="currentColor" size={24} />
-                        <span className="font-semibold tracking-wide uppercase text-sm">Fund Us</span>
-                    </div>
-                    <h1 className="text-4xl md:text-6xl font-heading font-bold mb-4 animate-fade-in">
-                        Make an Impact Today
-                    </h1>
-                    <p className="text-xl text-white/90 max-w-2xl mx-auto animate-fade-in">
-                        Your contribution directly empowers youth in Uganda through quality health education and innovative programs.
-                    </p>
+            
+            {/* Minimalist Header */}
+            <div className="bg-gradient-to-br from-purple-900 to-indigo-900 text-white pt-32 pb-16 relative overflow-hidden">
+                <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
+                <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-pink-500/20 rounded-full blur-[100px]"></div>
+                
+                <div className="max-w-4xl mx-auto px-4 text-center relative z-10">
+                    <span className="px-4 py-1.5 rounded-full bg-white/10 border border-white/20 text-pink-300 font-semibold tracking-wide text-sm mb-6 inline-flex items-center gap-2 backdrop-blur-md">
+                        <Heart size={16} className="animate-pulse" /> Wekume Support Foundation
+                    </span>
+                    <h1 className="text-4xl md:text-5xl font-black mb-4">Empower the Next Generation</h1>
+                    <p className="text-lg text-purple-100 max-w-2xl mx-auto">Stand with us seamlessly. Choose your currency, focus your impact, and make a difference securely.</p>
                 </div>
             </div>
 
-            <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 bg-white dark:bg-gray-900">
-                <div className="grid lg:grid-cols-5 gap-12">
+            {/* Wizard Container */}
+            <div className="max-w-3xl mx-auto px-4 -mt-8 relative z-20 pb-24">
+                <div className="bg-white dark:bg-gray-800 rounded-[2rem] shadow-2xl shadow-purple-900/5 border border-gray-100 dark:border-gray-700/50 p-6 sm:p-10 backdrop-blur-xl">
+                    
+                    {currentStep < 5 && renderStepProgressBar()}
 
-                    {/* Contribution Form */}
-                    <div className="lg:col-span-3">
-                        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl border border-primary-100 dark:border-gray-700 overflow-hidden">
-                            <div className="bg-gradient-to-r from-primary-50 to-pink-50 dark:from-gray-800 dark:to-gray-800 p-6 border-b border-primary-100 dark:border-gray-700">
-                                <h2 className="text-2xl font-bold text-primary-900 dark:text-white flex items-center gap-2">
-                                    <Heart className="text-pink-500 fill-current" size={28} />
-                                    Complete Your Contribution
-                                </h2>
-                                <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">All fields are required for transaction processing</p>
-                            </div>
-
-                            {status === 'success' ? (
-                                <div className="p-10 text-center animate-fade-in">
-                                    <div className="w-24 h-24 bg-gradient-to-br from-green-400 to-green-600 rounded-full flex items-center justify-center mx-auto mb-6 animate-pulse">
-                                        <Check className="text-white" size={48} strokeWidth={3} />
+                    <div className="min-h-[400px]">
+                        <AnimatePresence mode="wait">
+                            {/* STEP 1: Currency Selection */}
+                            {currentStep === 1 && (
+                                <motion.div key="step1" initial={{opacity:0, x:20}} animate={{opacity:1, x:0}} exit={{opacity:0, x:-20}} className="space-y-6">
+                                    <div className="text-center mb-10">
+                                        <h2 className="text-2xl lg:text-3xl font-black text-gray-900 dark:text-white">Let's start. Where are you from?</h2>
+                                        <p className="text-gray-500 flex items-center justify-center gap-2 mt-3"><Globe size={18}/> Choose your preferred currency to proceed.</p>
                                     </div>
-                                    <h3 className="text-3xl font-heading font-bold text-primary-900 dark:text-white mb-2">Thank You, {details.donor_name.split(' ')[0]}!</h3>
-                                    <p className="text-gray-600 dark:text-gray-300 mb-8 text-lg">Your generosity makes a real difference in young lives.</p>
-
-                                    {/* Confirmation Details */}
-                                    <div className="bg-gradient-to-r from-primary-50 to-purple-50 dark:from-gray-700 dark:to-gray-700 border-2 border-primary-200 dark:border-gray-600 rounded-2xl p-6 mb-6 text-left">
-                                        <div className="flex items-center gap-2 mb-4">
-                                            <CheckCircle className="text-green-600" size={24} />
-                                            <h4 className="font-bold text-primary-900 dark:text-white text-lg">Contribution Confirmed</h4>
-                                        </div>
-
-                                        <div className="space-y-3 text-sm">
-                                            <div className="flex justify-between items-center py-2 border-b border-primary-100 dark:border-gray-600">
-                                                <span className="text-gray-600 dark:text-gray-400">Transaction Reference:</span>
-                                                <div className="flex items-center gap-2">
-                                                    <span className="font-bold text-primary-900 dark:text-white">{transactionRef}</span>
-                                                    <button
-                                                        onClick={() => copyToClipboard(transactionRef)}
-                                                        className="text-primary-600 hover:text-primary-800"
-                                                    >
-                                                        {copied ? <Check size={16} /> : <Copy size={16} />}
-                                                    </button>
-                                                </div>
-                                            </div>
-                                            <div className="flex justify-between py-2 border-b border-primary-100 dark:border-gray-600">
-                                                <span className="text-gray-600 dark:text-gray-400">Amount:</span>
-                                                <span className="font-bold text-gray-900 dark:text-white">UGX {parseInt(amount).toLocaleString()}</span>
-                                            </div>
-                                            <div className="flex justify-between py-2 border-b border-primary-100 dark:border-gray-600">
-                                                <span className="text-gray-600 dark:text-gray-400">Payment Method:</span>
-                                                <span className="font-medium text-gray-900 dark:text-white">{paymentMethod === 'mobile_money' ? 'Mobile Money' : 'Bank Transfer'}</span>
-                                            </div>
-                                            <div className="flex justify-between py-2">
-                                                <span className="text-gray-600 dark:text-gray-400">Confirmation sent to:</span>
-                                                <span className="font-medium text-gray-900 dark:text-white">{details.email}</span>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    {/* Payment Instructions */}
-                                    <div className="bg-gradient-to-r from-secondary-50 to-orange-50 dark:from-gray-700 dark:to-gray-700 border-2 border-secondary-200 dark:border-gray-600 rounded-2xl p-6 mb-8 text-left">
-                                        <h4 className="font-bold text-secondary-800 dark:text-secondary-300 mb-3 uppercase text-sm tracking-wider flex items-center gap-2">
-                                            <ArrowRight className="text-secondary-600" size={20} />
-                                            Next Steps - Complete Payment
-                                        </h4>
-                                        <div className="bg-white dark:bg-gray-800 rounded-lg p-4 mb-4">
-                                            <p className="text-base font-medium text-gray-900 dark:text-white leading-relaxed">{instructions}</p>
-                                        </div>
-                                        <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4 flex gap-3">
-                                            <AlertCircle className="text-yellow-600 dark:text-yellow-400 shrink-0 mt-0.5" size={20} />
-                                            <div className="text-sm text-yellow-900 dark:text-yellow-200">
-                                                <p className="font-semibold mb-1">Important:</p>
-                                                <p>Please use the transaction reference <span className="font-bold">{transactionRef}</span> when making your payment. A confirmation SMS will be sent to <span className="font-bold">{details.phone_number}</span> once payment is received.</p>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <button
-                                        onClick={resetForm}
-                                        className="text-primary-600 font-semibold hover:text-primary-800 transition-colors flex items-center gap-2 mx-auto"
-                                    >
-                                        <ArrowRight size={16} />
-                                        Make another Contribution
-                                    </button>
-                                </div>
-                            ) : (
-                                <form onSubmit={handleSupport} className="p-6 md:p-8 space-y-6">
-
-                                    {/* Contribution Type */}
-                                    <div>
-                                        <label className="block text-sm font-bold text-primary-700 dark:text-primary-400 mb-3 uppercase tracking-wide">Contribution Type</label>
-                                        <div className="grid grid-cols-2 gap-3">
-                                            <button
-                                                type="button"
-                                                onClick={() => setContributionType('one-time')}
-                                                className={`py-3 px-4 rounded-xl font-semibold border-2 transition-all ${ContributionType === 'one-time' ? 'bg-primary-600 text-white border-primary-600 shadow-md' : 'bg-white dark:bg-gray-700 text-primary-600 dark:text-primary-300 border-primary-200 dark:border-gray-600 hover:border-primary-400'}`}
-                                            >
-                                                One-Time
-                                            </button>
-                                            <button
-                                                type="button"
-                                                onClick={() => setContributionType('monthly')}
-                                                className={`py-3 px-4 rounded-xl font-semibold border-2 transition-all ${ContributionType === 'monthly' ? 'bg-primary-600 text-white border-primary-600 shadow-md' : 'bg-white dark:bg-gray-700 text-primary-600 dark:text-primary-300 border-primary-200 dark:border-gray-600 hover:border-primary-400'}`}
-                                            >
-                                                Monthly
-                                            </button>
-                                        </div>
-                                    </div>
-
-                                    {/* Fund Category */}
-                                    <div>
-                                        <label className="block text-sm font-bold text-primary-700 dark:text-primary-400 mb-3 uppercase tracking-wide">Fund a Specific Cause</label>
-                                        <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                                            {['Testing Kits', 'Salaries', 'Events', 'Internet', 'Cost of Treatment'].map((cat) => (
-                                                <button
-                                                    key={cat}
-                                                    type="button"
-                                                    onClick={() => setFundCategory(cat)}
-                                                    className={`py-3 px-3 rounded-xl font-semibold border-2 transition-all hover:scale-[1.02] text-sm ${fundCategory === cat ? 'bg-primary-600 text-white border-primary-600 shadow-md' : 'bg-white dark:bg-gray-700 text-primary-600 dark:text-primary-300 border-primary-200 dark:border-gray-600 hover:border-primary-400'}`}
-                                                >
-                                                    {cat}
-                                                </button>
-                                            ))}
-                                        </div>
-                                    </div>
-
-                                    {/* Amount Selection */}
-                                    <div>
-                                        <label className="block text-sm font-bold text-primary-700 dark:text-primary-400 mb-3 uppercase tracking-wide">Select Amount (UGX)</label>
-                                        <div className="grid grid-cols-3 gap-3 mb-3">
-                                            {['20000', '50000', '100000', '250000', '500000', '1000000'].map((amt) => (
-                                                <button
-                                                    key={amt}
-                                                    type="button"
-                                                    onClick={() => { setAmount(amt); setShowCustomAmount(false); setErrors({ ...errors, amount: '' }) }}
-                                                    className={`py-3 px-2 rounded-xl font-bold border-2 transition-all hover:scale-105 ${amount === amt && !showCustomAmount ? 'bg-secondary-500 text-white border-secondary-500 shadow-lg' : 'bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 border-gray-200 dark:border-gray-600 hover:border-secondary-400'}`}
-                                                >
-                                                    {parseInt(amt).toLocaleString()}
-                                                </button>
-                                            ))}
-                                        </div>
-                                        <button
-                                            type="button"
-                                            onClick={() => setShowCustomAmount(true)}
-                                            className={`w-full py-3 px-4 rounded-xl font-bold border-2 transition-all ${showCustomAmount ? 'bg-pink-500 text-white border-pink-500 shadow-md' : 'bg-white dark:bg-gray-700 text-pink-600 dark:text-pink-400 border-pink-200 dark:border-gray-600 hover:border-pink-400'}`}
+                                    
+                                    <div className="max-w-md mx-auto relative group">
+                                        <select 
+                                            value={currency?.code || ''}
+                                            onChange={(e) => setCurrency(COMMON_CURRENCIES.find(c => c.code === e.target.value))}
+                                            className="w-full appearance-none bg-gray-50 dark:bg-gray-800/80 border-2 border-gray-200 dark:border-gray-700 rounded-2xl px-6 py-5 text-lg font-bold text-gray-900 dark:text-white focus:outline-none focus:border-pink-500 focus:ring-4 focus:ring-pink-500/10 transition-all cursor-pointer shadow-sm group-hover:border-pink-300 dark:group-hover:border-pink-700"
                                         >
-                                            Enter Custom Amount
+                                            <option value="" disabled>Select a currency...</option>
+                                            {COMMON_CURRENCIES.map(curr => (
+                                                <option key={curr.code} value={curr.code}>{curr.symbol} &mdash;  {curr.code} ({curr.name})</option>
+                                            ))}
+                                        </select>
+                                        <div className="pointer-events-none absolute inset-y-0 right-6 flex items-center px-2 text-gray-400 group-hover:text-pink-500 transition-colors">
+                                            <ChevronRight className="rotate-90" size={24} />
+                                        </div>
+                                    </div>
+
+                                    <div className="pt-10 flex flex-col items-center">
+                                        <button disabled={!currency} onClick={() => handleNextStep(2)} className="bg-gradient-to-r from-gray-900 to-gray-800 dark:from-white dark:to-gray-100 text-white dark:text-gray-900 px-10 py-4 rounded-full font-bold shadow-lg disabled:opacity-50 disabled:scale-100 hover:scale-105 transition-all flex items-center gap-3">
+                                            Continue <ArrowRight size={20} />
                                         </button>
-                                        {showCustomAmount && (
-                                            <div className="mt-3 relative">
-                                                <span className="absolute left-4 top-3.5 text-primary-600 font-bold text-lg">UGX</span>
-                                                <input
-                                                    type="number"
-                                                    value={amount}
-                                                    onChange={(e) => { setAmount(e.target.value); setErrors({ ...errors, amount: '' }) }}
-                                                    className="w-full pl-20 pr-4 py-3 border-2 border-primary-200 dark:border-gray-600 dark:bg-gray-700 rounded-xl focus:ring-4 focus:ring-primary-100 focus:border-primary-500 font-bold text-xl text-primary-900 dark:text-white"
-                                                    placeholder="Enter amount"
-                                                    min="1000"
-                                                />
-                                            </div>
-                                        )}
-                                        {errors.amount && <p className="text-red-600 text-sm mt-2 flex items-center gap-1"><AlertCircle size={14} /> {errors.amount}</p>}
                                     </div>
-
-                                    {/* Payment Method */}
-                                    <div>
-                                        <label className="block text-sm font-bold text-primary-700 dark:text-primary-400 mb-3 uppercase tracking-wide">Payment Method</label>
-                                        <div className="grid grid-cols-2 gap-4">
-                                            <button
-                                                type="button"
-                                                onClick={() => setPaymentMethod('mobile_money')}
-                                                className={`p-4 rounded-xl border-2 flex items-center gap-3 transition-all hover:scale-105 ${paymentMethod === 'mobile_money' ? 'border-secondary-500 bg-secondary-50 dark:bg-secondary-900/30 ring-2 ring-secondary-500 shadow-lg' : 'border-gray-200 dark:border-gray-600 hover:border-gray-300'}`}
-                                            >
-                                                <div className="bg-white p-2 rounded-full shadow-sm text-secondary-600"><Smartphone size={24} /></div>
-                                                <div className="text-left">
-                                                    <span className="block font-bold text-gray-900 dark:text-white">Mobile Money</span>
-                                                    <span className="block text-xs text-gray-500 dark:text-gray-400">MTN / Airtel</span>
-                                                </div>
-                                            </button>
-
-                                            <button
-                                                type="button"
-                                                onClick={() => setPaymentMethod('bank_transfer')}
-                                                className={`p-4 rounded-xl border-2 flex items-center gap-3 transition-all hover:scale-105 ${paymentMethod === 'bank_transfer' ? 'border-pink-500 bg-pink-50 dark:bg-pink-900/30 ring-2 ring-pink-500 shadow-lg' : 'border-gray-200 dark:border-gray-600 hover:border-gray-300'}`}
-                                            >
-                                                <div className="bg-white p-2 rounded-full shadow-sm text-pink-600"><CreditCard size={24} /></div>
-                                                <div className="text-left">
-                                                    <span className="block font-bold text-gray-900 dark:text-white">Bank Transfer</span>
-                                                    <span className="block text-xs text-gray-500 dark:text-gray-400">Direct Deposit</span>
-                                                </div>
-                                            </button>
-                                        </div>
-                                    </div>
-
-                                    {/* Contact Details - All Required */}
-                                    <div className="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-6 space-y-4 border border-gray-200 dark:border-gray-600">
-                                        <h3 className="font-bold text-gray-900 dark:text-white text-lg mb-4">Your Contact Details</h3>
-
-                                        <div>
-                                            <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2 flex items-center gap-2">
-                                                <User size={16} className="text-primary-600" />
-                                                Full Name <span className="text-red-500">*</span>
-                                            </label>
-                                            <input
-                                                type="text"
-                                                required
-                                                className={`w-full px-4 py-3 border-2 rounded-lg focus:ring-4 focus:ring-primary-100 transition-all dark:bg-gray-800 dark:text-white ${errors.donor_name ? 'border-red-500 focus:border-red-500' : 'border-gray-300 dark:border-gray-600 focus:border-primary-500'}`}
-                                                value={details.donor_name}
-                                                onChange={e => { setDetails({ ...details, donor_name: e.target.value }); setErrors({ ...errors, donor_name: '' }) }}
-                                                placeholder="Enter your full name"
-                                            />
-                                            {errors.donor_name && <p className="text-red-600 text-sm mt-1 flex items-center gap-1"><AlertCircle size={14} /> {errors.donor_name}</p>}
-                                        </div>
-
-                                        <div className="grid md:grid-cols-2 gap-4">
-                                            <div>
-                                                <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2 flex items-center gap-2">
-                                                    <Mail size={16} className="text-primary-600" />
-                                                    Email Address <span className="text-red-500">*</span>
-                                                </label>
-                                                <input
-                                                    type="email"
-                                                    required
-                                                    className={`w-full px-4 py-3 border-2 rounded-lg focus:ring-4 focus:ring-primary-100 transition-all dark:bg-gray-800 dark:text-white ${errors.email ? 'border-red-500 focus:border-red-500' : 'border-gray-300 dark:border-gray-600 focus:border-primary-500'}`}
-                                                    value={details.email}
-                                                    onChange={e => { setDetails({ ...details, email: e.target.value }); setErrors({ ...errors, email: '' }) }}
-                                                    placeholder="your@email.com"
-                                                />
-                                                {errors.email && <p className="text-red-600 text-sm mt-1 flex items-center gap-1"><AlertCircle size={14} /> {errors.email}</p>}
-                                            </div>
-                                            <div>
-                                                <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2 flex items-center gap-2">
-                                                    <Phone size={16} className="text-primary-600" />
-                                                    Phone Number <span className="text-red-500">*</span>
-                                                </label>
-                                                <input
-                                                    type="tel"
-                                                    required
-                                                    className={`w-full px-4 py-3 border-2 rounded-lg focus:ring-4 focus:ring-primary-100 transition-all dark:bg-gray-800 dark:text-white ${errors.phone_number ? 'border-red-500 focus:border-red-500' : 'border-gray-300 dark:border-gray-600 focus:border-primary-500'}`}
-                                                    value={details.phone_number}
-                                                    onChange={e => { setDetails({ ...details, phone_number: e.target.value }); setErrors({ ...errors, phone_number: '' }) }}
-                                                    placeholder="+256 700 000 000"
-                                                />
-                                                {errors.phone_number && <p className="text-red-600 text-sm mt-1 flex items-center gap-1"><AlertCircle size={14} /> {errors.phone_number}</p>}
-                                                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">Required for SMS confirmation</p>
-                                            </div>
-                                        </div>
-
-                                        <div>
-                                            <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2 flex items-center gap-2">
-                                                <MessageSquare size={16} className="text-primary-600" />
-                                                Message (Optional)
-                                            </label>
-                                            <textarea
-                                                rows="3"
-                                                className="w-full px-4 py-3 border-2 border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white rounded-lg focus:ring-4 focus:ring-primary-100 focus:border-primary-500 transition-all resize-none"
-                                                value={details.message}
-                                                onChange={e => setDetails({ ...details, message: e.target.value })}
-                                                placeholder="Share why you're supporting us (optional)"
-                                            ></textarea>
-                                        </div>
-
-                                        <div className="flex items-center gap-3 pt-2">
-                                            <input
-                                                type="checkbox"
-                                                id="anon"
-                                                className="w-5 h-5 rounded text-primary-600 focus:ring-primary-500 border-gray-300"
-                                                checked={details.is_anonymous}
-                                                onChange={e => setDetails({ ...details, is_anonymous: e.target.checked })}
-                                            />
-                                            <label htmlFor="anon" className="text-sm text-gray-700 dark:text-gray-300 font-medium">Make my Contribution anonymous</label>
-                                        </div>
-                                    </div>
-
-                                    {errors.submit && (
-                                        <div className="bg-red-50 dark:bg-red-900/20 border-2 border-red-200 dark:border-red-800 rounded-lg p-4 flex gap-3">
-                                            <AlertCircle className="text-red-600 dark:text-red-400 shrink-0" size={20} />
-                                            <p className="text-red-800 dark:text-red-200 text-sm">{errors.submit}</p>
-                                        </div>
-                                    )}
-
-                                    <button
-                                        type="submit"
-                                        disabled={status === 'submitting'}
-                                        className="w-full bg-gradient-to-r from-secondary-500 to-pink-500 text-white py-4 rounded-xl font-bold text-lg hover:from-secondary-600 hover:to-pink-600 transition-all shadow-lg hover:shadow-2xl hover:scale-105 disabled:opacity-70 disabled:scale-100 flex items-center justify-center gap-2"
-                                    >
-                                        {status === 'submitting' ? (
-                                            <>
-                                                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                                                Processing...
-                                            </>
-                                        ) : (
-                                            <>
-                                                <Heart fill="currentColor" size={20} />
-                                                Support {parseInt(amount).toLocaleString()} UGX
-                                            </>
-                                        )}
-                                    </button>
-                                </form>
+                                </motion.div>
                             )}
-                        </div>
+
+                            {/* STEP 2: Impact & Type */}
+                            {currentStep === 2 && (
+                                <motion.div key="step2" initial={{opacity:0, x:20}} animate={{opacity:1, x:0}} exit={{opacity:0, x:-20}} className="space-y-8">
+                                    <button onClick={() => setCurrentStep(1)} className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 flex items-center gap-1 text-sm font-semibold mb-2"><ArrowLeft size={16}/> Back</button>
+                                    
+                                    <div>
+                                        <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">How often would you like to give?</h2>
+                                        <div className="flex rounded-xl p-1 bg-gray-100 dark:bg-gray-700/50">
+                                            <button onClick={() => setContributionType('one-time')} className={`flex-1 py-3 rounded-lg font-bold text-sm transition-all shadow-sm ${contributionType === 'one-time' ? 'bg-white dark:bg-gray-600 text-gray-900 dark:text-white' : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'}`}>One-Time</button>
+                                            <button onClick={() => setContributionType('monthly')} className={`flex-1 py-3 rounded-lg font-bold text-sm transition-all shadow-sm ${contributionType === 'monthly' ? 'bg-white dark:bg-gray-600 text-gray-900 dark:text-white' : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'}`}>Monthly (Recommended)</button>
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Direct your impact</h2>
+                                        <div className="grid grid-cols-2 lg:grid-cols-3 gap-3">
+                                            {FUND_CATEGORIES.map(cat => (
+                                                <button key={cat} onClick={() => setFundCategory(cat)} className={`px-4 py-3 border-2 rounded-xl text-sm font-bold transition-all text-left group flex items-center justify-between ${fundCategory === cat ? 'border-purple-500 bg-purple-50 dark:bg-purple-900/20 text-purple-700 dark:text-purple-300' : 'border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:border-gray-300'}`}>
+                                                    {cat}
+                                                    {fundCategory === cat && <CheckCircle size={16} className="text-purple-500" />}
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </div>
+
+                                    <div className="pt-4 flex justify-end">
+                                        <button onClick={() => handleNextStep(3)} className="bg-gray-900 dark:bg-white text-white dark:text-gray-900 px-8 py-3.5 rounded-full font-bold hover:bg-gray-800 transition-colors shadow-lg flex items-center gap-2">
+                                            Next Step: Amount <ArrowRight size={18} />
+                                        </button>
+                                    </div>
+                                </motion.div>
+                            )}
+
+                            {/* STEP 3: Amount & Payment Method */}
+                            {currentStep === 3 && (
+                                <motion.div key="step3" initial={{opacity:0, x:20}} animate={{opacity:1, x:0}} exit={{opacity:0, x:-20}} className="space-y-8">
+                                    <button onClick={() => setCurrentStep(2)} className="text-gray-400 hover:text-gray-600 flex items-center gap-1 text-sm font-semibold"><ArrowLeft size={16}/> Back</button>
+                                    
+                                    <div>
+                                        <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4 flex items-center justify-between">
+                                            Select Amount 
+                                            <span className="text-sm font-normal text-pink-500 bg-pink-50 dark:bg-pink-900/20 px-2 py-1 rounded-md">{currency.code}</span>
+                                        </h2>
+                                        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-3">
+                                            {presetAmounts.map(preset => (
+                                                <button key={preset} onClick={() => { setAmount(preset); setIsCustomAmount(false); }} className={`py-4 rounded-xl font-black text-lg border-2 transition-all ${amount === preset && !isCustomAmount ? 'bg-pink-500 border-pink-500 text-white shadow-md scale-105' : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200 hover:border-pink-300'}`}>
+                                                    {currency.symbol}{parseFloat(preset).toLocaleString()}
+                                                </button>
+                                            ))}
+                                        </div>
+                                        <div className="flex items-center gap-3">
+                                            <button onClick={() => { setIsCustomAmount(true); setAmount(''); }} className={`px-4 py-3 rounded-xl border-2 font-bold text-sm ${isCustomAmount ? 'border-pink-500 text-pink-600 bg-pink-50' : 'border-gray-200 text-gray-500 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-400'}`}>
+                                                Custom Amount
+                                            </button>
+                                            {isCustomAmount && (
+                                                <div className="relative flex-1">
+                                                    <span className="absolute left-4 top-[14px] text-gray-500 font-bold">{currency.symbol}</span>
+                                                    <input type="number" autoFocus value={amount} onChange={e => setAmount(e.target.value)} className="w-full pl-10 pr-4 py-3 border-2 border-pink-500 bg-white dark:bg-gray-800 rounded-xl outline-none font-bold text-gray-900 dark:text-white shadow-sm" placeholder="Enter amount..." />
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Payment Method</h2>
+                                        <div className="grid md:grid-cols-2 gap-4">
+                                            {availablePaymentMethods.map(method => (
+                                                <button key={method.id} onClick={() => setPaymentMethod(method.id)} className={`flex items-start gap-4 p-4 rounded-2xl border-2 transition-all text-left hover:scale-[1.02] ${paymentMethod === method.id ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-900/20' : 'border-gray-200 dark:border-gray-700'}`}>
+                                                    <div className={`p-2 rounded-lg ${paymentMethod === method.id ? 'bg-indigo-500 text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400'}`}>
+                                                        {method.icon}
+                                                    </div>
+                                                    <div>
+                                                        <h4 className={`font-bold ${paymentMethod === method.id ? 'text-indigo-900 dark:text-indigo-300' : 'text-gray-900 dark:text-white'}`}>{method.name}</h4>
+                                                        <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{method.desc}</p>
+                                                    </div>
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </div>
+
+                                    <div className="pt-4 flex justify-end">
+                                        <button disabled={!amount} onClick={() => handleNextStep(4)} className="bg-gray-900 dark:bg-white text-white dark:text-gray-900 px-8 py-3.5 rounded-full font-bold hover:bg-gray-800 transition-colors shadow-lg disabled:opacity-50 flex items-center gap-2">
+                                            Final Step <ArrowRight size={18} />
+                                        </button>
+                                    </div>
+                                </motion.div>
+                            )}
+
+                            {/* STEP 4: Details & Confirm */}
+                            {currentStep === 4 && (
+                                <motion.div key="step4" initial={{opacity:0, x:20}} animate={{opacity:1, x:0}} exit={{opacity:0, x:-20}} className="space-y-6">
+                                    <button onClick={() => setCurrentStep(3)} className="text-gray-400 hover:text-gray-600 flex items-center gap-1 text-sm font-semibold mb-4"><ArrowLeft size={16}/> Back</button>
+                                    
+                                    <div className="flex items-start gap-6 flex-col md:flex-row">
+                                        {/* Review Canvas */}
+                                        <div className="w-full md:w-1/3 bg-gray-50 dark:bg-gray-700/30 rounded-2xl p-5 border border-gray-100 dark:border-gray-700">
+                                            <h3 className="text-xs font-bold uppercase tracking-wider text-gray-500 mb-4">Pledge Summary</h3>
+                                            <div className="mb-4">
+                                                <div className="text-3xl font-black text-gray-900 dark:text-white mb-1">{currency.symbol}{parseFloat(amount).toLocaleString()}</div>
+                                                <div className="inline-flex items-center gap-1 bg-pink-100 dark:bg-pink-900/30 text-pink-700 dark:text-pink-400 px-2 py-0.5 rounded text-xs font-bold uppercase">{contributionType}</div>
+                                            </div>
+                                            <div className="space-y-2 text-sm border-t border-gray-200 dark:border-gray-600 pt-4">
+                                                <div className="flex justify-between items-center"><span className="text-gray-500 truncate mr-2">Impact:</span> <span className="font-semibold text-gray-900 dark:text-white truncate">{fundCategory}</span></div>
+                                                <div className="flex justify-between items-center"><span className="text-gray-500">Gateway:</span> <span className="font-semibold text-gray-900 dark:text-white truncate">{availablePaymentMethods.find(m => m.id === paymentMethod)?.name}</span></div>
+                                            </div>
+                                        </div>
+
+                                        {/* Contact Form */}
+                                        <div className="flex-1 w-full space-y-4">
+                                            <div>
+                                                <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">Full Name</label>
+                                                <input type="text" value={details.donor_name} onChange={e => setDetails({...details, donor_name: e.target.value})} className="w-full bg-transparent border-b-2 border-gray-200 dark:border-gray-600 focus:border-pink-500 px-2 py-2 outline-none font-medium text-gray-900 dark:text-white placeholder-gray-400" placeholder="Jane Doe" required />
+                                                {errors.donor_name && <p className="text-red-500 text-xs mt-1">{errors.donor_name}</p>}
+                                            </div>
+                                            <div className="grid grid-cols-2 gap-4">
+                                                <div>
+                                                    <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">Email</label>
+                                                    <input type="email" value={details.email} onChange={e => setDetails({...details, email: e.target.value})} className="w-full bg-transparent border-b-2 border-gray-200 dark:border-gray-600 focus:border-pink-500 px-2 py-2 outline-none font-medium text-gray-900 dark:text-white placeholder-gray-400" placeholder="jane@example.com" required />
+                                                    {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
+                                                </div>
+                                                <div>
+                                                    <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">Phone</label>
+                                                    <input type="tel" value={details.phone_number} onChange={e => setDetails({...details, phone_number: e.target.value})} className="w-full bg-transparent border-b-2 border-gray-200 dark:border-gray-600 focus:border-pink-500 px-2 py-2 outline-none font-medium text-gray-900 dark:text-white placeholder-gray-400" placeholder="+123..." />
+                                                    {errors.phone_number && <p className="text-red-500 text-xs mt-1">{errors.phone_number}</p>}
+                                                </div>
+                                            </div>
+                                            <div className="pt-2 flex items-center gap-2">
+                                                <input type="checkbox" id="anon" checked={details.is_anonymous} onChange={e => setDetails({...details, is_anonymous: e.target.checked})} className="rounded border-gray-300 text-pink-500 focus:ring-pink-500" />
+                                                <label htmlFor="anon" className="text-sm text-gray-500">Keep my identity strictly anonymous</label>
+                                            </div>
+
+                                            {errors.submit && <div className="text-red-500 text-sm font-medium mt-4 p-3 bg-red-50 rounded-lg">{errors.submit}</div>}
+
+                                            <button onClick={handleSupportSubmit} disabled={status==='submitting'} className="w-full mt-6 bg-gradient-to-r from-pink-500 to-orange-500 text-white py-4 rounded-xl font-bold shadow-lg shadow-pink-500/25 hover:shadow-pink-500/40 hover:-translate-y-1 transition-all disabled:opacity-70 disabled:scale-100 flex justify-center items-center gap-2">
+                                                {status === 'submitting' ? <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div> : <><CheckCircle size={20}/> Complete Secure Transaction</>}
+                                            </button>
+                                        </div>
+                                    </div>
+                                </motion.div>
+                            )}
+
+                            {/* STEP 5: Success State */}
+                            {currentStep === 5 && (
+                                <motion.div key="step5" initial={{opacity:0, scale:0.9}} animate={{opacity:1, scale:1}} className="text-center py-10 space-y-6">
+                                    <div className="w-24 h-24 bg-green-100 dark:bg-green-900/30 text-green-500 rounded-full flex items-center justify-center mx-auto shadow-inner shadow-green-500/20">
+                                        <Check size={50} strokeWidth={3} />
+                                    </div>
+                                    <div>
+                                        <h2 className="text-3xl font-black text-gray-900 dark:text-white mb-2">Thank you, {details.is_anonymous ? 'Friend' : details.donor_name.split(' ')[0]}!</h2>
+                                        <p className="text-gray-500 max-w-md mx-auto">Your generous pledge of {currency.symbol}{amount} towards {fundCategory} is initiated.</p>
+                                    </div>
+
+                                    <div className="bg-gray-50 dark:bg-gray-700/30 border border-gray-200 dark:border-gray-600 rounded-2xl p-6 text-left max-w-md mx-auto relative overflow-hidden">
+                                        <div className="absolute top-0 right-0 w-20 h-20 bg-green-500/10 rounded-full blur-xl"></div>
+                                        <p className="text-xs font-bold uppercase tracking-wider text-gray-500 mb-4 flex items-center gap-2"><ArrowRight size={14}/> Next Steps Configuration</p>
+                                        <p className="text-sm font-medium text-gray-800 dark:text-gray-200 leading-relaxed mb-4">{instructions}</p>
+                                        <div className="flex items-center justify-between bg-white dark:bg-gray-800 p-3 rounded-lg border border-gray-100 dark:border-gray-700">
+                                            <span className="text-xs text-gray-400 uppercase tracking-widest font-bold">Ref ID</span>
+                                            <div className="flex items-center gap-2">
+                                                <span className="font-mono text-sm font-bold text-gray-900 dark:text-white">{transactionRef}</span>
+                                                <button onClick={() => { navigator.clipboard.writeText(transactionRef); setCopied(true); setTimeout(()=>setCopied(false),2000); }} className="text-pink-500 hover:bg-pink-50 p-1.5 rounded-md transition-colors">{copied ? <Check size={14}/> : <Copy size={14}/>}</button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <button onClick={resetWizard} className="text-pink-500 font-bold text-sm tracking-wide hover:underline inline-flex items-center gap-1 mt-4">Start Over / Back to Home</button>
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
                     </div>
-
-                    {/* Sidebar / Impact */}
-                    <div className="lg:col-span-2 space-y-6">
-                        <div className="bg-gradient-to-br from-primary-50 to-purple-50 dark:from-gray-800 dark:to-gray-800 rounded-2xl p-8 border-2 border-primary-200 dark:border-gray-700 shadow-lg">
-                            <h3 className="text-xl font-bold text-primary-900 dark:text-white mb-6 flex items-center gap-2">
-                                <Heart className="text-pink-500" fill="currentColor" size={24} />
-                                Your Impact
-                            </h3>
-                            <ul className="space-y-4">
-                                <li className="flex gap-3">
-                                    <Check className="text-secondary-500 shrink-0 mt-0.5" size={20} strokeWidth={3} />
-                                    <span className="text-primary-800 dark:text-gray-200 font-medium">Support verified sexual and reproductive health education</span>
-                                </li>
-                                <li className="flex gap-3">
-                                    <Check className="text-secondary-500 shrink-0 mt-0.5" size={20} strokeWidth={3} />
-                                    <span className="text-primary-800 dark:text-gray-200 font-medium">Expand our reach to more schools across Uganda</span>
-                                </li>
-                                <li className="flex gap-3">
-                                    <Check className="text-secondary-500 shrink-0 mt-0.5" size={20} strokeWidth={3} />
-                                    <span className="text-primary-800 dark:text-gray-200 font-medium">Develop the Wekume App with new features</span>
-                                </li>
-                                <li className="flex gap-3">
-                                    <Check className="text-secondary-500 shrink-0 mt-0.5" size={20} strokeWidth={3} />
-                                    <span className="text-primary-800 dark:text-gray-200 font-medium">Train more peer educators and mentors</span>
-                                </li>
-                            </ul>
-                        </div>
-
-                        <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 border border-primary-100 dark:border-gray-700 shadow-md">
-                            <h3 className="text-xl font-bold text-primary-900 dark:text-white mb-4">Secure & Transparent</h3>
-                            <p className="text-sm text-gray-600 dark:text-gray-300 mb-4 leading-relaxed">
-                                All transactions are secure and encrypted. We use standard banking and mobile money protocols. You'll receive detailed confirmation via email and SMS.
-                            </p>
-                            <div className="flex items-center gap-3 text-sm text-gray-500 dark:text-gray-400">
-                                <CheckCircle className="text-green-600" size={18} />
-                                <span>SSL Encrypted</span>
-                            </div>
-                        </div>
-
-                        <div className="bg-gradient-to-br from-yellow-50 to-orange-50 dark:from-gray-800 dark:to-gray-800 rounded-2xl p-6 border-2 border-yellow-200 dark:border-gray-700">
-                            <p className="text-sm text-gray-700 dark:text-gray-300 font-medium">
-                                <span className="text-secondary-600 dark:text-secondary-400 font-bold">💡 Tip:</span> Monthly Contributions help us plan better programs and create sustainable impact.
-                            </p>
-                        </div>
-                    </div>
-
                 </div>
             </div>
+            
             <Footer />
-        </>
+        </div>
     );
 }
 
 export default Support;
-

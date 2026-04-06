@@ -12,57 +12,45 @@ const knowledgeBase = require('../services/knowledgeBase');
  * POST /api/ai/chat
  */
 exports.chat = async (req, res) => {
+    let logEntry = null;
+    const conversationId = req.body.conversationId || `conv_${Date.now()}`;
+    
     try {
-        const { message, conversationId, history = [] } = req.body;
+        const { message, history = [] } = req.body;
 
         // Validate input
         if (!message || message.trim() === '') {
             return res.status(400).json({ error: 'Message is required' });
         }
 
+        const sanitizedMessage = message.trim().slice(0, 500);
+
+        // 1. EAGER LOGGING: Create the log entry immediately
+        logEntry = await AIAssistantLog.create({
+            session_id: conversationId,
+            user_question: sanitizedMessage,
+            ai_response: 'Processing...', // Initial state
+            topic_category: 'general',
+            escalated: false,
+            ip_address: req.ip || req.headers['x-forwarded-for'] || '',
+            user_agent: req.headers['user-agent'] || ''
+        });
+
         // Check if OpenAI is configured
         if (!openaiService.isConfigured()) {
+            const errorMsg = "I'm currently not available. Please contact our support team directly at admin@wekume.org or call +256 766 344 603 for assistance.";
+            await logEntry.update({ ai_response: 'ERROR: AI service not configured' });
+            
             return res.status(503).json({
                 error: 'AI service not configured',
-                response: "I'm currently not available. Please contact our support team directly at admin@wekume.org or call +256 766 344 603 for assistance."
+                response: errorMsg
             });
         }
-
-        // Sanitize message
-        const sanitizedMessage = message.trim().slice(0, 500);
 
         // Check for crisis keywords
         const isCrisis = knowledgeBase.detectCrisis(sanitizedMessage);
 
         if (isCrisis) {
-            // Log the crisis conversation
-            const newConversationId = conversationId || `conv_${Date.now()}`;
-
-            await AIAssistantLog.create({
-                session_id: newConversationId,
-                user_question: sanitizedMessage,
-                ai_response: 'CRISIS DETECTED - Escalated to human support',
-                topic_category: 'other',
-                escalated: true
-            });
-
-            // Create urgent support ticket
-            await SupportForm.create({
-                name: 'AI Chat User (Crisis)',
-                email: 'crisis@ai.chat',
-                subject: '🚨 URGENT: Crisis detected in AI chat',
-                message: `CRISIS KEYWORDS DETECTED in conversation ${newConversationId}
-
-User message: "${sanitizedMessage}"
-
-Timestamp: ${new Date().toISOString()}
-Conversation ID: ${newConversationId}
-
-IMMEDIATE ACTION REQUIRED - Contact user through chat or emergency services if possible.`,
-                status: 'new',
-                form_type: 'support'
-            });
-
             const crisisResponse = `I've detected that you might be going through a very difficult situation, and I want you to know that help is available right now.
 
 🆘 **If you're in immediate danger:**
@@ -75,11 +63,34 @@ IMMEDIATE ACTION REQUIRED - Contact user through chat or emergency services if p
 
 You don't have to go through this alone. Please reach out to one of these services - they're here to help you right now. Your life matters.`;
 
+            // Update log with crisis info
+            await logEntry.update({
+                ai_response: 'CRISIS DETECTED - Escalated to human support',
+                escalated: true
+            });
+
+            // Create urgent support ticket
+            await SupportForm.create({
+                name: 'AI Chat User (Crisis)',
+                email: 'crisis@ai.chat',
+                subject: '🚨 URGENT: Crisis detected in AI chat',
+                message: `CRISIS KEYWORDS DETECTED in conversation ${conversationId}
+
+User message: "${sanitizedMessage}"
+
+Timestamp: ${new Date().toISOString()}
+Conversation ID: ${conversationId}
+
+IMMEDIATE ACTION REQUIRED - Contact user through chat or emergency services if possible.`,
+                status: 'new',
+                form_type: 'support'
+            });
+
             return res.json({
                 response: crisisResponse,
                 escalated: true,
                 crisis: true,
-                conversationId: newConversationId
+                conversationId: conversationId
             });
         }
 
@@ -96,38 +107,43 @@ You don't have to go through this alone. Please reach out to one of these servic
         ];
 
         // Get AI response
-        let aiResponse;
         try {
-            aiResponse = await openaiService.chat(messages, context);
+            const aiResponse = await openaiService.chat(messages, context);
+            
+            // Update log with real response
+            await logEntry.update({
+                ai_response: aiResponse
+            });
+
+            res.json({
+                response: aiResponse,
+                escalated: false,
+                crisis: false,
+                conversationId: conversationId
+            });
         } catch (error) {
             console.error('OpenAI API Error:', error);
+            const errorMsg = "I'm having trouble responding right now. Please try again in a moment, or contact our support team directly at admin@wekume.org.";
+            
+            // Update log with error state
+            if (logEntry) {
+                await logEntry.update({ ai_response: `ERROR: ${error.message}` });
+            }
+
             return res.status(500).json({
                 error: 'AI service error',
-                response: "I'm having trouble responding right now. Please try again in a moment, or contact our support team directly at admin@wekume.org."
+                response: errorMsg
             });
         }
 
-        // Generate or use existing conversation ID
-        const newConversationId = conversationId || `conv_${Date.now()}`;
-
-        // Log conversation
-        await AIAssistantLog.create({
-            session_id: newConversationId,
-            user_question: sanitizedMessage,
-            ai_response: aiResponse,
-            topic_category: 'general',
-            escalated: false
-        });
-
-        res.json({
-            response: aiResponse,
-            escalated: false,
-            crisis: false,
-            conversationId: newConversationId
-        });
-
     } catch (error) {
         console.error('AI Chat error:', error);
+        
+        // Final fallback to update log if it exists
+        if (logEntry) {
+            await logEntry.update({ ai_response: `FATAL ERROR: ${error.message}` });
+        }
+
         res.status(500).json({
             error: 'Failed to process request',
             response: "I'm experiencing technical difficulties. Please contact our support team at admin@wekume.org or call +256 766 344 603 for assistance."
