@@ -39,6 +39,8 @@ function Navbar({ isTransparent = false, backgroundImages, currentBackgroundInde
 
     const navLinks = isUS ? [
         { path: '/us', label: 'Home', icon: Home },
+        { path: '/us/activities', label: 'Activities', icon: Users },
+        { path: '/us/activities', label: 'Activities', icon: Users },
         { path: '/us/funders', label: 'Funders', icon: Heart },
         { path: '/us/impact', label: 'Impact Reporting', icon: BarChart2 },
         { path: '/us/contact', label: 'Contact', icon: Mail }

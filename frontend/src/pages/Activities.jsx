@@ -4,7 +4,7 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import PageHeader from '../components/PageHeader';
 import { contentAPI } from '../services/api';
-import { Calendar, MapPin, ArrowRight, Heart, Users, Briefcase, MessageSquare, Quote, X, CheckCircle } from 'lucide-react';
+import { Calendar, MapPin, ArrowRight, Heart, Users, Briefcase, MessageSquare, Quote, X, CheckCircle, Smartphone } from 'lucide-react';
 import { useRegion } from '../context/RegionContext';
 
 function Activities() {
@@ -194,7 +194,85 @@ function Activities() {
                     </div>
                 </section>
 
-                {/* 3. Testimonials Section */}
+                {/* 3. Why We Exist Section */}
+                <section>
+                    <div className="bg-gradient-to-br from-orange-50 to-red-50 dark:from-orange-900/10 dark:to-red-900/10 rounded-3xl p-8 md:p-12 border border-orange-100 dark:border-orange-900/30 relative overflow-hidden">
+                        <div className="absolute top-0 right-0 -mr-20 -mt-20 w-64 h-64 bg-orange-200/50 dark:bg-orange-900/20 rounded-full blur-3xl pointer-events-none"></div>
+                        <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-64 h-64 bg-red-200/50 dark:bg-red-900/20 rounded-full blur-3xl pointer-events-none"></div>
+                        
+                        <div className="relative z-10 max-w-4xl mx-auto">
+                            <span className="text-orange-600 dark:text-orange-400 font-bold tracking-wider uppercase text-sm mb-4 block">Our Purpose</span>
+                            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-6">Why We Exist</h2>
+                            <p className="text-gray-700 dark:text-gray-300 text-lg leading-relaxed">
+                                Ugandan university students face unique challenges around reproductive health. Many lack access to safe, reliable resources, and pervasive stigma prevents open conversations. Wekume Initiative exists to address these critical gaps by offering an inclusive, evidence-based digital platform that connects young people to vital health information, verified education, and supportive communities—empowering them to take ownership of their reproductive health and future.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                {/* 4. Founders Story Section */}
+                <section>
+                    <div className="bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/10 dark:to-pink-900/10 rounded-3xl p-8 md:p-12 border border-purple-100 dark:border-purple-900/30 relative overflow-hidden">
+                        <div className="absolute top-0 left-0 -ml-20 -mt-20 w-64 h-64 bg-purple-200/50 dark:bg-purple-900/20 rounded-full blur-3xl pointer-events-none"></div>
+                        <div className="absolute bottom-0 right-0 -mr-20 -mb-20 w-64 h-64 bg-pink-200/50 dark:bg-pink-900/20 rounded-full blur-3xl pointer-events-none"></div>
+                        
+                        <div className="relative z-10 max-w-4xl mx-auto">
+                            <span className="text-purple-600 dark:text-purple-400 font-bold tracking-wider uppercase text-sm mb-4 block">Our Story</span>
+                            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-6">The Founders' Journey</h2>
+                            <p className="text-gray-700 dark:text-gray-300 text-lg leading-relaxed mb-6">
+                                Wekume Initiative was founded by visionary young leaders who recognized a critical gap in reproductive health education and support for university students. Frustrated by the lack of accessible, stigma-free resources and the pervasive silence around sexual and reproductive health, our founders decided to take action.
+                            </p>
+                            <p className="text-gray-700 dark:text-gray-300 text-lg leading-relaxed">
+                                Drawing on their own experiences as university students and their passion for social impact, they envisioned a platform that would be peer-led, community-centered, and grounded in evidence-based information. Today, Wekume stands as a testament to their commitment to breaking stigma, fostering dialogue, and empowering the next generation of young Africans to own their health and future.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                {/* 5. Wekume App Section */}
+                <section>
+                    <div className="bg-gradient-to-br from-indigo-50 to-white dark:from-gray-800 dark:to-gray-900 rounded-3xl p-8 md:p-12 border border-indigo-100 dark:border-indigo-900/30 relative overflow-hidden">
+                        <div className="absolute top-0 right-0 -mr-20 -mt-20 w-64 h-64 bg-indigo-200/50 dark:bg-indigo-900/20 rounded-full blur-3xl pointer-events-none"></div>
+                        <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-64 h-64 bg-blue-200/50 dark:bg-blue-900/20 rounded-full blur-3xl pointer-events-none"></div>
+
+                        <div className="relative z-10 max-w-6xl mx-auto">
+                            <div className="flex flex-col lg:flex-row items-center gap-12">
+                                <div className="flex-1 text-center lg:text-left">
+                                    <span className="px-4 py-1.5 rounded-full bg-indigo-100 dark:bg-indigo-900/40 text-indigo-600 dark:text-indigo-400 text-sm font-bold tracking-wide w-fit mb-6 inline-flex items-center gap-2">
+                                        <Smartphone size={16} /> Wekume App
+                                    </span>
+                                    <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-6">Health in Your Pocket</h2>
+                                    <p className="text-gray-700 dark:text-gray-300 text-lg leading-relaxed mb-8 max-w-2xl">
+                                        Get verified reproductive health information, exclusive youth-focused content, and access to a supportive community—directly from your phone. The Wekume App is designed to put vital healthcare resources right within your reach.
+                                    </p>
+                                    <button disabled className="bg-gray-200 dark:bg-gray-800 text-gray-500 dark:text-gray-400 px-8 py-4 rounded-full font-bold shadow-sm cursor-not-allowed inline-flex items-center gap-3 text-lg border border-gray-300 dark:border-gray-700">
+                                        <Smartphone size={22} /> Coming Soon
+                                    </button>
+                                </div>
+                                <div className="flex-1 relative w-full flex justify-center">
+                                    <div className="absolute inset-0 bg-indigo-600/10 blur-3xl rounded-full"></div>
+                                    {/* App Mockup Illustration */}
+                                    <div className="w-64 h-[500px] bg-gray-900 rounded-[3rem] border-[8px] border-gray-800 shadow-2xl relative z-10 overflow-hidden flex flex-col">
+                                        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-6 bg-gray-800 rounded-b-2xl z-20"></div>
+                                        <div className="p-6 pt-12 flex-1 bg-gradient-to-b from-indigo-900 to-gray-900">
+                                            <div className="w-12 h-12 rounded-full bg-indigo-500/30 mb-6 animate-pulse"></div>
+                                            <div className="space-y-4">
+                                                <div className="h-4 bg-white/20 rounded w-3/4"></div>
+                                                <div className="h-4 bg-white/20 rounded w-1/2"></div>
+                                            </div>
+                                            <div className="mt-8 space-y-4">
+                                                <div className="h-24 bg-white/10 rounded-xl"></div>
+                                                <div className="h-24 bg-white/10 rounded-xl"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                {/* 6. Testimonials Section */}
                 <section>
                     <div className="text-center mb-10">
                         <span className="text-pink-600 dark:text-pink-400 font-bold tracking-wider uppercase text-sm">Real Impacts</span>

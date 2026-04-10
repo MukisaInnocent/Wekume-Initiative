@@ -352,11 +352,11 @@ h6 {
 }
 
 .animate-scroll-marquee {
-  animation: scrollMarquee 20s linear infinite;
+  animation: scrollMarquee 40s linear infinite;
 }
 
 .animate-scroll-marquee-slow {
-  animation: scrollMarquee 60s linear infinite;
+  animation: scrollMarquee 120s linear infinite;
 }
 
 .pause-animation:hover .animate-scroll-marquee,
