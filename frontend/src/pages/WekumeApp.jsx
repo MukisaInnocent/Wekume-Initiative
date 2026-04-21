@@ -115,10 +115,10 @@ function WekumeApp() {
                                     {feature.icon}
                                 </div>
                                 <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-3">{feature.title}</h3>
-                                <p className="text-gray-700 dark:text-gray-300 text-lg mb-6">{feature.desc}</p>
+                                <p className="text-gray-900 dark:text-gray-100 text-lg mb-6">{feature.desc}</p>
                                 
                                 <div className="mt-auto bg-white/60 dark:bg-gray-900/40 p-4 rounded-xl border border-white/40 dark:border-gray-700/50 backdrop-blur-sm">
-                                    <h4 className="text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-2">How it works:</h4>
+                                    <h4 className="text-xs font-bold uppercase tracking-wider text-gray-700 dark:text-gray-100 mb-2">How it works:</h4>
                                     <p className="text-sm font-medium text-gray-800 dark:text-gray-200 flex flex-wrap gap-x-2 gap-y-1">
                                         {feature.steps.split('→').map((step, i, arr) => (
                                             <span key={i} className="flex items-center gap-1">

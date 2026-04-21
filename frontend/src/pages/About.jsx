@@ -5,26 +5,23 @@ import Footer from '../components/Footer';
 import PageHeader from '../components/PageHeader';
 import { contentAPI } from '../services/api';
 import { useRegion } from '../context/RegionContext';
-import { Users, BookOpen, Smartphone, Download } from 'lucide-react';
+import { Users, BookOpen, Smartphone, Download, Quote } from 'lucide-react';
 
 function About() {
     const { region } = useRegion();
     const [founderStory, setFounderStory] = useState(null);
-    const [teamMembers, setTeamMembers] = useState([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const [storyRes, teamRes] = await Promise.all([
-                    contentAPI.getSection('about_story', region).catch(() => ({ data: { content: null } })),
-                    contentAPI.getTeamMembers(region).catch(() => ({ data: { members: [] } }))
-                ]);
+                const sectionsRes = await contentAPI.getSections(region).catch(() => ({ data: { sections: [] } }));
 
-                setFounderStory(storyRes.data?.content || null);
-                setTeamMembers(teamRes.data?.members || []);
+                const sectionsList = sectionsRes.data.sections || [];
+                const storySection = sectionsList.find(s => s.section_key === 'homepage.founder_story' || s.section_key === 'about.story');
+                setFounderStory(storySection ? storySection.content_text : null);
             } catch (error) {
-                console.error("Error fetching our story data:", error);
+                console.error("Error fetching about page data:", error);
             } finally {
                 setLoading(false);
             }
@@ -44,64 +41,55 @@ function About() {
 
             <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-16">
 
-                {/* The Founder's Story */}
-                <section>
-                    <div className="flex items-center gap-3 mb-8">
-                        <div className="p-3 bg-purple-100 dark:bg-purple-900/40 rounded-xl text-purple-600 dark:text-purple-400">
-                            <BookOpen size={24} />
-                        </div>
-                        <h2 className="text-3xl font-bold text-gray-900 dark:text-white">The Founder's Story</h2>
+                {/* The Founder's Story - Editorial Layout */}
+                <section className="relative w-full max-w-5xl mx-auto py-12">
+                    {/* Background Ambient Glows */}
+                    <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-[3rem]">
+                        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-gradient-to-br from-purple-500/10 to-transparent rounded-full blur-[80px] -translate-y-1/2 translate-x-1/4"></div>
+                        <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-gradient-to-tr from-orange-500/10 to-transparent rounded-full blur-[100px] translate-y-1/3 -translate-x-1/4"></div>
                     </div>
-                    
-                    <div className="bg-gray-50 dark:bg-gray-900/40 border border-gray-100 dark:border-gray-800 rounded-3xl p-8 sm:p-10 shadow-sm relative overflow-hidden">
-                        <div className="absolute top-0 right-0 -mt-10 -mr-10 w-40 h-40 bg-purple-500/10 rounded-full blur-3xl"></div>
-                        <div className="prose prose-lg dark:prose-invert max-w-none text-gray-700 dark:text-gray-300 leading-relaxed whitespace-pre-wrap">
-                            {founderStory ? founderStory : (
-                                <p className="italic text-gray-500">
-                                    Our founder's story will be updated here shortly. We are driven by a passion to ensure that every young person has access to essential health education and resources...
-                                </p>
-                            )}
+
+                    <div className="relative bg-white/90 dark:bg-gray-900/80 backdrop-blur-3xl border border-gray-200/50 dark:border-gray-800/80 rounded-[3rem] p-8 md:p-16 lg:p-20 shadow-[0_8px_40px_rgb(0,0,0,0.06)] dark:shadow-[0_8px_40px_rgb(0,0,0,0.4)] animate-fade-in-up">
+                        
+                        {/* Massive Quote Watermark */}
+                        <div className="absolute top-8 left-8 md:top-12 md:left-12 text-purple-100 dark:text-gray-800/40 transform -rotate-12 pointer-events-none select-none">
+                            <Quote size={160} strokeWidth={1} fill="currentColor" />
+                        </div>
+
+                        {/* Content Wrapper */}
+                        <div className="relative z-10 max-w-3xl mx-auto flex flex-col items-center">
+                            
+                            {/* Header Label */}
+                            <div className="inline-flex items-center gap-3 mb-10 pb-6 border-b border-gray-200 dark:border-gray-800/60 w-full justify-center">
+                                <span className="bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent font-black uppercase tracking-[0.2em] text-sm md:text-base flex items-center justify-center gap-3">
+                                    <BookOpen size={18} className="text-purple-600 inline" />
+                                    The Founder's Story
+                                </span>
+                            </div>
+
+                            {/* Editorial Text Block */}
+                            <div className="relative w-full text-left">
+                                {founderStory ? (
+                                    <div 
+                                        className="prose prose-xl md:prose-2xl dark:prose-invert prose-headings:font-black prose-p:leading-[1.8] md:prose-p:leading-[2] prose-p:text-gray-900 dark:prose-p:text-gray-100 prose-p:font-medium prose-p:tracking-tight max-w-none first-letter:float-left first-letter:text-[6rem] md:first-letter:text-[8rem] first-letter:font-black first-letter:text-purple-600 dark:first-letter:text-purple-400 first-letter:leading-[0.8] first-letter:mr-4 first-letter:mt-2"
+                                        dangerouslySetInnerHTML={{ __html: `<p>${founderStory.replace(/\n\n/g, '</p><p>').replace(/\n/g, '<br/>')}</p>` }}
+                                    ></div>
+                                ) : (
+                                    <div className="prose prose-xl md:prose-2xl dark:prose-invert prose-p:leading-[1.8] prose-p:text-gray-900 dark:prose-p:text-gray-100 max-w-none text-center">
+                                        <p className="italic">
+                                            "Our founder's story will be updated here shortly. We are driven by a passion to ensure that every young person has access to essential health education and resources..."
+                                        </p>
+                                    </div>
+                                )}
+                            </div>
+                            
+                            {/* Stylish Ending Separator */}
+                            <div className="w-24 h-1 bg-gradient-to-r from-transparent via-purple-300 dark:via-purple-700 to-transparent mt-16 rounded-full opacity-50"></div>
                         </div>
                     </div>
                 </section>
 
-                {/* Our Team */}
-                <section>
-                    <div className="flex items-center gap-3 mb-8">
-                        <div className="p-3 bg-orange-100 dark:bg-orange-900/40 rounded-xl text-orange-600 dark:text-orange-400">
-                            <Users size={24} />
-                        </div>
-                        <h2 className="text-3xl font-bold text-gray-900 dark:text-white">Our Team</h2>
-                    </div>
 
-                    {teamMembers.length > 0 ? (
-                        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                            {teamMembers.filter(m => m.is_active !== false).map((member) => (
-                                <div key={member.id} className="group bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col items-center">
-                                    <div className="w-full aspect-square bg-gray-100 dark:bg-gray-800 relative overflow-hidden">
-                                        {member.photo_url ? (
-                                            <img src={member.photo_url} alt={member.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                                        ) : (
-                                            <div className="w-full h-full flex items-center justify-center bg-purple-50 dark:bg-purple-900/20 text-4xl font-black text-purple-200 dark:text-purple-800">
-                                                {member.name.charAt(0)}
-                                            </div>
-                                        )}
-                                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                                    </div>
-                                    <div className="w-full p-4 text-center border-t border-gray-50 dark:border-gray-800/50 bg-white dark:bg-gray-900">
-                                        <h3 className="font-bold text-gray-900 dark:text-white truncate">{member.name}</h3>
-                                        <p className="text-xs text-purple-600 dark:text-purple-400 font-medium mt-1 truncate">{member.role || 'Team Member'}</p>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    ) : (
-                        <div className="text-center py-12 bg-gray-50 dark:bg-gray-900/30 rounded-3xl border border-gray-100 dark:border-gray-800">
-                            <Users size={48} className="mx-auto text-gray-400 mb-4" />
-                            <p className="text-gray-500">Our amazing team will be showcased here soon.</p>
-                        </div>
-                    )}
-                </section>
 
                 {/* Download App */}
                 <section>

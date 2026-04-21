@@ -1,7 +1,8 @@
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Facebook, Twitter, Instagram, Linkedin, Youtube, ArrowRight, Mail, ChevronDown, CheckCircle } from 'lucide-react';
 import { useRegion } from '../context/RegionContext';
+import { contentAPI } from '../services/api';
 
 const socialLinks = [
     { icon: Facebook, href: 'https://facebook.com/wekume', label: 'Facebook' },
@@ -39,6 +40,31 @@ function Footer() {
     const [subscribed, setSubscribed] = useState(false);
     const { isUS } = useRegion();
     const prefix = isUS ? '/us' : '/ug';
+
+    // Backend-driven contact info
+    const [contactData, setContactData] = useState({
+        email: 'admin@wekume.org',
+        phone: '+256 766 344 603',
+        addressUG: 'PO BOX 180589, Kampala, Uganda',
+        addressUS: '4844 North 300 West Ste 300, Provo, UT 84604'
+    });
+
+    useEffect(() => {
+        const fetchContact = async () => {
+            try {
+                const response = await contentAPI.getSections();
+                const sections = response.data.sections || [];
+                const get = (key) => sections.find(s => s.section_key === key)?.content_text;
+                setContactData(prev => ({
+                    email: get('contact.email') || prev.email,
+                    phone: get('contact.phone') || prev.phone,
+                    addressUG: get('contact.po_box') || prev.addressUG,
+                    addressUS: get('contact.office_address_us') || prev.addressUS
+                }));
+            } catch (e) { /* fallback to defaults */ }
+        };
+        fetchContact();
+    }, []);
 
     const handleSubscribe = (e) => {
         e.preventDefault();
@@ -88,12 +114,12 @@ function Footer() {
 
                     {/* Newsletter (Standalone to keep it highly visible) */}
                     <div className="w-full md:w-auto md:max-w-xs bg-white/5 p-6 rounded-3xl border border-white/10 backdrop-blur-md">
-                        <p className="text-sm text-white font-bold mb-1 flex items-center gap-2">
+                        <p className="text-sm text-white dark:text-white font-bold mb-1 flex items-center gap-2">
                             Stay Updated <span className="relative flex h-2 w-2"><span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-pink-400 opacity-75"></span><span className="relative inline-flex rounded-full h-2 w-2 bg-pink-500"></span></span>
                         </p>
-                        <p className="text-xs text-purple-300 mb-4">Join our newsletter for updates and impact stories.</p>
+                        <p className="text-xs text-gray-200 dark:text-purple-300 mb-4">Join our newsletter for updates and impact stories.</p>
                         {subscribed ? (
-                            <div className="bg-green-500/20 text-green-300 border border-green-500/30 px-4 py-3 rounded-xl text-sm font-medium flex items-center gap-2">
+                            <div className="bg-green-500/20 text-green-100 dark:text-green-300 border border-green-500/30 px-4 py-3 rounded-xl text-sm font-medium flex items-center gap-2">
                                 <CheckCircle size={16} /> Thanks for subscribing!
                             </div>
                         ) : (
@@ -104,7 +130,7 @@ function Footer() {
                                     onChange={(e) => setEmail(e.target.value)}
                                     placeholder="Enter your email"
                                     required
-                                    className="w-full px-4 py-3 rounded-xl bg-black/30 border border-white/10 text-white placeholder-gray-500 text-sm focus:outline-none focus:border-pink-500/50 transition-all"
+                                    className="w-full px-4 py-3 rounded-xl bg-gray-100 dark:bg-black/30 border border-gray-300 dark:border-white/10 text-gray-900 dark:text-white placeholder-gray-500 text-sm focus:outline-none focus:border-pink-500/50 transition-all"
                                 />
                                 <button
                                     type="submit"
@@ -132,7 +158,7 @@ function Footer() {
                                 <li key={to}>
                                     <Link
                                         to={to}
-                                        className="text-xs text-gray-400 hover:text-white inline-flex items-center gap-2 transition-all duration-200 group py-1"
+                                        className="text-xs text-gray-100 dark:text-gray-300 hover:text-white dark:hover:text-white inline-flex items-center gap-2 transition-all duration-200 group py-1"
                                     >
                                         <div className="w-1 h-1 rounded-full bg-pink-500/50 group-hover:scale-150 transition-transform"></div>
                                         {label}
@@ -145,7 +171,7 @@ function Footer() {
                     <FooterAccordion title="What We Do">
                         <div className="flex flex-col gap-2 pt-2">
                             {['Sexual & Reproductive Health Education', 'Mental Health Support & Counseling', 'Skill Development & Entrepreneurship', 'Community Outreach Programs', 'Youth Mentorship'].map((item, i) => (
-                                <div key={i} className="text-[11px] leading-relaxed text-gray-400 flex items-start gap-2 py-1">
+                                <div key={i} className="text-[11px] leading-relaxed text-gray-100 dark:text-gray-300 flex items-start gap-2 py-1">
                                     <span className="text-pink-500 flex-shrink-0 mt-0.5">•</span> 
                                     <span>{item}</span>
                                 </div>
@@ -155,23 +181,23 @@ function Footer() {
 
                     <FooterAccordion title="Contact Us">
                         <div className="flex flex-col gap-4 pt-2">
-                            <div className="space-y-2 text-xs text-gray-400">
-                                <a href="mailto:admin@wekume.org" className="block hover:text-white transition-colors">
-                                    Email: <span className="text-pink-300">admin@wekume.org</span>
+                            <div className="space-y-2 text-xs text-gray-100 dark:text-gray-400">
+                                <a href={`mailto:${contactData.email}`} className="block hover:text-white dark:hover:text-white transition-colors">
+                                    Email: <span className="text-pink-300 dark:text-pink-300">{contactData.email}</span>
                                 </a>
-                                <p>Phone: <span className="text-pink-300 tracking-wider">+256 766 344 603</span></p>
+                                <p>Phone: <span className="text-pink-300 dark:text-pink-300 tracking-wider">{contactData.phone}</span></p>
                             </div>
                             
-                            <div className="text-[11px] text-gray-500 leading-relaxed pt-2 border-t border-white/5">
+                            <div className="text-[11px] text-gray-100 dark:text-gray-500 leading-relaxed pt-2 border-t border-white/10 dark:border-white/5">
                                 {isUS ? (
                                     <>
-                                        <p className="font-bold text-gray-400 mb-1">Friends of Wekume (US)</p>
-                                        <p>4844 North 300 West Ste 300, Provo, UT 84604</p>
+                                        <p className="font-bold text-gray-100 dark:text-gray-400 mb-1">Friends of Wekume (US)</p>
+                                        <p className="text-gray-200 dark:text-gray-400">{contactData.addressUS}</p>
                                     </>
                                 ) : (
                                     <>
-                                        <p className="font-bold text-gray-400 mb-1">Wekume Initiative (UG)</p>
-                                        <p>PO BOX 180589, Kampala, Uganda</p>
+                                        <p className="font-bold text-gray-100 dark:text-gray-400 mb-1">Wekume Initiative (UG)</p>
+                                        <p className="text-gray-200 dark:text-gray-400">{contactData.addressUG}</p>
                                     </>
                                 )}
                             </div>
@@ -180,13 +206,13 @@ function Footer() {
                 </div>
 
                 {/* Bottom Bar */}
-                <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-gray-500 font-medium">
+                <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-gray-100 dark:text-gray-400 font-medium">
                     <p>© {new Date().getFullYear()} Wekume Initiative. All rights reserved.</p>
-                    <p className="flex items-center gap-1.5 px-4 py-2 rounded-full bg-white/5 text-gray-400">Built with <span className="text-red-500 animate-pulse">❤️</span> for youth</p>
+                    <p className="flex items-center gap-1.5 px-4 py-2 rounded-full bg-white/10 dark:bg-white/5 text-gray-100 dark:text-gray-300">Built with <span className="text-red-400 animate-pulse">❤️</span> for youth</p>
                     <div className="flex items-center gap-4">
-                        <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
-                        <span className="w-1 h-1 rounded-full bg-gray-700"></span>
-                        <a href="#" className="hover:text-white transition-colors">Terms of Use</a>
+                        <a href="#" className="hover:text-white dark:hover:text-white transition-colors">Privacy Policy</a>
+                        <span className="w-1 h-1 rounded-full bg-gray-500 dark:bg-gray-700"></span>
+                        <a href="#" className="hover:text-white dark:hover:text-white transition-colors">Terms of Use</a>
                     </div>
                 </div>
 

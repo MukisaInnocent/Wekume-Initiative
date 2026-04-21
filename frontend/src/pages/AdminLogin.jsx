@@ -79,7 +79,7 @@ function AdminLogin() {
                         <LogIn className="text-primary-600" size={32} />
                     </div>
                     <h1 className="text-3xl font-heading font-bold text-gray-900 dark:text-white">Admin Login</h1>
-                    <p className="text-gray-600 dark:text-gray-400 mt-2">Wekume Initiative CMS</p>
+                    <p className="text-gray-900 dark:text-gray-100 mt-2">Wekume Initiative CMS</p>
                 </div>
 
                 {error && (
@@ -90,7 +90,7 @@ function AdminLogin() {
 
                 <form onSubmit={handleSubmit} className="space-y-6">
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-100 mb-2">
                             Email
                         </label>
                         <input
@@ -104,7 +104,7 @@ function AdminLogin() {
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-100 mb-2">
                             Password
                         </label>
                         <input

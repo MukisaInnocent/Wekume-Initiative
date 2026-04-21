@@ -1,4 +1,4 @@
-const { AIAssistantLog, SupportForm } = require('../models');
+const { AIAssistantLog, SupportForm, ContentSection } = require('../models');
 const openaiService = require('../services/openaiService');
 const knowledgeBase = require('../services/knowledgeBase');
 
@@ -108,7 +108,28 @@ IMMEDIATE ACTION REQUIRED - Contact user through chat or emergency services if p
 
         // Get AI response
         try {
-            const aiResponse = await openaiService.chat(messages, context);
+            // Load admin AI settings from CMS
+            let adminSettings = {};
+            try {
+                const aiSections = await ContentSection.findAll({
+                    where: { section_key: ['ai.system_prompt', 'ai.tone', 'ai.priority_topics', 'ai.response_guidelines'] }
+                });
+                const getVal = (key) => aiSections.find(s => s.section_key === key)?.content_text;
+                const sysPrompt = getVal('ai.system_prompt');
+                if (sysPrompt && sysPrompt.trim()) {
+                    adminSettings.systemPrompt = sysPrompt;
+                }
+                const tone = getVal('ai.tone');
+                if (tone && tone.trim()) adminSettings.tone = tone;
+                const topics = getVal('ai.priority_topics');
+                if (topics && topics.trim()) adminSettings.priorityTopics = topics;
+                const guidelines = getVal('ai.response_guidelines');
+                if (guidelines && guidelines.trim()) adminSettings.responseGuidelines = guidelines;
+            } catch (settingsError) {
+                console.warn('Failed to load admin AI settings, using defaults:', settingsError.message);
+            }
+
+            const aiResponse = await openaiService.chat(messages, context, adminSettings);
             
             // Update log with real response
             await logEntry.update({

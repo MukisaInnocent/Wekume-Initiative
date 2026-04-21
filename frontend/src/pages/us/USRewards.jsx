@@ -21,17 +21,17 @@ function USRewards() {
                         <div className="bg-gray-50 dark:bg-gray-800 p-8 rounded-2xl border border-gray-100 dark:border-gray-700 text-center">
                             <Star size={40} className="mx-auto text-yellow-500 mb-4" />
                             <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">Impact Badges</h3>
-                            <p className="text-gray-600 dark:text-gray-400 mb-6">Receive verified digital badges that you can display on your website, LinkedIn, or corporate CSR materials showing your tier of support.</p>
+                            <p className="text-gray-900 dark:text-gray-100 mb-6">Receive verified digital badges that you can display on your website, LinkedIn, or corporate CSR materials showing your tier of support.</p>
                         </div>
                         <div className="bg-gray-50 dark:bg-gray-800 p-8 rounded-2xl border border-gray-100 dark:border-gray-700 text-center">
                             <Gift size={40} className="mx-auto text-pink-500 mb-4" />
                             <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">Exclusive Updates</h3>
-                            <p className="text-gray-600 dark:text-gray-400 mb-6">Get early access to our quarterly reports, invites to virtual town halls with our ground team in Uganda, and personalized video thank yous.</p>
+                            <p className="text-gray-900 dark:text-gray-100 mb-6">Get early access to our quarterly reports, invites to virtual town halls with our ground team in Uganda, and personalized video thank yous.</p>
                         </div>
                         <div className="bg-gray-50 dark:bg-gray-800 p-8 rounded-2xl border border-gray-100 dark:border-gray-700 text-center">
                             <Award size={40} className="mx-auto text-purple-500 mb-4" />
                             <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">Naming Rights</h3>
-                            <p className="text-gray-600 dark:text-gray-400 mb-6">Major donors have the opportunity to name a scholarship, a specific health outreach program, or a feature within the Wekume App.</p>
+                            <p className="text-gray-900 dark:text-gray-100 mb-6">Major donors have the opportunity to name a scholarship, a specific health outreach program, or a feature within the Wekume App.</p>
                         </div>
                     </div>
 

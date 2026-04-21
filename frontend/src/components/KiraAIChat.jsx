@@ -16,13 +16,13 @@ function KiraOrbIcon({ size = 32, className = '' }) {
         >
             <defs>
                 <radialGradient id="kiraOrb" cx="40%" cy="35%" r="60%">
-                    <stop offset="0%" stopColor="#a78bfa" />
-                    <stop offset="50%" stopColor="#6d28d9" />
-                    <stop offset="100%" stopColor="#1e1b4b" />
+                    <stop offset="0%" stopColor="#f7b2d0" />
+                    <stop offset="50%" stopColor="#9e00ff" />
+                    <stop offset="100%" stopColor="#341525" />
                 </radialGradient>
                 <radialGradient id="kiraGlow" cx="50%" cy="50%" r="50%">
-                    <stop offset="0%" stopColor="#7c3aed" stopOpacity="0.6" />
-                    <stop offset="100%" stopColor="#7c3aed" stopOpacity="0" />
+                    <stop offset="0%" stopColor="#9e00ff" stopOpacity="0.6" />
+                    <stop offset="100%" stopColor="#9e00ff" stopOpacity="0" />
                 </radialGradient>
             </defs>
             {/* Glow */}
@@ -32,14 +32,14 @@ function KiraOrbIcon({ size = 32, className = '' }) {
             {/* Highlight */}
             <ellipse cx="26" cy="24" rx="7" ry="5" fill="white" fillOpacity="0.25" />
             {/* Neural lines */}
-            <line x1="32" y1="10" x2="32" y2="54" stroke="#c4b5fd" strokeWidth="0.8" strokeOpacity="0.4" />
-            <line x1="10" y1="32" x2="54" y2="32" stroke="#c4b5fd" strokeWidth="0.8" strokeOpacity="0.4" />
-            <line x1="16" y1="16" x2="48" y2="48" stroke="#c4b5fd" strokeWidth="0.8" strokeOpacity="0.3" />
-            <line x1="48" y1="16" x2="16" y2="48" stroke="#c4b5fd" strokeWidth="0.8" strokeOpacity="0.3" />
+            <line x1="32" y1="10" x2="32" y2="54" stroke="#f7b2d0" strokeWidth="0.8" strokeOpacity="0.4" />
+            <line x1="10" y1="32" x2="54" y2="32" stroke="#f7b2d0" strokeWidth="0.8" strokeOpacity="0.4" />
+            <line x1="16" y1="16" x2="48" y2="48" stroke="#f7b2d0" strokeWidth="0.8" strokeOpacity="0.3" />
+            <line x1="48" y1="16" x2="16" y2="48" stroke="#f7b2d0" strokeWidth="0.8" strokeOpacity="0.3" />
             {/* Center dot */}
-            <circle cx="32" cy="32" r="4" fill="#ddd6fe" />
+            <circle cx="32" cy="32" r="4" fill="#f2f5d1" />
             {/* Orbit ring */}
-            <ellipse cx="32" cy="32" rx="22" ry="22" stroke="#a78bfa" strokeWidth="1" fill="none" strokeOpacity="0.5" strokeDasharray="4 3" />
+            <ellipse cx="32" cy="32" rx="22" ry="22" stroke="#f7b2d0" strokeWidth="1" fill="none" strokeOpacity="0.5" strokeDasharray="4 3" />
         </svg>
     );
 }
@@ -153,10 +153,10 @@ function KiraAIChat() {
                         }}
                         exit={{ opacity: 0, y: 20, scale: 0.95 }}
                         className="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl w-[90vw] sm:w-[400px] max-h-[80vh] flex flex-col overflow-hidden border border-purple-200 dark:border-purple-900/50 pointer-events-auto origin-bottom-right"
-                        style={{ boxShadow: '0 0 40px rgba(109, 40, 217, 0.15), 0 20px 60px rgba(0,0,0,0.3)' }}
+                        style={{ boxShadow: '0 0 40px rgba(158, 0, 255, 0.15), 0 20px 60px rgba(0,0,0,0.3)' }}
                     >
                         {/* Header */}
-                        <div className="bg-gradient-to-r from-violet-700 via-purple-700 to-indigo-700 p-4 flex items-center justify-between text-white shadow-md relative z-10">
+                        <div className="bg-gradient-to-r from-purple-600 via-secondary-500 to-purple-800 p-4 flex items-center justify-between text-white shadow-md relative z-10">
                             {/* Subtle shimmer overlay */}
                             <div className="absolute inset-0 bg-white/5 bg-[length:200px_200px] pointer-events-none" />
                             <div className="flex items-center gap-3 relative z-10">
@@ -221,7 +221,7 @@ function KiraAIChat() {
                                                     ? 'bg-gradient-to-br from-violet-600 to-purple-700 text-white rounded-tr-sm'
                                                     : msg.crisis
                                                         ? 'bg-red-50 dark:bg-red-900/20 text-red-900 dark:text-red-100 border border-red-200 dark:border-red-800 rounded-tl-sm'
-                                                        : 'bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 border border-gray-100 dark:border-gray-700 rounded-tl-sm'
+                                                        : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-100 border border-gray-100 dark:border-gray-600 rounded-tl-sm'
                                                     }`}
                                             >
                                                 <p className="text-sm leading-relaxed whitespace-pre-wrap break-words">
@@ -261,7 +261,7 @@ function KiraAIChat() {
                                                         className="w-1.5 h-1.5 bg-indigo-500 rounded-full"
                                                     />
                                                 </div>
-                                                <span className="text-xs text-gray-400">Kira is thinking...</span>
+                                                <span className="text-xs text-gray-300">Kira is thinking...</span>
                                             </div>
                                         </motion.div>
                                     )}

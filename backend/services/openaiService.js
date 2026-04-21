@@ -24,15 +24,16 @@ class OpenAIService {
      * Send a chat message and get AI response
      * @param {Array} messages - Array of message objects with role and content
      * @param {String} context - Additional context for the AI
+     * @param {Object} adminSettings - Optional admin-defined AI settings from CMS
      * @returns {String} AI response
      */
-    async chat(messages, context = '') {
+    async chat(messages, context = '', adminSettings = {}) {
         try {
             if (!this.client) {
                 return "I'm sorry, I cannot answer questions right now because my AI brain (OpenAI API) is not configured.";
             }
 
-            const systemPrompt = this.buildSystemPrompt(context);
+            const systemPrompt = this.buildSystemPrompt(context, adminSettings);
 
             const response = await this.client.chat.completions.create({
                 model: this.model,
@@ -57,10 +58,12 @@ class OpenAIService {
     /**
      * Build the system prompt with context
      * @param {String} context - Relevant context from knowledge base
+     * @param {Object} adminSettings - Admin CMS settings: { systemPrompt, tone, priorityTopics, responseGuidelines }
      * @returns {String} Complete system prompt
      */
-    buildSystemPrompt(context) {
-        return `You are Lina, a specific and highly specialized AI assistant for the Wekume Initiative, a youth-focused NGO in Uganda.
+    buildSystemPrompt(context, adminSettings = {}) {
+        // Use admin-defined system prompt if available, otherwise fall back to hardcoded default
+        const basePrompt = adminSettings.systemPrompt || `You are Lina, a specific and highly specialized AI assistant for the Wekume Initiative, a youth-focused NGO in Uganda.
 
 STRICT CORE DIRECTIVE:
 You are programmed to ONLY discuss Sexual and Reproductive Health (SRH) issues. Under no circumstances should you answer questions about politics, coding, general knowledge, math, or any other topic outside of SRH.
@@ -72,16 +75,23 @@ Your role:
 - Always recommend that the user downloads the Wekume mobile app for more comprehensive assistance, human counseling, and professional support.
 - Be youth-friendly and culturally sensitive.
 - DO NOT diagnose illnesses or provide medical treatments.
-- If you detect a crisis or urgent situation, prioritize user safety and recommend connecting with a human counselor immediately.
+- If you detect a crisis or urgent situation, prioritize user safety and recommend connecting with a human counselor immediately.`;
+
+        const guidelines = adminSettings.responseGuidelines || `- Keep responses concise (2-3 short paragraphs maximum).
+- Use simple, clear language that youth can understand.
+- Always respect privacy and confidentiality.
+- Conclude your helpful advice by gently reminding the user to check the Wekume app for more assistance.`;
+
+        const toneInstruction = adminSettings.tone ? `\n\nTone: ${adminSettings.tone}` : '';
+        const topicsInstruction = adminSettings.priorityTopics ? `\nPriority Topics: ${adminSettings.priorityTopics}` : '';
+
+        return `${basePrompt}${toneInstruction}${topicsInstruction}
 
 Available resources and context:
 ${context}
 
 Guidelines:
-- Keep responses concise (2-3 short paragraphs maximum).
-- Use simple, clear language that youth can understand.
-- Always respect privacy and confidentiality.
-- Conclude your helpful advice by gently reminding the user to check the Wekume app for more assistance.
+${guidelines}
 
 Remember your primary restriction: You must ONLY respond to Sexual Reproductive Health issues.`;
     }

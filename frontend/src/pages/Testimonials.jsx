@@ -14,7 +14,7 @@ function TestimonialCard({ testimonial }) {
             <div className="mb-6 text-purple-500">
                 <Quote size={40} className="opacity-20 transform rotate-180" />
             </div>
-            <p className="text-gray-700 dark:text-gray-300 text-lg leading-relaxed mb-6 flex-grow italic">
+            <p className="text-gray-900 dark:text-gray-100 text-lg leading-relaxed mb-6 flex-grow italic">
                 "{testimonial.content}"
             </p>
             <div className="flex items-center gap-4 mt-auto pt-6 border-t border-gray-100 dark:border-gray-700">
@@ -212,7 +212,7 @@ function Testimonials() {
                             <TestimonialCarousel testimonials={testimonials} />
                         ) : (
                             <div className="text-center py-20">
-                                <p className="text-gray-500 dark:text-gray-400 text-lg">No testimonials available yet.</p>
+                                <p className="text-gray-700 dark:text-gray-100 text-lg">No testimonials available yet.</p>
                             </div>
                         )
                     )}

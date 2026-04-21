@@ -16,6 +16,26 @@ module.exports = (sequelize) => {
             allowNull: false,
             comment: 'e.g., CEO, Program Director, Volunteer Lead'
         },
+        department: {
+            type: DataTypes.STRING(255),
+            allowNull: true
+        },
+        date_of_birth: {
+            type: DataTypes.DATEONLY,
+            allowNull: true
+        },
+        contact_email: {
+            type: DataTypes.STRING(255),
+            allowNull: true
+        },
+        contact_phone: {
+            type: DataTypes.STRING(100),
+            allowNull: true
+        },
+        social_links: {
+            type: DataTypes.JSON,
+            allowNull: true
+        },
         description: {
             type: DataTypes.TEXT,
             allowNull: true

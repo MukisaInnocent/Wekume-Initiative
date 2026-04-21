@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
-import { formAPI } from '../services/api';
+import { formAPI, contentAPI } from '../services/api';
 import { Mail, Phone, MapPin, CheckCircle, Loader, ArrowRight, MessageCircle, AlertCircle, Smartphone, ExternalLink, ChevronDown, ChevronUp } from 'lucide-react';
 import { useRegion } from '../context/RegionContext';
 import Accordion from '../components/Accordion';
@@ -18,6 +18,17 @@ function Contact() {
     // Parallax background effect
     const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
 
+    // Backend-driven contact info with hardcoded fallbacks
+    const { isUS } = useRegion();
+
+    const [contactInfo, setContactInfo] = useState({
+        whatsapp: '+256766344603',
+        email: 'admin@wekume.org',
+        phone: '+256 766 344 603',
+        poBox: isUS ? '' : 'PO BOX 180589, Kampala GPO',
+        officeAddress: isUS ? 'Friends of Wekume (US), 4844 North 300 West Ste 300, Provo, Utah 84604, USA' : 'Wekume Youth Initiative, Uganda'
+    });
+
     useEffect(() => {
         setMounted(true);
         const handleMouseMove = (e) => {
@@ -27,18 +38,31 @@ function Contact() {
             });
         };
         window.addEventListener('mousemove', handleMouseMove);
-        return () => window.removeEventListener('mousemove', handleMouseMove);
-    }, []);
 
-    const { isUS } = useRegion();
-    
-    const contactInfo = {
-        whatsapp: '+256766344603',
-        email: 'admin@wekume.org',
-        phone: '+256 766 344 603',
-        poBox: isUS ? '' : 'PO BOX 180589, Kampala GPO',
-        officeAddress: isUS ? 'Friends of Wekume (US), 4844 North 300 West Ste 300, Provo, Utah 84604, USA' : 'Wekume Youth Initiative, Uganda'
-    };
+        // Fetch contact info from CMS
+        const fetchContactInfo = async () => {
+            try {
+                const response = await contentAPI.getSections();
+                const sections = response.data.sections || [];
+                const get = (key) => sections.find(s => s.section_key === key)?.content_text;
+                
+                setContactInfo(prev => ({
+                    whatsapp: get('contact.whatsapp') || prev.whatsapp,
+                    email: get('contact.email') || prev.email,
+                    phone: get('contact.phone') || prev.phone,
+                    poBox: isUS ? '' : (get('contact.po_box') || prev.poBox),
+                    officeAddress: isUS 
+                        ? (get('contact.office_address_us') || prev.officeAddress)
+                        : (get('contact.office_address') || prev.officeAddress)
+                }));
+            } catch (error) {
+                console.error('Failed to fetch contact info from CMS, using defaults');
+            }
+        };
+        fetchContactInfo();
+
+        return () => window.removeEventListener('mousemove', handleMouseMove);
+    }, [isUS]);
 
     const validateForm = () => {
         const newErrors = {};
@@ -91,17 +115,17 @@ function Contact() {
     };
 
     return (
-        <div className="bg-slate-950 min-h-screen selection:bg-purple-500/30 font-sans">
+        <div className="bg-[#010101] min-h-screen selection:bg-purple-500/30 font-sans">
             <Navbar />
 
             {/* Premium Ambient Background */}
             <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none">
                 <div 
-                    className="absolute top-[-20%] left-[-10%] w-[70vw] h-[70vw] rounded-full mix-blend-screen filter blur-[120px] opacity-20 bg-gradient-to-br from-indigo-600 to-purple-800 transition-transform duration-1000 ease-out"
+                    className="absolute top-[-20%] left-[-10%] w-[70vw] h-[70vw] rounded-full mix-blend-screen filter blur-[120px] opacity-20 bg-gradient-to-br from-purple-600 to-purple-900 transition-transform duration-1000 ease-out"
                     style={{ transform: `translate(${mousePos.x}px, ${mousePos.y}px)` }}
                 />
                 <div 
-                    className="absolute bottom-[-20%] right-[-10%] w-[60vw] h-[60vw] rounded-full mix-blend-screen filter blur-[150px] opacity-20 bg-gradient-to-tl from-orange-600 to-pink-700 transition-transform duration-1000 ease-out"
+                    className="absolute bottom-[-20%] right-[-10%] w-[60vw] h-[60vw] rounded-full mix-blend-screen filter blur-[150px] opacity-20 bg-gradient-to-tl from-orange-500 to-pink-700 transition-transform duration-1000 ease-out"
                     style={{ transform: `translate(${-mousePos.x * 1.5}px, ${-mousePos.y * 1.5}px)` }}
                 />
                 <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0IiBoZWlnaHQ9IjQiPgo8cmVjdCB3aWR0aD0iNCIgaGVpZ2h0PSI0IiBmaWxsPSIjZmZmIiBmaWxsLW9wYWNpdHk9IjAuMDUiLz4KPC9zdmc+')] opacity-20 mix-blend-overlay"></div>
@@ -113,8 +137,8 @@ function Contact() {
                 <div className={`text-center mb-8 max-w-2xl mx-auto transition-all duration-1000 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
                     <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-md mb-4 w-fit mx-auto">
                         <span className="relative flex h-2.5 w-2.5">
-                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                            <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></span>
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75"></span>
+                            <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-purple-500"></span>
                         </span>
                         <span className="text-sm font-medium tracking-wide text-gray-300">We respond within 24 hours</span>
                     </div>
@@ -151,9 +175,9 @@ function Contact() {
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                         <button
                                             onClick={() => setContactMethod('whatsapp')}
-                                            className="group flex flex-col items-center justify-center gap-4 p-8 bg-black/20 hover:bg-black/40 border border-white/5 hover:border-green-500/30 rounded-[2rem] transition-all hover:-translate-y-1 hover:shadow-2xl hover:shadow-green-500/10"
+                                            className="group flex flex-col items-center justify-center gap-4 p-8 bg-black/20 hover:bg-black/40 border border-white/5 hover:border-purple-500/30 rounded-[2rem] transition-all hover:-translate-y-1 hover:shadow-2xl hover:shadow-purple-500/10"
                                         >
-                                            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                                            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-400 to-purple-600 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
                                                 <MessageCircle className="text-white w-8 h-8" />
                                             </div>
                                             <div className="text-center">
@@ -236,7 +260,7 @@ function Contact() {
                                             type="button"
                                             onClick={saveAndRedirect}
                                             disabled={status === 'submitting'}
-                                            className={`group relative w-full sm:w-auto px-8 sm:px-12 py-4 rounded-2xl font-bold flex items-center justify-center gap-3 overflow-hidden transition-all disabled:opacity-50 ml-auto ${contactMethod === 'whatsapp' ? 'bg-[#25D366] hover:bg-[#1ebd5a] text-white' : 'bg-white text-black hover:bg-gray-200'}`}
+                                            className={`group relative w-full sm:w-auto px-8 sm:px-12 py-4 rounded-2xl font-bold flex items-center justify-center gap-3 overflow-hidden transition-all disabled:opacity-50 ml-auto ${contactMethod === 'whatsapp' ? 'bg-[#9e00ff] hover:bg-secondary-600 text-white' : 'bg-white text-black hover:bg-gray-200'}`}
                                         >
                                             {status === 'submitting' ? <Loader className="animate-spin" size={20} /> : (
                                                 <>
@@ -298,7 +322,7 @@ function Contact() {
                 </div>
             </main>
             
-            <div className="relative z-20 border-t border-white/5 bg-slate-950/80 backdrop-blur-xl">
+            <div className="relative z-20 border-t border-white/5 bg-[#010101]/80 backdrop-blur-xl">
                 <Footer />
             </div>
         </div>

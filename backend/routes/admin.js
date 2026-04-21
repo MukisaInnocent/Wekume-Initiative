@@ -10,7 +10,10 @@ router.use(authMiddleware);
 router.use(roleCheck('super_admin', 'editor'));
 
 // ===== CONTENT SECTIONS =====
+router.get('/sections', adminController.getAllContentSections);
+router.post('/sections', adminController.createContentSection);
 router.put('/sections/:key', adminController.updateContentSection);
+router.delete('/sections/:id', roleCheck('super_admin'), adminController.deleteContentSection);
 
 // ===== EVENTS =====
 router.get('/events', adminController.getAllEvents);

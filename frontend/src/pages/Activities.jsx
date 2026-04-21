@@ -133,7 +133,7 @@ function Activities() {
                                         <div className="flex items-center gap-2 text-sm text-gray-500 mb-4">
                                             <MapPin size={16} /> <span className="truncate">{event.location}</span>
                                         </div>
-                                        <p className="text-gray-600 dark:text-gray-400 text-sm line-clamp-3 mb-6 flex-1">{event.description}</p>
+                                        <p className="text-gray-900 dark:text-gray-100 text-sm line-clamp-3 mb-6 flex-1">{event.description}</p>
                                         
                                         <button 
                                             onClick={() => setSelectedEvent(event)}
@@ -170,7 +170,7 @@ function Activities() {
                                     <Briefcase size={28} />
                                 </div>
                                 <h3 className="font-bold text-gray-900 dark:text-white text-lg mb-2">Partnership</h3>
-                                <p className="text-sm text-gray-500 dark:text-gray-400">Work with us to expand our reach and impact.</p>
+                                <p className="text-sm text-gray-900 dark:text-gray-100">Work with us to expand our reach and impact.</p>
                             </Link>
                             
                             <Link to={`/${region}/contact`} className="group p-6 bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 hover:border-orange-300 dark:hover:border-orange-700 hover:shadow-xl transition-all flex flex-col items-center text-center">
@@ -178,7 +178,7 @@ function Activities() {
                                     <Users size={28} />
                                 </div>
                                 <h3 className="font-bold text-gray-900 dark:text-white text-lg mb-2">Volunteer</h3>
-                                <p className="text-sm text-gray-500 dark:text-gray-400">Join our community programs on the ground.</p>
+                                <p className="text-sm text-gray-900 dark:text-gray-100">Join our community programs on the ground.</p>
                             </Link>
 
                             {isUS && (
@@ -187,7 +187,7 @@ function Activities() {
                                     <Heart size={28} />
                                 </div>
                                 <h3 className="font-bold text-gray-900 dark:text-white text-lg mb-2">Funding</h3>
-                                <p className="text-sm text-gray-500 dark:text-gray-400">Fund specific causes like testing kits and events.</p>
+                                <p className="text-sm text-gray-900 dark:text-gray-100">Fund specific causes like testing kits and events.</p>
                             </Link>
                             )}
                         </div>
@@ -203,7 +203,7 @@ function Activities() {
                         <div className="relative z-10 max-w-4xl mx-auto">
                             <span className="text-orange-600 dark:text-orange-400 font-bold tracking-wider uppercase text-sm mb-4 block">Our Purpose</span>
                             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-6">Why We Exist</h2>
-                            <p className="text-gray-700 dark:text-gray-300 text-lg leading-relaxed">
+                            <p className="text-gray-900 dark:text-gray-100 text-lg leading-relaxed">
                                 Ugandan university students face unique challenges around reproductive health. Many lack access to safe, reliable resources, and pervasive stigma prevents open conversations. Wekume Initiative exists to address these critical gaps by offering an inclusive, evidence-based digital platform that connects young people to vital health information, verified education, and supportive communities—empowering them to take ownership of their reproductive health and future.
                             </p>
                         </div>
@@ -219,10 +219,10 @@ function Activities() {
                         <div className="relative z-10 max-w-4xl mx-auto">
                             <span className="text-purple-600 dark:text-purple-400 font-bold tracking-wider uppercase text-sm mb-4 block">Our Story</span>
                             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-6">The Founders' Journey</h2>
-                            <p className="text-gray-700 dark:text-gray-300 text-lg leading-relaxed mb-6">
+                            <p className="text-gray-900 dark:text-gray-100 text-lg leading-relaxed mb-6">
                                 Wekume Initiative was founded by visionary young leaders who recognized a critical gap in reproductive health education and support for university students. Frustrated by the lack of accessible, stigma-free resources and the pervasive silence around sexual and reproductive health, our founders decided to take action.
                             </p>
-                            <p className="text-gray-700 dark:text-gray-300 text-lg leading-relaxed">
+                            <p className="text-gray-900 dark:text-gray-100 text-lg leading-relaxed">
                                 Drawing on their own experiences as university students and their passion for social impact, they envisioned a platform that would be peer-led, community-centered, and grounded in evidence-based information. Today, Wekume stands as a testament to their commitment to breaking stigma, fostering dialogue, and empowering the next generation of young Africans to own their health and future.
                             </p>
                         </div>
@@ -242,7 +242,7 @@ function Activities() {
                                         <Smartphone size={16} /> Wekume App
                                     </span>
                                     <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-6">Health in Your Pocket</h2>
-                                    <p className="text-gray-700 dark:text-gray-300 text-lg leading-relaxed mb-8 max-w-2xl">
+                                    <p className="text-gray-900 dark:text-gray-100 text-lg leading-relaxed mb-8 max-w-2xl">
                                         Get verified reproductive health information, exclusive youth-focused content, and access to a supportive community—directly from your phone. The Wekume App is designed to put vital healthcare resources right within your reach.
                                     </p>
                                     <button disabled className="bg-gray-200 dark:bg-gray-800 text-gray-500 dark:text-gray-400 px-8 py-4 rounded-full font-bold shadow-sm cursor-not-allowed inline-flex items-center gap-3 text-lg border border-gray-300 dark:border-gray-700">
@@ -287,7 +287,7 @@ function Activities() {
                                 <div key={t.id || idx} className="bg-gray-50 dark:bg-gray-900 p-8 rounded-3xl relative border border-gray-100 dark:border-gray-800">
                                     <Quote className="text-purple-200 dark:text-purple-900/50 absolute top-6 left-6" size={48} />
                                     <div className="relative z-10 flex flex-col h-full">
-                                        <p className="text-gray-700 dark:text-gray-300 italic mb-6 flex-1 text-lg">"{t.content}"</p>
+                                        <p className="text-gray-900 dark:text-gray-100 italic mb-6 flex-1 text-lg">"{t.content}"</p>
                                         <div className="flex items-center gap-4 mt-auto">
                                             <div className="w-12 h-12 rounded-full overflow-hidden bg-gray-200 border-2 border-white dark:border-gray-800 shadow-sm">
                                                 {t.photo_url ? (
@@ -341,20 +341,20 @@ function Activities() {
                             ) : (
                                 <form onSubmit={handleRegister} className="space-y-4">
                                     <div>
-                                        <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">Full Name *</label>
+                                        <label className="block text-sm font-semibold text-gray-900 dark:text-gray-100 mb-1">Full Name *</label>
                                         <input required type="text" className="w-full px-4 py-2 border-2 border-gray-200 dark:border-gray-700 dark:bg-gray-800 rounded-xl focus:ring-4 focus:ring-purple-100 focus:border-purple-500 dark:text-white outline-none transition-all" value={regForm.name} onChange={e => setRegForm({...regForm, name: e.target.value})} placeholder="Jane Doe" />
                                     </div>
                                     <div>
-                                        <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">Email Address *</label>
+                                        <label className="block text-sm font-semibold text-gray-900 dark:text-gray-100 mb-1">Email Address *</label>
                                         <input required type="email" className="w-full px-4 py-2 border-2 border-gray-200 dark:border-gray-700 dark:bg-gray-800 rounded-xl focus:ring-4 focus:ring-purple-100 focus:border-purple-500 dark:text-white outline-none transition-all" value={regForm.email} onChange={e => setRegForm({...regForm, email: e.target.value})} placeholder="jane@example.com" />
                                     </div>
                                     <div className="grid grid-cols-2 gap-4">
                                         <div>
-                                            <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">Phone Number</label>
+                                            <label className="block text-sm font-semibold text-gray-900 dark:text-gray-100 mb-1">Phone Number</label>
                                             <input type="tel" className="w-full px-4 py-2 border-2 border-gray-200 dark:border-gray-700 dark:bg-gray-800 rounded-xl focus:ring-4 focus:ring-purple-100 focus:border-purple-500 dark:text-white outline-none transition-all" value={regForm.phone} onChange={e => setRegForm({...regForm, phone: e.target.value})} placeholder="+256..." />
                                         </div>
                                         <div>
-                                            <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">University / Campus</label>
+                                            <label className="block text-sm font-semibold text-gray-900 dark:text-gray-100 mb-1">University / Campus</label>
                                             <input type="text" className="w-full px-4 py-2 border-2 border-gray-200 dark:border-gray-700 dark:bg-gray-800 rounded-xl focus:ring-4 focus:ring-purple-100 focus:border-purple-500 dark:text-white outline-none transition-all" value={regForm.university} onChange={e => setRegForm({...regForm, university: e.target.value})} placeholder="e.g. Makerere" />
                                         </div>
                                     </div>

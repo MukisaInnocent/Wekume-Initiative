@@ -22,7 +22,7 @@ function USImpact() {
                             <div className="bg-green-50 dark:bg-green-900/20 p-8 rounded-3xl">
                                 <BarChart3 size={60} className="text-green-600 dark:text-green-400 mb-6" />
                                 <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Data-Driven Approach</h3>
-                                <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
+                                <p className="text-gray-900 dark:text-gray-100 leading-relaxed">
                                     We track every dollar and measure success through robust KPIs. Our programs are continuously evaluated for effectiveness, ensuring maximum reach for youth sexual and reproductive health education.
                                 </p>
                             </div>
@@ -32,21 +32,21 @@ function USImpact() {
                                 <CheckCircle size={24} className="text-green-500 shrink-0 mt-1" />
                                 <div>
                                     <h4 className="font-bold text-gray-900 dark:text-white text-lg">Annual Reports</h4>
-                                    <p className="text-gray-600 dark:text-gray-400">Comprehensive summaries of our financials, operational milestones, and stories from the field.</p>
+                                    <p className="text-gray-900 dark:text-gray-100">Comprehensive summaries of our financials, operational milestones, and stories from the field.</p>
                                 </div>
                             </div>
                             <div className="flex items-start gap-4">
                                 <CheckCircle size={24} className="text-green-500 shrink-0 mt-1" />
                                 <div>
                                     <h4 className="font-bold text-gray-900 dark:text-white text-lg">Quarterly Updates</h4>
-                                    <p className="text-gray-600 dark:text-gray-400">Regular check-ins detailing ongoing projects, upcoming campaigns, and immediate needs.</p>
+                                    <p className="text-gray-900 dark:text-gray-100">Regular check-ins detailing ongoing projects, upcoming campaigns, and immediate needs.</p>
                                 </div>
                             </div>
                             <div className="flex items-start gap-4">
                                 <CheckCircle size={24} className="text-green-500 shrink-0 mt-1" />
                                 <div>
                                     <h4 className="font-bold text-gray-900 dark:text-white text-lg">Direct App Metrics</h4>
-                                    <p className="text-gray-600 dark:text-gray-400">Anonymized usage statistics from the Wekume App demonstrating user engagement and knowledge retention.</p>
+                                    <p className="text-gray-900 dark:text-gray-100">Anonymized usage statistics from the Wekume App demonstrating user engagement and knowledge retention.</p>
                                 </div>
                             </div>
                         </div>
@@ -55,7 +55,7 @@ function USImpact() {
                     <div className="border-t border-gray-200 dark:border-gray-800 pt-12 text-center">
                         <FileText size={48} className="mx-auto text-gray-400 mb-6" />
                         <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Request Our Latest Report</h3>
-                        <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto mb-8">
+                        <p className="text-gray-900 dark:text-gray-100 max-w-2xl mx-auto mb-8">
                             Are you a prospective funder or partner? We'd love to share our detailed impact prospectus with you.
                         </p>
                         <Link to="/us/contact" className="bg-gray-900 dark:bg-white text-white dark:text-gray-900 px-8 py-4 rounded-full font-bold text-lg hover:bg-gray-800 dark:hover:bg-gray-100 transition shadow-lg inline-block">

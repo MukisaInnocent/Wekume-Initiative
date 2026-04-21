@@ -89,7 +89,7 @@ function Reports() {
                                     <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
                                         {report.title}
                                     </h3>
-                                    <p className="text-gray-500 dark:text-gray-400 text-sm mb-6 flex-1 line-clamp-3">
+                                    <p className="text-gray-900 dark:text-gray-100 text-sm mb-6 flex-1 line-clamp-3">
                                         {report.description || "Download the full PDF report to view details."}
                                     </p>
 
@@ -109,7 +109,7 @@ function Reports() {
                     <div className="text-center py-16 bg-gray-50 dark:bg-gray-800 rounded-2xl border-2 border-dashed border-gray-200 dark:border-gray-700">
                         <FileText className="mx-auto text-gray-300 mb-4" size={48} />
                         <h3 className="text-xl font-bold text-gray-900 dark:text-white">No reports found</h3>
-                        <p className="text-gray-500 dark:text-gray-400 mt-2">Try adjusting your search terms.</p>
+                        <p className="text-gray-900 dark:text-gray-100 mt-2">Try adjusting your search terms.</p>
                     </div>
                 )}
             </div>

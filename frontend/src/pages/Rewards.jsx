@@ -6,7 +6,7 @@ import Footer from '../components/Footer';
 
 function Rewards() {
     return (
-        <div className="min-h-screen bg-white dark:bg-gray-900 flex flex-col">
+        <div className="min-h-screen bg-[#ffffff] dark:bg-[#010101] flex flex-col">
             <Navbar />
             <div className="flex-grow pt-[88px]">
                 {/* Header */}
@@ -46,17 +46,17 @@ function Rewards() {
                             <div className="flex flex-col items-center bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-xl shadow-gray-200/40 dark:shadow-none border border-gray-100 dark:border-gray-700">
                                 <div className="w-16 h-16 rounded-full bg-purple-100 dark:bg-purple-900/40 flex items-center justify-center text-purple-600 dark:text-purple-400 mb-6 font-black text-2xl">1</div>
                                 <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Take a health action</h3>
-                                <p className="text-gray-600 dark:text-gray-400 text-sm font-medium bg-gray-50 dark:bg-gray-900/50 py-2 px-4 rounded-lg w-full">HIV testing, contraception, information, treatment support</p>
+                                <p className="text-gray-900 dark:text-gray-100 text-sm font-medium bg-gray-50 dark:bg-gray-900/50 py-2 px-4 rounded-lg w-full">HIV testing, contraception, information, treatment support</p>
                             </div>
                             <div className="flex flex-col items-center bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-xl shadow-gray-200/40 dark:shadow-none border border-gray-100 dark:border-gray-700">
                                 <div className="w-16 h-16 rounded-full bg-orange-100 dark:bg-orange-900/40 flex items-center justify-center text-orange-600 dark:text-orange-400 mb-6 font-black text-2xl">2</div>
                                 <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Earn points</h3>
-                                <p className="text-gray-600 dark:text-gray-400 text-sm font-medium bg-gray-50 dark:bg-gray-900/50 py-2 px-4 rounded-lg w-full">Every positive step you take is recognized and rewarded</p>
+                                <p className="text-gray-900 dark:text-gray-100 text-sm font-medium bg-gray-50 dark:bg-gray-900/50 py-2 px-4 rounded-lg w-full">Every positive step you take is recognized and rewarded</p>
                             </div>
                             <div className="flex flex-col items-center bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-xl shadow-gray-200/40 dark:shadow-none border border-gray-100 dark:border-gray-700">
                                 <div className="w-16 h-16 rounded-full bg-pink-100 dark:bg-pink-900/40 flex items-center justify-center text-pink-600 dark:text-pink-400 mb-6 font-black text-2xl">3</div>
                                 <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Get rewarded</h3>
-                                <p className="text-gray-600 dark:text-gray-400 text-sm font-medium bg-gray-50 dark:bg-gray-900/50 py-2 px-4 rounded-lg w-full">Redeem your accumulated points for useful benefits</p>
+                                <p className="text-gray-900 dark:text-gray-100 text-sm font-medium bg-gray-50 dark:bg-gray-900/50 py-2 px-4 rounded-lg w-full">Redeem your accumulated points for useful benefits</p>
                             </div>
                         </div>
                     </div>
@@ -71,7 +71,7 @@ function Rewards() {
                                 <p className="text-lg text-gray-300 mb-6 font-medium">When young people are rewarded:</p>
                                 <ul className="space-y-4 mb-8">
                                     <li className="flex items-center gap-4 text-xl">
-                                        <Star className="text-yellow-400 shrink-0" size={24} fill="currentColor" />
+                                        <Star className="text-secondary-500 shrink-0" size={24} fill="currentColor" />
                                         <span>They are more likely to take action</span>
                                     </li>
                                     <li className="flex items-center gap-4 text-xl">

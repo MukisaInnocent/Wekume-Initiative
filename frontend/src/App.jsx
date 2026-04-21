@@ -16,8 +16,7 @@ import AdminLogin from './pages/AdminLogin';
 import AdminDashboard from './pages/AdminDashboard';
 import LinaAIChat from './components/LinaAIChat';
 import Testimonials from './pages/Testimonials';
-import Activities from './pages/Activities';
-import USHome from './pages/us/USHome';
+import Activities from './pages/Activities';import Team from './pages/Team';import USHome from './pages/us/USHome';
 import USFunders from './pages/us/USFunders';
 import USImpact from './pages/us/USImpact';
 import Rewards from './pages/Rewards';
@@ -49,6 +48,7 @@ function AppContent() {
                 {/* Uganda (UG) Routes */}
                 <Route path="/ug" element={<Home />} />
                 <Route path="/ug/about" element={<About />} />
+                <Route path="/ug/team" element={<Team />} />
                 <Route path="/ug/wekume-app" element={<WekumeApp />} />
                 <Route path="/ug/events" element={<Navigate to="/ug/activities" replace />} />
                 <Route path="/ug/get-involved" element={<Navigate to="/ug/activities" replace />} />
@@ -64,6 +64,7 @@ function AppContent() {
                 <Route path="/us/impact" element={<USImpact />} />
                 {/* Shared routes for US */}
                 <Route path="/us/about" element={<About />} />
+                <Route path="/us/team" element={<Team />} />
                 <Route path="/us/wekume-app" element={<WekumeApp />} />
                 <Route path="/us/events" element={<Navigate to="/us/activities" replace />} />
                 <Route path="/us/get-involved" element={<Navigate to="/us/activities" replace />} />

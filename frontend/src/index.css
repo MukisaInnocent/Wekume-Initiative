@@ -21,12 +21,12 @@ body {
 
 /* Branded text selection color */
 ::selection {
-  background: rgba(105, 0, 168, 0.2);
-  color: #1a0029;
+  background: rgba(158, 0, 255, 0.2);
+  color: #341525;
 }
 
 .dark ::selection {
-  background: rgba(105, 0, 168, 0.4);
+  background: rgba(158, 0, 255, 0.4);
   color: #ffffff;
 }
 
@@ -57,15 +57,15 @@ h6 {
 
   /* Brand Gradient Utilities */
   .gradient-primary {
-    background: linear-gradient(135deg, #ea638c 0%, #6900A8 100%);
+    background: linear-gradient(135deg, #ea638c 0%, #9e00ff 100%);
   }
 
   .gradient-purple {
-    background: linear-gradient(135deg, #6900A8 0%, #1a0029 100%);
+    background: linear-gradient(135deg, #7d52a0 0%, #341525 100%);
   }
 
   .gradient-accent {
-    background: linear-gradient(135deg, #f89d61 0%, #6900A8 100%);
+    background: linear-gradient(135deg, #f89d61 0%, #9e00ff 100%);
   }
 
   .gradient-pink {
@@ -303,20 +303,20 @@ h6 {
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: #f2f5d1;
 }
 
 .dark ::-webkit-scrollbar-track {
-  background: #1f2937;
+  background: #010101;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #6900A8;
+  background: #7d52a0;
   border-radius: 5px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #530085;
+  background: #9e00ff;
 }
 
 /* Noise Texture */

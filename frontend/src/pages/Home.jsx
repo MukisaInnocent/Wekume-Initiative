@@ -29,6 +29,8 @@ function Home() {
     // New state for mission and vision
     const [mission, setMission] = useState(null);
     const [vision, setVision] = useState(null);
+    const [ourStory, setOurStory] = useState(null);
+    const [fundTheFuture, setFundTheFuture] = useState(null);
 
     const backgroundImagesModules = import.meta.glob('../assets/background images/*.{png,jpg,jpeg,webp,svg}', { eager: true });
     const localBackgroundImages = Object.values(backgroundImagesModules).map(module => module.default);
@@ -37,22 +39,30 @@ function Home() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const [valuesRes, partnersRes, testimonialsRes, backgroundsRes, sectionsRes, missionRes, visionRes] = await Promise.all([
+                const [valuesRes, partnersRes, testimonialsRes, backgroundsRes, sectionsRes] = await Promise.all([
                     contentAPI.getValues(),
                     contentAPI.getPartners(region),
                     contentAPI.getTestimonials(region),
                     backgroundAPI.getActiveBackgrounds().catch(err => ({ data: { backgrounds: [] } })),
-                    contentAPI.getSections(region).catch(err => ({ data: { sections: [] } })),
-                    contentAPI.getSection('about_mission', region).catch(() => ({ data: { content: null } })),
-                    contentAPI.getSection('about_vision', region).catch(() => ({ data: { content: null } }))
+                    contentAPI.getSections(region).catch(err => ({ data: { sections: [] } }))
                 ]);
 
                 setValues(valuesRes.data.values || []);
                 setPartners(partnersRes.data.partners || []);
                 setTestimonials(testimonialsRes.data.testimonials || []);
-                setContentSections(sectionsRes.data.sections || []);
-                setMission(missionRes.data?.content || "Empowering university students to take control of their reproductive health while nurturing personal and professional growth.");
-                setVision(visionRes.data?.content || "A healthier, informed future for the youth of Africa.");
+                
+                const sectionsList = sectionsRes.data.sections || [];
+                setContentSections(sectionsList);
+                
+                const getCMS = (key, fallback) => {
+                    const section = sectionsList.find(s => s.section_key === key);
+                    return section && section.content_text ? section.content_text : fallback;
+                };
+
+                setMission(getCMS('homepage.mission', "To empower young people with knowledge, skills, and access to sexual reproductive health services and mental health support for a healthier, more informed generation."));
+                setVision(getCMS('homepage.vision', "A world where every young person has the knowledge and support to make informed decisions about their health and well-being."));
+                setOurStory(getCMS('homepage.our_story', "Wekume Initiative started as a response to the quiet struggles faced by university students accessing reproductive health. We imagine a world where young people no longer navigate these issues alone or in shame, but with strong support and verified information."));
+                setFundTheFuture(getCMS('homepage.fund_the_future', "Your contribution provides testing kits, salaries, community events, and vital resources. Stand with us to empower youth across Uganda."));
                 
                 if (backgroundsRes.data.backgrounds && backgroundsRes.data.backgrounds.length > 0) {
                     setDynamicBackgrounds(backgroundsRes.data.backgrounds);
@@ -108,7 +118,7 @@ function Home() {
                         <div className="relative z-10 flex flex-col items-center justify-center">
                             <h2 className="text-3xl sm:text-4xl font-heading font-black mb-6">Our Story</h2>
                             <p className="text-lg text-gray-300 max-w-3xl mx-auto leading-relaxed mb-8">
-                                Wekume Initiative started as a response to the quiet struggles faced by university students accessing reproductive health. We imagine a world where young people no longer navigate these issues alone or in shame, but with strong support and verified information.
+                                {ourStory}
                             </p>
                             <Link to={`/${isUS ? 'us' : 'ug'}/activities`} className="bg-white/10 hover:bg-white/20 text-white border border-white/20 px-8 py-3 rounded-full font-bold hover:shadow-[0_0_20px_rgba(255,255,255,0.2)] transition-all inline-flex items-center gap-2">
                                 Read More <ArrowRight size={18} />
@@ -131,7 +141,7 @@ function Home() {
                             <Heart className="mx-auto lg:mx-0 text-pink-500 mb-6 animate-pulse" fill="currentColor" size={48} />
                             <h2 className="text-4xl sm:text-5xl lg:text-6xl font-heading font-black text-white mb-6 tracking-tight">Fund the Future</h2>
                             <p className="text-xl text-purple-100 font-medium mb-10 leading-relaxed max-w-2xl mx-auto lg:mx-0">
-                                Your contribution provides testing kits, salaries, community events, and vital resources. Stand with us to empower youth across Uganda.
+                                {fundTheFuture}
                             </p>
                             
                             <div className="bg-white/5 border border-white/10 rounded-2xl p-6 mb-10 max-w-xl mx-auto lg:mx-0 backdrop-blur-sm">
@@ -156,7 +166,7 @@ function Home() {
 
                             <Link
                                 to="/us/support"
-                                className="inline-flex bg-white text-purple-700 px-8 py-4 sm:px-10 sm:py-5 rounded-full font-extrabold hover:shadow-[0_0_40px_rgba(255,255,255,0.3)] transition-all items-center justify-center gap-3 text-lg"
+                                className="inline-flex bg-white text-secondary-600 px-8 py-4 sm:px-10 sm:py-5 rounded-full font-extrabold hover:shadow-[0_0_40px_rgba(255,255,255,0.3)] transition-all items-center justify-center gap-3 text-lg"
                             >
                                 Fund Us Today <ArrowRight size={22} className="stroke-[3]" />
                             </Link>
@@ -214,7 +224,7 @@ function Home() {
                                 <Activity size={16} /> What We Do
                             </span>
                             <h2 className="text-3xl sm:text-4xl font-black text-gray-900 dark:text-white mb-6">Experience the Action</h2>
-                            <p className="text-gray-600 dark:text-gray-400 text-lg leading-relaxed mb-10">
+                            <p className="text-gray-900 dark:text-gray-100 text-lg leading-relaxed mb-10">
                                 Through our dedicated network of <strong>Peer Ambassadors</strong>, Wekume organizes impactful interactions tailored for the youth. We actively host educational drives and open dialogues at <strong>university campuses</strong>, <strong>student hostels</strong>, and directly <strong>in local communities</strong>. Join us in shaping a well-informed generation through these inclusive, safe spaces.
                             </p>
                             <Link to={`/${isUS ? 'us' : 'ug'}/activities`} className="mt-auto text-purple-600 dark:text-purple-400 font-bold text-lg flex items-center gap-2 group-hover:gap-4 transition-all w-fit">
@@ -275,7 +285,7 @@ function Home() {
                         ])].map((t, index) => (
                             <div 
                                 key={`${t.id || index}-${index}`}
-                                className="group bg-white dark:bg-gray-800 p-8 rounded-[2rem] border border-gray-100 dark:border-gray-700 shadow-sm hover:shadow-[0_15px_40px_rgba(236,72,153,0.12)] dark:hover:shadow-[0_15px_40px_rgba(236,72,153,0.05)] hover:-translate-y-2 hover:border-pink-200 dark:hover:border-pink-500/30 transition-all duration-500 w-[85vw] sm:w-[380px] lg:w-[420px] shrink-0 flex flex-col relative overflow-hidden"
+                                className="group bg-white dark:bg-gray-800 p-8 rounded-[2rem] border border-gray-100 dark:border-gray-700 shadow-sm hover:shadow-[0_15px_40px_rgba(234,99,140,0.12)] dark:hover:shadow-[0_15px_40px_rgba(234,99,140,0.05)] hover:-translate-y-2 hover:border-pink-200 dark:hover:border-pink-500/30 transition-all duration-500 w-[85vw] sm:w-[380px] lg:w-[420px] shrink-0 flex flex-col relative overflow-hidden"
                                 tabIndex={0}
                             >
                                 <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-pink-100 to-transparent dark:from-pink-900/20 rounded-bl-[100px] -z-0 opacity-50 group-hover:opacity-100 transition-opacity duration-500"></div>
@@ -285,7 +295,7 @@ function Home() {
                                     <div className="flex gap-1 mb-4">
                                         {[...Array(5)].map((_, i) => <Star key={i} className="text-yellow-400" size={16} fill="currentColor" />)}
                                     </div>
-                                    <p className="text-gray-700 dark:text-gray-300 italic mb-4 flex-1 text-lg leading-relaxed line-clamp-3">"{t.content}"</p>
+                                    <p className="text-gray-900 dark:text-gray-100 italic mb-4 flex-1 text-lg leading-relaxed line-clamp-3">" + "{t.content}" + "</p>
                                     
                                     <button 
                                         onClick={() => { setSelectedTestimonial(t); setIsTestimonialModalOpen(true); }}
@@ -305,7 +315,7 @@ function Home() {
                                     </div>
                                     <div>
                                         <h4 className="font-bold text-gray-900 dark:text-white text-lg group-hover:text-pink-600 dark:group-hover:text-pink-400 transition-colors">{t.author_name}</h4>
-                                        <p className="text-xs text-gray-500 dark:text-gray-400 font-medium tracking-wide uppercase mt-0.5">{t.author_role}</p>
+                                        <p className="text-xs text-gray-900 dark:text-gray-100 font-medium tracking-wide uppercase mt-0.5">{t.author_role}</p>
                                     </div>
                                 </div>
                             </div>

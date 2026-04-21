@@ -14,6 +14,27 @@ const {
 } = require('../models');
 const { Op } = require('sequelize');
 
+const calculateAge = (dateOfBirth) => {
+    if (!dateOfBirth) return null;
+    const birthDate = new Date(dateOfBirth);
+    const today = new Date();
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const monthDiff = today.getMonth() - birthDate.getMonth();
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+        age -= 1;
+    }
+    return age;
+};
+
+const formatTeamMember = (member) => {
+    const data = member.toJSON();
+    return {
+        ...data,
+        age: calculateAge(data.date_of_birth),
+        social_links: data.social_links || { linkedin: '', twitter: '', instagram: '' }
+    };
+};
+
 // ===== CONTENT SECTIONS =====
 
 exports.getAllContentSections = async (req, res) => {
@@ -225,7 +246,7 @@ exports.getTeamMembers = async (req, res) => {
             where.region = { [Op.in]: [region, 'global'] };
         }
         const members = await TeamMember.findAll({ where, order: [['display_order', 'ASC']] });
-        res.json({ members });
+        res.json({ members: members.map(formatTeamMember) });
     } catch (error) {
         console.error('Get team members error:', error);
         res.status(500).json({ error: 'Failed to fetch team members' });

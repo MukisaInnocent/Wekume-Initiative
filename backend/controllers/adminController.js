@@ -18,7 +18,70 @@ const {
     Resource
 } = require('../models');
 
+const calculateAge = (dateOfBirth) => {
+    if (!dateOfBirth) return null;
+    const birthDate = new Date(dateOfBirth);
+    const today = new Date();
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const monthDiff = today.getMonth() - birthDate.getMonth();
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+        age -= 1;
+    }
+    return age;
+};
+
+const formatTeamMember = (member) => {
+    const data = member.toJSON();
+    return {
+        ...data,
+        age: calculateAge(data.date_of_birth),
+        social_links: data.social_links || { linkedin: '', twitter: '', instagram: '' }
+    };
+};
+
 // ===== CONTENT SECTIONS MANAGEMENT =====
+
+exports.getAllContentSections = async (req, res) => {
+    try {
+        const sections = await ContentSection.findAll({
+            order: [['section_key', 'ASC']]
+        });
+        res.json({ sections });
+    } catch (error) {
+        console.error('Get all content sections error:', error);
+        res.status(500).json({ error: 'Failed to fetch content sections' });
+    }
+};
+
+exports.createContentSection = async (req, res) => {
+    try {
+        const { section_key, section_title, content_type, content_text, image_url, region } = req.body;
+
+        if (!section_key || !section_title) {
+            return res.status(400).json({ error: 'section_key and section_title are required' });
+        }
+
+        const existing = await ContentSection.findOne({ where: { section_key } });
+        if (existing) {
+            return res.status(409).json({ error: 'A section with this key already exists' });
+        }
+
+        const section = await ContentSection.create({
+            section_key,
+            section_title,
+            content_type: content_type || 'text',
+            content_text: content_text || '',
+            image_url,
+            region: region || 'global',
+            last_updated_by: req.user.id
+        });
+
+        res.status(201).json({ message: 'Content section created successfully', section });
+    } catch (error) {
+        console.error('Create content section error:', error);
+        res.status(500).json({ error: 'Failed to create content section' });
+    }
+};
 
     exports.updateContentSection = async (req, res) => {
     try {
@@ -54,6 +117,21 @@ const {
     } catch (error) {
         console.error('Update content section error:', error);
         res.status(500).json({ error: 'Failed to update content section' });
+    }
+};
+
+exports.deleteContentSection = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const section = await ContentSection.findByPk(id);
+        if (!section) {
+            return res.status(404).json({ error: 'Content section not found' });
+        }
+        await section.destroy();
+        res.json({ message: 'Content section deleted successfully' });
+    } catch (error) {
+        console.error('Delete content section error:', error);
+        res.status(500).json({ error: 'Failed to delete content section' });
     }
 };
 
@@ -518,8 +596,11 @@ exports.uploadMedia = async (req, res) => {
 exports.getAllTeamMembers = async (req, res) => {
     try {
         const members = await TeamMember.findAll({ order: [['display_order', 'ASC']] });
-        res.json({ members });
-    } catch (error) { res.status(500).json({ error: 'Failed to fetch' }); }
+        res.json({ members: members.map(formatTeamMember) });
+    } catch (error) {
+        console.error('Get all team members error:', error);
+        res.status(500).json({ error: 'Failed to fetch team members' });
+    }
 };
 exports.createTeamMember = async (req, res) => {
     try {

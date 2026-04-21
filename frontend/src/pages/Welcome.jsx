@@ -65,7 +65,7 @@ function GridBackground() {
         <svg className="absolute inset-0 w-full h-full" xmlns="http://www.w3.org/2000/svg" style={{ opacity: 0.06 }}>
             <defs>
                 <pattern id="grid" width="60" height="60" patternUnits="userSpaceOnUse">
-                    <path d="M 60 0 L 0 0 0 60" fill="none" stroke="#a78bfa" strokeWidth="0.8" />
+                    <path d="M 60 0 L 0 0 0 60" fill="none" stroke="#9e00ff" strokeWidth="0.8" />
                 </pattern>
             </defs>
             <rect width="100%" height="100%" fill="url(#grid)" />
@@ -122,15 +122,15 @@ function Welcome() {
     };
 
     return (
-        <div className="min-h-screen bg-[#080612] text-white flex flex-col relative overflow-hidden">
+        <div className="min-h-screen bg-[#010101] text-white flex flex-col relative overflow-hidden">
 
             {/* ── Background ───────────────────────────────────── */}
             <GridBackground />
 
             {/* Orbs */}
-            <Orb style={{ top: '-10%', left: '-8%', width: '55vw', height: '55vw', background: 'radial-gradient(circle, rgba(109,40,217,0.6) 0%, transparent 70%)' }} delay={0} />
-            <Orb style={{ top: '30%', right: '-12%', width: '45vw', height: '45vw', background: 'radial-gradient(circle, rgba(234,99,140,0.45) 0%, transparent 70%)' }} delay={3} />
-            <Orb style={{ bottom: '-15%', left: '25%', width: '50vw', height: '50vw', background: 'radial-gradient(circle, rgba(79,70,229,0.4) 0%, transparent 70%)' }} delay={6} />
+            <Orb style={{ top: '-10%', left: '-8%', width: '55vw', height: '55vw', background: 'radial-gradient(circle, rgba(158,0,255,0.4) 0%, transparent 70%)' }} delay={0} />
+            <Orb style={{ top: '30%', right: '-12%', width: '45vw', height: '45vw', background: 'radial-gradient(circle, rgba(234,99,140,0.35) 0%, transparent 70%)' }} delay={3} />
+            <Orb style={{ bottom: '-15%', left: '25%', width: '50vw', height: '50vw', background: 'radial-gradient(circle, rgba(248,157,97,0.3) 0%, transparent 70%)' }} delay={6} />
 
             {/* Subtle grain overlay */}
             <div className="absolute inset-0 bg-noise opacity-30 pointer-events-none" />
@@ -188,7 +188,7 @@ function Welcome() {
                     {/* Subheadline */}
                     <motion.p
                         variants={itemVariants}
-                        className="text-lg text-gray-400 leading-relaxed mb-10 max-w-md"
+                        className="text-lg text-gray-300 leading-relaxed mb-10 max-w-md"
                     >
                         Connecting youth, health information, and global partners to create sustainable change across borders.
                     </motion.p>
@@ -208,7 +208,7 @@ function Welcome() {
                                 <p className="text-2xl font-black text-white">
                                     {statsVisible ? <Counter target={value} suffix={suffix} /> : `0${suffix}`}
                                 </p>
-                                <p className="text-[11px] text-gray-500 font-medium mt-0.5">{label}</p>
+                                <p className="text-[11px] text-gray-400 font-medium mt-0.5">{label}</p>
                             </div>
                         ))}
                     </motion.div>
@@ -224,10 +224,10 @@ function Welcome() {
                     <div
                         className="relative rounded-[2rem] overflow-hidden p-[1px]"
                         style={{
-                            background: 'linear-gradient(135deg, rgba(167,139,250,0.5) 0%, rgba(139,92,246,0.1) 50%, rgba(236,72,153,0.3) 100%)',
+                            background: 'linear-gradient(135deg, rgba(158,0,255,0.5) 0%, rgba(125,82,160,0.1) 50%, rgba(234,99,140,0.3) 100%)',
                         }}
                     >
-                        <div className="bg-[#0f0a1e]/95 backdrop-blur-2xl rounded-[calc(2rem-1px)] p-8 sm:p-10 text-center">
+                        <div className="bg-[#341525]/95 backdrop-blur-2xl rounded-[calc(2rem-1px)] p-8 sm:p-10 text-center">
 
                             {/* Card header */}
                             <div className="w-16 h-16 bg-violet-500/15 border border-violet-500/30 rounded-2xl flex items-center justify-center mx-auto mb-6 text-violet-400">
@@ -286,7 +286,7 @@ function Welcome() {
 
             {/* ── Footer ───────────────────────────────────────── */}
             <div className="relative z-10 pb-6 text-center">
-                <p className="text-gray-700 text-xs tracking-widest uppercase">
+                <p className="text-gray-500 text-xs tracking-widest uppercase">
                     © {new Date().getFullYear()} Wekume Initiative · All rights reserved
                 </p>
             </div>

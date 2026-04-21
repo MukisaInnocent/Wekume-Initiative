@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { LogOut, Users, FileText, MessageSquare, Calendar, BarChart3, CheckCircle, Clock, Edit2, Trash2, Plus, Briefcase, Layout, Image as ImageIcon, UserCircle, Menu, X, ChevronLeft } from 'lucide-react';
+import { LogOut, Users, FileText, MessageSquare, Calendar, BarChart3, CheckCircle, Clock, Edit2, Trash2, Plus, Briefcase, Layout, Image as ImageIcon, UserCircle, Menu, X, ChevronLeft, Phone, Bot, Save } from 'lucide-react';
 import { authAPI, adminAPI, contentAPI } from '../services/api';
 import Modal from '../components/Modal';
 import EventForm from '../components/forms/EventForm';
@@ -10,10 +10,13 @@ import ReportForm from '../components/forms/ReportForm';
 import MediaLibrary from '../components/MediaLibrary';
 import BackgroundManager from '../components/Admin/BackgroundManager';
 import TestimonialForm from '../components/forms/TestimonialForm';
+import ThemeToggle from '../components/ThemeToggle';
 
 const navItems = [
     { id: 'overview', label: 'Overview', icon: BarChart3 },
     { id: 'content', label: 'Content', icon: Layout },
+    { id: 'contact_info', label: 'Contact Info', icon: Phone },
+    { id: 'ai_assistant', label: 'AI Assistant', icon: Bot },
     { id: 'backgrounds', label: 'Backgrounds', icon: ImageIcon },
     { id: 'media', label: 'Media Library', icon: FileText },
     { id: 'events', label: 'Events', icon: Calendar },
@@ -30,8 +33,13 @@ function TeamMemberFormInline({ member, defaultRegion, onSubmit, onCancel, loadi
     const [form, setForm] = useState({
         name: member?.name || '',
         role: member?.role || '',
+        department: member?.department || '',
         description: member?.description || '',
         photo_url: member?.photo_url || '',
+        date_of_birth: member?.date_of_birth || '',
+        contact_email: member?.contact_email || '',
+        contact_phone: member?.contact_phone || '',
+        social_links: member?.social_links || { linkedin: '', twitter: '', instagram: '' },
         region: member?.region || defaultRegion || 'global',
         display_order: member?.display_order || 0,
         is_active: member?.is_active !== undefined ? member.is_active : true,
@@ -39,6 +47,17 @@ function TeamMemberFormInline({ member, defaultRegion, onSubmit, onCancel, loadi
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
+        if (name.includes('.')) {
+            const [parent, child] = name.split('.');
+            setForm(prev => ({
+                ...prev,
+                [parent]: {
+                    ...(prev[parent] || {}),
+                    [child]: value
+                }
+            }));
+            return;
+        }
         setForm(prev => ({ ...prev, [name]: type === 'checkbox' ? checked : value }));
     };
 
@@ -59,6 +78,16 @@ function TeamMemberFormInline({ member, defaultRegion, onSubmit, onCancel, loadi
                     <input name="role" value={form.role} onChange={handleChange} required placeholder="e.g., CEO, Program Director" className="w-full border border-gray-300 dark:border-gray-600 rounded-xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-purple-500" />
                 </div>
             </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                    <label className="block text-sm font-semibold text-gray-700 dark:text-gray-200 mb-1">Department</label>
+                    <input name="department" value={form.department} onChange={handleChange} placeholder="e.g., Programs, Outreach, Operations" className="w-full border border-gray-300 dark:border-gray-600 rounded-xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-purple-500" />
+                </div>
+                <div>
+                    <label className="block text-sm font-semibold text-gray-700 dark:text-gray-200 mb-1">Date of Birth</label>
+                    <input name="date_of_birth" type="date" value={form.date_of_birth} onChange={handleChange} className="w-full border border-gray-300 dark:border-gray-600 rounded-xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-purple-500" />
+                </div>
+            </div>
             <div>
                 <label className="block text-sm font-semibold text-gray-700 dark:text-gray-200 mb-1">Description</label>
                 <textarea name="description" value={form.description} onChange={handleChange} rows={3} className="w-full border border-gray-300 dark:border-gray-600 rounded-xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-purple-500" />
@@ -66,6 +95,30 @@ function TeamMemberFormInline({ member, defaultRegion, onSubmit, onCancel, loadi
             <div>
                 <label className="block text-sm font-semibold text-gray-700 dark:text-gray-200 mb-1">Photo URL</label>
                 <input name="photo_url" value={form.photo_url} onChange={handleChange} placeholder="https://..." className="w-full border border-gray-300 dark:border-gray-600 rounded-xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-purple-500" />
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                    <label className="block text-sm font-semibold text-gray-700 dark:text-gray-200 mb-1">Contact Email</label>
+                    <input name="contact_email" type="email" value={form.contact_email} onChange={handleChange} placeholder="name@wekume.org" className="w-full border border-gray-300 dark:border-gray-600 rounded-xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-purple-500" />
+                </div>
+                <div>
+                    <label className="block text-sm font-semibold text-gray-700 dark:text-gray-200 mb-1">Contact Phone</label>
+                    <input name="contact_phone" value={form.contact_phone} onChange={handleChange} placeholder="+256..." className="w-full border border-gray-300 dark:border-gray-600 rounded-xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-purple-500" />
+                </div>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div>
+                    <label className="block text-sm font-semibold text-gray-700 dark:text-gray-200 mb-1">LinkedIn</label>
+                    <input name="social_links.linkedin" value={form.social_links.linkedin || ''} onChange={handleChange} placeholder="https://linkedin.com/..." className="w-full border border-gray-300 dark:border-gray-600 rounded-xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-purple-500" />
+                </div>
+                <div>
+                    <label className="block text-sm font-semibold text-gray-700 dark:text-gray-200 mb-1">Twitter</label>
+                    <input name="social_links.twitter" value={form.social_links.twitter || ''} onChange={handleChange} placeholder="https://twitter.com/..." className="w-full border border-gray-300 dark:border-gray-600 rounded-xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-purple-500" />
+                </div>
+                <div>
+                    <label className="block text-sm font-semibold text-gray-700 dark:text-gray-200 mb-1">Instagram</label>
+                    <input name="social_links.instagram" value={form.social_links.instagram || ''} onChange={handleChange} placeholder="https://instagram.com/..." className="w-full border border-gray-300 dark:border-gray-600 rounded-xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-purple-500" />
+                </div>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div>
@@ -91,6 +144,250 @@ function TeamMemberFormInline({ member, defaultRegion, onSubmit, onCancel, loadi
                 <button type="button" onClick={onCancel} className="px-5 py-2.5 rounded-xl border border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-300 font-semibold hover:bg-gray-50 dark:bg-gray-900/50 transition-colors">Cancel</button>
                 <button type="submit" disabled={loading} className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-purple-600 to-pink-600 text-white font-semibold hover:shadow-lg hover:shadow-purple-500/30 transition-all disabled:opacity-50">
                     {loading ? 'Saving…' : (member ? 'Update Member' : 'Add Member')}
+                </button>
+            </div>
+        </form>
+    );
+}
+
+/* ─── Contact Info Admin Panel ──────────────────────── */
+function ContactInfoPanel({ sections, onSave, loading }) {
+    const [edits, setEdits] = useState({});
+    const [saving, setSaving] = useState({});
+
+    const getValue = (key) => edits[key] !== undefined ? edits[key] : (sections.find(s => s.section_key === key)?.content_text || '');
+    const getTitle = (key) => sections.find(s => s.section_key === key)?.section_title || key;
+
+    const handleSave = async (key) => {
+        setSaving(prev => ({ ...prev, [key]: true }));
+        try {
+            await onSave(key, { content_text: getValue(key), section_title: getTitle(key) });
+            setEdits(prev => { const n = { ...prev }; delete n[key]; return n; });
+        } catch (e) { alert('Failed to save'); }
+        setSaving(prev => ({ ...prev, [key]: false }));
+    };
+
+    const fields = [
+        { key: 'contact.phone', label: 'Phone Number', placeholder: '+256 766 344 603', icon: '📞' },
+        { key: 'contact.email', label: 'Email Address', placeholder: 'admin@wekume.org', icon: '📧' },
+        { key: 'contact.whatsapp', label: 'WhatsApp Number', placeholder: '+256766344603', icon: '💬' },
+        { key: 'contact.po_box', label: 'PO Box', placeholder: 'PO BOX 180589, Kampala GPO', icon: '📮' },
+        { key: 'contact.office_address', label: 'Office Address (Uganda)', placeholder: 'Wekume Youth Initiative, Uganda', icon: '🏢' },
+        { key: 'contact.office_address_us', label: 'Office Address (USA)', placeholder: 'Friends of Wekume, Provo, UT', icon: '🇺🇸' },
+    ];
+
+    return (
+        <div>
+            <div className="mb-8">
+                <h2 className="text-3xl font-heading font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">Contact Information</h2>
+                <p className="text-gray-500 dark:text-gray-400 text-sm mt-2">Edit phone numbers, emails, addresses, and WhatsApp links displayed on the public website.</p>
+            </div>
+            <div className="grid gap-6 md:grid-cols-2">
+                {fields.map(({ key, label, placeholder, icon }) => {
+                    const isDirty = edits[key] !== undefined;
+                    return (
+                        <div key={key} className="bg-white dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl shadow-lg shadow-purple-500/10 border border-purple-100/50 p-6 space-y-4">
+                            <div className="flex items-center gap-3">
+                                <span className="text-2xl">{icon}</span>
+                                <div>
+                                    <h3 className="font-bold text-gray-900 dark:text-white">{label}</h3>
+                                    <p className="text-[10px] font-bold text-purple-500 dark:text-purple-400 uppercase tracking-wider">{key}</p>
+                                </div>
+                            </div>
+                            <input
+                                value={getValue(key)}
+                                onChange={e => setEdits(prev => ({ ...prev, [key]: e.target.value }))}
+                                placeholder={placeholder}
+                                className="w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 rounded-xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-purple-500 text-gray-800 dark:text-gray-100"
+                            />
+                            {isDirty && (
+                                <button onClick={() => handleSave(key)} disabled={saving[key]} className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-purple-600 to-pink-600 text-white text-sm font-semibold hover:shadow-lg transition-all disabled:opacity-50">
+                                    {saving[key] ? 'Saving…' : <><Save size={16} /> Save</>}
+                                </button>
+                            )}
+                        </div>
+                    );
+                })}
+            </div>
+        </div>
+    );
+}
+
+/* ─── AI Assistant Admin Panel ──────────────────────── */
+function AIAssistantPanel({ sections, onSave, loading }) {
+    const [edits, setEdits] = useState({});
+    const [saving, setSaving] = useState({});
+
+    const getValue = (key) => edits[key] !== undefined ? edits[key] : (sections.find(s => s.section_key === key)?.content_text || '');
+    const getTitle = (key) => sections.find(s => s.section_key === key)?.section_title || key;
+
+    const handleSave = async (key) => {
+        setSaving(prev => ({ ...prev, [key]: true }));
+        try {
+            await onSave(key, { content_text: getValue(key), section_title: getTitle(key) });
+            setEdits(prev => { const n = { ...prev }; delete n[key]; return n; });
+        } catch (e) { alert('Failed to save'); }
+        setSaving(prev => ({ ...prev, [key]: false }));
+    };
+
+    return (
+        <div>
+            <div className="mb-8">
+                <h2 className="text-3xl font-heading font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">AI Assistant Settings</h2>
+                <p className="text-gray-500 dark:text-gray-400 text-sm mt-2">Control how Lina (the AI assistant) behaves—define the system prompt, tone, and priority topics.</p>
+            </div>
+
+            <div className="space-y-6">
+                {/* System Prompt */}
+                <div className="bg-white dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl shadow-lg shadow-purple-500/10 border border-purple-100/50 p-6 space-y-4">
+                    <div className="flex items-center gap-3">
+                        <span className="text-2xl">🤖</span>
+                        <div>
+                            <h3 className="font-bold text-gray-900 dark:text-white">System Prompt</h3>
+                            <p className="text-[10px] font-bold text-purple-500 dark:text-purple-400 uppercase tracking-wider">ai.system_prompt — Core behavior instructions</p>
+                        </div>
+                    </div>
+                    <textarea
+                        value={getValue('ai.system_prompt')}
+                        onChange={e => setEdits(prev => ({ ...prev, 'ai.system_prompt': e.target.value }))}
+                        rows={12}
+                        className="w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 rounded-xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-purple-500 text-gray-800 dark:text-gray-100 font-mono resize-y"
+                        placeholder="You are Lina, an AI assistant for Wekume Initiative..."
+                    />
+                    {edits['ai.system_prompt'] !== undefined && (
+                        <button onClick={() => handleSave('ai.system_prompt')} disabled={saving['ai.system_prompt']} className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-purple-600 to-pink-600 text-white text-sm font-semibold hover:shadow-lg transition-all disabled:opacity-50">
+                            {saving['ai.system_prompt'] ? 'Saving…' : <><Save size={16} /> Save System Prompt</>}
+                        </button>
+                    )}
+                </div>
+
+                <div className="grid gap-6 md:grid-cols-2">
+                    {/* Tone */}
+                    <div className="bg-white dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl shadow-lg shadow-purple-500/10 border border-purple-100/50 p-6 space-y-4">
+                        <div className="flex items-center gap-3">
+                            <span className="text-2xl">🎭</span>
+                            <div>
+                                <h3 className="font-bold text-gray-900 dark:text-white">Tone</h3>
+                                <p className="text-[10px] font-bold text-purple-500 dark:text-purple-400 uppercase tracking-wider">ai.tone</p>
+                            </div>
+                        </div>
+                        <input
+                            value={getValue('ai.tone')}
+                            onChange={e => setEdits(prev => ({ ...prev, 'ai.tone': e.target.value }))}
+                            placeholder="friendly, youth-focused, compassionate"
+                            className="w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 rounded-xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-purple-500 text-gray-800 dark:text-gray-100"
+                        />
+                        {edits['ai.tone'] !== undefined && (
+                            <button onClick={() => handleSave('ai.tone')} disabled={saving['ai.tone']} className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-purple-600 to-pink-600 text-white text-sm font-semibold hover:shadow-lg transition-all disabled:opacity-50">
+                                {saving['ai.tone'] ? 'Saving…' : <><Save size={16} /> Save</>}
+                            </button>
+                        )}
+                    </div>
+
+                    {/* Priority Topics */}
+                    <div className="bg-white dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl shadow-lg shadow-purple-500/10 border border-purple-100/50 p-6 space-y-4">
+                        <div className="flex items-center gap-3">
+                            <span className="text-2xl">📋</span>
+                            <div>
+                                <h3 className="font-bold text-gray-900 dark:text-white">Priority Topics</h3>
+                                <p className="text-[10px] font-bold text-purple-500 dark:text-purple-400 uppercase tracking-wider">ai.priority_topics</p>
+                            </div>
+                        </div>
+                        <input
+                            value={getValue('ai.priority_topics')}
+                            onChange={e => setEdits(prev => ({ ...prev, 'ai.priority_topics': e.target.value }))}
+                            placeholder="SRH, mental health, contraception"
+                            className="w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 rounded-xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-purple-500 text-gray-800 dark:text-gray-100"
+                        />
+                        {edits['ai.priority_topics'] !== undefined && (
+                            <button onClick={() => handleSave('ai.priority_topics')} disabled={saving['ai.priority_topics']} className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-purple-600 to-pink-600 text-white text-sm font-semibold hover:shadow-lg transition-all disabled:opacity-50">
+                                {saving['ai.priority_topics'] ? 'Saving…' : <><Save size={16} /> Save</>}
+                            </button>
+                        )}
+                    </div>
+                </div>
+
+                {/* Response Guidelines */}
+                <div className="bg-white dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl shadow-lg shadow-purple-500/10 border border-purple-100/50 p-6 space-y-4">
+                    <div className="flex items-center gap-3">
+                        <span className="text-2xl">📏</span>
+                        <div>
+                            <h3 className="font-bold text-gray-900 dark:text-white">Response Guidelines</h3>
+                            <p className="text-[10px] font-bold text-purple-500 dark:text-purple-400 uppercase tracking-wider">ai.response_guidelines</p>
+                        </div>
+                    </div>
+                    <textarea
+                        value={getValue('ai.response_guidelines')}
+                        onChange={e => setEdits(prev => ({ ...prev, 'ai.response_guidelines': e.target.value }))}
+                        rows={4}
+                        className="w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 rounded-xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-purple-500 text-gray-800 dark:text-gray-100 resize-y"
+                        placeholder="Keep responses concise..."
+                    />
+                    {edits['ai.response_guidelines'] !== undefined && (
+                        <button onClick={() => handleSave('ai.response_guidelines')} disabled={saving['ai.response_guidelines']} className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-purple-600 to-pink-600 text-white text-sm font-semibold hover:shadow-lg transition-all disabled:opacity-50">
+                            {saving['ai.response_guidelines'] ? 'Saving…' : <><Save size={16} /> Save</>}
+                        </button>
+                    )}
+                </div>
+            </div>
+        </div>
+    );
+}
+
+/* ─── Content Section Create Form ──────────────────── */
+function ContentSectionCreateForm({ onSubmit, onCancel, loading }) {
+    const [form, setForm] = useState({
+        section_key: '',
+        section_title: '',
+        content_type: 'text',
+        content_text: '',
+        region: 'global',
+    });
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        onSubmit(form);
+    };
+
+    return (
+        <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                    <label className="block text-sm font-semibold text-gray-700 dark:text-gray-200 mb-1">Section Key *</label>
+                    <input value={form.section_key} onChange={e => setForm(p => ({ ...p, section_key: e.target.value }))} required placeholder="e.g., homepage.cta_title" className="w-full border border-gray-300 dark:border-gray-600 rounded-xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-purple-500 dark:bg-gray-900 dark:text-white" />
+                </div>
+                <div>
+                    <label className="block text-sm font-semibold text-gray-700 dark:text-gray-200 mb-1">Section Title *</label>
+                    <input value={form.section_title} onChange={e => setForm(p => ({ ...p, section_title: e.target.value }))} required placeholder="e.g., Homepage CTA Title" className="w-full border border-gray-300 dark:border-gray-600 rounded-xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-purple-500 dark:bg-gray-900 dark:text-white" />
+                </div>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                    <label className="block text-sm font-semibold text-gray-700 dark:text-gray-200 mb-1">Content Type</label>
+                    <select value={form.content_type} onChange={e => setForm(p => ({ ...p, content_type: e.target.value }))} className="w-full border border-gray-300 dark:border-gray-600 rounded-xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-purple-500 dark:bg-gray-900 dark:text-white">
+                        <option value="text">Text</option>
+                        <option value="rich_text">Rich Text</option>
+                        <option value="image">Image</option>
+                        <option value="list">List</option>
+                    </select>
+                </div>
+                <div>
+                    <label className="block text-sm font-semibold text-gray-700 dark:text-gray-200 mb-1">Region</label>
+                    <select value={form.region} onChange={e => setForm(p => ({ ...p, region: e.target.value }))} className="w-full border border-gray-300 dark:border-gray-600 rounded-xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-purple-500 dark:bg-gray-900 dark:text-white">
+                        <option value="global">Global</option>
+                        <option value="ug">Uganda</option>
+                        <option value="us">USA</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <label className="block text-sm font-semibold text-gray-700 dark:text-gray-200 mb-1">Content</label>
+                <textarea value={form.content_text} onChange={e => setForm(p => ({ ...p, content_text: e.target.value }))} rows={4} className="w-full border border-gray-300 dark:border-gray-600 rounded-xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-purple-500 dark:bg-gray-900 dark:text-white resize-y" />
+            </div>
+            <div className="flex justify-end gap-3 pt-4">
+                <button type="button" onClick={onCancel} className="px-5 py-2.5 rounded-xl border border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-300 font-semibold hover:bg-gray-50 dark:hover:bg-gray-900/50 transition-colors">Cancel</button>
+                <button type="submit" disabled={loading} className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-purple-600 to-pink-600 text-white font-semibold hover:shadow-lg hover:shadow-purple-500/30 transition-all disabled:opacity-50">
+                    {loading ? 'Creating…' : 'Create Section'}
                 </button>
             </div>
         </form>
@@ -130,6 +427,8 @@ function AdminDashboard() {
         if (activeTab === 'events') fetchEvents();
         if (activeTab === 'partners') fetchPartners();
         if (activeTab === 'content') fetchContent();
+        if (activeTab === 'contact_info') fetchContent();
+        if (activeTab === 'ai_assistant') fetchContent();
         if (activeTab === 'reports') fetchReports();
         if (activeTab === 'testimonials') fetchTestimonials();
         if (activeTab === 'forms') fetchSupportForms();
@@ -184,7 +483,7 @@ function AdminDashboard() {
 
     const fetchContent = async () => {
         try {
-            const response = await contentAPI.getSections();
+            const response = await adminAPI.getAllContentSections();
             setContentSections(response.data.sections);
         } catch (error) {
             console.error("Error fetching content sections:", error);
@@ -287,7 +586,7 @@ function AdminDashboard() {
 
     // Specific wrappers
     const handleUpdateSection = async (formData) => {
-        return handleUpdate(adminAPI.updateContentSection, formData.key, formData, fetchContent);
+        return handleUpdate(adminAPI.updateContentSection, formData.section_key, formData, fetchContent);
     };
 
     const openModal = (type, item = null) => {
@@ -448,6 +747,7 @@ function AdminDashboard() {
                                 <option value="us">USA</option>
                             </select>
                         </div>
+                        <ThemeToggle />
                     </div>
                 </header>
 
@@ -496,10 +796,14 @@ function AdminDashboard() {
                     <div>
                         <div className="flex justify-between items-center mb-6">
                             <h2 className="text-3xl font-heading font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">Content Management</h2>
-                            {adminRegion !== 'global' && <span className="bg-purple-100 dark:bg-purple-900/30 text-purple-700 text-xs font-bold px-3 py-1 rounded-full uppercase">Filtering by: {adminRegion}</span>}
+                            <div className="flex items-center gap-3">
+                                {adminRegion !== 'global' && <span className="bg-purple-100 dark:bg-purple-900/30 text-purple-700 text-xs font-bold px-3 py-1 rounded-full uppercase">Filtering by: {adminRegion}</span>}
+                                <button onClick={() => openModal('create_content_section')} className="bg-gradient-to-r from-purple-600 to-pink-600 text-white px-6 py-3 rounded-xl hover:shadow-xl hover:scale-105 transition-all duration-300 flex items-center gap-2 font-semibold"><Plus size={20} /> New Section</button>
+                            </div>
                         </div>
                         <div className="grid md:grid-cols-2 gap-6">
                             {contentSections
+                                .filter(s => !s.section_key.startsWith('contact.') && !s.section_key.startsWith('ai.'))
                                 .filter(s => adminRegion === 'global' || s.region === 'global' || s.region === adminRegion)
                                 .map(section => (
                                 <div key={section.id} className="group bg-white dark:bg-gray-800/80 backdrop-blur-sm p-7 rounded-2xl shadow-lg shadow-purple-500/10 hover:shadow-2xl hover:shadow-purple-500/20 hover:-translate-y-1 transition-all duration-300 border border-purple-100/50">
@@ -512,12 +816,25 @@ function AdminDashboard() {
                                             <h3 className="mt-3 text-xl font-bold text-gray-900 dark:text-white">{section.section_title}</h3>
                                             <p className="mt-3 text-gray-600 dark:text-gray-300 text-sm line-clamp-2">{section.content_text || 'Click edit to manage textual content and configuration.'}</p>
                                         </div>
-                                        <button onClick={() => openModal('edit_content', section)} className="p-3 text-purple-600 dark:text-purple-400 hover:bg-purple-50 dark:bg-purple-900/20 rounded-xl transition-colors group-hover:scale-110"><Edit2 size={20} /></button>
+                                        <div className="flex items-center gap-1">
+                                            <button onClick={() => openModal('edit_content', section)} className="p-3 text-purple-600 dark:text-purple-400 hover:bg-purple-50 dark:hover:bg-purple-900/20 rounded-xl transition-colors group-hover:scale-110"><Edit2 size={20} /></button>
+                                            {user.role === 'super_admin' && <button onClick={() => handleDelete(adminAPI.deleteContentSection, section.id, fetchContent, 'content section')} className="p-3 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-xl transition-colors"><Trash2 size={18} /></button>}
+                                        </div>
                                     </div>
                                 </div>
                             ))}
                         </div>
                     </div>
+                )}
+
+                {/* Contact Info Tab */}
+                {activeTab === 'contact_info' && (
+                    <ContactInfoPanel sections={contentSections.filter(s => s.section_key.startsWith('contact.'))} onSave={async (key, data) => { await adminAPI.updateContentSection(key, data); fetchContent(); }} loading={actionLoading} />
+                )}
+
+                {/* AI Assistant Tab */}
+                {activeTab === 'ai_assistant' && (
+                    <AIAssistantPanel sections={contentSections.filter(s => s.section_key.startsWith('ai.'))} onSave={async (key, data) => { await adminAPI.updateContentSection(key, data); fetchContent(); }} loading={actionLoading} />
                 )}
 
                 {activeTab === 'backgrounds' && (
@@ -687,6 +1004,7 @@ function AdminDashboard() {
                                         <tr>
                                             <th className="px-6 py-4 text-left text-xs font-bold text-purple-600 dark:text-purple-400 uppercase tracking-wider">Member</th>
                                             <th className="px-6 py-4 text-left text-xs font-bold text-purple-600 dark:text-purple-400 uppercase tracking-wider">Role</th>
+                                            <th className="px-6 py-4 text-left text-xs font-bold text-purple-600 dark:text-purple-400 uppercase tracking-wider">Department</th>
                                             <th className="px-6 py-4 text-left text-xs font-bold text-purple-600 dark:text-purple-400 uppercase tracking-wider">Region</th>
                                             <th className="px-6 py-4 text-left text-xs font-bold text-purple-600 dark:text-purple-400 uppercase tracking-wider">Status</th>
                                             <th className="px-6 py-4 text-right text-xs font-bold text-purple-600 dark:text-purple-400 uppercase tracking-wider">Actions</th>
@@ -694,7 +1012,7 @@ function AdminDashboard() {
                                     </thead>
                                     <tbody className="divide-y divide-purple-100/50">
                                         {teamMembers.length === 0 ? (
-                                            <tr><td colSpan="5" className="px-6 py-12 text-center text-gray-400">No team members yet. Click "Add Member" to get started.</td></tr>
+                                            <tr><td colSpan="6" className="px-6 py-12 text-center text-gray-400">No team members yet. Click "Add Member" to get started.</td></tr>
                                         ) : (
                                             teamMembers.map((member) => (
                                                 <tr key={member.id} className="hover:bg-purple-50 dark:bg-purple-900/20/50 transition-colors">
@@ -710,6 +1028,7 @@ function AdminDashboard() {
                                                         </div>
                                                     </td>
                                                     <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-300">{member.role}</td>
+                                                    <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-300">{member.department || '—'}</td>
                                                     <td className="px-6 py-4"><span className="text-xs font-bold uppercase bg-purple-100 dark:bg-purple-900/30 text-purple-700 px-2 py-1 rounded-lg">{member.region}</span></td>
                                                     <td className="px-6 py-4">
                                                         <span className={`text-xs font-bold px-2 py-1 rounded-lg ${member.is_active ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500 dark:text-gray-400'}`}>
@@ -750,7 +1069,8 @@ function AdminDashboard() {
                                                     modalType === 'edit_content' ? 'Edit Content Section' :
                                                         modalType === 'create_team' ? 'Add Team Member' :
                                                             modalType === 'edit_team' ? 'Edit Team Member' :
-                                                                'Edit Item'
+                                                                modalType === 'create_content_section' ? 'Create Content Section' :
+                                                                    'Edit Item'
                 }
             >
                 {(modalType === 'create_event' || modalType === 'edit_event') && (
@@ -792,7 +1112,7 @@ function AdminDashboard() {
                     <ContentSectionForm
                         section={selectedItem}
                         defaultRegion={adminRegion}
-                        title={`Edit ${selectedItem.section_title}`}
+                        title={`Edit ${selectedItem?.section_title || 'Section'}`}
                         onSubmit={handleUpdateSection}
                         onCancel={() => setIsModalOpen(false)}
                         loading={actionLoading}
@@ -803,6 +1123,13 @@ function AdminDashboard() {
                         member={selectedItem}
                         defaultRegion={adminRegion}
                         onSubmit={(data) => modalType === 'create_team' ? handleCreate(adminAPI.createTeamMember, data, fetchTeamMembers) : handleUpdate(adminAPI.updateTeamMember, selectedItem.id, data, fetchTeamMembers)}
+                        onCancel={() => setIsModalOpen(false)}
+                        loading={actionLoading}
+                    />
+                )}
+                {modalType === 'create_content_section' && (
+                    <ContentSectionCreateForm
+                        onSubmit={(data) => handleCreate(adminAPI.createContentSection, data, fetchContent)}
                         onCancel={() => setIsModalOpen(false)}
                         loading={actionLoading}
                     />

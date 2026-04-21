@@ -39,7 +39,8 @@ function Navbar({ isTransparent = false, backgroundImages, currentBackgroundInde
 
     const navLinks = isUS ? [
         { path: '/us', label: 'Home', icon: Home },
-        { path: '/us/activities', label: 'Activities', icon: Users },
+        { path: '/us/about', label: 'About', icon: Info },
+        { path: '/us/team', label: 'Team', icon: Users },
         { path: '/us/activities', label: 'Activities', icon: Users },
         { path: '/us/funders', label: 'Funders', icon: Heart },
         { path: '/us/impact', label: 'Impact Reporting', icon: BarChart2 },
@@ -47,6 +48,7 @@ function Navbar({ isTransparent = false, backgroundImages, currentBackgroundInde
     ] : [
         { path: '/ug', label: 'Home', icon: Home },
         { path: '/ug/about', label: 'Our Story', icon: Info },
+        { path: '/ug/team', label: 'Team', icon: Users },
         { path: '/ug/wekume-app', label: 'Wekume App', icon: Smartphone },
         { path: '/ug/activities', label: 'Activities', icon: Users },
         { path: '/ug/rewards', label: 'Rewards', icon: Gift },
@@ -87,7 +89,7 @@ function Navbar({ isTransparent = false, backgroundImages, currentBackgroundInde
                   
                   {/* Navigation Links */}
                   <div className="flex-1 overflow-y-auto px-4 py-6 space-y-1.5 nice-scrollbar">
-                       <div className="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-4 px-3">Menu</div>
+                       <div className="text-[10px] font-bold text-gray-400 dark:text-gray-300 uppercase tracking-widest mb-4 px-3">Menu</div>
                        {navLinks.map((link) => {
                            const Icon = link.icon;
                            return (
@@ -98,7 +100,7 @@ function Navbar({ isTransparent = false, backgroundImages, currentBackgroundInde
                                        `flex items-center gap-3 px-3 py-3 rounded-xl transition-all duration-200 group font-medium relative ${
                                            isActive 
                                                ? 'bg-gradient-to-r from-purple-500/10 to-orange-500/10 text-purple-600 dark:text-purple-400 shadow-sm border border-purple-100/50 dark:border-purple-900/50' 
-                                               : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-purple-600 dark:hover:text-purple-400 border border-transparent'
+                                               : 'text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-purple-600 dark:hover:text-purple-400 border border-transparent'
                                        }`
                                    }
                                    onClick={() => setIsMenuOpen(false)}
@@ -124,7 +126,7 @@ function Navbar({ isTransparent = false, backgroundImages, currentBackgroundInde
                        )}
                        <div className="flex items-center justify-between px-2 w-full">
                            <ThemeToggle />
-                           <span className="text-xs text-gray-400 dark:text-gray-500 font-medium tracking-wide">© 2026 Wekume</span>
+                           <span className="text-xs text-gray-400 dark:text-gray-300 font-medium tracking-wide">© {new Date().getFullYear()} Wekume</span>
                        </div>
                   </div>
             </aside>

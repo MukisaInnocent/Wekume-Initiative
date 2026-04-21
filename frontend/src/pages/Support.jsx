@@ -303,18 +303,18 @@ function Support() {
                                         {/* Contact Form */}
                                         <div className="flex-1 w-full space-y-4">
                                             <div>
-                                                <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">Full Name</label>
+                                                <label className="block text-sm font-semibold text-gray-700 dark:text-gray-100 mb-1">Full Name</label>
                                                 <input type="text" value={details.donor_name} onChange={e => setDetails({...details, donor_name: e.target.value})} className="w-full bg-transparent border-b-2 border-gray-200 dark:border-gray-600 focus:border-pink-500 px-2 py-2 outline-none font-medium text-gray-900 dark:text-white placeholder-gray-400" placeholder="Jane Doe" required />
                                                 {errors.donor_name && <p className="text-red-500 text-xs mt-1">{errors.donor_name}</p>}
                                             </div>
                                             <div className="grid grid-cols-2 gap-4">
                                                 <div>
-                                                    <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">Email</label>
+                                                    <label className="block text-sm font-semibold text-gray-700 dark:text-gray-100 mb-1">Email</label>
                                                     <input type="email" value={details.email} onChange={e => setDetails({...details, email: e.target.value})} className="w-full bg-transparent border-b-2 border-gray-200 dark:border-gray-600 focus:border-pink-500 px-2 py-2 outline-none font-medium text-gray-900 dark:text-white placeholder-gray-400" placeholder="jane@example.com" required />
                                                     {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
                                                 </div>
                                                 <div>
-                                                    <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">Phone</label>
+                                                    <label className="block text-sm font-semibold text-gray-700 dark:text-gray-100 mb-1">Phone</label>
                                                     <input type="tel" value={details.phone_number} onChange={e => setDetails({...details, phone_number: e.target.value})} className="w-full bg-transparent border-b-2 border-gray-200 dark:border-gray-600 focus:border-pink-500 px-2 py-2 outline-none font-medium text-gray-900 dark:text-white placeholder-gray-400" placeholder="+123..." />
                                                     {errors.phone_number && <p className="text-red-500 text-xs mt-1">{errors.phone_number}</p>}
                                                 </div>

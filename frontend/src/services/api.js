@@ -123,11 +123,14 @@ export const backgroundAPI = {
     getActiveBackgrounds: () => api.get('/backgrounds/active')
 };
 
-// ===== ADMIN API (Coming in next phase) =====
+// ===== ADMIN API =====
 
 export const adminAPI = {
     // Content Sections
+    getAllContentSections: () => api.get('/admin/sections'),
+    createContentSection: (data) => api.post('/admin/sections', data),
     updateContentSection: (key, data) => api.put(`/admin/sections/${key}`, data),
+    deleteContentSection: (id) => api.delete(`/admin/sections/${id}`),
 
     // Background Images (Admin)
     getAllBackgrounds: () => api.get('/backgrounds'),
