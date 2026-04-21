@@ -314,7 +314,7 @@ function Activities() {
             {/* Event Registration Modal */}
             {selectedEvent && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900/60 backdrop-blur-sm">
-                    <div className="bg-white dark:bg-gray-900 rounded-3xl shadow-2xl w-full max-w-lg overflow-hidden border border-gray-200 dark:border-gray-800 relative animate-fade-in relative">
+                    <div className="bg-white dark:bg-gray-900 rounded-3xl shadow-2xl w-full max-w-lg overflow-hidden border border-gray-200 dark:border-gray-800 relative animate-fade-in">
                         <button onClick={closeRegistrationModal} className="absolute top-4 right-4 text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 z-10 bg-white/50 dark:bg-black/50 p-1 rounded-full backdrop-blur-md">
                             <X size={20} />
                         </button>

@@ -110,7 +110,7 @@ function WekumeApp() {
 
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                         {features.map((feature, idx) => (
-                            <div key={idx} className={`p-8 rounded-3xl border shadow-sm hover:shadow-md transition-shadow relative overflow-hidden dark:bg-gray-800 dark:border-gray-700 ${feature.color.replace('bg-', 'bg-').replace('border-', 'border-').split(' ')[0]}`}>
+                            <div key={idx} className={`p-8 rounded-3xl border shadow-sm hover:shadow-md transition-shadow relative overflow-hidden dark:bg-gray-800 dark:border-gray-700 ${feature.color}`}>
                                 <div className="bg-white dark:bg-gray-900 w-16 h-16 rounded-2xl flex items-center justify-center shadow-sm mb-6">
                                     {feature.icon}
                                 </div>

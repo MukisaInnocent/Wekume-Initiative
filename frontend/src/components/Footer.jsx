@@ -15,13 +15,13 @@ const socialLinks = [
 function FooterAccordion({ title, children, defaultOpen = false }) {
     const [isOpen, setIsOpen] = useState(defaultOpen);
     return (
-        <div className="border-b border-white/10">
+        <div className="border-b border-white/15">
             <button 
                 type="button"
                 onClick={() => setIsOpen(!isOpen)}
                 className="w-full py-3.5 flex items-center justify-between text-left focus:outline-none group"
             >
-                <h3 className="text-[13px] font-bold uppercase tracking-widest text-pink-300 group-hover:text-pink-200 transition-colors">
+                <h3 className="text-[13px] font-bold uppercase tracking-widest text-pink-400 group-hover:text-pink-300 transition-colors">
                     {title}
                 </h3>
                 <div className={`w-7 h-7 rounded-full flex items-center justify-center bg-white/5 group-hover:bg-white/10 transition-all duration-300 ${isOpen ? 'rotate-180 bg-white/10' : ''}`}>
@@ -91,9 +91,9 @@ function Footer() {
                                 alt="Wekume Initiative"
                                 className="h-12 w-12 object-contain bg-white/5 p-1 rounded-xl border border-white/10"
                             />
-                            <span className="font-bold text-2xl tracking-tight text-white bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">Wekume Initiative</span>
+                            <span className="font-bold text-2xl tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-white/70">Wekume Initiative</span>
                         </div>
-                        <p className="text-sm text-purple-200 leading-relaxed mb-6">
+                        <p className="text-sm text-white/80 leading-relaxed mb-6">
                             Empowering youth through education, innovation, and accessible sexual & reproductive health resources.
                         </p>
                         <div className="flex items-center gap-3 flex-wrap">
@@ -104,7 +104,7 @@ function Footer() {
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     aria-label={label}
-                                    className="w-10 h-10 rounded-full bg-white/5 border border-white/10 hover:bg-pink-500 hover:border-pink-500 flex items-center justify-center transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-pink-500/30 text-gray-300 hover:text-white"
+                                    className="w-10 h-10 rounded-full bg-white/10 border border-white/15 hover:bg-pink-500 hover:border-pink-500 flex items-center justify-center transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-pink-500/30 text-white/70 hover:text-white"
                                 >
                                     <Icon size={18} />
                                 </a>
@@ -114,12 +114,12 @@ function Footer() {
 
                     {/* Newsletter (Standalone to keep it highly visible) */}
                     <div className="w-full md:w-auto md:max-w-xs bg-white/5 p-6 rounded-3xl border border-white/10 backdrop-blur-md">
-                        <p className="text-sm text-white dark:text-white font-bold mb-1 flex items-center gap-2">
+                        <p className="text-sm text-white font-bold mb-1 flex items-center gap-2">
                             Stay Updated <span className="relative flex h-2 w-2"><span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-pink-400 opacity-75"></span><span className="relative inline-flex rounded-full h-2 w-2 bg-pink-500"></span></span>
                         </p>
-                        <p className="text-xs text-gray-200 dark:text-purple-300 mb-4">Join our newsletter for updates and impact stories.</p>
+                        <p className="text-xs text-white/70 mb-4">Join our newsletter for updates and impact stories.</p>
                         {subscribed ? (
-                            <div className="bg-green-500/20 text-green-100 dark:text-green-300 border border-green-500/30 px-4 py-3 rounded-xl text-sm font-medium flex items-center gap-2">
+                            <div className="bg-white/10 text-white border border-white/20 px-4 py-3 rounded-xl text-sm font-medium flex items-center gap-2">
                                 <CheckCircle size={16} /> Thanks for subscribing!
                             </div>
                         ) : (
@@ -130,7 +130,7 @@ function Footer() {
                                     onChange={(e) => setEmail(e.target.value)}
                                     placeholder="Enter your email"
                                     required
-                                    className="w-full px-4 py-3 rounded-xl bg-gray-100 dark:bg-black/30 border border-gray-300 dark:border-white/10 text-gray-900 dark:text-white placeholder-gray-500 text-sm focus:outline-none focus:border-pink-500/50 transition-all"
+                                    className="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/15 text-white placeholder-white/40 text-sm focus:outline-none focus:border-pink-500/50 transition-all"
                                 />
                                 <button
                                     type="submit"
@@ -158,7 +158,7 @@ function Footer() {
                                 <li key={to}>
                                     <Link
                                         to={to}
-                                        className="text-xs text-gray-100 dark:text-gray-300 hover:text-white dark:hover:text-white inline-flex items-center gap-2 transition-all duration-200 group py-1"
+                                        className="text-xs text-white/75 hover:text-white inline-flex items-center gap-2 transition-all duration-200 group py-1"
                                     >
                                         <div className="w-1 h-1 rounded-full bg-pink-500/50 group-hover:scale-150 transition-transform"></div>
                                         {label}
@@ -171,7 +171,7 @@ function Footer() {
                     <FooterAccordion title="What We Do">
                         <div className="flex flex-col gap-2 pt-2">
                             {['Sexual & Reproductive Health Education', 'Mental Health Support & Counseling', 'Skill Development & Entrepreneurship', 'Community Outreach Programs', 'Youth Mentorship'].map((item, i) => (
-                                <div key={i} className="text-[11px] leading-relaxed text-gray-100 dark:text-gray-300 flex items-start gap-2 py-1">
+                                <div key={i} className="text-[11px] leading-relaxed text-white/75 flex items-start gap-2 py-1">
                                     <span className="text-pink-500 flex-shrink-0 mt-0.5">•</span> 
                                     <span>{item}</span>
                                 </div>
@@ -181,23 +181,23 @@ function Footer() {
 
                     <FooterAccordion title="Contact Us">
                         <div className="flex flex-col gap-4 pt-2">
-                            <div className="space-y-2 text-xs text-gray-100 dark:text-gray-400">
-                                <a href={`mailto:${contactData.email}`} className="block hover:text-white dark:hover:text-white transition-colors">
-                                    Email: <span className="text-pink-300 dark:text-pink-300">{contactData.email}</span>
+                            <div className="space-y-2 text-xs text-white/75">
+                                <a href={`mailto:${contactData.email}`} className="block hover:text-white transition-colors">
+                                    Email: <span className="text-pink-400">{contactData.email}</span>
                                 </a>
-                                <p>Phone: <span className="text-pink-300 dark:text-pink-300 tracking-wider">{contactData.phone}</span></p>
+                                <p>Phone: <span className="text-pink-400 tracking-wider">{contactData.phone}</span></p>
                             </div>
                             
-                            <div className="text-[11px] text-gray-100 dark:text-gray-500 leading-relaxed pt-2 border-t border-white/10 dark:border-white/5">
+                            <div className="text-[11px] text-white/60 leading-relaxed pt-2 border-t border-white/15">
                                 {isUS ? (
                                     <>
-                                        <p className="font-bold text-gray-100 dark:text-gray-400 mb-1">Friends of Wekume (US)</p>
-                                        <p className="text-gray-200 dark:text-gray-400">{contactData.addressUS}</p>
+                                        <p className="font-bold text-white/80 mb-1">Friends of Wekume (US)</p>
+                                        <p className="text-white/60">{contactData.addressUS}</p>
                                     </>
                                 ) : (
                                     <>
-                                        <p className="font-bold text-gray-100 dark:text-gray-400 mb-1">Wekume Initiative (UG)</p>
-                                        <p className="text-gray-200 dark:text-gray-400">{contactData.addressUG}</p>
+                                        <p className="font-bold text-white/80 mb-1">Wekume Initiative (UG)</p>
+                                        <p className="text-white/60">{contactData.addressUG}</p>
                                     </>
                                 )}
                             </div>
@@ -206,13 +206,13 @@ function Footer() {
                 </div>
 
                 {/* Bottom Bar */}
-                <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-gray-100 dark:text-gray-400 font-medium">
+                <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-white/60 font-medium">
                     <p>© {new Date().getFullYear()} Wekume Initiative. All rights reserved.</p>
-                    <p className="flex items-center gap-1.5 px-4 py-2 rounded-full bg-white/10 dark:bg-white/5 text-gray-100 dark:text-gray-300">Built with <span className="text-red-400 animate-pulse">❤️</span> for youth</p>
+                    <p className="flex items-center gap-1.5 px-4 py-2 rounded-full bg-white/10 text-white/80">Built with <span className="text-pink-400 animate-pulse">❤️</span> for youth</p>
                     <div className="flex items-center gap-4">
-                        <a href="#" className="hover:text-white dark:hover:text-white transition-colors">Privacy Policy</a>
-                        <span className="w-1 h-1 rounded-full bg-gray-500 dark:bg-gray-700"></span>
-                        <a href="#" className="hover:text-white dark:hover:text-white transition-colors">Terms of Use</a>
+                        <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
+                        <span className="w-1 h-1 rounded-full bg-white/30"></span>
+                        <a href="#" className="hover:text-white transition-colors">Terms of Use</a>
                     </div>
                 </div>
 
@@ -221,5 +221,4 @@ function Footer() {
     );
 }
 
-// Add simple CheckCircle missing in imports if necessary, wait, let me just add it above. Oh wait I did not import CheckCircle. I will replace it with a text emoji above so I don't need the import. Wait, I imported CheckCircle! Oh wait, `ArrowRight, Mail, ChevronDown` were imported. I'll fix the missing CheckCircle.
 export default Footer;

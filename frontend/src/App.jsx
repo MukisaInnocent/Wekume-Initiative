@@ -1,33 +1,30 @@
 import { Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import { ThemeProvider } from './context/ThemeContext';
 import { RegionProvider } from './context/RegionContext';
-import { SidebarProvider, useSidebar } from './context/SidebarContext';
+import { SidebarProvider } from './context/SidebarContext';
 import ScrollToTop from './components/ScrollToTop';
 import Welcome from './pages/Welcome';
 import Home from './pages/Home';
 import About from './pages/About';
 import WekumeApp from './pages/WekumeApp';
-import Events from './pages/Events';
-import GetInvolved from './pages/GetInvolved';
 import Reports from './pages/Reports';
 import Contact from './pages/Contact';
 import Support from './pages/Support';
 import AdminLogin from './pages/AdminLogin';
 import AdminDashboard from './pages/AdminDashboard';
 import LinaAIChat from './components/LinaAIChat';
-import Testimonials from './pages/Testimonials';
-import Activities from './pages/Activities';import Team from './pages/Team';import USHome from './pages/us/USHome';
+
+import Activities from './pages/Activities';
+import Team from './pages/Team';
+import USHome from './pages/us/USHome';
 import USFunders from './pages/us/USFunders';
 import USImpact from './pages/us/USImpact';
 import Rewards from './pages/Rewards';
 function AppContent() {
     const location = useLocation();
-    const { isCollapsed } = useSidebar();
     
     // Hide AI chat on the landing welcome page and admin pages
     const hideChat = location.pathname === '/' || location.pathname.startsWith('/admin');
-
-    const isHome = location.pathname === '/' || location.pathname === '/ug' || location.pathname === '/us' || location.pathname === '/ug/' || location.pathname === '/us/';
 
     return (
         <div className="App min-h-screen bg-white dark:bg-gray-900 transition-all duration-300">

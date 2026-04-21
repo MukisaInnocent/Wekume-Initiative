@@ -266,23 +266,17 @@ function Home() {
 
                 <div className="flex w-full overflow-hidden pause-animation">
                     <div className="flex gap-6 items-stretch w-max px-4 py-4 animate-scroll-marquee">
-                        {[...(testimonials && testimonials.length > 0 ? testimonials : [
-                            { id: 'f1', content: "Wekume has given me access to reliable health resources that I couldn't easily find before. It's truly empowering to have this community.", author_name: "Sarah K.", author_role: "University Student", photo_url: "" },
-                            { id: 'f2', content: "The peer ambassadors are incredibly supportive and create a safe environment for open dialogues. I've learned so much about reproductive health.", author_name: "David M.", author_role: "Peer Educator", photo_url: "" },
-                            { id: 'f3', content: "Attending the community drives opened my eyes to the real impact of accessible healthcare. The app will be a game changer for many of us.", author_name: "Anita T.", author_role: "Community Member", photo_url: "" }
-                        ]), ...(testimonials && testimonials.length > 0 ? testimonials : [
-                            { id: 'f1', content: "Wekume has given me access to reliable health resources that I couldn't easily find before. It's truly empowering to have this community.", author_name: "Sarah K.", author_role: "University Student", photo_url: "" },
-                            { id: 'f2', content: "The peer ambassadors are incredibly supportive and create a safe environment for open dialogues. I've learned so much about reproductive health.", author_name: "David M.", author_role: "Peer Educator", photo_url: "" },
-                            { id: 'f3', content: "Attending the community drives opened my eyes to the real impact of accessible healthcare. The app will be a game changer for many of us.", author_name: "Anita T.", author_role: "Community Member", photo_url: "" }
-                        ]), ...(testimonials && testimonials.length > 0 ? testimonials : [
-                            { id: 'f1', content: "Wekume has given me access to reliable health resources that I couldn't easily find before. It's truly empowering to have this community.", author_name: "Sarah K.", author_role: "University Student", photo_url: "" },
-                            { id: 'f2', content: "The peer ambassadors are incredibly supportive and create a safe environment for open dialogues. I've learned so much about reproductive health.", author_name: "David M.", author_role: "Peer Educator", photo_url: "" },
-                            { id: 'f3', content: "Attending the community drives opened my eyes to the real impact of accessible healthcare. The app will be a game changer for many of us.", author_name: "Anita T.", author_role: "Community Member", photo_url: "" }
-                        ]), ...(testimonials && testimonials.length > 0 ? testimonials : [
-                            { id: 'f1', content: "Wekume has given me access to reliable health resources that I couldn't easily find before. It's truly empowering to have this community.", author_name: "Sarah K.", author_role: "University Student", photo_url: "" },
-                            { id: 'f2', content: "The peer ambassadors are incredibly supportive and create a safe environment for open dialogues. I've learned so much about reproductive health.", author_name: "David M.", author_role: "Peer Educator", photo_url: "" },
-                            { id: 'f3', content: "Attending the community drives opened my eyes to the real impact of accessible healthcare. The app will be a game changer for many of us.", author_name: "Anita T.", author_role: "Community Member", photo_url: "" }
-                        ])].map((t, index) => (
+                        {(() => {
+                            const fallback = [
+                                { id: 'f1', content: "Wekume has given me access to reliable health resources that I couldn't easily find before. It's truly empowering to have this community.", author_name: "Sarah K.", author_role: "University Student", photo_url: "" },
+                                { id: 'f2', content: "The peer ambassadors are incredibly supportive and create a safe environment for open dialogues. I've learned so much about reproductive health.", author_name: "David M.", author_role: "Peer Educator", photo_url: "" },
+                                { id: 'f3', content: "Attending the community drives opened my eyes to the real impact of accessible healthcare. The app will be a game changer for many of us.", author_name: "Anita T.", author_role: "Community Member", photo_url: "" }
+                            ];
+                            const source = testimonials && testimonials.length > 0 ? testimonials : fallback;
+                            // Repeat 4x for seamless infinite scroll
+                            const marqueeItems = [...source, ...source, ...source, ...source];
+                            return marqueeItems;
+                        })().map((t, index) => (
                             <div 
                                 key={`${t.id || index}-${index}`}
                                 className="group bg-white dark:bg-gray-800 p-8 rounded-[2rem] border border-gray-100 dark:border-gray-700 shadow-sm hover:shadow-[0_15px_40px_rgba(234,99,140,0.12)] dark:hover:shadow-[0_15px_40px_rgba(234,99,140,0.05)] hover:-translate-y-2 hover:border-pink-200 dark:hover:border-pink-500/30 transition-all duration-500 w-[85vw] sm:w-[380px] lg:w-[420px] shrink-0 flex flex-col relative overflow-hidden"
