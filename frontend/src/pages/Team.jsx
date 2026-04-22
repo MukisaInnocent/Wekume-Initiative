@@ -179,11 +179,21 @@ function Team() {
                                     <button
                                         key={member.id}
                                         onClick={() => setSelectedMember(member)}
-                                        className="group relative flex flex-col text-left rounded-[1.75rem] overflow-hidden shadow-[0_4px_20px_rgb(0,0,0,0.06)] dark:shadow-none hover:shadow-[0_20px_50px_rgb(0,0,0,0.12)] dark:hover:shadow-[0_20px_50px_rgba(158,0,255,0.08)] transition-all duration-500 hover:-translate-y-2 animate-fade-in-up bg-white dark:bg-[#1a0a12] border border-gray-100 dark:border-[#341525]/80"
+                                        className="group relative flex flex-col items-center text-center rounded-[1.75rem] overflow-hidden shadow-[0_4px_20px_rgb(0,0,0,0.06)] dark:shadow-none hover:shadow-[0_20px_50px_rgb(0,0,0,0.12)] dark:hover:shadow-[0_20px_50px_rgba(158,0,255,0.08)] transition-all duration-500 hover:-translate-y-2 animate-fade-in-up bg-white dark:bg-[#1a0a12] border border-gray-100 dark:border-[#341525]/80 p-6 pb-5"
                                         style={{ animationDelay: `${(idx % 12) * 60}ms` }}
                                     >
-                                        {/* Photo Container */}
-                                        <div className="relative w-full aspect-[3/4] overflow-hidden bg-gradient-to-br from-[#f2f5d1] to-[#f7b2d0] dark:from-[#341525] dark:to-[#1a0a12]">
+                                        {/* Department Pill */}
+                                        {member.department && (
+                                            <div className="inline-flex items-center gap-1.5 rounded-full bg-gray-50 dark:bg-[#010101]/60 backdrop-blur-md px-3 py-1 shadow-sm mb-4">
+                                                <span className="w-1.5 h-1.5 rounded-full bg-[#9e00ff]"></span>
+                                                <span className="text-[10px] font-bold uppercase tracking-wider text-[#341525] dark:text-[#f7b2d0]">
+                                                    {member.department}
+                                                </span>
+                                            </div>
+                                        )}
+
+                                        {/* Circular Photo */}
+                                        <div className="relative w-36 h-36 sm:w-40 sm:h-40 rounded-full overflow-hidden mb-5 ring-4 ring-gray-100 dark:ring-[#341525]/80 group-hover:ring-[#9e00ff]/30 dark:group-hover:ring-[#ea638c]/30 transition-all duration-500 flex-shrink-0 bg-gradient-to-br from-[#f2f5d1] to-[#f7b2d0] dark:from-[#341525] dark:to-[#1a0a12]">
                                             {member.photo_url ? (
                                                 <img
                                                     src={member.photo_url}
@@ -192,59 +202,45 @@ function Team() {
                                                 />
                                             ) : (
                                                 <div className="w-full h-full flex items-center justify-center">
-                                                    <span className="text-8xl font-black text-[#ea638c]/30 dark:text-[#9e00ff]/20 select-none">
+                                                    <span className="text-6xl font-black text-[#ea638c]/30 dark:text-[#9e00ff]/20 select-none">
                                                         {member.name.charAt(0)}
                                                     </span>
                                                 </div>
                                             )}
-
-                                            {/* Department Pill */}
-                                            {member.department && (
-                                                <div className="absolute top-4 left-4 inline-flex items-center gap-1.5 rounded-full bg-white/90 dark:bg-[#010101]/80 backdrop-blur-md px-3 py-1 shadow-sm">
-                                                    <span className="w-1.5 h-1.5 rounded-full bg-[#9e00ff]"></span>
-                                                    <span className="text-[10px] font-bold uppercase tracking-wider text-[#341525] dark:text-[#f7b2d0]">
-                                                        {member.department}
-                                                    </span>
-                                                </div>
-                                            )}
-
-                                            {/* Hover Overlay */}
-                                            <div className="absolute inset-0 bg-gradient-to-t from-[#341525] via-[#341525]/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-6">
-                                                {/* Social Links */}
-                                                {member.social_links && Object.values(member.social_links).some(Boolean) && (
-                                                    <div className="flex gap-2 mb-4 translate-y-4 group-hover:translate-y-0 transition-transform duration-300 delay-100">
-                                                        {member.social_links.linkedin && (
-                                                            <div className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-sm text-white flex items-center justify-center hover:bg-white/30 transition-colors">
-                                                                <Linkedin size={14} />
-                                                            </div>
-                                                        )}
-                                                        {member.social_links.twitter && (
-                                                            <div className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-sm text-white flex items-center justify-center hover:bg-white/30 transition-colors">
-                                                                <Twitter size={14} />
-                                                            </div>
-                                                        )}
-                                                        {member.social_links.instagram && (
-                                                            <div className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-sm text-white flex items-center justify-center hover:bg-white/30 transition-colors">
-                                                                <Instagram size={14} />
-                                                            </div>
-                                                        )}
-                                                    </div>
-                                                )}
-
-                                                <div className="inline-flex items-center gap-2 text-[#f89d61] font-bold text-xs uppercase tracking-widest translate-y-4 group-hover:translate-y-0 transition-transform duration-300 delay-150">
-                                                    View Profile <ArrowUpRight size={14} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                                                </div>
-                                            </div>
                                         </div>
 
-                                        {/* Name & Role — Always visible */}
-                                        <div className="px-5 py-4">
-                                            <h3 className="text-base font-bold text-gray-900 dark:text-white leading-tight mb-0.5 group-hover:text-[#9e00ff] dark:group-hover:text-[#ea638c] transition-colors">
-                                                {member.name}
-                                            </h3>
-                                            <p className="text-sm font-medium text-gray-600 dark:text-[#f7b2d0]/70">
-                                                {member.role}
-                                            </p>
+                                        {/* Social Icons on hover */}
+                                        {member.social_links && Object.values(member.social_links).some(Boolean) && (
+                                            <div className="flex gap-2 mb-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                                {member.social_links.linkedin && (
+                                                    <div className="w-7 h-7 rounded-full bg-gray-100 dark:bg-[#341525] text-[#7d52a0] flex items-center justify-center">
+                                                        <Linkedin size={13} />
+                                                    </div>
+                                                )}
+                                                {member.social_links.twitter && (
+                                                    <div className="w-7 h-7 rounded-full bg-gray-100 dark:bg-[#341525] text-[#7d52a0] flex items-center justify-center">
+                                                        <Twitter size={13} />
+                                                    </div>
+                                                )}
+                                                {member.social_links.instagram && (
+                                                    <div className="w-7 h-7 rounded-full bg-gray-100 dark:bg-[#341525] text-[#7d52a0] flex items-center justify-center">
+                                                        <Instagram size={13} />
+                                                    </div>
+                                                )}
+                                            </div>
+                                        )}
+
+                                        {/* Name & Role */}
+                                        <h3 className="text-base font-bold text-gray-900 dark:text-white leading-tight mb-0.5 group-hover:text-[#9e00ff] dark:group-hover:text-[#ea638c] transition-colors">
+                                            {member.name}
+                                        </h3>
+                                        <p className="text-sm font-medium text-gray-600 dark:text-[#f7b2d0]/70">
+                                            {member.role}
+                                        </p>
+
+                                        {/* View Profile hint */}
+                                        <div className="mt-3 inline-flex items-center gap-1.5 text-[#f89d61] font-bold text-xs uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                            View Profile <ArrowUpRight size={12} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                                         </div>
                                     </button>
                                 ))}

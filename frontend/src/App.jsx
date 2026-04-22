@@ -12,6 +12,8 @@ import Contact from './pages/Contact';
 import Support from './pages/Support';
 import AdminLogin from './pages/AdminLogin';
 import AdminDashboard from './pages/AdminDashboard';
+import PrivacyPolicy from './pages/PrivacyPolicy';
+import TermsOfUse from './pages/TermsOfUse';
 import LinaAIChat from './components/LinaAIChat';
 
 import Activities from './pages/Activities';
@@ -70,6 +72,10 @@ function AppContent() {
                 <Route path="/us/testimonials" element={<Navigate to="/us/activities" replace />} />
                 <Route path="/us/activities" element={<Activities />} />
                 <Route path="/us/support" element={<Support />} />
+
+                {/* Legal Routes */}
+                <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                <Route path="/terms-of-use" element={<TermsOfUse />} />
 
                 {/* Admin Routes */}
                 <Route path="/admin/login" element={<AdminLogin />} />

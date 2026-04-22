@@ -306,58 +306,25 @@ function LinaAIChat() {
                 )}
             </AnimatePresence>
 
-            {/* Floating Button */}
-            <motion.div
-                onClick={handleToggleChat}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                role="button"
-                tabIndex={0}
-                className="group relative pointer-events-auto outline-none cursor-pointer"
-                aria-label={isOpen ? "Close Lina AI Chat" : "Open Lina AI Chat"}
-            >
-                {/* Ping Animation */}
-                {!isOpen && (
-                    <span className="absolute -top-1 -right-1 flex h-4 w-4">
-                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                        <span className="relative inline-flex rounded-full h-4 w-4 bg-red-500 border-2 border-white"></span>
-                    </span>
-                )}
-
-                <div className={`relative w-16 h-16 sm:w-20 sm:h-20 rounded-full shadow-2xl transition-all duration-300 ${isOpen ? 'bg-gray-800' : 'bg-white'} overflow-hidden border-4 border-white dark:border-gray-700`}>
-                    {/* Background gradient effect */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-purple-100 to-blue-50 dark:from-purple-900/50 dark:to-blue-900/50"></div>
-
-                    {/* Logo/Icon */}
-                    <div className="absolute inset-0 flex items-center justify-center p-3">
-                        {isOpen ? (
-                            <X size={32} className="text-white bg-red-500 rounded-full p-1" /> // Close icon when open
-                        ) : (
-                            <img
-                                src="/assets/lina-logo.jpg"
-                                alt="Lina"
-                                className="w-full h-full object-cover rounded-full filter drop-shadow-sm hover:rotate-3 transition-transform duration-300"
-                            />
-                        )}
-                    </div>
-                </div>
-
-                {/* Mini Advert Bubble */}
+            {/* Floating Button & Advert */}
+            <div className="relative pointer-events-auto flex flex-col items-end gap-0">
+                {/* Mini Advert Bubble — OUTSIDE the clickable button */}
                 <AnimatePresence>
                     {!isOpen && showAdvert && (
                         <motion.div
                             initial={{ opacity: 0, y: 10, scale: 0.95 }}
                             animate={{ opacity: 1, y: 0, scale: 1 }}
                             exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.2 } }}
-                            className="absolute bottom-full right-0 mb-4 w-64 pointer-events-auto"
+                            className="mb-4 w-64"
                         >
                             <div className="bg-gradient-to-r from-purple-600 to-blue-600 text-white p-4 rounded-2xl shadow-2xl relative pr-8">
                                 <button
                                     onClick={(e) => {
                                         e.stopPropagation();
+                                        e.preventDefault();
                                         setShowAdvert(false);
                                     }}
-                                    className="absolute top-2 right-2 p-1 bg-white/10 hover:bg-white/20 rounded-full transition-colors"
+                                    className="absolute top-2 right-2 p-1.5 bg-white/10 hover:bg-white/30 rounded-full transition-colors z-10"
                                     aria-label="Close advert"
                                 >
                                     <X size={14} />
@@ -375,7 +342,44 @@ function LinaAIChat() {
                         </motion.div>
                     )}
                 </AnimatePresence>
-            </motion.div>
+
+                {/* The actual FAB button */}
+                <motion.div
+                    onClick={handleToggleChat}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    role="button"
+                    tabIndex={0}
+                    className="group relative outline-none cursor-pointer"
+                    aria-label={isOpen ? "Close Lina AI Chat" : "Open Lina AI Chat"}
+                >
+                    {/* Ping Animation */}
+                    {!isOpen && (
+                        <span className="absolute -top-1 -right-1 flex h-4 w-4">
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                            <span className="relative inline-flex rounded-full h-4 w-4 bg-red-500 border-2 border-white"></span>
+                        </span>
+                    )}
+
+                    <div className={`relative w-16 h-16 sm:w-20 sm:h-20 rounded-full shadow-2xl transition-all duration-300 ${isOpen ? 'bg-gray-800' : 'bg-white'} overflow-hidden border-4 border-white dark:border-gray-700`}>
+                        {/* Background gradient effect */}
+                        <div className="absolute inset-0 bg-gradient-to-br from-purple-100 to-blue-50 dark:from-purple-900/50 dark:to-blue-900/50"></div>
+
+                        {/* Logo/Icon */}
+                        <div className="absolute inset-0 flex items-center justify-center p-3">
+                            {isOpen ? (
+                                <X size={32} className="text-white bg-red-500 rounded-full p-1" /> // Close icon when open
+                            ) : (
+                                <img
+                                    src="/assets/lina-logo.jpg"
+                                    alt="Lina"
+                                    className="w-full h-full object-cover rounded-full filter drop-shadow-sm hover:rotate-3 transition-transform duration-300"
+                                />
+                            )}
+                        </div>
+                    </div>
+                </motion.div>
+            </div>
         </div>
     );
 }

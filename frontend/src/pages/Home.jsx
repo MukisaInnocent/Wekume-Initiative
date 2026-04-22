@@ -117,7 +117,7 @@ function Home() {
                         
                         <div className="relative z-10 flex flex-col items-center justify-center">
                             <h2 className="text-3xl sm:text-4xl font-heading font-black mb-6">Our Story</h2>
-                            <p className="text-lg text-gray-300 max-w-3xl mx-auto leading-relaxed mb-8">
+                            <p className="text-lg text-white/80 max-w-3xl mx-auto leading-relaxed mb-8">
                                 {ourStory}
                             </p>
                             <Link to={`/${isUS ? 'us' : 'ug'}/activities`} className="bg-white/10 hover:bg-white/20 text-white border border-white/20 px-8 py-3 rounded-full font-bold hover:shadow-[0_0_20px_rgba(255,255,255,0.2)] transition-all inline-flex items-center gap-2">

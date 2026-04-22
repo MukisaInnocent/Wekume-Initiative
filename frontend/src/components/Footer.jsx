@@ -210,9 +210,9 @@ function Footer() {
                     <p>© {new Date().getFullYear()} Wekume Initiative. All rights reserved.</p>
                     <p className="flex items-center gap-1.5 px-4 py-2 rounded-full bg-white/10 text-white/80">Built with <span className="text-pink-400 animate-pulse">❤️</span> for youth</p>
                     <div className="flex items-center gap-4">
-                        <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
+                        <Link to="/privacy-policy" className="hover:text-white transition-colors">Privacy Policy</Link>
                         <span className="w-1 h-1 rounded-full bg-white/30"></span>
-                        <a href="#" className="hover:text-white transition-colors">Terms of Use</a>
+                        <Link to="/terms-of-use" className="hover:text-white transition-colors">Terms of Use</Link>
                     </div>
                 </div>
 
