@@ -4,26 +4,42 @@ import { adminAPI } from '../services/api';
 
 function MediaLibrary() {
     const [uploading, setUploading] = useState(false);
-    const [uploadedFiles, setUploadedFiles] = useState([]); // In a real app, fetch from backend
+    const [uploadedFiles, setUploadedFiles] = useState([]);
     const [copiedId, setCopiedId] = useState(null);
+    const [uploadError, setUploadError] = useState(null);
 
     const handleFileUpload = async (e) => {
         const file = e.target.files[0];
         if (!file) return;
+
+        // Validate file type
+        if (!file.type.startsWith('image/')) {
+            setUploadError('Please select an image file');
+            return;
+        }
+
+        // Validate file size (5MB limit)
+        if (file.size > 5 * 1024 * 1024) {
+            setUploadError('File size must be less than 5MB');
+            return;
+        }
 
         const formData = new FormData();
         formData.append('file', file);
 
         setUploading(true);
         try {
+            setUploadError(null);
             const response = await adminAPI.uploadMedia(formData);
             const newFile = response.data.file;
             setUploadedFiles(prev => [newFile, ...prev]);
         } catch (error) {
             console.error('Upload failed:', error);
-            alert('Failed to upload image. Please try again.');
+            const errorMsg = error.response?.data?.error || 'Upload failed. Please try again.';
+            setUploadError(errorMsg);
         } finally {
             setUploading(false);
+            e.target.value = null;
         }
     };
 
@@ -57,6 +73,9 @@ function MediaLibrary() {
                         <Upload size={20} />
                         {uploading ? 'Uploading...' : 'Upload Image'}
                     </label>
+                    {uploadError && (
+                        <p className="absolute right-0 top-full mt-2 text-sm text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20 px-3 py-2 rounded">{uploadError}</p>
+                    )}
                 </div>
             </div>
 

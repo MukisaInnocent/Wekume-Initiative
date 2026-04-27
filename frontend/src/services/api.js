@@ -22,7 +22,10 @@ const api = axios.create({
     baseURL: getBaseUrl(),
     timeout: 60000, // 60s — Lina AI responses can take 30-40 seconds
     headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Cache-Control': 'no-cache, no-store, must-revalidate',
+        'Pragma': 'no-cache',
+        'Expires': '0'
     }
 });
 
@@ -134,9 +137,7 @@ export const adminAPI = {
 
     // Background Images (Admin)
     getAllBackgrounds: () => api.get('/backgrounds'),
-    uploadBackground: (formData) => api.post('/backgrounds', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' }
-    }),
+    uploadBackground: (formData) => api.post('/backgrounds', formData),
     updateBackground: (id, data) => api.put(`/backgrounds/${id}`, data),
     deleteBackground: (id) => api.delete(`/backgrounds/${id}`),
 
@@ -147,9 +148,7 @@ export const adminAPI = {
     deleteEvent: (id) => api.delete(`/admin/events/${id}`),
 
     // Media
-    uploadMedia: (formData) => api.post('/admin/media/upload', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' }
-    }),
+    uploadMedia: (formData) => api.post('/admin/media/upload', formData),
 
     // Analytics
     getAnalytics: () => api.get('/admin/analytics'),

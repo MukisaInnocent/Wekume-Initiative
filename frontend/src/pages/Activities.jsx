@@ -46,8 +46,9 @@ function Activities() {
             setRegForm({ name: '', email: '', phone: '', university: '' });
         } catch (error) {
             console.error("Registration failed:", error);
+            const errorMsg = error.response?.data?.error || 'Registration failed. Please try again.';
+            alert(errorMsg);
             setRegStatus('idle');
-            alert('Failed to register. Please try again.');
         }
     };
 
@@ -74,7 +75,7 @@ function Activities() {
     const filteredEvents = getCategorizedEvents();
 
     return (
-        <div className="bg-white dark:bg-gray-950 min-h-screen">
+        <div className="bg-white dark:bg-gray-900 min-h-screen">
             <Navbar />
 
             <PageHeader
@@ -231,14 +232,14 @@ function Activities() {
 
                 {/* 5. Wekume App Section */}
                 <section>
-                    <div className="bg-gradient-to-br from-indigo-50 to-white dark:from-gray-800 dark:to-gray-900 rounded-3xl p-8 md:p-12 border border-indigo-100 dark:border-indigo-900/30 relative overflow-hidden">
-                        <div className="absolute top-0 right-0 -mr-20 -mt-20 w-64 h-64 bg-indigo-200/50 dark:bg-indigo-900/20 rounded-full blur-3xl pointer-events-none"></div>
-                        <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-64 h-64 bg-blue-200/50 dark:bg-blue-900/20 rounded-full blur-3xl pointer-events-none"></div>
+                    <div className="bg-gradient-to-br from-primary-50 to-secondary-50/30 dark:from-secondary-900/20 dark:to-primary-900/10 rounded-3xl p-8 md:p-12 border border-primary-100 dark:border-secondary-900/30 relative overflow-hidden">
+                        <div className="absolute top-0 right-0 -mr-20 -mt-20 w-64 h-64 bg-secondary-200/30 dark:bg-secondary-900/20 rounded-full blur-3xl pointer-events-none" />
+                        <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-64 h-64 bg-primary-200/30 dark:bg-primary-900/20 rounded-full blur-3xl pointer-events-none" />
 
                         <div className="relative z-10 max-w-6xl mx-auto">
                             <div className="flex flex-col lg:flex-row items-center gap-12">
                                 <div className="flex-1 text-center lg:text-left">
-                                    <span className="px-4 py-1.5 rounded-full bg-indigo-100 dark:bg-indigo-900/40 text-indigo-600 dark:text-indigo-400 text-sm font-bold tracking-wide w-fit mb-6 inline-flex items-center gap-2">
+                                    <span className="px-4 py-1.5 rounded-full bg-secondary-100 dark:bg-secondary-900/40 text-secondary-600 dark:text-secondary-300 text-sm font-bold tracking-wide w-fit mb-6 inline-flex items-center gap-2">
                                         <Smartphone size={16} /> Wekume App
                                     </span>
                                     <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-6">Health in Your Pocket</h2>
@@ -250,19 +251,19 @@ function Activities() {
                                     </button>
                                 </div>
                                 <div className="flex-1 relative w-full flex justify-center">
-                                    <div className="absolute inset-0 bg-indigo-600/10 blur-3xl rounded-full"></div>
+                                    <div className="absolute inset-0 bg-secondary-600/10 blur-3xl rounded-full" />
                                     {/* App Mockup Illustration */}
                                     <div className="w-64 h-[500px] bg-gray-900 rounded-[3rem] border-[8px] border-gray-800 shadow-2xl relative z-10 overflow-hidden flex flex-col">
-                                        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-6 bg-gray-800 rounded-b-2xl z-20"></div>
-                                        <div className="p-6 pt-12 flex-1 bg-gradient-to-b from-indigo-900 to-gray-900">
-                                            <div className="w-12 h-12 rounded-full bg-indigo-500/30 mb-6 animate-pulse"></div>
+                                        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-6 bg-gray-800 rounded-b-2xl z-20" />
+                                        <div className="p-6 pt-12 flex-1 bg-gradient-to-b from-secondary-900 to-gray-900">
+                                            <div className="w-12 h-12 rounded-full bg-primary-500/30 mb-6 animate-pulse" />
                                             <div className="space-y-4">
-                                                <div className="h-4 bg-white/20 rounded w-3/4"></div>
-                                                <div className="h-4 bg-white/20 rounded w-1/2"></div>
+                                                <div className="h-4 bg-white/20 rounded w-3/4" />
+                                                <div className="h-4 bg-white/20 rounded w-1/2" />
                                             </div>
                                             <div className="mt-8 space-y-4">
-                                                <div className="h-24 bg-white/10 rounded-xl"></div>
-                                                <div className="h-24 bg-white/10 rounded-xl"></div>
+                                                <div className="h-24 bg-white/10 rounded-xl" />
+                                                <div className="h-24 bg-white/10 rounded-xl" />
                                             </div>
                                         </div>
                                     </div>
@@ -319,7 +320,7 @@ function Activities() {
                             <X size={20} />
                         </button>
 
-                        <div className="h-24 bg-gradient-to-r from-purple-600 to-orange-500 relative">
+                        <div className="h-24 bg-gradient-to-r from-secondary-500 to-primary-500 relative">
                             {selectedEvent.banner_image_url && (
                                 <img src={selectedEvent.banner_image_url} className="w-full h-full object-cover mix-blend-overlay opacity-50" alt="event banner" />
                             )}

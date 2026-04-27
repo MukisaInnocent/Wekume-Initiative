@@ -117,6 +117,20 @@ app.use((err, req, res, next) => {
 
 const startServer = async () => {
     try {
+        // Create upload directories if they don't exist
+        const uploadDirs = [
+            path.join(__dirname, 'uploads'),
+            path.join(__dirname, 'uploads/backgrounds'),
+            path.join(__dirname, 'uploads/media')
+        ];
+        
+        uploadDirs.forEach(dir => {
+            if (!require('fs').existsSync(dir)) {
+                require('fs').mkdirSync(dir, { recursive: true });
+                console.log(`✅ Created directory: ${dir}`);
+            }
+        });
+
         // Test database connection
         await testConnection();
 

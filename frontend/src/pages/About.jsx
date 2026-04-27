@@ -67,7 +67,7 @@ function About() {
     const valueIcons = [Heart, Users, Shield, Lightbulb, Globe, Target];
 
     return (
-        <div className="bg-white dark:bg-gray-950 min-h-screen">
+        <div className="bg-white dark:bg-gray-900 min-h-screen">
             <Navbar />
 
             <PageHeader
@@ -237,7 +237,7 @@ function About() {
 
                 {/* Download App */}
                 <section>
-                    <div className="bg-gradient-to-br from-purple-800 to-purple-600 rounded-3xl overflow-hidden relative shadow-2xl border border-purple-500">
+                    <div className="bg-gradient-to-br from-[#341525] via-[#7d52a0] to-[#1a0a12] rounded-3xl overflow-hidden relative shadow-2xl border border-primary-500/30">
                         <div className="absolute top-0 right-0 w-64 h-64 bg-white opacity-5 rounded-full blur-3xl translate-x-1/2 -translate-y-1/2"></div>
                         <div className="absolute bottom-0 left-0 w-80 h-80 bg-orange-500 opacity-20 rounded-full blur-3xl -translate-x-1/2 translate-y-1/2"></div>
                         
@@ -260,7 +260,7 @@ function About() {
                                             <Smartphone size={64} className="text-white mb-4 drop-shadow-lg" />
                                             <span className="text-white font-black text-xl tracking-wider">WEKUME APP</span>
                                         </div>
-                                     </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

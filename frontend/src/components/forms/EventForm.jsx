@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { Calendar, MapPin, Link as LinkIcon, Image as ImageIcon } from 'lucide-react';
+import { Calendar, MapPin, Link as LinkIcon, Image as ImageIcon, Upload } from 'lucide-react';
+import { adminAPI } from '../../services/api';
 
 function EventForm({ event, defaultRegion = 'global', onSubmit, onCancel, loading }) {
     const [formData, setFormData] = useState({
@@ -14,6 +15,7 @@ function EventForm({ event, defaultRegion = 'global', onSubmit, onCancel, loadin
         region: defaultRegion,
         category: ''
     });
+    const [uploadError, setUploadError] = useState(null);
 
     useEffect(() => {
         if (event) {
@@ -37,6 +39,34 @@ function EventForm({ event, defaultRegion = 'global', onSubmit, onCancel, loadin
     const handleSubmit = (e) => {
         e.preventDefault();
         onSubmit(formData);
+    };
+
+    const handleBannerImageUpload = async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        if (!file.type.startsWith('image/')) {
+            setUploadError('Please select an image file');
+            return;
+        }
+
+        if (file.size > 5 * 1024 * 1024) {
+            setUploadError('File size must be less than 5MB');
+            return;
+        }
+
+        const uploadFormData = new FormData();
+        uploadFormData.append('file', file);
+
+        try {
+            setUploadError(null);
+            const res = await adminAPI.uploadMedia(uploadFormData);
+            setFormData(prev => ({ ...prev, banner_image_url: res.data.file.url }));
+        } catch (error) {
+            console.error('Image upload failed:', error);
+            const errorMsg = error.response?.data?.error || 'Upload failed. Please try again.';
+            setUploadError(errorMsg);
+        }
     };
 
     return (
@@ -145,18 +175,38 @@ function EventForm({ event, defaultRegion = 'global', onSubmit, onCancel, loadin
 
             <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">Banner Image URL</label>
-                <div className="relative">
-                    <ImageIcon className="absolute left-3 top-2.5 text-gray-400" size={18} />
-                    <input
-                        type="url"
-                        name="banner_image_url"
-                        value={formData.banner_image_url}
-                        onChange={handleChange}
-                        className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                        placeholder="https://example.com/image.jpg"
-                    />
+                <div className="flex gap-2">
+                    <div className="relative flex-grow">
+                        <ImageIcon className="absolute left-3 top-2.5 text-gray-400" size={18} />
+                        <input
+                            type="text"
+                            name="banner_image_url"
+                            value={formData.banner_image_url}
+                            onChange={handleChange}
+                            className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-gray-50 dark:bg-gray-900/50"
+                            placeholder="Banner URL will appear here..."
+                            readOnly
+                        />
+                    </div>
+                    <div className="relative">
+                        <input
+                            type="file"
+                            id="event_banner"
+                            className="hidden"
+                            accept="image/*"
+                            onChange={handleBannerImageUpload}
+                        />
+                        <label
+                            htmlFor="event_banner"
+                            className="px-4 py-2 bg-primary-100 text-primary-700 rounded-lg cursor-pointer hover:bg-primary-200 flex items-center gap-2 h-[42px]"
+                        >
+                            <Upload size={20} /> Upload
+                        </label>
+                    </div>
                 </div>
-                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">Direct image link (Media Library upload coming soon)</p>
+                {uploadError && (
+                    <p className="text-sm text-red-600 dark:text-red-400 mt-2">{uploadError}</p>
+                )}
             </div>
 
             <div>

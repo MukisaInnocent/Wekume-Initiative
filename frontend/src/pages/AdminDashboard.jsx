@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { LogOut, Users, FileText, MessageSquare, Calendar, BarChart3, CheckCircle, Clock, Edit2, Trash2, Plus, Briefcase, Layout, Image as ImageIcon, UserCircle, Menu, X, ChevronLeft, Phone, Bot, Save } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { LogOut, Users, FileText, MessageSquare, Calendar, BarChart3, CheckCircle, Clock, Edit2, Trash2, Plus, Briefcase, Layout, Image as ImageIcon, UserCircle, Menu, X, ChevronLeft, Phone, Bot, Save, Upload } from 'lucide-react';
 import { authAPI, adminAPI, contentAPI } from '../services/api';
 import Modal from '../components/Modal';
 import EventForm from '../components/forms/EventForm';
@@ -44,6 +45,7 @@ function TeamMemberFormInline({ member, defaultRegion, onSubmit, onCancel, loadi
         display_order: member?.display_order || 0,
         is_active: member?.is_active !== undefined ? member.is_active : true,
     });
+    const [uploadError, setUploadError] = useState(null);
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
@@ -64,6 +66,34 @@ function TeamMemberFormInline({ member, defaultRegion, onSubmit, onCancel, loadi
     const handleSubmit = (e) => {
         e.preventDefault();
         onSubmit({ ...form, display_order: parseInt(form.display_order) || 0 });
+    };
+
+    const handlePhotoUpload = async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        if (!file.type.startsWith('image/')) {
+            setUploadError('Please select an image file');
+            return;
+        }
+
+        if (file.size > 5 * 1024 * 1024) {
+            setUploadError('File size must be less than 5MB');
+            return;
+        }
+
+        const uploadFormData = new FormData();
+        uploadFormData.append('file', file);
+
+        try {
+            setUploadError(null);
+            const res = await adminAPI.uploadMedia(uploadFormData);
+            setForm(prev => ({ ...prev, photo_url: res.data.file.url }));
+        } catch (error) {
+            console.error('Upload failed:', error);
+            const errorMsg = error.response?.data?.error || 'Upload failed. Please try again.';
+            setUploadError(errorMsg);
+        }
     };
 
     return (
@@ -94,7 +124,27 @@ function TeamMemberFormInline({ member, defaultRegion, onSubmit, onCancel, loadi
             </div>
             <div>
                 <label className="block text-sm font-semibold text-gray-700 dark:text-gray-200 mb-1">Photo URL</label>
-                <input name="photo_url" value={form.photo_url} onChange={handleChange} placeholder="https://..." className="w-full border border-gray-300 dark:border-gray-600 rounded-xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-purple-500" />
+                <div className="flex gap-2">
+                    <input name="photo_url" value={form.photo_url} onChange={handleChange} placeholder="Photo URL will appear here..." className="w-full border border-gray-300 dark:border-gray-600 rounded-xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-purple-500 bg-gray-50 dark:bg-gray-900/50" readOnly />
+                    <div className="relative">
+                        <input
+                            type="file"
+                            id="team_photo"
+                            className="hidden"
+                            accept="image/*"
+                            onChange={handlePhotoUpload}
+                        />
+                        <label
+                            htmlFor="team_photo"
+                            className="px-4 py-3 bg-purple-100 text-purple-700 rounded-xl cursor-pointer hover:bg-purple-200 flex items-center gap-2 h-[46px]"
+                        >
+                            <Upload size={18} /> Upload
+                        </label>
+                    </div>
+                </div>
+                {uploadError && (
+                    <p className="text-sm text-red-600 dark:text-red-400 mt-2">{uploadError}</p>
+                )}
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
@@ -163,7 +213,10 @@ function ContactInfoPanel({ sections, onSave, loading }) {
         try {
             await onSave(key, { content_text: getValue(key), section_title: getTitle(key) });
             setEdits(prev => { const n = { ...prev }; delete n[key]; return n; });
-        } catch (e) { alert('Failed to save'); }
+        } catch (e) {
+            console.error('Save failed:', e);
+            alert('Unable to save changes. Please try again.');
+        }
         setSaving(prev => ({ ...prev, [key]: false }));
     };
 
@@ -226,7 +279,10 @@ function AIAssistantPanel({ sections, onSave, loading }) {
         try {
             await onSave(key, { content_text: getValue(key), section_title: getTitle(key) });
             setEdits(prev => { const n = { ...prev }; delete n[key]; return n; });
-        } catch (e) { alert('Failed to save'); }
+        } catch (e) {
+            console.error('Save failed:', e);
+            alert('Unable to save changes. Please try again.');
+        }
         setSaving(prev => ({ ...prev, [key]: false }));
     };
 
@@ -552,7 +608,7 @@ function AdminDashboard() {
             fetchAnalytics();
         } catch (error) {
             console.error("Create failed:", error);
-            alert("Operation failed");
+            alert("Unable to save. Please check your information and try again.");
         } finally {
             setActionLoading(false);
         }
@@ -567,7 +623,7 @@ function AdminDashboard() {
             fetchMethod();
         } catch (error) {
             console.error("Update failed:", error);
-            alert("Operation failed");
+            alert("Unable to update. Please try again.");
         } finally {
             setActionLoading(false);
         }
@@ -581,7 +637,7 @@ function AdminDashboard() {
             fetchAnalytics();
         } catch (error) {
             console.error("Delete failed:", error);
-            alert("Delete operation failed");
+            alert("Unable to delete. Please try again.");
         }
     };
 
@@ -603,7 +659,7 @@ function AdminDashboard() {
             fetchAnalytics();
         } catch (error) {
             console.error("Failed to update form status", error);
-            alert("Status update failed");
+            alert("Unable to update status. Please try again.");
         }
     };
 
@@ -614,20 +670,26 @@ function AdminDashboard() {
             fetchAnalytics();
         } catch (error) {
             console.error("Failed to update volunteer status", error);
-            alert("Status update failed");
+            alert("Unable to update status. Please try again.");
         }
     };
 
     if (loading || !user) {
         return (
-            <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-                <div className="text-xl">Loading...</div>
+            <div className="min-h-screen bg-white dark:bg-gray-900 flex flex-col items-center justify-center gap-4">
+                <div className="relative">
+                    <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-secondary-500 to-primary-500 flex items-center justify-center shadow-purple text-white font-black text-2xl">
+                        W
+                    </div>
+                    <div className="absolute -inset-1 rounded-2xl border-2 border-purple-500/30 animate-ping" />
+                </div>
+                <p className="text-gray-500 dark:text-gray-400 text-sm font-medium animate-pulse">Loading dashboard…</p>
             </div>
         );
     }
 
     return (
-        <div className="min-h-screen bg-slate-50 dark:bg-gray-900 flex overflow-hidden">
+        <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex overflow-hidden">
             {/* Mobile Sidebar Overlay */}
             {isSidebarOpen && (
                 <div 
@@ -637,9 +699,9 @@ function AdminDashboard() {
             )}
 
             {/* Sidebar */}
-            <aside className={`fixed inset-y-0 left-0 z-50 w-72 bg-white dark:bg-gray-800 border-r border-purple-100/50 flex flex-col transition-transform duration-300 ease-in-out ${isSidebarOpen ? 'translate-x-0 shadow-2xl shadow-purple-900/20' : (isCollapsed ? '-translate-x-full' : '-translate-x-full lg:translate-x-0')} shadow-lg`}>
+            <aside className={`fixed inset-y-0 left-0 z-50 w-72 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-700/60 flex flex-col transition-transform duration-300 ease-in-out ${isSidebarOpen ? 'translate-x-0 shadow-2xl shadow-gray-900/30' : (isCollapsed ? '-translate-x-full' : '-translate-x-full lg:translate-x-0')} shadow-lg`}>
                 {/* Sidebar Header */}
-                <div className="h-20 flex items-center justify-between px-6 border-b border-purple-50 dark:border-purple-900/50 group relative">
+                <div className="h-20 flex items-center justify-between px-6 border-b border-gray-100 dark:border-gray-700/60 group relative">
                     <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-600 to-pink-600 flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-purple-500/30 flex-shrink-0">
                             W
@@ -664,7 +726,7 @@ function AdminDashboard() {
                 </div>
 
                 {/* Sidebar Navigation */}
-                <div className="flex-1 overflow-y-auto px-4 py-6 space-y-1 nice-scrollbar">
+                <div className="flex-1 overflow-y-auto px-3 py-5 space-y-0.5 nice-scrollbar">
                     {navItems.map((item) => {
                         const Icon = item.icon;
                         const isActive = activeTab === item.id;
@@ -691,7 +753,7 @@ function AdminDashboard() {
                 </div>
 
                 {/* Sidebar Footer (User Info & Logout) */}
-                <div className="p-4 border-t border-purple-50 bg-gray-50 dark:bg-gray-900/80 flex-shrink-0">
+                <div className="p-4 border-t border-gray-100 dark:border-gray-700/60 bg-gray-50 dark:bg-gray-900 flex-shrink-0">
                     <div className="flex items-center gap-3 p-3 bg-white dark:bg-gray-800 border border-purple-100 rounded-xl mb-3 shadow-sm">
                         <div className="w-10 h-10 rounded-full bg-gradient-to-r from-purple-100 to-pink-100 border border-purple-200 flex items-center justify-center font-bold text-purple-700 flex-shrink-0" title={user?.fullname || 'Admin'}>
                             {user?.fullname?.charAt(0) || 'U'}
@@ -719,7 +781,7 @@ function AdminDashboard() {
                 <div className={`fixed bottom-0 w-[500px] h-[500px] bg-pink-300/10 rounded-full blur-[100px] pointer-events-none -ml-40 -mb-40 transition-all duration-300 ${isCollapsed ? 'left-0' : 'left-72'}`}></div>
 
                 {/* Topbar for main area */}
-                <header className="h-20 bg-white dark:bg-gray-800/60 backdrop-blur-xl border-b border-purple-100/50 dark:border-purple-900/50 sticky top-0 z-30 flex items-center justify-between px-4 sm:px-6 lg:px-8 shadow-sm">
+                <header className="h-16 sm:h-20 bg-white dark:bg-gray-900/95 backdrop-blur-xl border-b border-gray-100 dark:border-gray-700/60 sticky top-0 z-30 flex items-center justify-between px-4 sm:px-6 lg:px-8 shadow-sm">
                     <div className="flex items-center gap-4">
                         <button 
                             onClick={() => {
@@ -752,8 +814,17 @@ function AdminDashboard() {
                     </div>
                 </header>
 
-                {/* Dashboard Tab Content */}
+                {/* Dynamic Content Area with AnimatePresence */}
                 <div className="flex-1 p-4 sm:p-6 lg:p-8 relative z-10 nice-scrollbar overflow-y-auto w-full max-w-7xl mx-auto pb-24">
+                    <AnimatePresence mode="wait">
+                        <motion.div
+                            key={activeTab}
+                            initial={{ opacity: 0, y: 15 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -15 }}
+                            transition={{ duration: 0.3, ease: "easeInOut" }}
+                            className="w-full h-full"
+                        >
                 {activeTab === 'overview' && analytics && (
                     <div>
                         <h2 className="text-3xl font-heading font-bold mb-8 bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">Overview</h2>
@@ -804,7 +875,7 @@ function AdminDashboard() {
                         </div>
                         <div className="grid md:grid-cols-2 gap-6">
                             {contentSections
-                                .filter(s => !s.section_key.startsWith('contact.') && !s.section_key.startsWith('ai.'))
+                                .filter(s => s.section_key && !s.section_key.startsWith('contact.') && !s.section_key.startsWith('ai.'))
                                 .filter(s => adminRegion === 'global' || s.region === 'global' || s.region === adminRegion)
                                 .map(section => (
                                 <div key={section.id} className="group bg-white dark:bg-gray-800/80 backdrop-blur-sm p-7 rounded-2xl shadow-lg shadow-purple-500/10 hover:shadow-2xl hover:shadow-purple-500/20 hover:-translate-y-1 transition-all duration-300 border border-purple-100/50 dark:border-purple-900/50">
@@ -828,14 +899,12 @@ function AdminDashboard() {
                     </div>
                 )}
 
-                {/* Contact Info Tab */}
                 {activeTab === 'contact_info' && (
-                    <ContactInfoPanel sections={contentSections.filter(s => s.section_key.startsWith('contact.'))} onSave={async (key, data) => { await adminAPI.updateContentSection(key, data); fetchContent(); }} loading={actionLoading} />
+                    <ContactInfoPanel sections={contentSections.filter(s => s.section_key && s.section_key.startsWith('contact.'))} onSave={async (key, data) => { await adminAPI.updateContentSection(key, data); fetchContent(); }} loading={actionLoading} />
                 )}
 
-                {/* AI Assistant Tab */}
                 {activeTab === 'ai_assistant' && (
-                    <AIAssistantPanel sections={contentSections.filter(s => s.section_key.startsWith('ai.'))} onSave={async (key, data) => { await adminAPI.updateContentSection(key, data); fetchContent(); }} loading={actionLoading} />
+                    <AIAssistantPanel sections={contentSections.filter(s => s.section_key && s.section_key.startsWith('ai.'))} onSave={async (key, data) => { await adminAPI.updateContentSection(key, data); fetchContent(); }} loading={actionLoading} />
                 )}
 
                 {activeTab === 'backgrounds' && (
@@ -1051,6 +1120,8 @@ function AdminDashboard() {
                         </div>
                     </div>
                 )}
+                        </motion.div>
+                    </AnimatePresence>
                 </div>
             </main>
 

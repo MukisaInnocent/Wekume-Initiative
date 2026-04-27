@@ -12,6 +12,7 @@ function TestimonialForm({ testimonial, defaultRegion = 'global', onSubmit, onCa
         is_approved: true,
         region: defaultRegion
     });
+    const [uploadError, setUploadError] = useState(null);
 
     useEffect(() => {
         if (testimonial) {
@@ -39,15 +40,29 @@ function TestimonialForm({ testimonial, defaultRegion = 'global', onSubmit, onCa
         const file = e.target.files[0];
         if (!file) return;
 
-        const formData = new FormData();
-        formData.append('file', file);
+        // Validate file type
+        if (!file.type.startsWith('image/')) {
+            setUploadError('Please select an image file');
+            return;
+        }
+
+        // Validate file size (5MB limit)
+        if (file.size > 5 * 1024 * 1024) {
+            setUploadError('File size must be less than 5MB');
+            return;
+        }
+
+        const uploadFormData = new FormData();
+        uploadFormData.append('file', file);
 
         try {
-            const response = await adminAPI.uploadMedia(formData);
+            setUploadError(null);
+            const response = await adminAPI.uploadMedia(uploadFormData);
             setFormData(prev => ({ ...prev, photo_url: response.data.file.url }));
         } catch (error) {
             console.error('File upload failed:', error);
-            alert('Failed to upload image');
+            const errorMsg = error.response?.data?.error || 'Upload failed. Please try again.';
+            setUploadError(errorMsg);
         }
     };
 
@@ -158,6 +173,9 @@ function TestimonialForm({ testimonial, defaultRegion = 'global', onSubmit, onCa
                             onChange={(e) => setFormData({ ...formData, photo_url: e.target.value })}
                             className="mt-2 w-full px-3 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded"
                         />
+                        {uploadError && (
+                            <p className="mt-2 text-sm text-red-600 dark:text-red-400">{uploadError}</p>
+                        )}
                     </div>
                 </div>
             </div>

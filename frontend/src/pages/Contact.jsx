@@ -110,7 +110,7 @@ function Contact() {
             }, 5000);
         } catch (error) {
             setStatus('error');
-            setErrors({ submit: error.response?.data?.error || 'Failed to connect. Please try again.' });
+            setErrors({ submit: 'Something went wrong. Please try again in a moment.' });
         }
     };
 

@@ -20,6 +20,7 @@ node_installer.msi
 # IDE
 .vscode/
 .idea/
+.vs/
 
 # OS files
 .DS_Store

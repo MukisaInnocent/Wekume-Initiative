@@ -108,7 +108,7 @@ function Support() {
             setCurrentStep(5);
         } catch (error) {
             console.error(error);
-            setErrors({ submit: 'Transaction simulation failed. Please try again.' });
+            setErrors({ submit: 'Something went wrong. Please try again in a moment.' });
             setStatus('error');
         }
     };
@@ -140,9 +140,9 @@ function Support() {
             <Navbar />
             
             {/* Minimalist Header */}
-            <div className="bg-gradient-to-br from-purple-900 to-indigo-900 text-white pt-32 pb-16 relative overflow-hidden">
-                <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
-                <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-pink-500/20 rounded-full blur-[100px]"></div>
+            <div className="bg-gradient-to-br from-[#341525] via-[#7d52a0] to-[#1a0a12] text-white pt-32 pb-16 relative overflow-hidden">
+                <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: 'radial-gradient(circle, #f7b2d0 1px, transparent 1px)', backgroundSize: '36px 36px' }} />
+                <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary-500/20 rounded-full blur-[100px]" />
                 
                 <div className="max-w-4xl mx-auto px-4 text-center relative z-10">
                     <span className="px-4 py-1.5 rounded-full bg-white/10 border border-white/20 text-pink-300 font-semibold tracking-wide text-sm mb-6 inline-flex items-center gap-2 backdrop-blur-md">

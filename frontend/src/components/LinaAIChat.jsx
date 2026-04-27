@@ -148,7 +148,7 @@ function LinaAIChat() {
                         className={`bg-white dark:bg-gray-900 rounded-2xl shadow-2xl w-[90vw] sm:w-[400px] max-h-[80vh] flex flex-col overflow-hidden border border-gray-200 dark:border-gray-700 pointer-events-auto origin-bottom-right`}
                     >
                         {/* Header */}
-                        <div className="bg-gradient-to-r from-purple-600 to-blue-600 p-4 flex items-center justify-between text-white shadow-md relative z-10">
+                        <div className="bg-gradient-to-r from-[#341525] via-[#7d52a0] to-[#341525] p-4 flex items-center justify-between text-white shadow-md relative z-10">
                             <div className="flex items-center gap-3">
                                 <div className="relative">
                                     <div className="w-10 h-10 bg-white/20 rounded-full p-1 flex items-center justify-center overflow-hidden border border-white/30 backdrop-blur-sm">
@@ -159,7 +159,7 @@ function LinaAIChat() {
                                             className="w-full h-full object-cover scale-110"
                                         />
                                     </div>
-                                    <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-400 border-2 border-purple-600 rounded-full"></span>
+                                    <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-400 border-2 border-secondary-700 rounded-full" />
                                 </div>
                                 <div>
                                     <h3 className="font-bold text-lg leading-tight">Lina AI</h3>
@@ -210,11 +210,12 @@ function LinaAIChat() {
                                                 </div>
                                             )}
                                             <div
-                                                className={`max-w-[80%] rounded-2xl px-4 py-3 shadow-sm ${msg.role === 'user'
-                                                    ? 'bg-purple-600 text-white rounded-tr-sm'
-                                                    : msg.crisis
-                                                        ? 'bg-red-50 dark:bg-red-900/20 text-red-900 dark:text-red-100 border border-red-200 dark:border-red-800 rounded-tl-sm'
-                                                        : 'bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 border border-gray-100 dark:border-gray-700 rounded-tl-sm'
+                                                className={`max-w-[80%] rounded-2xl px-4 py-3 shadow-sm ${
+                                                    msg.role === 'user'
+                                                        ? 'ai-bubble-user'
+                                                        : msg.crisis
+                                                            ? 'bg-red-50 dark:bg-red-900/20 text-red-900 dark:text-red-100 border border-red-200 dark:border-red-800 rounded-tl-sm'
+                                                            : 'bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 border border-gray-100 dark:border-gray-700 rounded-tl-sm'
                                                     }`}
                                             >
                                                 <p className="text-sm leading-relaxed whitespace-pre-wrap break-words">
@@ -246,7 +247,7 @@ function LinaAIChat() {
                                                     <motion.span
                                                         animate={{ y: [0, -5, 0] }}
                                                         transition={{ repeat: Infinity, duration: 0.6, delay: 0.2 }}
-                                                        className="w-1.5 h-1.5 bg-blue-500 rounded-full"
+                                                        className="w-1.5 h-1.5 bg-primary-400 rounded-full"
                                                     />
                                                     <motion.span
                                                         animate={{ y: [0, -5, 0] }}
@@ -284,7 +285,7 @@ function LinaAIChat() {
                                         <button
                                             type="submit"
                                             disabled={!inputMessage.trim() || isLoading}
-                                            className="p-3 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-xl hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-md hover:shadow-lg flex-shrink-0"
+                                            className="p-3 bg-gradient-to-br from-secondary-500 to-primary-500 text-white rounded-xl hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-md hover:shadow-pink flex-shrink-0"
                                             aria-label="Send message"
                                         >
                                             <Send size={18} />
@@ -317,7 +318,7 @@ function LinaAIChat() {
                             exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.2 } }}
                             className="mb-4 w-64"
                         >
-                            <div className="bg-gradient-to-r from-purple-600 to-blue-600 text-white p-4 rounded-2xl shadow-2xl relative pr-8">
+                            <div className="bg-gradient-to-r from-secondary-600 to-primary-500 text-white p-4 rounded-2xl shadow-2xl relative pr-8">
                                 <button
                                     onClick={(e) => {
                                         e.stopPropagation();
@@ -337,7 +338,7 @@ function LinaAIChat() {
                                     Have health questions but afraid to ask? Chat anonymously with Lina 24/7.
                                 </p>
                                 {/* Pointer arrow */}
-                                <div className="absolute -bottom-2 right-6 w-4 h-4 bg-gradient-to-l from-blue-600 to-transparent transform rotate-45 border-r border-b border-white/10"></div>
+                                <div className="absolute -bottom-2 right-6 w-4 h-4 bg-secondary-600 transform rotate-45 border-r border-b border-white/10" />
                             </div>
                         </motion.div>
                     )}
@@ -363,7 +364,7 @@ function LinaAIChat() {
 
                     <div className={`relative w-16 h-16 sm:w-20 sm:h-20 rounded-full shadow-2xl transition-all duration-300 ${isOpen ? 'bg-gray-800' : 'bg-white'} overflow-hidden border-4 border-white dark:border-gray-700`}>
                         {/* Background gradient effect */}
-                        <div className="absolute inset-0 bg-gradient-to-br from-purple-100 to-blue-50 dark:from-purple-900/50 dark:to-blue-900/50"></div>
+                        <div className="absolute inset-0 bg-gradient-to-br from-secondary-100 to-primary-50 dark:from-secondary-900/50 dark:to-primary-900/30" />
 
                         {/* Logo/Icon */}
                         <div className="absolute inset-0 flex items-center justify-center p-3">

@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
 import { Link as LinkIcon, Image as ImageIcon, Briefcase, Upload } from 'lucide-react';
+import { adminAPI } from '../../services/api';
 
 function PartnerForm({ partner, defaultRegion = 'global', onSubmit, onCancel, loading }) {
     const [formData, setFormData] = useState({
         name: '',
-        type: 'corporate', // corporate, ngo, academic, government, other
+        type: 'corporate',
         description: '',
         logo_url: '',
         website: '',
@@ -12,6 +13,7 @@ function PartnerForm({ partner, defaultRegion = 'global', onSubmit, onCancel, lo
         is_active: true,
         region: defaultRegion
     });
+    const [uploadError, setUploadError] = useState(null);
 
     useEffect(() => {
         if (partner) {
@@ -30,6 +32,34 @@ function PartnerForm({ partner, defaultRegion = 'global', onSubmit, onCancel, lo
     const handleSubmit = (e) => {
         e.preventDefault();
         onSubmit(formData);
+    };
+
+    const handleLogoUpload = async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        if (!file.type.startsWith('image/')) {
+            setUploadError('Please select an image file');
+            return;
+        }
+
+        if (file.size > 5 * 1024 * 1024) {
+            setUploadError('File size must be less than 5MB');
+            return;
+        }
+
+        const uploadFormData = new FormData();
+        uploadFormData.append('file', file);
+
+        try {
+            setUploadError(null);
+            const res = await adminAPI.uploadMedia(uploadFormData);
+            setFormData(prev => ({ ...prev, logo_url: res.data.file.url }));
+        } catch (error) {
+            console.error('Image upload failed:', error);
+            const errorMsg = error.response?.data?.error || 'Upload failed. Please try again.';
+            setUploadError(errorMsg);
+        }
     };
 
     return (
@@ -128,22 +158,7 @@ function PartnerForm({ partner, defaultRegion = 'global', onSubmit, onCancel, lo
                             id="partner_logo"
                             className="hidden"
                             accept="image/*"
-                            onChange={async (e) => {
-                                const file = e.target.files[0];
-                                if (!file) return;
-
-                                const uploadFormData = new FormData();
-                                uploadFormData.append('file', file);
-
-                                try {
-                                    const { adminAPI } = await import('../../services/api');
-                                    const res = await adminAPI.uploadMedia(uploadFormData);
-                                    setFormData(prev => ({ ...prev, logo_url: res.data.file.url }));
-                                } catch (error) {
-                                    console.error("Upload failed", error);
-                                    alert("Image upload failed");
-                                }
-                            }}
+                            onChange={handleLogoUpload}
                         />
                         <label
                             htmlFor="partner_logo"
@@ -153,6 +168,9 @@ function PartnerForm({ partner, defaultRegion = 'global', onSubmit, onCancel, lo
                         </label>
                     </div>
                 </div>
+                {uploadError && (
+                    <p className="text-sm text-red-600 dark:text-red-400 mt-2">{uploadError}</p>
+                )}
             </div>
 
             <div>

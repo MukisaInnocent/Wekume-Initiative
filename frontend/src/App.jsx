@@ -29,7 +29,7 @@ function AppContent() {
     const hideChat = location.pathname === '/' || location.pathname.startsWith('/admin');
 
     return (
-        <div className="App min-h-screen bg-white dark:bg-gray-900 transition-all duration-300">
+        <div className="App min-h-screen bg-white dark:bg-gray-900 transition-colors duration-300 page-enter">
             <Routes>
                 {/* Public Routes */}
                 <Route path="/" element={<Welcome />} />

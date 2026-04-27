@@ -162,8 +162,8 @@ function Welcome() {
 
                     {/* Badge */}
                     <motion.div variants={itemVariants} className="mb-5">
-                        <span className="inline-flex items-center gap-2 bg-violet-500/15 border border-violet-500/30 text-violet-300 text-xs font-semibold px-4 py-1.5 rounded-full tracking-wider uppercase">
-                            <span className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse" />
+                        <span className="inline-flex items-center gap-2 bg-secondary-500/15 border border-secondary-500/30 text-primary-200 text-xs font-semibold px-4 py-1.5 rounded-full tracking-wider uppercase">
+                            <span className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse" />
                             Health · Education · Empowerment
                         </span>
                     </motion.div>
@@ -173,14 +173,14 @@ function Welcome() {
                         variants={itemVariants}
                         className="text-5xl sm:text-6xl lg:text-7xl font-black tracking-tight leading-[1.05] mb-6"
                     >
-                        <span className="bg-gradient-to-br from-white via-violet-100 to-violet-300 bg-clip-text text-transparent">
+                        <span className="bg-gradient-to-br from-white via-purple-100 to-purple-200 bg-clip-text text-transparent">
                             Building a
                         </span>
                         <br />
-                        <span className="bg-gradient-to-r from-pink-400 via-fuchsia-400 to-violet-400 bg-clip-text text-transparent">
+                        <span className="bg-gradient-to-r from-primary-400 via-primary-300 to-secondary-300 bg-clip-text text-transparent">
                             Healthier{' '}
                         </span>
-                        <span className="bg-gradient-to-br from-white via-violet-100 to-violet-300 bg-clip-text text-transparent">
+                        <span className="bg-gradient-to-br from-white via-purple-100 to-purple-200 bg-clip-text text-transparent">
                             Africa.
                         </span>
                     </motion.h1>
@@ -230,7 +230,7 @@ function Welcome() {
                         <div className="bg-[#341525]/95 backdrop-blur-2xl rounded-[calc(2rem-1px)] p-8 sm:p-10 text-center">
 
                             {/* Card header */}
-                            <div className="w-16 h-16 bg-violet-500/15 border border-violet-500/30 rounded-2xl flex items-center justify-center mx-auto mb-6 text-violet-400">
+                            <div className="w-16 h-16 bg-secondary-500/15 border border-secondary-500/30 rounded-2xl flex items-center justify-center mx-auto mb-6 text-secondary-300">
                                 <Globe2 size={32} />
                             </div>
 
@@ -243,7 +243,7 @@ function Welcome() {
                             ) : (
                                 <>
                                     {detectedCountryName && (
-                                        <div className="mb-8 border-b border-white/5 pb-6">
+                                        <div className="mb-8 border-b border-white/8 pb-6">
                                             <p className="text-gray-400 text-sm mb-1">We've detected your region as</p>
                                             <p className="text-xl font-bold text-white mb-2">{detectedCountryName}</p>
                                             <p className="text-gray-500 text-sm">
@@ -259,7 +259,7 @@ function Welcome() {
                                             onClick={() => navigate('/us')}
                                             className={`w-full py-4 px-6 rounded-xl font-bold text-[15px] transition-all duration-300 flex items-center justify-center gap-2 ${
                                                 detectedRegion === 'us' || !detectedRegion
-                                                    ? 'bg-gradient-to-r from-violet-600 via-purple-600 to-pink-600 text-white shadow-lg shadow-violet-900/50'
+                                                    ? 'bg-gradient-to-r from-secondary-500 via-secondary-400 to-primary-500 text-white shadow-lg shadow-secondary-900/50 hover:-translate-y-0.5'
                                                     : 'bg-white/5 border border-white/15 text-gray-300 hover:bg-white/10 hover:-translate-y-0.5'
                                             }`}
                                         >
@@ -270,7 +270,7 @@ function Welcome() {
                                             onClick={() => navigate('/ug')}
                                             className={`w-full py-4 px-6 rounded-xl font-bold text-[15px] transition-all duration-300 flex items-center justify-center gap-2 ${
                                                 detectedRegion === 'ug'
-                                                    ? 'bg-gradient-to-r from-violet-600 via-purple-600 to-pink-600 text-white shadow-lg shadow-violet-900/50'
+                                                    ? 'bg-gradient-to-r from-primary-500 via-primary-400 to-secondary-400 text-white shadow-lg shadow-primary-900/50 hover:-translate-y-0.5'
                                                     : 'bg-white/5 border border-white/15 text-gray-300 hover:bg-white/10 hover:-translate-y-0.5'
                                             }`}
                                         >

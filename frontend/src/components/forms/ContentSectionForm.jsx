@@ -1,17 +1,22 @@
 import { useState, useEffect } from 'react';
+import { Upload, Image as ImageIcon } from 'lucide-react';
+import { adminAPI } from '../../services/api';
 
 function ContentSectionForm({ section, defaultRegion = 'global', onSubmit, onCancel, loading, title }) {
     const [formData, setFormData] = useState({
         section_title: '',
         content_text: '',
+        image_url: '',
         region: defaultRegion
     });
+    const [uploadError, setUploadError] = useState(null);
 
     useEffect(() => {
         if (section) {
             setFormData({
                 section_title: section.section_title || '',
                 content_text: section.content_text || '',
+                image_url: section.image_url || '',
                 region: section.region || defaultRegion
             });
         }
@@ -23,8 +28,37 @@ function ContentSectionForm({ section, defaultRegion = 'global', onSubmit, onCan
             ...section,
             section_title: formData.section_title,
             content_text: formData.content_text,
+            image_url: formData.image_url,
             region: formData.region
         });
+    };
+
+    const handleImageUpload = async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        if (!file.type.startsWith('image/')) {
+            setUploadError('Please select an image file');
+            return;
+        }
+
+        if (file.size > 5 * 1024 * 1024) {
+            setUploadError('File size must be less than 5MB');
+            return;
+        }
+
+        const uploadFormData = new FormData();
+        uploadFormData.append('file', file);
+
+        try {
+            setUploadError(null);
+            const res = await adminAPI.uploadMedia(uploadFormData);
+            setFormData(prev => ({ ...prev, image_url: res.data.file.url }));
+        } catch (error) {
+            console.error('Image upload failed:', error);
+            const errorMsg = error.response?.data?.error || 'Upload failed. Please try again.';
+            setUploadError(errorMsg);
+        }
     };
 
     return (
@@ -70,6 +104,45 @@ function ContentSectionForm({ section, defaultRegion = 'global', onSubmit, onCan
                         rows="6"
                         placeholder="Enter the main textual content here..."
                     />
+                </div>
+
+                <div>
+                    <label className="block text-xs font-bold text-gray-500 dark:text-gray-400 mb-2 uppercase tracking-wider">Associated Image (Optional)</label>
+                    <div className="flex gap-2">
+                        <div className="relative flex-grow">
+                            <ImageIcon className="absolute left-3 top-2.5 text-gray-400" size={18} />
+                            <input
+                                type="text"
+                                value={formData.image_url}
+                                onChange={(e) => setFormData(prev => ({ ...prev, image_url: e.target.value }))}
+                                className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-gray-50 dark:bg-gray-900/50 text-sm"
+                                placeholder="Image URL will appear here..."
+                            />
+                        </div>
+                        <div className="relative">
+                            <input
+                                type="file"
+                                id="section_image"
+                                className="hidden"
+                                accept="image/*"
+                                onChange={handleImageUpload}
+                            />
+                            <label
+                                htmlFor="section_image"
+                                className="px-4 py-2 bg-purple-100 text-purple-700 rounded-lg cursor-pointer hover:bg-purple-200 flex items-center gap-2 text-sm font-bold transition-colors"
+                            >
+                                <Upload size={18} /> Upload
+                            </label>
+                        </div>
+                    </div>
+                    {uploadError && (
+                        <p className="text-sm text-red-600 dark:text-red-400 mt-2">{uploadError}</p>
+                    )}
+                    {formData.image_url && (
+                        <div className="mt-2 relative group w-32 h-20 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700">
+                            <img src={formData.image_url} alt="Preview" className="w-full h-full object-cover" />
+                        </div>
+                    )}
                 </div>
             </div>
 

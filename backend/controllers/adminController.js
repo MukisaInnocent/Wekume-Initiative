@@ -17,6 +17,8 @@ const {
     ConfigurableBlock,
     Resource
 } = require('../models');
+const fs = require('fs');
+const path = require('path');
 
 const calculateAge = (dateOfBirth) => {
     if (!dateOfBirth) return null;
@@ -555,40 +557,38 @@ const streamifier = require('streamifier');
 exports.uploadMedia = async (req, res) => {
     try {
         if (!req.file) {
-            return res.status(400).json({ error: 'No file uploaded' });
+            return res.status(400).json({ error: 'Upload failed. No file selected.' });
         }
 
-        // Upload to Cloudinary using stream
-        const streamUpload = (fileBuffer) => {
-            return new Promise((resolve, reject) => {
-                const stream = cloudinary.uploader.upload_stream(
-                    { folder: 'wekume_cms' },
-                    (error, result) => {
-                        if (result) {
-                            resolve(result);
-                        } else {
-                            reject(error);
-                        }
-                    }
-                );
-                streamifier.createReadStream(fileBuffer).pipe(stream);
-            });
-        };
+        // File is already saved to disk by Multer
+        const fileName = req.file.filename;
 
-        const result = await streamUpload(req.file.buffer);
+        // Generate URL
+        const protocol = req.protocol;
+        const host = req.get('host');
+        const fileUrl = `${protocol}://${host}/uploads/media/${fileName}`;
 
-        // Return the file info provided by Cloudinary
-        res.status(201).json({
-            message: 'File uploaded successfully',
+        console.log(`✅ File saved uniquely: ${fileName}`);
+
+        return res.status(201).json({
+            message: 'Image uploaded successfully',
             file: {
-                url: result.secure_url,
-                public_id: result.public_id,
-                format: result.format
+                url: fileUrl,
+                public_id: fileName,
+                format: path.extname(fileName).substring(1)
             }
         });
     } catch (error) {
+        // If file was saved but an error occurred, try to clean up
+        if (req.file && req.file.path) {
+            try {
+                fs.unlinkSync(req.file.path);
+            } catch (e) {
+                // Ignore cleanup errors
+            }
+        }
         console.error('Upload media error:', error);
-        res.status(500).json({ error: 'Failed to upload file' });
+        res.status(500).json({ error: 'Upload failed. Please try again.' });
     }
 };
 

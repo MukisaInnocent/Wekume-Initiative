@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { FileText, Upload, Calendar } from 'lucide-react';
+import { adminAPI } from '../../services/api';
 
 function ReportForm({ report, onSubmit, onCancel, loading }) {
     const [formData, setFormData] = useState({
@@ -10,6 +11,7 @@ function ReportForm({ report, onSubmit, onCancel, loading }) {
         cover_image_url: '',
         is_published: false
     });
+    const [uploadError, setUploadError] = useState(null);
 
     useState(() => {
         if (report) {
@@ -28,6 +30,36 @@ function ReportForm({ report, onSubmit, onCancel, loading }) {
     const handleSubmit = (e) => {
         e.preventDefault();
         onSubmit(formData);
+    };
+
+    const handleCoverImageUpload = async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        // Validate file type
+        if (!file.type.startsWith('image/')) {
+            setUploadError('Please select an image file');
+            return;
+        }
+
+        // Validate file size (5MB limit)
+        if (file.size > 5 * 1024 * 1024) {
+            setUploadError('File size must be less than 5MB');
+            return;
+        }
+
+        const uploadFormData = new FormData();
+        uploadFormData.append('file', file);
+
+        try {
+            setUploadError(null);
+            const res = await adminAPI.uploadMedia(uploadFormData);
+            setFormData(prev => ({ ...prev, cover_image_url: res.data.file.url }));
+        } catch (error) {
+            console.error('Image upload failed:', error);
+            const errorMsg = error.response?.data?.error || 'Upload failed. Please try again.';
+            setUploadError(errorMsg);
+        }
     };
 
     return (
@@ -109,26 +141,7 @@ function ReportForm({ report, onSubmit, onCancel, loading }) {
                             id="report_file"
                             className="hidden"
                             accept=".pdf,.doc,.docx"
-                            onChange={async (e) => {
-                                const file = e.target.files[0];
-                                if (!file) return;
-
-                                const uploadFormData = new FormData();
-                                uploadFormData.append('file', file);
-
-                                // Show loading state specifically for upload if needed, or just rely on quick upload
-                                const originalText = e.target.previousSibling?.innerText; // unavailable reference, ignore
-
-                                try {
-                                    // Could add a local uploading state here if desired
-                                    const { adminAPI } = await import('../../services/api');
-                                    const res = await adminAPI.uploadMedia(uploadFormData);
-                                    setFormData(prev => ({ ...prev, file_url: res.data.file.url }));
-                                } catch (error) {
-                                    console.error("Upload failed", error);
-                                    alert("File upload failed");
-                                }
-                            }}
+                            onChange={handleCoverImageUpload}
                         />
                         <label
                             htmlFor="report_file"
@@ -138,6 +151,9 @@ function ReportForm({ report, onSubmit, onCancel, loading }) {
                         </label>
                     </div>
                 </div>
+                {uploadError && (
+                    <p className="text-sm text-red-600 dark:text-red-400 mt-2">{uploadError}</p>
+                )}
                 <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">Upload the report PDF document.</p>
             </div>
 
